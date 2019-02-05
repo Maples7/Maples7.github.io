@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://maples7.com/"/>
-  <updated>2019-01-02T16:05:02.615Z</updated>
+  <updated>2019-02-05T13:06:19.689Z</updated>
   <id>http://maples7.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>东北的冬</title>
+    <link href="http://maples7.com/2019/02/05/winter-of-north-east/"/>
+    <id>http://maples7.com/2019/02/05/winter-of-north-east/</id>
+    <published>2019-02-05T12:36:21.000Z</published>
+    <updated>2019-02-05T13:06:19.689Z</updated>
+    
+    <content type="html"><![CDATA[<div class="group-picture"><div class="group-picture-container"><div class="group-picture-row"><div class="group-picture-column" style="width:50%"><img data-original="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg"></div><div class="group-picture-column" style="width:50%"><img data-original="https://i.loli.net/2019/02/05/5c598233d3831.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column" style="width:33.333333333333336%"><img data-original="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg"></div><div class="group-picture-column" style="width:33.333333333333336%"><img data-original="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg"></div><div class="group-picture-column" style="width:33.333333333333336%"><img data-original="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column" style="width:33.333333333333336%"><img data-original="https://i.loli.net/2019/02/05/5c59830583ea1.jpg"></div><div class="group-picture-column" style="width:33.333333333333336%"><img data-original="https://i.loli.net/2019/02/05/5c59829a17feb.jpg"></div><div class="group-picture-column" style="width:33.333333333333336%"><img data-original="https://i.loli.net/2019/02/05/5c5983059de98.jpg"></div></div></div></div><a id="more"></a><p><br></p><p>图片已经过裁剪与压缩。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;group-picture&quot;&gt;&lt;div class=&quot;group-picture-container&quot;&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:50%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c5981f5ee873.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:50%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c598233d3831.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:33.333333333333336%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c59825ebeeef.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:33.333333333333336%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c5982bbbc951.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:33.333333333333336%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:33.333333333333336%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c59830583ea1.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:33.333333333333336%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c59829a17feb.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot; style=&quot;width:33.333333333333336%&quot;&gt;&lt;img data-original=&quot;https://i.loli.net/2019/02/05/5c5983059de98.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    
+    </summary>
+    
+      <category term="视觉动物" scheme="http://maples7.com/categories/%E8%A7%86%E8%A7%89%E5%8A%A8%E7%89%A9/"/>
+    
+    
+      <category term="Sony DSC-RX100" scheme="http://maples7.com/tags/Sony-DSC-RX100/"/>
+    
+      <category term="东北" scheme="http://maples7.com/tags/%E4%B8%9C%E5%8C%97/"/>
+    
+      <category term="雪" scheme="http://maples7.com/tags/%E9%9B%AA/"/>
+    
+      <category term="林海" scheme="http://maples7.com/tags/%E6%9E%97%E6%B5%B7/"/>
+    
+  </entry>
   
   <entry>
     <title>2018 年书单</title>
@@ -475,28 +503,6 @@
       <category term="面向对象" scheme="http://maples7.com/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"/>
     
       <category term="Erlang" scheme="http://maples7.com/tags/Erlang/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2016 年书单</title>
-    <link href="http://maples7.com/2016/12/31/2016-booklist/"/>
-    <id>http://maples7.com/2016/12/31/2016-booklist/</id>
-    <published>2016-12-31T08:40:59.000Z</published>
-    <updated>2018-12-12T21:36:00.234Z</updated>
-    
-    <content type="html"><![CDATA[<p>从今年开始，打算每年年终的时候总结这一年读过的书的书单，看看我能坚持多少年。不求看书数量上的多少，只求在每本看过的书中都能找到一些能内化成自己所能掌握的东西。这样做也是希望即便已经没有校园里大把的闲散时间读「野书」，也能不放弃这样的习惯。</p><p>今年是个人状态变化非常大的一年，走出校园，面向社会，经历了找工作、毕业季的纷扰、实习等等各个阶段，总是有些杂七杂八的事情要处理，看的书也不多。而且基本是初次正式的接触 JavaScript 和 Node.js，也接触了很多商业实践中正在使用的热门的应用类技术，需要学习的东西很多，所以看的技术类的书也会多一些。</p><a id="more"></a><p>以下书单基本按照今年读过时间顺序排列，每本书配有自己的打分和一两句话（链接大部分指向豆瓣的地址，给出版本和出版社等更多信息），这一两句话可能是对书内容的简要总结，也可能是自己的点评。</p><ol><li><p><a href="https://book.douban.com/subject/25862578/" target="_blank" rel="noopener">解忧杂货铺</a>：★★★★<br>非典型东野圭吾式小说，故事设计精巧，叙述方式是小说的亮点。不过整篇下来感觉有点单薄，没有他巅峰时期写的小说看得过瘾。<br>像豆瓣上有人说的，这是东野圭吾写给成年人看的童话。</p></li><li><p><a href="https://book.douban.com/subject/20443559/" target="_blank" rel="noopener">小王子</a>：★★★★☆<br>读正文之前一定得先读读李继宏写的导读，写得十分出色。<br>这本书一点都不长，任何大人初看起来都会觉得这是写给小孩子看的童话。但如果你不能用心来尊重这部作品，那就像书中所说，「大人是无法看懂的咯」。虽然表明上看是童话，但作者字字珠玑，无处不透露着生活的哲理和对人性的思考。<br>其次，作为诗人的作品，实在文笔简练优美、朴素纯净、充满诗意。<br>永葆童心，在你还能认真对待这本书的时候。<br>「大人们真奇怪。」<br>「真正的东西肉眼是无法看见的，要用心。」<br>我以后一定会给我的孩子读这本书的。</p></li><li><p><a href="https://book.douban.com/subject/20471120/" target="_blank" rel="noopener">打造 Facebook</a>：★★★★<br>在我看来，这本书相当有价值，尤其是对于一线互联网工程师来说。<br>豆瓣的评论中有人说书名「打造 Facebook」写得太大，内容并不是真正教你如何「打造」一个 Facebook 的。我觉得有这样想法的人过于功利和浮躁。<br>实际上，作者已经把他在 Facebook 高速发展阶段的观察和经验，尤其是作为一个「潜在」创业者的角色和心态深入内部来仔细考察这个目前世界上最伟大的互联网公司之一的杰出经验，都写出来了。这些经验不仅有针对工程师（技术）的，也有针对管理者的。</p></li><li><p><a href="https://book.douban.com/subject/10546125/" target="_blank" rel="noopener">JavaScript 高级程序设计（第三版）</a>：★★★<br>所有与前端相关的部分我都没看，我觉得是一本明显在国内过誉了的 JS 入门书，不如犀牛书讲得透彻。</p></li><li><p><a href="https://book.douban.com/subject/3590768/" target="_blank" rel="noopener">JavaScript 语言精粹</a>：★★★★<br>一本其他与 JavaScript 相关的书籍都会「恭维」一下的 JavaScript 书。</p></li><li><p><a href="https://book.douban.com/subject/25767596/" target="_blank" rel="noopener">了不起的 Node.js</a>：★★★★<br>非常好的 Node.js 实操入门！不过中文版错误有点多，版本有点老。</p></li><li><p><a href="https://book.douban.com/subject/24697636/" target="_blank" rel="noopener">三重门</a>：★★<br>文字过于老成，思想过于中二。</p></li><li><p><a href="https://book.douban.com/subject/25867920/" target="_blank" rel="noopener">Node.js 实战</a>：★★★★<br>实战两字不虚。</p></li><li><p><a href="https://book.douban.com/subject/10789820/" target="_blank" rel="noopener">Node.js 开发指南</a>：★★★★★<br>不如叫《Node.js 入门精粹》吧！</p></li><li><p><a href="https://book.douban.com/subject/26301434/" target="_blank" rel="noopener">Node 与 Express 开发</a>：★★★<br>全、泛、广、浅、新，且翻译不畅，不过算个不错的技术栈索引。</p></li><li><p><a href="https://book.douban.com/subject/5313010/" target="_blank" rel="noopener">Facebook 效应</a>：★★★★<br>Facebook 的人文社科历史进程。</p></li><li><p><a href="https://book.douban.com/subject/1024570/" target="_blank" rel="noopener">编码的奥秘</a>：★★★★★<br>一本足以让国内数电、单片机教材汗颜的书，写了一些程序员必须了解的底层知识。</p></li><li><p><a href="https://book.douban.com/subject/25891771/" target="_blank" rel="noopener">失乐园</a>：★★★★<br>性、爱、死亡与人生。</p></li><li><p><a href="https://book.douban.com/subject/25786138/" target="_blank" rel="noopener">Effective JavaScript</a>：★★★★<br>给《JavaScript 语言精粹》做的完美补充。</p></li><li><p><a href="https://book.douban.com/subject/26579320/" target="_blank" rel="noopener">JavaScript 函数式编程</a>：★★★★<br>打开函数式编程新世界的大门。</p></li><li><p><a href="https://book.douban.com/subject/25747921/" target="_blank" rel="noopener">从你的全世界路过</a>：★★★<br>嗯哼。反正是过了看这种书的年纪了。</p></li><li><p><a href="https://book.douban.com/subject/1012611/" target="_blank" rel="noopener">乌合之众：大众心理研究</a>：★★★★<br>一本百年前写的却依然对现实社会具有诸多指导意义的书。</p></li><li><p><a href="https://book.douban.com/subject/26351021/" target="_blank" rel="noopener">你不知道的 JavaScript（上卷）</a>：★★★★<br>不如叫《JavaScript 语言剖析》吧！<br>作者十分幽默，但是观点也不能全信，不信你可以敲一敲示例代码看看结果。</p></li><li><p><a href="https://read.douban.com/ebook/20769128/" target="_blank" rel="noopener">北京折叠</a>：★★★★★<br>科幻中折射出了最真的现实。<br>一两个小时就可以看完，预计两年之内会被翻拍成电影。</p></li><li><p><a href="https://read.douban.com/ebook/23111860/" target="_blank" rel="noopener">请发猫照片</a>：★★★<br>大概是想说人要对自己负责吧，可是真的没必要套上 AI 的外壳的。</p></li><li><p><a href="https://book.douban.com/subject/25127404/" target="_blank" rel="noopener">人间失格</a>：★★★★★<br>颓圮就像咖啡色儿的毒药，有一种致命的美。</p></li><li><p><a href="https://book.douban.com/subject/1102259/" target="_blank" rel="noopener">人月神话</a>：★★★★<br>每一个优秀的产品经理或者策划都比程序员更应该好好看看这本书。</p></li><li><p><a href="https://book.douban.com/subject/25768396/" target="_blank" rel="noopener">深入浅出 Node.js</a>：★★★★★<br>中文出版界 Node.js 第一书！<br>觉得这书写得不好的只是因为自身 Node 的火候还不到而已，源码永远是一个软件最好的背书。</p></li><li><p><a href="https://book.douban.com/subject/25962533/" target="_blank" rel="noopener">神奇动物在哪里</a>：★★★★<br>罗琳是唯一能和魔法世界对话的人，她把她知道的故事讲给麻瓜听。<br>这是一本让麻瓜有魔法世界浸入式体验的神奇动物百科全书，邓布利多亲自作序，适合哈迷细细考究。</p></li><li><p><a href="https://book.douban.com/subject/26854244/" target="_blank" rel="noopener">你不知道的 JavaScript（中卷）</a>：★★★★☆<br>三年前 JavaScript 进阶你可能会推荐看《JavaScript 语言精粹》，但现在我推荐这个系列。<br>实际上中卷对《JavaScript 语言精粹》里的很多偏见做了更辩证更符合当下实践需求的深入阐述。<br>不过，书中观点依然还是要辩证看待，而且还有一些明显的小 bug，但基本不影响阅读。</p></li><li><p><a href="https://book.douban.com/subject/26871656/" target="_blank" rel="noopener">哈利·波特与被诅咒的孩子</a>：★★★☆<br>时空穿越本身带来的漏洞多得都不敢想，所以罗琳才会机智的在原著第五部中把所有的时间转换器给毁了。而这本书却刻意制造了这样一个 bug。<br>对不起，即便是情怀最多也就三星半。<br>当然，本书也不是一无是处，想看的话随便看看就好，别太当真，但一旦开始看了就坚持到最后，因为后面还是有一些看点的。</p></li><li><p><a href="https://book.douban.com/subject/25826578/" target="_blank" rel="noopener">MacTalk·人生元编程</a>：★★★★<br>一本高质量的博文汇编成的书，非常适合程序员入门 macOS。而且内容干湿比例匀称，更重要的是还有作者作为开发者一路走来的各种心得体会、人生经验，以及人文关怀。<br>可以买来作为睡前读物。</p></li><li><p><a href="https://book.douban.com/subject/25985021/" target="_blank" rel="noopener">人类简史</a>：★★★★☆<br>看完这本书我更加相信，人类从农业革命以来就构建了不正确的社会形态，奠定了阶级与剥削罪恶的源头。<br>看来只有传说中的共产主义社会能够拯救人类了&lt;滑稽脸&gt;。<br>但可悲的是，共产主义社会，也很可能只是我们想象出来的维持现有社会秩序的虚假故事罢了。是的，从农业革命开始，人类就已经不可能脱离想象来构建秩序。<br>第 6 章和第 16 章写得极好。</p></li><li><p><a href="https://github.com/addyosmani/essential-js-design-patterns" target="_blank" rel="noopener">Learning JavaScript Design Patterns</a>：★★★★<br>这本书的中文译本翻译得实在太烂了，我这么不挑剔的人看了前几十页实在看不下去了。译者态度显然有问题，比机翻的质量好不到哪里去。所以之后果断选择的阅读英文原版（链接给出的是这本书的 GitHub 地址，原版可以随时免费在网上阅读）。<br>反对一切原本适用于 OO 的模式硬往 JavaScript 身上套，但是有常用的设计模式理念和思想确实是有用的。</p></li></ol><p>另外，今年我还重温了一些日久弥新的经典著作，因为是「重温」，就不列举了。</p><p>看书不必刻意追求数量和速度（尤其对于技术类书籍），但事后这样一算，今年平均每个月大概是两本多新书，对于今年的状况来说，基本正常。</p><p>实际上，读书也只是学习知识（甚至是消遣和打发时光）的一种方式，在这个时代，还有很多的方式可以选择。对于程序员来说，读一些优质的博客、看技术文档、逛技术论坛、听技术播客，甚至看 MOOC 都有机会可以学到很多东西，有些东西是拓展自己知识的广度（视野）的，有些则可能完全是干货。而一般来说，看电影、看剧、出去旅行都可以提升自己。我这样说的意思是，在这样一个开放多元的互联网时代，思想不要太保守，不必过于迷信一定要通过读书的方式充实自己，找到适合自己的方式就好。</p><p>至于是看纸质书还是电子书的争论，我个人的喜好是，技术类书籍有纸质书更好，没有的话电子版也能看下去（重点是边看边实践，旁边有笔电比纸质书更重要）。而对于非技术类书籍，除非是收藏的目的，否则我是不会带着厚厚的纸质书到处跑的。哦，对了，我用 iPad 看电子书，常用的 App 是多看和豆瓣阅读。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;从今年开始，打算每年年终的时候总结这一年读过的书的书单，看看我能坚持多少年。不求看书数量上的多少，只求在每本看过的书中都能找到一些能内化成自己所能掌握的东西。这样做也是希望即便已经没有校园里大把的闲散时间读「野书」，也能不放弃这样的习惯。&lt;/p&gt;&lt;p&gt;今年是个人状态变化非常大的一年，走出校园，面向社会，经历了找工作、毕业季的纷扰、实习等等各个阶段，总是有些杂七杂八的事情要处理，看的书也不多。而且基本是初次正式的接触 JavaScript 和 Node.js，也接触了很多商业实践中正在使用的热门的应用类技术，需要学习的东西很多，所以看的技术类的书也会多一些。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="浮生散记" scheme="http://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-      <category term="书单" scheme="http://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
     
   </entry>
   
