@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://maples7.com/"/>
-  <updated>2019-02-05T13:06:19.689Z</updated>
+  <updated>2019-05-09T07:34:49.761Z</updated>
   <id>http://maples7.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>心知天气数据 API 产品的高并发实践</title>
+    <link href="http://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/"/>
+    <id>http://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</id>
+    <published>2019-05-09T04:57:40.000Z</published>
+    <updated>2019-05-09T07:34:49.761Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.seniverse.com/" target="_blank" rel="noopener">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a href="https://www.seniverse.com/" target="_blank" rel="noopener">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p><span itemprop="image" itemscope="" itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="/images/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/14043303-cc391fdfafb434c1.gif " class="full-image" alt="图片显示错误" title="心知天气 API 服务实时访问量"><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span><a id="more"></a><h2 id="访问量特点"><a href="#访问量特点" class="headerlink" title="访问量特点"></a>访问量特点</h2><p>天气数据的基本属性和客户本身的业务需求决定了客户来如何调用我们的数据接口。对于部分使用我们数据进行数据展示的 2C 业务的客户而言，访问量潮汐跟人的行为规律有着明显的相关性，这大致表现为白天比晚上并发量更高；而对于部分使用天气数据做数据分析和研究或者其他需要批量请求天气数据的客户而言，他们大多会选择在整点时刻来批量请求不同的数据，所以整点时刻往往会有突发的高峰访问量。</p><p><img src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点"></p><p>在叠加了不同客户需求的总体 API 服务的访问量，可以看出以下几个特点：</p><ul><li>以「天」为单位周期性明显</li><li>每天零点时刻并发量会激增</li><li>整点和半点时刻存在高并发小周期</li></ul><p>只有了解了我们客户的需求特点，才能设计出更合适的技术架构来应对随之而来的挑战。</p><h2 id="石器时代"><a href="#石器时代" class="headerlink" title="石器时代"></a>石器时代</h2><p>在创业初期，「云计算」的理念开始兴起，创始团队在斟酌优劣之后，选择将整个系统构建于云服务提供商<a href="https://www.aliyun.com/" target="_blank" rel="noopener">阿里云</a>之上，如此一来心知天气团队也不必自己再手工搭建和管理需要的硬件资源，这对于创业公司而言是一个不错的选择。和大多数早期创业公司一样，囿于资源和技术积累，最早我们也是将 API 服务实例直接部署在<a href="https://cn.aliyun.com/product/ecs" target="_blank" rel="noopener">阿里云 ECS</a> 之上，对外通过<a href="https://www.aliyun.com/product/slb" target="_blank" rel="noopener">负载均衡 SLB</a> 提供统一的 API 入口。</p><p>随着心知天气数据服务体验的不断完善，客户数量也不断增多，API 服务所需要承载的流量也持续上涨。由于我们已经构建了上述这样的基础架构体系，在并发量最高的时期，我们需要手工维护高达 40 台左右的 ECS。而每个 ECS 上有自己独立但不完全一致的运行环境，不管是应对访问量突变还是部署新的版本，都无法做到比较快速的响应和执行。</p><p>在这个阶段，我们产品的 API 数据和逻辑都还比较简单，所有关于用户信息处理、位置服务和数据处理的逻辑都揉杂在一个单体服务中，最终部署时也是一个一个独立的单体式架构通过 SLB 共同对外提供服务。</p><h2 id="青铜时代"><a href="#青铜时代" class="headerlink" title="青铜时代"></a>青铜时代</h2><p>随着心知天气数据种类的不断增多，数据处理和 API 服务的逻辑也变得各不相同，比如城市级数据和公里级网格数据就有着完全不一样的处理和取数逻辑。在这种情况下，基于程序的可维护性考虑，我们很快决定根据数据处理逻辑的不同将数据服务拆分为几个不同的微服务，各自对外提供不同的天气数据 API。而为了复用取数之前的权限校验、访问量和各种日志统计的逻辑，我们开始引入网关系统。</p><p>API 网关最重要的是性能和稳定性要足够好，所有的 API 请求都需要经过网关。在通过网关的校验之后，数据服务负责获取需要的天气数据，其结果再通过网关返回给外部用户。如此一来，不同的几个数据服务退化成无状态的纯数据服务，即每个数据服务节点不再考虑任何与用户相关的逻辑，只是简单的根据请求条件将所有处理好的数据从存储系统中取出后返回，网关作为唯一的请求入口来统一处理所有的权限校验和访问量、日志的各种统计。</p><p>基于<a href="https://konghq.com/" target="_blank" rel="noopener">开源的网关系统 Kong</a>，我们使用 Lua 进行了大量的二次定制开发，从而形成了心知天气自己的一套网关体系。这套系统不仅满足网关基本的路由逻辑，还能更好的处理和我们自身业务深度耦合的用户权限校验、访问量统计以及以用户为核心的日志记录。Kong 天生也是支持集群的，所以在理论上我们可以无限横向扩展网关的处理能力。</p><p>在这样的架构之下，心知天气的 API 服务很好的遵循了<a href="https://zh.wikipedia.org/wiki/单一功能原则" target="_blank" rel="noopener">「单一职责」的原则</a>，使得我们的代码维护和版本更新都能以更快速且代价更小的方式进行。但另一方面，我们还是需要手工维护大量的 ECS 集群，甚至由于天气数据服务的多样化，手工维护多个不同种类服务的集群将面对更繁重的挑战。不过，由于我们将服务进行了更好的拆分和分层，变成了一个个更小的微服务，使得我们能把它们进行更好的分布式部署，进而可以横向扩展来提高整个服务集群处理并发请求的能力。这一阶段既是我们成功向微服务架构的转变阶段，也可以看作是我们迈向更现代的后端架构的过渡阶段。</p><h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p><a href="https://pivotal.io/cloud-native" target="_blank" rel="noopener">Cloud-Native</a> 的概念是 2015 年被首次提出的，随后就获得了技术社区的大量关注。顺着之前架构演进的思路，我们很快开始用 Cloud-Native 的理念来武装整个后端系统架构。在去年，我们正式开始用 <a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> 和 <a href="https://kubernetes.io/" target="_blank" rel="noopener">Kubernetes</a> 来改造和管理我们所有对外的线上服务，这些架构设计同时也与阿里云提供的云服务深度结合。</p><p>从网关到数据服务，目前我们都已经完成了容器化的改造，并且所有服务都使用 Kubernetes 来编排和管理，这意味着我们真正统一了各个服务的运行时环境，从而可以快速复制出新的服务节点。借助 Kubernetes，我们现在可以做到容器级别的自动伸缩，在并发量高的时候服务节点能够自动横向扩展以提高整个集群的并发处理能力，进而可以给用户提供更加优质稳定的天气数据 API 服务。</p><p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/持續整合" target="_blank" rel="noopener">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps" target="_blank" rel="noopener">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p><p><img src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p><p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/" target="_blank" rel="noopener">心知天气</a>所有，转载需联系<a href="mailto:hi@seniverse.com?subject=文章转载授权申请" target="_blank" rel="noopener">心知天气</a>获取授权】</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.seniverse.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;心知天气&lt;/a&gt;作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气&lt;a href=&quot;https://www.seniverse.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;官网首页&lt;/a&gt;一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。&lt;/p&gt;&lt;span itemprop=&quot;image&quot; itemscope=&quot;&quot; itemtype=&quot;http://schema.org/ImageObject&quot;&gt;&lt;img itemprop=&quot;url image&quot; src=&quot;/images/loading.gif&quot; data-original=&quot;https://upload-images.jianshu.io/upload_images/14043303-cc391fdfafb434c1.gif &quot; class=&quot;full-image&quot; alt=&quot;图片显示错误&quot; title=&quot;心知天气 API 服务实时访问量&quot;&gt;&lt;meta itemprop=&quot;width&quot; content=&quot;auto&quot;&gt;&lt;meta itemprop=&quot;height&quot; content=&quot;auto&quot;&gt;&lt;/span&gt;
+    
+    </summary>
+    
+      <category term="一只代码狗的自我修养" scheme="http://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
+    
+    
+      <category term="高并发" scheme="http://maples7.com/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="系统架构" scheme="http://maples7.com/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>东北的冬</title>
@@ -479,30 +503,6 @@
       <category term="Express" scheme="http://maples7.com/tags/Express/"/>
     
       <category term="性能调优" scheme="http://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <link href="http://maples7.com/2017/02/09/why-oo-sucks/"/>
-    <id>http://maples7.com/2017/02/09/why-oo-sucks/</id>
-    <published>2017-02-09T10:01:18.000Z</published>
-    <updated>2018-12-12T21:36:00.282Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks" target="_blank" rel="noopener">Why OO Sucks by Joe Armstrong</a>。</p></blockquote><p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p><p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p><a id="more"></a><p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p><blockquote><p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p></blockquote><p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p><h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p><h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p><p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p><p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p><p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p><p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p><p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p><h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p><figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure><p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p><p>这里没有与之相关联的那些方法。</p><h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p><p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p><p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p><p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p><p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p><h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p><p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p><p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p><ul><li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li><li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li><li>纯粹的声明式语言说：这里没有状态一说。</li></ul><p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p><p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p><h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul><li>理由一：它被认为是容易学习的</li><li>理由二：它被认为可以使代码更易复用</li><li>理由三：是炒作</li><li>理由四：它创造了一个新的软件产业</li></ul><p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p><p>这就是面向对象背后真正的驱动力量。</p><blockquote><p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;&lt;p&gt;作者简介：Joe Armstrong，编程语言 Erlang 之父。&lt;br&gt;参考原文地址：&lt;a href=&quot;http://harmful.cat-v.org/software/OO_programming/why_oo_sucks&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Why OO Sucks by Joe Armstrong&lt;/a&gt;。&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。&lt;/p&gt;&lt;p&gt;在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="一只代码狗的自我修养" scheme="http://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-      <category term="面向对象" scheme="http://maples7.com/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"/>
-    
-      <category term="Erlang" scheme="http://maples7.com/tags/Erlang/"/>
     
   </entry>
   
