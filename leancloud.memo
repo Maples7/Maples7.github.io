@@ -42,4 +42,5 @@
 {"title":"东北的冬","url":"/2019/02/05/winter-of-north-east/"},
 {"title":"心知天气数据 API 产品的高并发实践","url":"/2019/05/09/high-concurrent-validity-4-api-in-seniverse/"},
 {"title":"把 Airflow 搬进 Kubernetes","url":"/2019/12/03/develop-etl-via-airflow-on-k8s/"},
+{"title":"Elixir 代码性能优化指北","url":"/2019/12/05/elixir-code-performance-optimization/"},
 ]
