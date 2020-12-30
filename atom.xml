@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://maples7.com/"/>
-  <updated>2020-05-25T02:28:44.816Z</updated>
+  <updated>2020-12-30T19:00:48.987Z</updated>
   <id>http://maples7.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020 年书单</title>
+    <link href="http://maples7.com/2020/12/31/2020-booklist/"/>
+    <id>http://maples7.com/2020/12/31/2020-booklist/</id>
+    <published>2020-12-30T18:06:45.000Z</published>
+    <updated>2020-12-30T19:00:48.987Z</updated>
+    
+    <content type="html"><![CDATA[<p>2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。</p><p>其实这一篇本质上有标题党的嫌疑，因为今年看的书实在太少太少，当然后面我也会解释今年看书少的<del>借口</del>原因。不过，看过<a href="http://maples7.com/tags/书单/">我前几年「书单」</a>的你肯定也知道了，我的书单系列只是用「书单」作为切入口，以此为契机来定期来聊聊我对这个世界的看法而已。虽然我也有要时常更新我的博客的想法，但事实就是总有一些手头上新奇的、或者我认为更重要的事情占据着我的时间，以致于目前这里几乎成了一个年更博客，这确实很不应该。但好在我依然还有年更「书单」这个保留节目。</p><p>Anyway，这依然首先还是一个「书单」，所以我们还是会从正题开始。</p><a id="more"></a><ol><li><p><a href="https://book.douban.com/subject/34838232/" target="_blank" rel="noopener">新婚之夜</a>：★★★★☆</p><p>不得不说，我很喜欢这几个中短篇故事，我觉得这才是真正给现代人看的文学作品。作者把细腻的情绪和世界的真实都潜藏在故事情节里，「给残酷的内核外面涂一层奶油」，以至于我会觉得在北京这样的城市路上遇到的每一个人背后都可能有一段类似书里描绘的故事。推理和悬疑的要素也大大增强了故事的可读性。</p><p>第二篇《模特》也看过 2019 年扩展的中篇电子版，故事叙述方式和人物刻画都比出版的这一版明显更好。</p><p>很喜欢作者讲故事的风格，如果长期坚持写作，应该很有潜力能写出更优秀的作品。</p></li></ol><ol start="2"><li><p><a href="https://book.douban.com/subject/5354957/" target="_blank" rel="noopener">扶桑</a>：★★★★</p><p>整个故事的结构和完整性都还不错，也比较有新意。从叙事人的视角来讲这个故事我觉得是个加分项，给了这个故事更多的现实寓意和文化内涵。整个读下来，前面部分会感觉略微零碎而不够畅快，但后面慢慢把拼图拼起来之后会觉得这确实还是一个好故事。</p></li><li><p><a href="https://docs.python.org/3/tutorial/index.html" target="_blank" rel="noopener">The Python Tutorial</a>：★★★★☆</p><p>自从大学期间看完《Dive into Django》和《Learn Python the Hard Way》之后，中间间隔了很长一段时间没有再使用 Python，几乎已经忘得差不多了。尽管在近两三年的工作中又有几个 Python 数据处理相关的项目，但总感觉自己在 Python 方面的理解还不够系统，所以打算再系统的学习学习，同时也看看一些新特性。任何编程语言的官方文档总不会太差，如此大众的 Python 自然也不让人失望，任何想入门的人都可以且应当从这篇文档开始作为学习的内容之一。</p><p>BTW，大体上我不赞同 learn something the hard way 的学习方式。</p></li><li><p><a href="https://book.douban.com/subject/26752026/" target="_blank" rel="noopener">聪明的投资者</a>：★★★★</p><p>堪称价投宝典，虽然很多具体的事例都已经过时，但投资的大道却永远不过时（主要是第 1、8、20 章），同时这个版本的点评章节也很好的弥补了这方面的不足。投资的确是个体认知能力和认知水平的直接变现行为。</p></li><li><p><a href="https://book.douban.com/subject/27614523/" target="_blank" rel="noopener">刷新：重新发现商业与未来</a>：★★★☆</p><p>入职微软之前看完了这本书，写得很朴实。从个人经历来说，并没有过分强调自己的努力和付出，也准确表达了顺应趋势在对的时间出现对的地方的重要，同时家庭经历的曲折带给了他更多对于同理心的思考；从公司的层面来说，坦诚微软在当时需要一次文化变革，重新刷新自己，目前看来确实正在扭转颓势；最后谈了谈对未来技术的认识，跨国企业应当是有全球视野和使命感的。</p></li><li><p><a href="https://book.douban.com/subject/25910559/" target="_blank" rel="noopener">剑指Offer：名企面试官精讲典型编程题</a>：★★★★</p><p>根据我面试别人和被面试的经验来看，这本书包含了一个合格程序员应该掌握的容易被总结和教材化的基础知识和技巧，针对很多公司已经套路化的面试流程而言的确是有效的。但它依然只是《骗分导论》一般试图突击走捷径的存在，不能作为修炼编程内功和计算机科学素养的考纲。仅对于找工作来说，是必要不充分条件。</p></li><li><p><a href="https://msl.overdrivechina.cn/media/5690793" target="_blank" rel="noopener">Learn .Net Core: .NET Core Tutorial</a>：★★★</p><p>一本非常短小的小册子，适合有其他语言编程经验的人熟悉 .NET 世界的 basics and fundamentals，以图一两天快速建立一个整全观。基本没有什么更深入的细节。</p></li></ol><p>没了。</p><p>如前面提到的，今年看书时间不多的<del>借口</del>原因大概来自于这样几个方面：</p><ol><li><p>换工作和城市，入职微软中国（苏州）。</p><p>从更新简历开始，到投递面试、确认 Offer、从北京离职，最后跨城市搬家、入职、新员工培训、自学一些相关的技术等等，这其中每一个步骤都需要耗费大量的时间和精力。而且微软是我目前为止遇到的入职流程最漫长的公司，毕竟其中的背景调查就耗费了三周到一个月的时间，处处显示着跨国大公司的规范与严谨。如果以后有机会，我也可以在博客或其他社交平台上分享更多在微软的经历。</p><p>舍弃旧的环境和已经熟知的工作流程、技术规格和项目，从零开始投入到一个全新的体系里，有太多的新东西需要学习，这不仅仅包括作为开发者所必须掌握的技术相关的知识（在微软 C# / .NET 对于大多数开发者都是必须的，而在此之前我接触得并不多），还有一些事关企业文化、规范、工作流程和团队协作上的软技能的准备。而在像微软这样一个历史悠久的跨国企业里，项目和用户规模都十分庞大（意味着对项目稳定性要求格外高而无法快速变化），项目历史也十分悠久（十几二十年的代码，legacy code 不少），对于这些已经世界级的产品，想要短时间内掌握清楚基本不现实。我的 manager 就曾告诉我，新入职员工基本都需要经过一年到一年半的时间才能对项目上手，这本身就是一个不小的挑战。</p><p>所以更多的时间还是放在了跟工作内容相关的知识的学习上，这不是几本书就可以简单概括的。</p></li><li><p>东航「周末随心飞」。</p><p>一场突如其来的传染性肺炎疫情让所有人都猝不及防，航空公司们为了自救而推出了「随心飞」这样的产品，首先从东航的「周末随心飞」开始。在今年这样的情形下，对于航空公司来说这确实是一招不错的棋，而对于大部分产品购买者来说其实也并不亏。所以借着这样的契机，同时得益于微软讲究 work-life balance 的工作节奏和假期福利，今年我也着实好好<del>在国内到处蹦跶了一下</del>领略了一把祖国的大好河山。最值得一提的当属十一假期前后去了西北一线，包括银川、兰州、青海大环线的南半边、可可西里，确实看到了极其壮阔瑰丽的大漠景观。除此之外，还去了潮汕、长沙（两次）、西安、三亚、济南，也是一年难得的经历。</p><p>为了不辜负路上的美景，今年还购入了无人机和微单来作为拍摄器材。我想，要彻底消化完我这个重燃的新兴趣点也是需要不少时间的投入的。</p><p>所谓「要么读书，要么旅行，身体和灵魂必须有一个在路上」，至少今年身体还在路上。</p></li><li><p>外部环境、事件的影响，包括新冠疫情。</p><p>说 2020 年是不可能脱离新冠疫情这个大的背景调查来谈的，它已经成为了 2020 年的标签和底色。疫情在今年或多或少的影响了地球上的每一个人，外部环境的剧变需要每一个个体有更加坚定的自我才能在自己的道路上继续走下去。我以前就写过，环境对人的影响往往被低估，相信今年的情况提升了很多人对于环境影响的认知。它或许不能完全左右你的方向，但绝对可以让你的每个动作都充分扭曲变形。这历历在目的一年，相信身处其中的每个人都深有体会，无须多言。</p></li></ol><p>其实从个人角度来说，今年对于我自己算是不错的一年，因为它足够丰富，这主要来源于在微软工作我会有更多时间投入到各种各样不同的我想要投入的事情上去，这包括对新技术的学习、投资领域的深入、其他兴趣爱好的培养等等。往年的「书单」或多或少我都会夹杂着一些「湿货」，以阐述我的世界观的某个部分，但今年这篇我想就保留这样简单平实的记述风格。已经是太不容易的一年了，就给我自己和看到这篇的你留个气口吧。</p><p>另外感谢 12 月有 31 号，让我还有充分的时间来完成这篇「书单」。最后，强烈推荐看到这里的你静下来听一听声动活泼旗下的这期播客：<a href="https://mp.weixin.qq.com/s/IBp5eQ8kggFyi6Egq4VnIQ" target="_blank" rel="noopener">《请收下这枚记录2020的声音时光胶囊》</a>。</p><p>「历史就算会反复，但一定会向前走的」，2020 年是需要很多感性力量的一年，现在我们又来到了一个新的时间节点，只愿世界和平。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。&lt;/p&gt;&lt;p&gt;其实这一篇本质上有标题党的嫌疑，因为今年看的书实在太少太少，当然后面我也会解释今年看书少的&lt;del&gt;借口&lt;/del&gt;原因。不过，看过&lt;a href=&quot;http://maples7.com/tags/书单/&quot;&gt;我前几年「书单」&lt;/a&gt;的你肯定也知道了，我的书单系列只是用「书单」作为切入口，以此为契机来定期来聊聊我对这个世界的看法而已。虽然我也有要时常更新我的博客的想法，但事实就是总有一些手头上新奇的、或者我认为更重要的事情占据着我的时间，以致于目前这里几乎成了一个年更博客，这确实很不应该。但好在我依然还有年更「书单」这个保留节目。&lt;/p&gt;&lt;p&gt;Anyway，这依然首先还是一个「书单」，所以我们还是会从正题开始。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="浮生散记" scheme="http://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+      <category term="书单" scheme="http://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
+    
+  </entry>
   
   <entry>
     <title>「必然」有多必然？</title>
@@ -87,9 +110,9 @@
       <category term="一只代码狗的自我修养" scheme="http://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
     
     
-      <category term="Erlang" scheme="http://maples7.com/tags/Erlang/"/>
-    
       <category term="性能调优" scheme="http://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+      <category term="Erlang" scheme="http://maples7.com/tags/Erlang/"/>
     
       <category term="Elixir" scheme="http://maples7.com/tags/Elixir/"/>
     
@@ -506,31 +529,6 @@
       <category term="Sony DSC-RX100" scheme="http://maples7.com/tags/Sony-DSC-RX100/"/>
     
       <category term="山东大学" scheme="http://maples7.com/tags/%E5%B1%B1%E4%B8%9C%E5%A4%A7%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Koa2 源码赏析</title>
-    <link href="http://maples7.com/2017/04/09/koa2-src/"/>
-    <id>http://maples7.com/2017/04/09/koa2-src/</id>
-    <published>2017-04-09T13:26:43.000Z</published>
-    <updated>2018-12-12T21:36:00.297Z</updated>
-    
-    <content type="html"><![CDATA[<p>随着 Node 新版本开始支持 async/await 异步控制写法，Koa 也相继发布了它的 2.0 版本。用 async/await 写法的 Koa 来开发项目，Node 开发者再也没有任何理由不「拥抱变化」——从 Express 转到 Koa 上来。实际上，对于普通 Node 开发者——Express 框架的用户——而言，从 Express 转到 Koa 没有任何技术壁垒，当然前提是你至少得知道 ES2017 中 async/await 是个什么东西。</p><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="https://i.loli.net/2018/08/06/5b6731c4b534a.png" class="full-image" alt="图片显示错误" title="Koa——next generation web framework for node.js"><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有了 Express 的积累，以 <a href="https://github.com/tj" target="_blank" rel="noopener">TJ</a> 为首的 Express 开发团队对于 Koa 的设计也更加的得心应手、游刃有余。从源代码来看，Koa 看起来甚至比 Express 更加简洁和灵活，然而在功能上却丝毫没有让步，甚至更胜一筹。一方面，这得益于 JavaScript 越来越方便好用的各种「语法糖」；另一方面，也在于 Koa 本身简洁强大的设计：它不再绑定任何特定的中间件，也去掉了其他任何多余的设计（连路由系统都抽象成了第三方中间件），而只是简单的提供了一个优雅管理各种中间件的约束系统，用户的所有挂载都是中间件。</p><p>TJ 大神的代码一向简洁强大，Koa 的源码也是如此。如果你<a href="https://github.com/koajs/koa" target="_blank" rel="noopener">去 GitHub 上查看 Koa 的源码</a>，你同样会被其简洁所震撼，核心代码不过 4 个文件，平均每个文件代码行数也就四百来行，看似简简单单，却天才般的把 Express 线性的中间件控制流转变为「洋葱体」结构，从而解锁了更多的姿势和玩法。本文就直接深入 Koa 的源码（v2.2.0），来欣赏 Koa 的曼妙身姿。</p><h2 id="代码大体结构"><a href="#代码大体结构" class="headerlink" title="代码大体结构"></a>代码大体结构</h2><p>lib 目录下总共就四个文件：<code>application.js</code>、<code>context.js</code>、<code>request.js</code> 和 <code>response.js</code>。入口文件是 <code>application.js</code>，导出的是一个继承了 Node 内建模块 Events 的 Class，构造函数中进行了必要的参数初始化，并且把 <code>context</code>、<code>request</code> 和 <code>response</code> 属性指向了原型链指向其他三个文件导出对象的实例。</p><p>然后是类方法，主要的几个 public 的方法如下：</p><ul><li><code>listen</code>：一个简单的对 <code>http.createServer(this.callback()).listen(...)</code> 的封装。</li><li><code>callback</code>：在 <code>listen</code> 中有调用，返回一个用于 <code>http.createServer</code> 的回调函数 <code>handleRequest</code>，在这个函数中创建了主角 <code>ctx</code>，并做了一些原型链继承和 aliases。<strong>更重要的是</strong>，<a href="https://github.com/koajs/compose/blob/master/index.js" target="_blank" rel="noopener">调用的 <code>koa-compose</code> 返回了一个 <code>fn</code> 函数，负责了整个中间件「洋葱体」流程的实现和控制</a>。在所有中间件执行完之后，做了一些返回之前的琐碎诸如设置必要的返回头等的工作。</li><li><code>use</code>：把中间件参数放入 <code>this.middleware</code> 数组，并返回 <code>this</code> 以便链式调用。</li></ul><p>结合 Koa 文档和 <code>application.js</code>，基本就可以对整个框架的处理流程有个整体的把握了。其中最主要的部分还是 <code>callback</code> 函数中的内容，看完之后对整个基于 Node HTTP 模块封装的中间件处理的流转过程都清楚了。</p><h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>这里是对 <code>this.context</code> 的原型对象的实现。</p><p>没有太多值得一提的东西，基本是对上下文对象 <code>ctx</code> 提供几个必需的原型接口以及一个缺省的错误处理函数 <code>onerror</code>。有意思的是，利用 <code>delegates</code> 包，把对 app 的一些属性的访问直接对应的代理到 <code>response</code> 和 <code>request</code> 上，这也就是<a href="http://koajs.com/#request-aliases" target="_blank" rel="noopener">文档上所说的 <code>Request aliases</code> 和 <code>Response aliases</code> 的具体原因</a>。</p><h2 id="Request-amp-Response"><a href="#Request-amp-Response" class="headerlink" title="Request &amp; Response"></a>Request &amp; Response</h2><p>这俩文件是对 <code>this.request</code> 和 <code>this.response</code> 的原型对象的实现。</p><p><code>this.request</code> 和 <code>this.response</code> 中都有大量属性的 getter 和 setter 方法，这些可用的属性在 Koa 文档中都已经列出，代码在这里对它们的读写操作进行了实现。这些属性基本是对 Node HTTP 包中 req 和 res 属性的封装。</p><h2 id="「洋葱体」带来了什么"><a href="#「洋葱体」带来了什么" class="headerlink" title="「洋葱体」带来了什么"></a>「洋葱体」带来了什么</h2><p>你固然还是可以像在 Express 中一样把 <code>next();</code> 都放在每个中间件的末尾来线性的传递控制权，但「回形针」式的控制流带来了更多的可能。一个最典型的的例子就是 <code>response-time</code> 中间件的实现。</p><p>在 GitHub 上用 <code>response-time</code> 关键字搜索，前两个 Repo 就分别是 Express 和 Koa 中对这个中间件的实现。</p><p>Express 中的实现其实是 hack 了被 Express 用到的 Node.js 内部 HTTP 模块的 <code>res.writeHead</code> 方法（实际实现细节在 <code>response-time</code> 中间件调用的 <code>on-headers</code> 包中），使得在这一层注入了一小段代码用于在数据返回前计算时间差并写入 Response Headers。这样虽然可以实现，但显然不够好。它 hack 了框架底层的一个内部方法，虽然也巧妙，但代码本身并不是在给它天生就安排好的合适的地方来实现的，可以视为晦涩的「奇技淫巧」，而且与 Express 的内部实现强耦合，指不定哪天 Express 改了 <code>res.writeHead</code> 调用时机，这个中间件的返回值可能就有所不同了（当然按实际情况来说 Express 此处应该也不会改了，而且 Express 的 <code>response-time</code> 最初也是 TJ 写的）。</p><p>Koa 的 <code>response-time</code> 实现自不必多说，官方文档上就有，来欣赏它的简洁优雅：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.use(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span>(<span class="params">ctx, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> start = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">  <span class="keyword">await</span> next();</span><br><span class="line">  <span class="keyword">const</span> ms = <span class="keyword">new</span> <span class="built_in">Date</span>() - start;</span><br><span class="line">  ctx.set(<span class="string">'X-Response-Time'</span>, <span class="string">`<span class="subst">$&#123;ms&#125;</span>ms`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><p>总结来说，Koa 的「洋葱体」结构使得<strong>每个中间件能够在同一次请求的前后对称的部分提供相同的上下文环境</strong>，这样就让实现像 <code>response-time</code> 这样的中间件变得相当简单。</p><h2 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h2><ul><li><a href="https://zhuanlan.zhihu.com/p/26063036" target="_blank" rel="noopener">编写可维护代码之“中间件模式”</a></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;随着 Node 新版本开始支持 async/await 异步控制写法，Koa 也相继发布了它的 2.0 版本。用 async/await 写法的 Koa 来开发项目，Node 开发者再也没有任何理由不「拥抱变化」——从 Express 转到 Koa 上来。实际上，对于普通 Node 开发者——Express 框架的用户——而言，从 Express 转到 Koa 没有任何技术壁垒，当然前提是你至少得知道 ES2017 中 async/await 是个什么东西。&lt;/p&gt;&lt;span itemprop=&quot;image&quot; itemscope itemtype=&quot;http://schema.org/ImageObject&quot;&gt;&lt;img itemprop=&quot;url image&quot; src=&quot;https://i.loli.net/2018/08/06/5b6731c4b534a.png&quot; class=&quot;full-image&quot; alt=&quot;图片显示错误&quot; title=&quot;Koa——next generation web framework for node.js&quot;&gt;&lt;meta itemprop=&quot;width&quot; content=&quot;auto&quot;&gt;&lt;meta itemprop=&quot;height&quot; content=&quot;auto&quot;&gt;&lt;/span&gt;
-    
-    </summary>
-    
-    
-      <category term="一只代码狗的自我修养" scheme="http://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-      <category term="Node.js" scheme="http://maples7.com/tags/Node-js/"/>
-    
-      <category term="Koa" scheme="http://maples7.com/tags/Koa/"/>
     
   </entry>
   
