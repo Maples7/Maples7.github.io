@@ -1,8 +1,584 @@
-<!DOCTYPE html><html class="theme-next gemini" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#222"><link rel="manifest" href="/site.webmanifest"><meta name="msapplication-config" content="/browserconfig.xml"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Gemini",version:"7.1.2",sidebar:{b2t:!0,scrollpercent:!0},back2top:!0,back2top_sidebar:!1,fancybox:!0,fastclick:!0,lazyload:!0,tabs:!0,motion:{enable:!1,async:!0,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><meta name="description" content="编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作《人月神话》《人月神话》是几乎每个程序员都或多或少了解过的一本书，著名的「没有银弹(No Silver Bullet)」的软件工程理论就被其作者Fred Brooks收录在这本书中。这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题"><meta name="keywords" content="编程,程序员,《人月神话》"><meta property="og:type" content="article"><meta property="og:title" content="编程的快感之「易于驾驭的介质」"><meta property="og:url" content="http://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/index.html"><meta property="og:site_name" content="Maples7's Blog"><meta property="og:description" content="编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作《人月神话》《人月神话》是几乎每个程序员都或多或少了解过的一本书，著名的「没有银弹(No Silver Bullet)」的软件工程理论就被其作者Fred Brooks收录在这本书中。这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2021-11-13T04:56:40.079Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="编程的快感之「易于驾驭的介质」"><meta name="twitter:description" content="编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作《人月神话》《人月神话》是几乎每个程序员都或多或少了解过的一本书，著名的「没有银弹(No Silver Bullet)」的软件工程理论就被其作者Fred Brooks收录在这本书中。这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题"><link rel="alternate" href="/atom.xml" title="Maples7's Blog" type="application/atom+xml"><link rel="canonical" href="http://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>编程的快感之「易于驾驭的介质」 | Maples7's Blog</title><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><style>html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}main{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}::selection{background:#262a30;color:#fff}body{position:relative;font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:2;color:#555;background:#eee}@media (max-width:991px){body{padding-right:0!important}}@media (min-width:1200px){body{font-size:16px}}h1,h2,h3,h4,h5,h6{margin:20px 0 15px;padding:0;font-weight:700;line-height:1.5;font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif}h1{font-size:22px}h1 code{font-size:1em}@media (max-width:767px){h1{font-size:18px}h1 code{font-size:1em}}h2{font-size:20px}h2 code{font-size:1em}@media (max-width:767px){h2{font-size:16px}h2 code{font-size:1em}}h3{font-size:18px}h3 code{font-size:1em}@media (max-width:767px){h3{font-size:14px}h3 code{font-size:1em}}h4{font-size:16px}h4 code{font-size:1em}@media (max-width:767px){h4{font-size:12px}h4 code{font-size:1em}}h5{font-size:14px}h5 code{font-size:1em}@media (max-width:767px){h5{font-size:10px}h5 code{font-size:1em}}h6{font-size:12px}h6 code{font-size:1em}@media (max-width:767px){h6{font-size:8px}h6 code{font-size:1em}}p{margin:0 0 20px 0}a,span.exturl{overflow-wrap:break-word;word-wrap:break-word;background-color:transparent;color:#555;text-decoration:none;outline:0;border-bottom:1px solid #999;cursor:pointer}a:hover,span.exturl:hover{color:#222;border-bottom-color:#222}video{max-width:100%;display:block;margin-left:auto;margin-right:auto}img{display:block;margin:auto;max-width:100%;height:auto}hr{margin:40px 0;height:3px;border:none;background-color:#ddd;background-image:repeating-linear-gradient(-45deg,#fff,#fff 4px,transparent 4px,transparent 8px)}blockquote{margin:0;padding:0 15px;color:#666;border-left:4px solid #ddd}blockquote cite::before{content:"-";padding:0 5px}dt{font-weight:700}dd{margin:0;padding:0}kbd{border:1px solid #ccc;border-radius:.2em;box-shadow:.1em .1em .2em rgba(0,0,0,.1);background-color:#f9f9f9;font-family:inherit;background-image:linear-gradient(top,#eee,#fff,#eee);padding:.1em .3em;white-space:nowrap}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-justify{text-align:justify}.text-nowrap{white-space:nowrap}.text-lowercase{text-transform:lowercase}.text-uppercase{text-transform:uppercase}.text-capitalize{text-transform:capitalize}.center-block{display:block;margin-left:auto;margin-right:auto}.clearfix:after,.clearfix:before{content:" ";display:table}.clearfix:after{clear:both}.pullquote{width:45%}.pullquote.left{float:left;margin-left:5px;margin-right:10px}.pullquote.right{float:right;margin-left:10px;margin-right:5px}.affix{position:fixed}.translation{margin-top:-20px;font-size:14px;color:#999}.scrollbar-measure{width:100px;height:100px;overflow:scroll;position:absolute;top:-9999px}.use-motion .motion-element{opacity:0}.table-container{margin:20px 0;overflow:auto;-webkit-overflow-scrolling:touch}.highlight .table-container{margin:0}table{width:100%;border-collapse:collapse;border-spacing:0;font-size:14px}table>tbody>tr:nth-of-type(odd){background-color:#f9f9f9}table>tbody>tr:hover{background-color:#f5f5f5}caption,td,th{padding:8px;text-align:left;vertical-align:middle;font-weight:400}td,th{border:1px solid #ddd;border-bottom:3px solid #ddd}th{padding-bottom:10px;font-weight:700}td{border-bottom-width:1px}@media (max-width:567px){.header-inner{margin-bottom:initial!important}.main-inner{margin-top:initial!important}.content-wrap{padding:initial!important}.posts-expand{padding-top:8px!important;margin:initial!important}.posts-expand .post-header{padding:0 18px}.posts-expand .post-meta{margin:3px 0 10px 0!important}.post-block{padding:8px 0!important;margin-top:initial!important}.post-body h1,.post-body h2,.post-body h3,.post-body h4,.post-body h5,.post-body h6{margin:10px 18px 8px}.post-body .note h1,.post-body .note h2,.post-body .note h3,.post-body .note h4,.post-body .note h5,.post-body .note h6,.post-body .tabs .tab-content .tab-pane h1,.post-body .tabs .tab-content .tab-pane h2,.post-body .tabs .tab-content .tab-pane h3,.post-body .tabs .tab-content .tab-pane h4,.post-body .tabs .tab-content .tab-pane h5,.post-body .tabs .tab-content .tab-pane h6{margin:0 5px}.post-body>p{margin:0 0 10px 0;padding:0 18px}.post-body>ul{margin-inline-end:1em}.post-body>blockquote{margin:0 18px}.post-body>span.exturl{margin-left:18px}.post-body>div.post-button a{margin-left:18px}.post-body .note>p,.post-body .tabs .tab-content .tab-pane>p{padding:0 5px}.post-body .video-container .fluid-vids{margin-bottom:10px!important}.post-body .note{padding:10px!important;margin-bottom:10px!important}.post-body .tabs .tab-content .tab-pane{padding:10px 10px 0 10px!important}.post-nav{padding-bottom:2px}}body,html{height:100%}.container{position:relative}.header-inner{margin:0 auto;padding:100px 0 70px;width:calc(100% - 20px)}@media (min-width:1200px){.container .header-inner{width:1160px}}@media (min-width:1600px){.container .header-inner{width:73%}}.main-inner{margin:0 auto;width:calc(100% - 20px)}@media (min-width:1200px){.container .main-inner{width:1160px}}@media (min-width:1600px){.container .main-inner{width:73%}}.footer{padding:20px 0}.footer-inner{box-sizing:border-box;margin:0 auto;width:calc(100% - 20px)}@media (min-width:1200px){.container .footer-inner{width:1160px}}@media (min-width:1600px){.container .footer-inner{width:73%}}.highlight,pre{overflow:auto;margin:20px 0;padding:0;font-size:14px;color:#4d4d4c;background:#f7f7f7;line-height:1.6}code,pre{font-family:consolas,Menlo,"PingFang SC","Microsoft YaHei",monospace}code{overflow-wrap:break-word;word-wrap:break-word;padding:2px 4px;color:#555;background:#eee;border-radius:3px;font-size:14px}pre{padding:10px}pre code{padding:0;color:#4d4d4c;background:0 0;text-shadow:none}.highlight{border-radius:1px}.highlight pre{border:none;margin:0;padding:10px 0}.highlight table{margin:0;width:auto;border:none}.highlight td{border:none;padding:0}.highlight figcaption{font-size:1em;color:#4d4d4c;line-height:1em;margin-bottom:1em;margin:0;padding:.5em;background:#eee;border-bottom:1px solid #e9e9e9}.highlight figcaption:after,.highlight figcaption:before{content:" ";display:table}.highlight figcaption:after{clear:both}.highlight figcaption a{float:right;color:#4d4d4c}.highlight figcaption a:hover{border-bottom-color:#4d4d4c}.highlight .gutter pre{padding-left:10px;padding-right:10px;color:#869194;text-align:right;background-color:#eff2f3}.highlight .code pre{width:100%;padding-left:10px;padding-right:10px;background-color:#f7f7f7}.highlight .line{height:20px}.gutter{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.gist table{width:auto}.gist table td{border:none}pre .deletion{background:#fdd}pre .addition{background:#dfd}pre .meta{color:#8959a8}pre .comment{color:#8e908c}pre .attribute,pre .css .class,pre .css .id,pre .css .pseudo,pre .html .doctype,pre .name,pre .regexp,pre .ruby .constant,pre .tag,pre .variable,pre .xml .doctype,pre .xml .pi,pre .xml .tag .title{color:#c82829}pre .built_in,pre .builtin-name,pre .command,pre .constant,pre .literal,pre .number,pre .params,pre .preprocessor{color:#f5871f}pre .css .rules .attribute,pre .formula,pre .header,pre .inheritance,pre .ruby .class .title,pre .ruby .symbol,pre .special,pre .string,pre .symbol,pre .value,pre .xml .cdata{color:#718c00}pre .css .hexcolor,pre .title{color:#3e999f}pre .coffeescript .title,pre .function,pre .javascript .title,pre .perl .sub,pre .python .decorator,pre .python .title,pre .ruby .function .title,pre .ruby .title .keyword{color:#4271ae}pre .javascript .function,pre .keyword{color:#8959a8}.posts-expand .post-body img.full-image{border:none}.blockquote-center,.page-home .post-type-quote blockquote,.page-post-detail .post-type-quote blockquote{position:relative;margin:40px 0;padding:0;border-left:none;text-align:center}.blockquote-center::after,.blockquote-center::before,.page-home .post-type-quote blockquote::after,.page-home .post-type-quote blockquote::before,.page-post-detail .post-type-quote blockquote::after,.page-post-detail .post-type-quote blockquote::before{position:absolute;content:' ';display:block;width:100%;height:24px;opacity:.2;background-repeat:no-repeat;background-position:0 -6px;background-size:22px 22px}.blockquote-center::before,.page-home .post-type-quote blockquote::before,.page-post-detail .post-type-quote blockquote::before{top:-20px;background-image:url("../images/quote-l.svg");border-top:1px solid #ccc}.blockquote-center::after,.page-home .post-type-quote blockquote::after,.page-post-detail .post-type-quote blockquote::after{bottom:-20px;background-image:url("../images/quote-r.svg");border-bottom:1px solid #ccc;background-position:100% 8px}.blockquote-center div,.blockquote-center p,.page-home .post-type-quote blockquote div,.page-home .post-type-quote blockquote p,.page-post-detail .post-type-quote blockquote div,.page-post-detail .post-type-quote blockquote p{text-align:center}.post .post-body .group-picture img{box-sizing:border-box;padding:0 3px;border:none}.post .group-picture-row{overflow:hidden;margin-top:6px}.post .group-picture-row:first-child{margin-top:0}.post .group-picture-column{float:left}.page-post-detail .post-body .group-picture-column{float:none;margin-top:10px;width:auto!important}.page-post-detail .post-body .group-picture-column img{margin:0 auto}.page-archive .group-picture-container{overflow:hidden}.page-archive .group-picture-row{float:left}.page-archive .group-picture-row:first-child{margin-top:6px}.page-archive .group-picture-column{max-width:150px;max-height:150px}.post-body .label{display:inline;padding:0 2px}.post-body .label.default{background-color:#f0f0f0}.post-body .label.primary{background-color:#efe6f7}.post-body .label.info{background-color:#e5f2f8}.post-body .label.success{background-color:#e7f4e9}.post-body .label.warning{background-color:#fcf6e1}.post-body .label.danger{background-color:#fae8eb}.post-body .note{position:relative;padding:15px;margin-bottom:20px;border:1px solid #eee;border-left-width:5px;border-radius:3px}.post-body .note h2,.post-body .note h3,.post-body .note h4,.post-body .note h5,.post-body .note h6{margin-top:0;margin-bottom:0;border-bottom:initial;padding-top:0!important}.post-body .note blockquote:first-child,.post-body .note ol:first-child,.post-body .note p:first-child,.post-body .note pre:first-child,.post-body .note table:first-child,.post-body .note ul:first-child{margin-top:0}.post-body .note blockquote:last-child,.post-body .note ol:last-child,.post-body .note p:last-child,.post-body .note pre:last-child,.post-body .note table:last-child,.post-body .note ul:last-child{margin-bottom:0}.post-body .note.default{border-left-color:#777}.post-body .note.default h2,.post-body .note.default h3,.post-body .note.default h4,.post-body .note.default h5,.post-body .note.default h6{color:#777}.post-body .note.primary{border-left-color:#6f42c1}.post-body .note.primary h2,.post-body .note.primary h3,.post-body .note.primary h4,.post-body .note.primary h5,.post-body .note.primary h6{color:#6f42c1}.post-body .note.info{border-left-color:#428bca}.post-body .note.info h2,.post-body .note.info h3,.post-body .note.info h4,.post-body .note.info h5,.post-body .note.info h6{color:#428bca}.post-body .note.success{border-left-color:#5cb85c}.post-body .note.success h2,.post-body .note.success h3,.post-body .note.success h4,.post-body .note.success h5,.post-body .note.success h6{color:#5cb85c}.post-body .note.warning{border-left-color:#f0ad4e}.post-body .note.warning h2,.post-body .note.warning h3,.post-body .note.warning h4,.post-body .note.warning h5,.post-body .note.warning h6{color:#f0ad4e}.post-body .note.danger{border-left-color:#d9534f}.post-body .note.danger h2,.post-body .note.danger h3,.post-body .note.danger h4,.post-body .note.danger h5,.post-body .note.danger h6{color:#d9534f}.post-body .tabs{position:relative;display:block;margin-bottom:20px;padding-top:10px}.post-body .tabs ul.nav-tabs{margin:0;padding:0;display:flex;flex-wrap:wrap;margin-bottom:-1px}@media (max-width:413px){.post-body .tabs ul.nav-tabs{display:block;margin-bottom:5px}}.post-body .tabs ul.nav-tabs li.tab{flex-grow:1;list-style-type:none;border-top:3px solid transparent;border-right:1px solid transparent;border-bottom:1px solid #ddd;border-left:1px solid transparent}@media (max-width:413px){.post-body .tabs ul.nav-tabs li.tab{border-top:1px solid transparent;border-right:1px solid transparent;border-bottom:1px solid transparent;border-left:3px solid transparent}}.post-body .tabs ul.nav-tabs li.tab a{text-align:center;outline:0;border-bottom:initial;display:block;line-height:1.8em;padding:.25em .75em;transition-duration:.2s;transition-timing-function:ease-out;transition-delay:0s}.post-body .tabs ul.nav-tabs li.tab a i{width:1.285714285714286em}.post-body .tabs ul.nav-tabs li.tab.active{border-top:3px solid #fc6423;border-right:1px solid #ddd;border-bottom:1px solid transparent;border-left:1px solid #ddd}@media (max-width:413px){.post-body .tabs ul.nav-tabs li.tab.active{border-top:1px solid #ddd;border-right:1px solid #ddd;border-bottom:1px solid #ddd;border-left:3px solid #fc6423}}.post-body .tabs ul.nav-tabs li.tab.active a{cursor:default;color:#555}.post-body .tabs .tab-content .tab-pane{border:1px solid #ddd;padding:20px 20px 0 20px}.post-body .tabs .tab-content .tab-pane:not(.active){display:none}.post-body .tabs .tab-content .tab-pane.active{display:block}.btn{display:inline-block;padding:0 20px;font-size:14px;color:#555;background:#fff;border:2px solid #555;text-decoration:none;border-radius:2px;transition-property:background-color;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s;line-height:2}.btn:hover{border-color:#222;color:#fff;background:#222}.btn+.btn{margin:0 0 8px 8px}.btn .fa-fw{width:1.285714285714286em;text-align:left}.btn-bar{display:block;width:22px;height:2px;background:#555;border-radius:1px}.btn-bar+.btn-bar{margin-top:4px}.pagination{margin:120px 0 40px;text-align:center;border-top:1px solid #eee}.page-number-basic,.pagination .next,.pagination .page-number,.pagination .prev,.pagination .space{display:inline-block;position:relative;top:-1px;margin:0 10px;padding:0 11px}@media (max-width:767px){.page-number-basic,.pagination .next,.pagination .page-number,.pagination .prev,.pagination .space{margin:0 5px}}.pagination .next,.pagination .page-number,.pagination .prev{border-bottom:0;border-top:1px solid #eee;transition-property:border-color;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s}.pagination .next:hover,.pagination .page-number:hover,.pagination .prev:hover{border-top-color:#222}.pagination .space{padding:0;margin:0}.pagination .prev{margin-left:0}.pagination .next{margin-right:0}.pagination .page-number.current{color:#fff;background:#ccc;border-top-color:#ccc}@media (max-width:767px){.pagination{border-top:none}.pagination .next,.pagination .page-number,.pagination .prev{margin-bottom:10px;border-top:0;border-bottom:1px solid #eee;padding:0 10px}.pagination .next:hover,.pagination .page-number:hover,.pagination .prev:hover{border-bottom-color:#222}}.comments{margin:60px 20px 0}.back-to-top{box-sizing:border-box;position:fixed;bottom:-100px;right:30px;z-index:1050;padding:0 6px;width:24px;background:#222;font-size:12px;opacity:.6;color:#fff;cursor:pointer;text-align:center;transition-property:bottom;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s}.back-to-top.back-to-top-on{bottom:30px}@media (max-width:991px){.back-to-top{opacity:.8;right:20px}}.header{background:0 0}.header-inner{position:relative}.headband{height:3px;background:#222}.site-meta{margin:0;text-align:center}@media (max-width:767px){.site-meta{text-align:center}}.brand{position:relative;display:inline-block;padding:0 40px;color:#fff;background:#222;border-bottom:none}.brand:hover{color:#fff}.logo{display:inline-block;margin-right:5px;line-height:36px;vertical-align:top}.site-title{display:inline-block;vertical-align:top;line-height:36px;font-size:20px;font-weight:400;font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif}.site-subtitle{margin-top:10px;font-size:13px;color:#ddd}.use-motion .brand{opacity:0}.use-motion .custom-logo-image,.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:0;position:relative;top:-10px}.site-nav-toggle{display:none;position:absolute;top:10px;left:10px}@media (max-width:767px){.site-nav-toggle{display:block}}.site-nav-toggle button{margin-top:2px;padding:9px 10px;background:0 0;border:none}@media (max-width:767px){.site-nav{display:none;margin:0 -10px;padding:0 10px;clear:both;border-top:1px solid #ddd}}@media (min-width:768px) and (max-width:991px){.site-nav{display:block!important}}@media (min-width:992px){.site-nav{display:block!important}}.menu{margin-top:20px;padding-left:0;text-align:center}.menu .menu-item{display:inline-block;margin:0 10px;list-style:none}@media (max-width:767px){.menu .menu-item{margin-top:10px}}.menu .menu-item a,.menu .menu-item span.exturl{display:block;font-size:13px;line-height:inherit;border-bottom:1px solid transparent;transition-property:border-color;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s}.menu .menu-item a:hover,.menu .menu-item span.exturl:hover{border-bottom-color:#222}.menu .menu-item .fa{margin-right:5px}.use-motion .menu-item{opacity:0}.github-corner :hover .octo-arm{animation:octocat-wave 560ms ease-in-out}.github-corner>svg{fill:#222;color:#fff;position:absolute;top:0;border:0;right:0}@media (max-width:991px){.github-corner>svg{fill:#fff;color:#222}.github-corner .github-corner:hover .octo-arm{animation:none}.github-corner .github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}@-moz-keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@-webkit-keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@-o-keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}.post-body{overflow-wrap:break-word;word-wrap:break-word;font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif}.post-body span.exturl .fa{font-size:14px;margin-left:4px}.post-body .fancybox img{display:block!important;margin:0 auto;cursor:pointer;cursor:zoom-in}.post-body .figure .caption,.post-body .image-caption{margin:-20px auto 15px;text-align:center;font-size:14px;color:#999;font-weight:700;line-height:1}.post-sticky-flag{display:inline-block;font-size:16px;transform:rotate(30deg)}.use-motion .comments,.use-motion .pagination,.use-motion .post-block{opacity:0}.use-motion .post-header{opacity:0}.use-motion .post-body{opacity:0}.use-motion .collection-title{opacity:0}.posts-expand{padding-top:40px}@media (max-width:767px){.posts-expand{margin:0 20px}.post-body pre .gutter pre{padding-right:10px}.post-body .highlight{margin-left:0;margin-right:0;padding:0}.post-body .highlight .gutter pre{padding-right:10px}}@media (min-width:992px){.posts-expand .post-body{text-align:justify}}@media (max-width:991px){.posts-expand .post-body{text-align:justify}}.posts-expand .post-body h2,.posts-expand .post-body h3,.posts-expand .post-body h4,.posts-expand .post-body h5,.posts-expand .post-body h6{padding-top:10px}.posts-expand .post-body h2 .header-anchor,.posts-expand .post-body h3 .header-anchor,.posts-expand .post-body h4 .header-anchor,.posts-expand .post-body h5 .header-anchor,.posts-expand .post-body h6 .header-anchor{float:right;margin-left:10px;color:#ccc;border-bottom-style:none;visibility:hidden}.posts-expand .post-body h2 .header-anchor:hover,.posts-expand .post-body h3 .header-anchor:hover,.posts-expand .post-body h4 .header-anchor:hover,.posts-expand .post-body h5 .header-anchor:hover,.posts-expand .post-body h6 .header-anchor:hover{color:inherit}.posts-expand .post-body h2:hover .header-anchor,.posts-expand .post-body h3:hover .header-anchor,.posts-expand .post-body h4:hover .header-anchor,.posts-expand .post-body h5:hover .header-anchor,.posts-expand .post-body h6:hover .header-anchor{visibility:visible}.posts-expand .post-body img{box-sizing:border-box;margin:0 auto 25px;padding:3px;border:1px solid #ddd}@media (max-width:767px){.posts-collapse{margin:0 20px}.posts-collapse .post-meta,.posts-collapse .post-title{display:block;width:auto;text-align:left}}.posts-collapse{position:relative;z-index:1010;margin-left:55px}.posts-collapse::after{content:" ";position:absolute;top:20px;left:0;margin-left:-2px;width:4px;height:100%;background:#f5f5f5;z-index:-1}@media (max-width:767px){.posts-collapse{margin:0 20px}}.posts-collapse .collection-title{position:relative;margin:60px 0}.posts-collapse .collection-title h1,.posts-collapse .collection-title h2{margin-left:20px}.posts-collapse .collection-title small{color:#bbb;margin-left:5px}.posts-collapse .collection-title::before{content:" ";position:absolute;left:0;top:50%;margin-left:-4px;margin-top:-4px;width:8px;height:8px;background:#bbb;border-radius:50%}.posts-collapse .post{margin:30px 0}.posts-collapse .post-header{position:relative;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s;transition-property:border;border-bottom:1px dashed #ccc}.posts-collapse .post-header::before{content:" ";position:absolute;left:0;top:12px;width:6px;height:6px;margin-left:-4px;background:#bbb;border-radius:50%;border:1px solid #fff;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s;transition-property:background}.posts-collapse .post-header:hover{border-bottom-color:#666}.posts-collapse .post-header:hover::before{background:#222}.posts-collapse .post-meta{position:absolute;font-size:12px;left:20px;top:5px}.posts-collapse .post-comments-count{display:none}.posts-collapse .post-title{margin-left:60px;font-size:16px;font-weight:400;line-height:inherit}.posts-collapse .post-title::after{margin-left:3px;opacity:.6}.posts-collapse .post-title a,.posts-collapse .post-title span.exturl{color:#666;border-bottom:none}.page-home .post-type-quote .post-header,.page-home .post-type-quote .post-tags,.page-post-detail .post-type-quote .post-header,.page-post-detail .post-type-quote .post-tags{display:none}.posts-expand .post-title{overflow-wrap:break-word;word-wrap:break-word;text-align:center;font-weight:400}.posts-expand .post-title-link{display:inline-block;position:relative;color:#555;border-bottom:none;line-height:1.2;vertical-align:top}.posts-expand .post-title-link::before{content:"";position:absolute;width:100%;height:2px;bottom:0;left:0;background-color:#000;visibility:hidden;transform:scaleX(0);transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s}.posts-expand .post-title-link:hover::before{visibility:visible;transform:scaleX(1)}.posts-expand .post-title-link .fa{font-size:20px;margin-left:5px}.posts-expand .post-meta{margin:3px 0 60px 0;color:#999;font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif;font-size:12px;text-align:center}.posts-expand .post-meta .post-category-list{display:inline-block;margin:0;padding:3px}.posts-expand .post-meta .post-category-list-link{color:#999}.posts-expand .post-meta .post-description{font-size:14px;margin-top:2px}.posts-expand .post-meta time{border-bottom:1px dashed #999;cursor:help}.post-meta-divider{margin:0 .5em}.post-meta-item-icon{margin-right:3px}@media (min-width:768px) and (max-width:991px){.post-meta-item-icon{display:inline-block}}@media (max-width:767px){.post-meta-item-icon{display:inline-block}}@media (min-width:768px) and (max-width:991px){.post-meta-item-text{display:none}}@media (max-width:767px){.post-meta-item-text{display:none}}.post-button{margin-top:40px}.posts-expand .post-tags{margin-top:40px;text-align:center}.posts-expand .post-tags a{display:inline-block;margin-right:10px;font-size:13px}.post-nav{display:table;margin-top:15px;width:100%;border-top:1px solid #eee}.post-nav-divider{display:table-cell;width:10%}.post-nav-item{display:table-cell;padding:10px 0 0 0;width:45%;vertical-align:top}.post-nav-item a{position:relative;display:block;line-height:25px;font-size:14px;color:#555;border-bottom:none}.post-nav-item a:hover{color:#222;border-bottom:none}.post-nav-item a:active{top:2px}.post-nav-item .fa{font-size:12px;margin-right:5px}.post-nav-next a{padding-left:5px}.post-nav-prev{text-align:right}.post-nav-prev a{padding-right:5px}.post-nav-prev .fa{margin-left:5px}.posts-expand .post-eof{margin:80px auto 60px;width:8%;height:1px;background:#ccc;text-align:center}.post:last-child .post-eof{display:none}.post-gallery{display:table;table-layout:fixed;width:100%;border-collapse:separate}.post-gallery-row{display:table-row}.post-gallery .post-gallery-img{display:table-cell;text-align:center;vertical-align:middle;border:none}.post-gallery .post-gallery-img img{max-width:100%;max-height:100%;border:none}.fancybox-close,.fancybox-close:hover{border:none}#reward-container{padding:10px 0;margin:20px auto;width:90%;text-align:center}#reward-button{cursor:pointer;border:0;outline:0;display:inline-block;vertical-align:text-top;margin:0;padding:0 15px;border-radius:5px;height:32px;line-height:32px;font-size:16px;color:#fff;background:#f44336;letter-spacing:normal;text-transform:none;text-indent:0;text-shadow:none}#reward-button span:hover{background:#f7877f}#qr{padding-top:20px}#qr a{border:0}#qr img{width:180px;max-width:100%;display:inline-block;margin:.8em 2em 0 2em}#qr p{text-align:center}.post-copyright{margin:2em 0 0;padding:.5em 1em;border-left:3px solid #ff1700;background-color:#f9f9f9;list-style:none}.post-copyright i.fa{font-size:15px}.rtl.post-body a,.rtl.post-body h1,.rtl.post-body h2,.rtl.post-body h3,.rtl.post-body h4,.rtl.post-body h5,.rtl.post-body h6,.rtl.post-body li,.rtl.post-body ol,.rtl.post-body p,.rtl.post-body ul{direction:rtl;font-family:UKIJ Ekran}.rtl.post-title{font-family:UKIJ Ekran}.reading-progress-bar{position:fixed;top:0;left:0;z-index:9999;display:block;width:0;height:2px;background:#37c6c0}.sidebar{position:fixed;right:0;top:0;bottom:0;width:0;z-index:1040;box-shadow:inset 0 2px 6px #000;background:#222}.sidebar a,.sidebar span.exturl{color:#999;border-bottom-color:#555}.sidebar a:hover,.sidebar span.exturl:hover{color:#eee;border-bottom-color:#eee}@media (max-width:991px){.sidebar{display:none}}.sidebar-inner{position:relative;padding:20px 10px;color:#999;text-align:center}.site-overview-wrap{overflow:hidden}.site-overview{overflow-y:auto;overflow-x:hidden}.cc-license{margin-top:10px;text-align:center}.cc-license .cc-opacity{opacity:.7;border-bottom:none}.cc-license .cc-opacity:hover{opacity:.9}.cc-license img{display:inline-block}.sidebar-toggle{position:fixed;right:30px;bottom:45px;width:14px;height:14px;padding:5px;background:#222;line-height:0;z-index:1050;cursor:pointer}@media (max-width:991px){.sidebar-toggle{opacity:.8;right:20px;display:none}}.sidebar-toggle-line{position:relative;display:inline-block;vertical-align:top;height:2px;width:100%;background:#fff;margin-top:3px}.sidebar-toggle-line:first-child{margin-top:0}.site-author-image{display:block;margin:0 auto;padding:2px;max-width:120px;height:auto;border:1px solid #eee;opacity:1}.site-author-image{border-radius:100%}.site-author-name{margin:0;text-align:center;color:#222;font-weight:600}.site-description{margin-top:0;text-align:center;font-size:13px;color:#999}.links-of-author{margin-top:20px}.links-of-author a,.links-of-author span.exturl{display:inline-block;vertical-align:middle;margin-right:10px;margin-bottom:10px;border-bottom-color:#555;font-size:13px}.links-of-author a:before,.links-of-author span.exturl:before{display:inline-block;vertical-align:middle;margin-right:3px;content:" ";width:4px;height:4px;border-radius:50%;background:#eb8160}.chat,.feed-link{margin-top:10px}.chat a,.feed-link a{display:inline-block;padding:0 15px;color:#fc6423;border:1px solid #fc6423!important;border-radius:4px}.chat a i,.feed-link a i{color:#fc6423;font-size:14px}.chat a:hover,.feed-link a:hover{color:#fff;background:#fc6423}.chat a:hover i,.feed-link a:hover i{color:#fff}.links-of-blogroll{margin-top:10px;font-size:13px}.links-of-blogroll-title{margin-top:0;font-size:14px;font-weight:600}.links-of-blogroll-list{margin:0;padding:0;list-style:none}.links-of-blogroll-item{padding:2px 10px}.links-of-blogroll-item a,.links-of-blogroll-item span.exturl{max-width:280px;box-sizing:border-box;display:inline-block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.sidebar-nav{margin:0 0 20px;padding-left:0}.sidebar-nav li{display:inline-block;cursor:pointer;border-bottom:1px solid transparent;font-size:14px;color:#555}.sidebar-nav li:hover{color:#fc6423}.page-post-detail .sidebar-nav-toc{padding:0 5px}.page-post-detail .sidebar-nav-overview{margin-left:10px}.sidebar-nav .sidebar-nav-active{color:#fc6423;border-bottom-color:#fc6423}.sidebar-nav .sidebar-nav-active:hover{color:#fc6423}.sidebar-panel{display:none}.sidebar-panel-active{display:block}.site-state{display:flex;justify-content:center;overflow:hidden;line-height:1.4;white-space:nowrap;text-align:center;margin-top:10px}.site-state-item{padding:0 15px;border-left:1px solid #eee}.site-state-item:first-child{border-left:none}.site-state-item a{border-bottom:none}.site-state-item-count{display:block;text-align:center;color:inherit;font-weight:600;font-size:16px}.site-state-item-name{font-size:13px;color:#999}.post-toc-empty{font-size:14px;color:#666}.post-toc-wrap{overflow:hidden}.post-toc{overflow:auto}.post-toc ol{margin:0;padding:0 2px 5px 10px;text-align:left;list-style:none;font-size:14px}.post-toc ol>ol{padding-left:0}.post-toc ol a{transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s;transition-property:all;color:#666;border-bottom-color:#ccc}.post-toc ol a:hover{color:#000;border-bottom-color:#000}.post-toc .nav-item{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.8}.post-toc .nav .nav-child{display:none}.post-toc .nav .active>.nav-child{display:block}.post-toc .nav .active-current>.nav-child{display:block}.post-toc .nav .active-current>.nav-child>.nav-item{display:block}.post-toc .nav .active>a{color:#fc6423;border-bottom-color:#fc6423}.post-toc .nav .active-current>a{color:#fc6423}.post-toc .nav .active-current>a:hover{color:#fc6423}.footer{font-size:14px;color:#999}.footer img{border:none}.footer-inner{text-align:center}#animate{animation:iconAnimate 1.33s ease-in-out infinite}.with-love{display:inline-block;margin:0 5px;color:#dc143c}.powered-by,.theme-info{display:inline-block}@-moz-keyframes iconAnimate{0%,100%{transform:scale(1)}10%,30%{transform:scale(.9)}20%,40%,60%,80%{transform:scale(1.1)}50%,70%{transform:scale(1.1)}}@-webkit-keyframes iconAnimate{0%,100%{transform:scale(1)}10%,30%{transform:scale(.9)}20%,40%,60%,80%{transform:scale(1.1)}50%,70%{transform:scale(1.1)}}@-o-keyframes iconAnimate{0%,100%{transform:scale(1)}10%,30%{transform:scale(.9)}20%,40%,60%,80%{transform:scale(1.1)}50%,70%{transform:scale(1.1)}}@keyframes iconAnimate{0%,100%{transform:scale(1)}10%,30%{transform:scale(.9)}20%,40%,60%,80%{transform:scale(1.1)}50%,70%{transform:scale(1.1)}}.local-search-pop-overlay{position:fixed;width:100%;height:100%;top:0;left:0;z-index:2080;background-color:rgba(0,0,0,.3)}.local-search-popup{display:none;position:fixed;top:10%;left:50%;margin-left:-350px;width:700px;height:80%;padding:0;background:#fff;color:#333;z-index:9999;border-radius:5px}@media (max-width:767px){.local-search-popup{padding:0;top:0;left:0;margin:0;width:100%;height:100%;border-radius:0}}.local-search-popup ul.search-result-list{padding:0;margin:0 5px}.local-search-popup p.search-result{border-bottom:1px dashed #ccc;padding:5px 0}.local-search-popup a.search-result-title{font-weight:700;font-size:16px}.local-search-popup .search-keyword{border-bottom:1px dashed red;font-weight:700;color:red}.local-search-popup .local-search-header{padding:5px;height:36px;background:#f5f5f5;border-top-left-radius:5px;border-top-right-radius:5px}.local-search-popup #local-search-result{overflow:auto;position:relative;padding:5px 25px;height:calc(100% - 55px)}.local-search-popup .local-search-input-wrapper{display:inline-block;width:calc(100% - 90px);height:36px;line-height:36px;padding:0 5px}.local-search-popup .local-search-input-wrapper input{padding:8px 0;height:20px;display:block;width:100%;outline:0;border:none;background:0 0;vertical-align:middle}.local-search-popup .popup-btn-close,.local-search-popup .search-icon{display:inline-block;font-size:18px;color:#999;height:36px;width:18px;padding-left:10px;padding-right:10px}.local-search-popup .search-icon{float:left}.local-search-popup .popup-btn-close{border-left:1px solid #eee;float:right;cursor:pointer}.local-search-popup #no-result{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#ccc}.popular-posts-header{margin-top:60px;margin-bottom:10px;font-size:24px;border-bottom:1px solid #eee;display:block}ul.popular-posts{padding:0}ul.popular-posts .popular-posts-item{margin-left:2em}ul.popular-posts .popular-posts-item .popular-posts-title{font-weight:400;font-size:14px;margin:0;line-height:2.4}.copy-btn{display:inline-block;padding:6px 12px;font-size:13px;font-weight:700;line-height:20px;color:#333;white-space:nowrap;vertical-align:middle;cursor:pointer;background-color:#eee;background-image:linear-gradient(#fcfcfc,#eee);border:1px solid #d5d5d5;border-radius:3px;user-select:none;outline:0}.highlight-wrap .copy-btn{transition:opacity .3s ease-in-out;opacity:0;padding:2px 6px;position:absolute;right:4px;top:8px}.highlight-wrap .copy-btn:focus,.highlight-wrap:hover .copy-btn{opacity:1}.highlight-wrap{position:relative}.page-archive .archive-page-counter{position:relative;top:3px;left:20px}@media (max-width:767px){.page-archive .archive-page-counter{top:5px}}.page-archive .posts-collapse .archive-move-on{position:absolute;top:11px;left:0;margin-left:-6px;width:10px;height:10px;opacity:.5;background:#555;border:1px solid #fff;border-radius:50%}.page-archive .fa-external-link{font-size:15px;margin-left:5px}.category-all-page .category-all-title{text-align:center}.category-all-page .category-all{margin-top:20px}.category-all-page .category-list{margin:0;padding:0;list-style:none}.category-all-page .category-list-item{margin:5px 10px}.category-all-page .category-list-count{color:#bbb}.category-all-page .category-list-count:before{display:inline;content:" ("}.category-all-page .category-list-count:after{display:inline;content:") "}.category-all-page .category-list-child{padding-left:10px}#event-list{padding-left:30px}#event-list hr{margin:20px 0 45px 0!important;background:#222}#event-list hr:after{display:inline-block;content:'NOW';background:#222;color:#fff;font-weight:700;text-align:right;padding:0 5px}#event-list li.event{margin:20px 0;background:#f9f9f9;padding-left:10px;min-height:40px}#event-list li.event h2.event-summary{margin:0;padding-bottom:3px}#event-list li.event h2.event-summary:before{display:inline-block;font-family:FontAwesome;font-size:8px;content:'\f111';vertical-align:middle;margin-right:25px;color:#bbb}#event-list li.event span.event-relative-time{display:inline-block;font-size:12px;font-weight:400;padding-left:12px;color:#bbb}#event-list li.event span.event-details{display:block;color:#bbb;margin-left:56px;padding-top:3px;padding-bottom:6px;text-indent:-24px;line-height:18px}#event-list li.event span.event-details:before{text-indent:0;display:inline-block;width:14px;font-family:FontAwesome;text-align:center;margin-right:9px;color:#bbb}#event-list li.event span.event-details.event-location:before{content:'\f041'}#event-list li.event span.event-details.event-duration:before{content:'\f017'}#event-list li.event-past{background:#fcfcfc;padding:15px 0 15px 10px}#event-list li.event-past>*{opacity:.9}#event-list li.event-past h2.event-summary{color:#bbb}#event-list li.event-past h2.event-summary:before{color:#dfdfdf}#event-list li.event-now{background:#222;color:#fff;padding:15px 0 15px 10px}#event-list li.event-now h2.event-summary:before{transform:scale(1.2);color:#fff;animation:dot-flash 1s alternate infinite ease-in-out}#event-list li.event-now *{color:#fff!important}#event-list li.event-future{background:#222;color:#fff;padding:15px 0 15px 10px}#event-list li.event-future h2.event-summary:before{transform:scale(1.2);color:#fff;animation:dot-flash 1s alternate infinite ease-in-out}#event-list li.event-future *{color:#fff!important}@-moz-keyframes dot-flash{from{opacity:1;transform:scale(1.1)}to{opacity:0;transform:scale(1)}}@-webkit-keyframes dot-flash{from{opacity:1;transform:scale(1.1)}to{opacity:0;transform:scale(1)}}@-o-keyframes dot-flash{from{opacity:1;transform:scale(1.1)}to{opacity:0;transform:scale(1)}}@keyframes dot-flash{from{opacity:1;transform:scale(1.1)}to{opacity:0;transform:scale(1)}}.page-post-detail .sidebar-toggle-line{background:#fc6423}.page-post-detail .comments{overflow:hidden}ul.breadcrumb{list-style:none;margin:1em 0;padding:0 2em;text-align:center;font-size:12px}ul.breadcrumb li{display:inline}ul.breadcrumb li+li:before{padding:.5em;font-weight:400;content:"/\00a0"}ul.breadcrumb li+li:last-child{font-weight:700}.tag-cloud{text-align:center}.tag-cloud a{display:inline-block;margin:10px}.tag-cloud a:hover{color:#222!important}.header{position:relative;margin:0 auto;width:calc(100% - 20px)}@media (min-width:1200px){.header{width:1160px}}@media (min-width:1600px){.header{width:73%}}@media (max-width:991px){.header{width:auto}}.header-inner{position:absolute;top:0;overflow:hidden;padding:0;width:240px;background:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12);border-radius:initial}@media (min-width:1200px){.container .header-inner{width:240px}}@media (max-width:991px){.header-inner{position:relative;width:auto;border-radius:initial}}.main:after,.main:before{content:" ";display:table}.main:after{clear:both}@media (max-width:991px){.container .main-inner{width:auto}}.content-wrap{float:right;box-sizing:border-box;padding:40px;width:calc(100% - 252px);background:#fff;min-height:700px;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12);border-radius:initial}@media (min-width:768px) and (max-width:991px){.content-wrap{width:100%;padding:20px;border-radius:initial}}@media (max-width:767px){.content-wrap{width:100%;padding:20px;min-height:auto;border-radius:initial}}.sidebar{position:static;float:left;margin-left:-100%;width:240px;background:#eee;box-shadow:none}@media (max-width:991px){.sidebar{display:none}}.sidebar-toggle{display:none}.footer-inner{padding-left:260px}@media (max-width:991px){.footer-inner{width:auto;padding-left:0!important;padding-right:0!important}}.sidebar-position-right .header-inner{right:0}.sidebar-position-right .content-wrap{float:left}.sidebar-position-right .sidebar{float:right}.sidebar-position-right .footer-inner{padding-left:0;padding-right:260px}.site-brand-wrapper{position:relative}.site-meta{padding:20px 0;color:#fff;background:#222}@media (max-width:991px){.site-meta{box-shadow:0 0 16px rgba(0,0,0,.5)}}.brand{padding:0;background:0 0}.brand:hover{color:#fff}.site-subtitle{margin:10px 10px 0;font-weight:initial}.custom-logo-image{margin-top:20px}@media (max-width:991px){.custom-logo-image{display:none}}.site-search form{display:none}.site-nav{border-top:none}@media (min-width:768px) and (max-width:991px){.site-nav{display:none!important}}@media (min-width:768px) and (max-width:991px){.site-nav-on{display:block!important}}.menu .menu-item a:hover,.menu .menu-item span.exturl:hover,.menu-item-active a{background:#f9f9f9;border-bottom-color:#fff}.menu .menu-item{display:block;margin:0}.menu .menu-item a,.menu .menu-item span.exturl{position:relative;box-sizing:border-box;padding:5px 20px;text-align:left;line-height:inherit;transition-property:background-color;transition-duration:.2s;transition-timing-function:ease-in-out;transition-delay:0s}@media (hover:none){.menu .menu-item a:hover,.menu .menu-item span.exturl:hover{background:0 0}}.menu .menu-item .badge{display:inline-block;padding:2px 5px;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:middle;background-color:#ccc;border-radius:10px;float:right;margin:.35em 0 0 0;text-shadow:1px 1px 0 rgba(0,0,0,.1)}.menu .menu-item br{display:none}.btn-bar{background-color:#fff}.site-nav-toggle{left:20px;top:50%;transform:translateY(-50%)}@media (min-width:768px) and (max-width:991px){.site-nav-toggle{display:block}}.sub-menu{margin:0;padding:6px 0;background:#fff!important;border-bottom:1px solid #ddd}.sub-menu .menu-item{display:inline-block!important}.sub-menu .menu-item a,.sub-menu .menu-item span.exturl{padding:initial!important;margin:5px 10px}.sub-menu .menu-item a:hover,.sub-menu .menu-item span.exturl:hover{background:initial!important;color:#fc6423}.sub-menu .menu-item-active a{background:#fff!important;color:#fc6423;border-bottom-color:#fc6423}.sub-menu .menu-item-active a:hover{background:#fff!important;border-bottom-color:#fc6423}.use-motion .sidebar .motion-element{opacity:1}.sidebar{right:auto;bottom:auto;-webkit-transform:none}.sidebar a,.sidebar span.exturl{color:#555}.sidebar a:hover,.sidebar span.exturl:hover{color:#222;border-bottom-color:#222}.sidebar-inner{box-sizing:border-box;width:240px;color:#555;background:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);border-radius:initial}.sidebar-inner.affix{position:fixed;top:12px}.sidebar-inner.affix-bottom{position:absolute}.site-overview{text-align:left}.site-author:after,.site-author:before{content:" ";display:table}.site-author:after{clear:both}.site-state-item{padding:0 10px}.chat,.feed-link{border-top:1px dotted #ccc;border-bottom:1px dotted #ccc;text-align:center}.chat a,.feed-link a{display:block;color:#fc6423;border:none!important}.chat a:hover,.feed-link a:hover{background:0 0;color:#e34603}.chat a:hover i,.feed-link a:hover i{color:#e34603}.links-of-author{display:flex;flex-wrap:wrap;justify-content:center}.links-of-author span.exturl{font-size:13px}.links-of-author-item{margin:5px 0 0;width:50%}.links-of-author-item a,.links-of-author-item span.exturl{max-width:216px;box-sizing:border-box;display:inline-block;margin-right:0;margin-bottom:0;padding:0 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.links-of-author-item a:before,.links-of-author-item span.exturl:before{display:none}.links-of-author-item a,.links-of-author-item span.exturl{border-bottom:none;text-decoration:underline}.links-of-author-item a,.links-of-author-item span.exturl{display:block;text-decoration:none}.links-of-author-item a:hover,.links-of-author-item span.exturl:hover{border-radius:4px;background:#eee}.links-of-author-item .fa{margin-right:2px;font-size:16px}.links-of-author-item .fa-globe{font-size:15px}.links-of-blogroll{text-align:center;padding:3px 0 0}.links-of-blogroll-item{padding:0}.links-of-blogroll-inline:after,.links-of-blogroll-inline:before{content:" ";display:table}.links-of-blogroll-inline:after{clear:both}.links-of-blogroll-inline .links-of-blogroll-item{margin:5px 0 0;width:50%;display:inline-block;width:unset}.links-of-blogroll-inline .links-of-blogroll-item a,.links-of-blogroll-inline .links-of-blogroll-item span.exturl{max-width:216px;box-sizing:border-box;display:inline-block;margin-right:0;margin-bottom:0;padding:0 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.content-wrap{padding:initial;background:initial;box-shadow:initial;border-radius:initial}.post-block{padding:40px;background:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12);border-radius:initial}#posts>article+article .post-block{margin-top:12px;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);border-radius:initial}.comments{padding:40px;margin:auto;margin-top:12px;background:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);border-radius:initial}.posts-expand{padding-top:initial}.post-nav-divider{width:4%}.post-nav-item{width:48%}.post-eof{display:none}.pagination{margin:12px 0 0;border-top:initial;background:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);border-radius:initial;padding:10px 0 10px}.pagination .next,.pagination .page-number,.pagination .prev{margin-bottom:initial;top:initial}.main{padding-bottom:initial}.footer{bottom:auto}.sub-menu{border-bottom:initial!important;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12)}.sub-menu+#content>#posts .post-block{box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);margin-top:12px}@media (min-width:768px) and (max-width:991px){.sub-menu+#content>#posts .post-block{margin-top:10px}}@media (max-width:767px){.sub-menu+#content>#posts .post-block{margin-top:8px}}.post-header h1,.post-header h2{margin:initial}.posts-expand .post-title-link{line-height:inherit}.posts-expand .post-title{font-size:1.7em}.post-body h1{font-size:1.6em;border-bottom:1px solid #eee}.post-body h1 code{font-size:1em}.post-body h2{font-size:1.45em;border-bottom:1px solid #eee}.post-body h2 code{font-size:1em}.post-body h3{font-size:1.3em;border-bottom:1px solid #eee}.post-body h3 code{font-size:1em}.post-body h4{font-size:1.2em;border-bottom:1px dotted #eee}.post-body h4 code{font-size:1em}.post-body h5{font-size:1.07em}.post-body h5 code{font-size:1em}.post-body h6{font-size:1.03em}.post-body h6 code{font-size:1em}@media (min-width:768px) and (max-width:991px){.content-wrap{padding:10px}.posts-expand{margin:initial}.posts-expand .post-button{margin-top:20px}.post-block{padding:20px;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);border-radius:initial}#posts>article+article .post-block{margin-top:10px}.comments{margin-top:10px;padding:10px 20px}.pagination{margin:10px 0 0}}@media (max-width:767px){.content-wrap{padding:8px}.posts-expand{margin:initial}.posts-expand .post-button{margin:12px 0}.posts-expand img{padding:initial!important}.post-block{padding:12px;min-height:auto;box-shadow:0 2px 2px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.06),0 1px 5px 0 rgba(0,0,0,.12),0 -1px .5px 0 rgba(0,0,0,.09);border-radius:initial}#posts>article+article .post-block{margin-top:8px}.comments{margin-top:8px;padding:0 12px}.pagination{margin:8px 0 0}}</style><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript><script>function loadCss(l){var d=document,h=d.head,s=d.createElement('link');s.rel='stylesheet';s.href=l;!function e(f){if (d.body)return f();setTimeout(function(){e(f)})}(function(){h.appendChild(s);});}loadCss('//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css');loadCss('//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css');loadCss('//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css');</script><noscript><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css"></noscript></head><body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Maples7's Blog</span> <span class="logo-line-after"><i></i></span></a></div></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">4</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">83</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-讲演"><a href="/slides" rel="section"><i class="menu-item-icon fa fa-fw fa-commenting"></i><br>讲演</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><a href="https://github.com/Maples7" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><div class="reading-progress-bar"></div><article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="http://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/"><span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="Maples7"><meta itemprop="description" content="价值、概率、长期与非线性"><meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg"></span><span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization"><meta itemprop="name" content="Maples7's Blog"></span><header class="post-header"><h2 class="post-title" itemprop="name headline">编程的快感之「易于驾驭的介质」</h2><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2016-09-20 23:17:20" itemprop="dateCreated datePublished" datetime="2016-09-20T23:17:20+08:00">2016-09-20</time> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2021-11-13 12:56:40" itemprop="dateModified" datetime="2021-11-13T12:56:40+08:00">2021-11-13</time> </span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/一只代码狗的自我修养/" itemprop="url" rel="index"><span itemprop="name">一只代码狗的自我修养</span></a></span> </span><span class="post-comments-count"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-comment-o"></i> </span><span class="post-meta-item-text">评论数：</span> <a href="/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/20/pleasure-of-programming-media-easy-to-manipulate/" itemprop="commentCount"></span> </a></span><span id="/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/" class="leancloud_visitors" data-flag-title="编程的快感之「易于驾驭的介质」"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数：</span> <span class="leancloud-visitors-count"></span></span><div class="post-symbolscount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">本文字数：</span> <span title="本文字数">1.3k</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长 ≈</span> <span title="阅读时长">1 分钟</span></div></div></header><div class="post-body" itemprop="articleBody"><blockquote class="blockquote-center"><p><em>编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作</em></p><p><strong>《人月神话》</strong></p></blockquote><p><a href="https://book.douban.com/subject/1102259/" target="_blank" rel="noopener">《人月神话》</a>是几乎每个程序员都或多或少了解过的一本书，著名的<a href="https://en.wikipedia.org/wiki/No_Silver_Bullet" target="_blank" rel="noopener">「没有银弹(No Silver Bullet)」</a>的软件工程理论就被其作者<a href="https://en.wikipedia.org/wiki/Fred_Brooks" target="_blank" rel="noopener">Fred Brooks</a>收录在这本书中。</p><p>这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题。简要归纳一下，原书提供了这样几个答案：</p><a id="more"></a><ul><li>一种创建事物的纯粹快乐</li><li>开发对他人有用的东西</li><li>开发过程的强大魅力——将相互啮合的零部件组装在一起</li><li>持续学习的快乐以及非重复性</li><li><strong>在易于驾驭的介质上工作</strong></li></ul><p>我对「在易于驾驭的介质上工作」这个原因尤其认同，结合当下的现实，谈谈我的体会和想法。</p><h3 id="什么是「易于驾驭的介质」？"><a href="#什么是「易于驾驭的介质」？" class="headerlink" title="什么是「易于驾驭的介质」？"></a>什么是「易于驾驭的介质」？</h3><p>要说这个世界上最易于驾驭的介质是什么，我目前能想到的就是人的大脑（思维）。没有具体的形态，无需任何实体的操作，你想到了什么思维就已经被你操纵到了哪里（我不大确定到底是你在操作大脑还是大脑在操纵你）。你可以在大脑里创造出各种各样没有实体的东西。程序员或者文艺工作者往往有这样的体验，当你才思泉涌时，往往觉得双手都跟不上大脑运转的速度，就好像高速运转的 CPU 无法容忍相对而言低速的 I/O 操作一样。</p><p>我无法给「易于驾驭的介质」下一个明确的定义，不过如果假设大脑（思维）就是这个世界上最易于驾驭的介质的话，那我可以自然地说能被操纵（manipulate）的速度越接近大脑的速度，这种介质就是越容易被驾驭的。</p><h3 id="为什么代码是易于驾驭的介质？"><a href="#为什么代码是易于驾驭的介质？" class="headerlink" title="为什么代码是易于驾驭的介质？"></a>为什么代码是易于驾驭的介质？</h3><p>我的个人经历就可以告诉我，代码绝对是工程领域最易于驾驭的介质。不同于传统的工科领域总是有具体的实体操纵对象或者危险难以控制的操纵对象，编程所操纵的对象——代码——算是太容易操纵的了，这是软件与硬件天然的区别。你无法说你磁盘上的那一串串 0 和 1 是实体的或者是危险的。即使不知名的宇宙射线打过来反转了你电脑内存中的某一个比特位，相信我，也不会有什么东西会爆炸的（或者极小概率）。</p><p>基于此，编程工作的易于操作性在于，你只消用你的个人电脑，按照一定的规则在键盘上对代码做出任何你想要的更改，你的程序就可以按照你的预期做出你想要的行为，尽管它没有实体无法给你端茶倒水，但在今天这个互联网时代，却已经创造出了前所未有的价值。</p><p>代码之于电脑，就像大脑之于人体一样。</p><h3 id="这种易于驾驭的介质带来了什么？"><a href="#这种易于驾驭的介质带来了什么？" class="headerlink" title="这种易于驾驭的介质带来了什么？"></a>这种易于驾驭的介质带来了什么？</h3><ol><li><strong>低廉的操作成本</strong>：与世俗的观念还是倾向于不想为看不见的东西的付费有关，操作代码的成本是低廉的，你只需要一台可计算设备即可。</li><li><strong>容易传播和产生影响</strong>：下载和使用一个软件现在已经是秒秒钟的事情，好的软件已经非常容易传播和拥有庞大的用户，这同时意味着代码中的任何问题也可能会造成巨大的破坏。</li><li><strong>低廉的试错成本</strong>：每一个产品迭代可能需要很多次才能达到用户满意的标准，一个不关键的 bug 可能需要很多次更新才能彻底解决，然而一个医生却无法把病人当成「小白鼠」来多次试验，一个建筑师却难以修补已建成建筑的设计缺陷。（此点灵感来自于：<a href="https://zhuanlan.zhihu.com/p/19690214" target="_blank" rel="noopener">程序员混日子不完全手册</a>）</li></ol><p>把任何实体产业尽量转化为电脑中的 0 和 1，再利用其转化后的优势产生价值，这便是互联网+的本质。<br><br></p><center>**诸位，幸福地来码代码吧！**</center></div><div><div id="reward-container"><div>听说，你想请我喝杯咖啡？☕️</div><button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">打赏</button><div id="qr" style="display:none"><div style="display:inline-block"><img src="https://i.loli.net/2018/08/06/5b6732ef0e7fe.gif" alt="Maples7 微信支付"><p>微信支付</p></div><div style="display:inline-block"><img src="https://i.loli.net/2018/08/06/5b6732ef1f148.gif" alt="Maples7 支付宝"><p>支付宝</p></div></div></div></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>Maples7</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="http://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/" title="编程的快感之「易于驾驭的介质」">http://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/编程/" rel="tag"># 编程</a> <a href="/tags/程序员/" rel="tag"># 程序员</a> <a href="/tags/《人月神话》/" rel="tag"># 《人月神话》</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2016/09/10/lost-stars/" rel="next" title="失落之星"><i class="fa fa-chevron-left"></i> 失落之星</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/2016/10/08/what-can-cache-do/" rel="prev" title="缓存可以用来做些什么">缓存可以用来做些什么 <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div><div class="comments" id="comments"><div id="disqus_thread"><noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg" alt="Maples7"><p class="site-author-name" itemprop="name">Maples7</p><div class="site-description motion-element" itemprop="description">价值、概率、长期与非线性</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">48</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">4</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">81</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/Maples7" title="GitHub → https://github.com/Maples7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a> </span><span class="links-of-author-item"><a href="https://www.zhihu.com/people/maples7" title="知乎 → https://www.zhihu.com/people/maples7" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>知乎</a> </span><span class="links-of-author-item"><a href="https://www.douban.com/people/82391888/" title="豆瓣 → https://www.douban.com/people/82391888/" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i>豆瓣</a> </span><span class="links-of-author-item"><a href="http://weibo.com/maples74lq/" title="微博 → http://weibo.com/maples74lq/" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>微博</a> </span><span class="links-of-author-item"><a href="mailto:maples7@163.com" title="邮箱 → mailto:maples7@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>邮箱</a> </span><span class="links-of-author-item"><a href="http://cv.maples7.com" title="简历 → http://cv.maples7.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-file-text-o"></i>简历</a></span></div><div class="cc-license motion-element" itemprop="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是「易于驾驭的介质」？"><span class="nav-number">1.</span> <span class="nav-text">什么是「易于驾驭的介质」？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么代码是易于驾驭的介质？"><span class="nav-number">2.</span> <span class="nav-text">为什么代码是易于驾驭的介质？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这种易于驾驭的介质带来了什么？"><span class="nav-number">3.</span> <span class="nav-text">这种易于驾驭的介质带来了什么？</span></a></li></ol></div></div></div></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">© 2016 – <span itemprop="copyrightYear">2021</span> <span class="with-love" id="animate"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">Maples7</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span title="站点总字数">123k</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-coffee"></i> </span><span title="站点阅读时长">1:52</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div><span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.2</div><div class="footer-custom">Hosted by <a href="https://pages.coding.me" class="theme-link" rel="noopener" target="_blank">Coding Pages</a> &amp; <a href="https://pages.github.com/" class="theme-link" rel="noopener" target="_blank">Github Pages</a></div><div class="busuanzi-count"><script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span><span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span> </span><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="site-pv" title="总访问量"><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script><script src="//cdn.jsdelivr.net/npm/fastclick@1/lib/fastclick.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery-lazyload@1/jquery.lazyload.min.js"></script><script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script><script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script><script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-reading-progress@1/reading_progress.min.js"></script><script src="//cdn.jsdelivr.net/npm/pangu@3/dist/browser/pangu.min.js"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-bookmark@1/bookmark.min.js"></script><script type="text/javascript" src="/bundle.js"></script><script type="text/javascript">function loadCount(){var d=document,t=d.createElement("script");t.src="https://maples7.disqus.com/count.js",t.id="dsq-count-scr",(d.head||d.body).appendChild(t)}window.addEventListener("load",loadCount,!1);
-var disqus_config=function(){this.page.url="http://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/",this.page.identifier="2016/09/20/pleasure-of-programming-media-easy-to-manipulate/",this.page.title="编程的快感之「易于驾驭的介质」"};function loadComments(){var e=document,t=e.createElement("script");t.src="https://maples7.disqus.com/embed.js",t.setAttribute("data-timestamp",""+ +new Date),(e.head||e.body).appendChild(t)}$((function(){$("#comments").offset().top-$(window).height()<=0?window.addEventListener("load",loadComments,!1):$(window).on("scroll.disqus_scroll",(function(){$("#comments").offset().top-$(window).height()-$(window).scrollTop()<60&&($(window).off(".disqus_scroll"),loadComments())}))}));
-var isfetched=!1,isXml=!0,search_path="search.xml";0===search_path.length?search_path="search.xml":/json$/i.test(search_path)&&(isXml=!1);var path="/"+search_path,onPopupClose=function(e){$(".popup").hide(),$("#local-search-input").val(""),$(".search-result-list").remove(),$("#no-result").remove(),$(".local-search-pop-overlay").remove(),$("body").css("overflow","")};function proceedsearch(){$("body").append('<div class="search-popup-overlay local-search-pop-overlay"></div>').css("overflow","hidden"),$(".search-popup-overlay").click(onPopupClose),$(".popup").toggle();var e=$("#local-search-input");e.attr("autocapitalize","none"),e.attr("autocorrect","off"),e.focus()}var searchFunc=function(e,t,o){"use strict";$("body").append('<div class="search-popup-overlay local-search-pop-overlay"><div id="search-loading-icon"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div></div>').css("overflow","hidden"),$("#search-loading-icon").css("margin","20% auto 0 auto").css("text-align","center");$.ajax({url:e,dataType:isXml?"xml":"json",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var n=isXml?$("entry",e).map((function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}})).get():e,r=document.getElementById(t),a=document.getElementById(o),s=function(){var e=r.value.trim().toLowerCase(),t=e.split(/[\s\-]+/);t.length>1&&t.push(e);var o=[];if(e.length>0&&n.forEach((function(n){var r=!1,a=0,s=0,i=n.title.trim(),c=i.toLowerCase(),l=n.content.trim().replace(/<[^>]+>/g,""),h=(l=String(l).replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&#x3A;/g,":").replace(/&#(\d+);/g,(function(e,t){return String.fromCharCode(t)})).replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&")).toLowerCase(),p=decodeURIComponent(n.url).replace(/\/{2,}/g,"/"),u=[],f=[];if(""!=i&&(t.forEach((function(e){function t(e,t,o){var n=e.length;if(0===n)return[];var r=0,a=[],s=[];for(o||(t=t.toLowerCase(),e=e.toLowerCase());(a=t.indexOf(e,r))>-1;)s.push({position:a,word:e}),r=a+n;return s}u=u.concat(t(e,c,!1)),f=f.concat(t(e,h,!1))})),(u.length>0||f.length>0)&&(r=!0,a=u.length+f.length)),r){function g(t,o,n,r){for(var a=r[r.length-1],i=a.position,c=a.word,l=[],h=0;i+c.length<=n&&0!=r.length;){c===e&&h++,l.push({position:i,length:c.length});var p=i+c.length;for(r.pop();0!=r.length&&(i=(a=r[r.length-1]).position,c=a.word,p>i);)r.pop()}return s+=h,{hits:l,start:o,end:n,searchTextCount:h}}[u,f].forEach((function(e){e.sort((function(e,t){return t.position!==e.position?t.position-e.position:e.word.length-t.word.length}))}));var d=[];0!=u.length&&d.push(g(0,0,i.length,u));for(var v=[];0!=f.length;){var C=f[f.length-1],m=C.position,$=C.word,x=m-20,w=m+80;x<0&&(x=0),w<m+$.length&&(w=m+$.length),w>l.length&&(w=l.length),v.push(g(0,x,w,f))}v.sort((function(e,t){return e.searchTextCount!==t.searchTextCount?t.searchTextCount-e.searchTextCount:e.hits.length!==t.hits.length?t.hits.length-e.hits.length:e.start-t.start}));var y=parseInt("1");function T(e,t){var o="",n=t.start;return t.hits.forEach((function(t){o+=e.substring(n,t.position);var r=t.position+t.length;o+='<b class="search-keyword">'+e.substring(t.position,r)+"</b>",n=r})),o+=e.substring(n,t.end)}y>=0&&(v=v.slice(0,y));var b="";0!=d.length?b+="<li><a href='"+p+"' class='search-result-title'>"+T(i,d[0])+"</a>":b+="<li><a href='"+p+"' class='search-result-title'>"+i+"</a>",v.forEach((function(e){b+="<a href='"+p+'\'><p class="search-result">'+T(l,e)+"...</p></a>"})),b+="</li>",o.push({item:b,searchTextCount:s,hitCount:a,id:o.length})}})),1===t.length&&""===t[0])a.innerHTML='<div id="no-result"><i class="fa fa-search fa-5x"></i></div>';else if(0===o.length)a.innerHTML='<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>';else{o.sort((function(e,t){return e.searchTextCount!==t.searchTextCount?t.searchTextCount-e.searchTextCount:e.hitCount!==t.hitCount?t.hitCount-e.hitCount:t.id-e.id}));var s='<ul class="search-result-list">';o.forEach((function(e){s+=e.item})),s+="</ul>",a.innerHTML=s}};r.addEventListener("input",s),$(".local-search-pop-overlay").remove(),$("body").css("overflow",""),proceedsearch()}})};$(".popup-trigger").click((function(e){e.stopPropagation(),!1===isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()})),$(".popup-btn-close").click(onPopupClose),$(".popup").click((function(e){e.stopPropagation()})),$(document).on("keyup",(function(e){27===e.which&&$(".search-popup").is(":visible")&&onPopupClose()}));
-function addCount(e){var t=$(".leancloud_visitors"),o=t.attr("id").trim();t.attr("data-flag-title").trim();e("get","/classes/Counter",{where:JSON.stringify({url:o})}).done((function({results:t}){if(t.length>0){var n=t[0];$(document.getElementById(o)).find(".leancloud-visitors-count").text(n.time+1),e("put","/classes/Counter/"+n.objectId,JSON.stringify({time:{__op:"Increment",amount:1}})).fail((function({responseJSON:e}){console.log("Failed to save Visitor num, with error message: "+e.error)}))}else{$(document.getElementById(o)).find(".leancloud-visitors-count").text("Counter not initialized! More info at console err msg."),console.error("ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.")}})).fail((function({responseJSON:e}){console.log("LeanCloud Counter Error: "+e.code+" "+e.error)}))}$((function(){$.get("https://app-router.leancloud.cn/2/route?appId=ox9piPRb4PMLblpdjYObCAbP-gzGzoHsz").done((function({api_server:e}){/http:\/\/(localhost|127.0.0.1|0.0.0.0)/.test(document.URL)||addCount((function(t,o,n){return $.ajax({method:t,url:"https://"+e+"/1.1"+o,headers:{"X-LC-Id":"ox9piPRb4PMLblpdjYObCAbP-gzGzoHsz","X-LC-Key":"AxGe3VngCSYm3M1TcS303rwj","Content-Type":"application/json"},data:n})}))}))}));
-!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}();
-pangu.spacingPage();
-bookmark.scrollToMark("auto","#更多");
-$(".highlight").not(".gist .highlight").each((function(t,e){var n=$("<div>").addClass("highlight-wrap");$(e).after(n),n.append($("<button>").addClass("copy-btn").append("复制").on("click",(function(t){var e=$(this).parent().find(".code").find(".line").map((function(t,e){return $(e).text()})).toArray().join("\n"),n=document.createElement("textarea"),o=window.pageYOffset||document.documentElement.scrollTop;n.style.top=o+"px",n.style.position="absolute",n.style.opacity="0",n.readOnly=!0,n.value=e,document.body.appendChild(n);const a=document.getSelection(),i=a.rangeCount>0&&a.getRangeAt(0);n.select(),n.setSelectionRange(0,e.length),n.readOnly=!1,document.execCommand("copy")?$(this).text("复制成功"):$(this).text("复制失败"),n.blur(),$(this).blur(),i&&(a.removeAllRanges(),a.addRange(i))}))).on("mouseleave",(function(t){var e=$(this).find(".copy-btn");setTimeout((function(){e.text("复制")}),300)})).append(e)}))</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作 《人月神话》    《人月神话》是几乎每个程序员都或多或少了解过的一本书，著名的「没有银弹(No Silver Bullet)」的软件工程理论就被其作者Fred Brooks收录在这本书中。 这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程的快感之「易于驾驭的介质」">
+<meta property="og:url" content="https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/">
+<meta property="og:site_name" content="Maples7&#39;s Blog">
+<meta property="og:description" content="编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作 《人月神话》    《人月神话》是几乎每个程序员都或多或少了解过的一本书，著名的「没有银弹(No Silver Bullet)」的软件工程理论就被其作者Fred Brooks收录在这本书中。 这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-20T15:17:20.000Z">
+<meta property="article:modified_time" content="2021-11-19T18:04:02.497Z">
+<meta property="article:author" content="Maples7">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="程序员">
+<meta property="article:tag" content="《人月神话》">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/","path":"2016/09/20/pleasure-of-programming-media-easy-to-manipulate/","title":"编程的快感之「易于驾驭的介质」"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编程的快感之「易于驾驭的介质」 | Maples7's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Maples7's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">81</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li>
+        <li class="menu-item menu-item-讲演"><a href="/slides" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E3%80%8C%E6%98%93%E4%BA%8E%E9%A9%BE%E9%A9%AD%E7%9A%84%E4%BB%8B%E8%B4%A8%E3%80%8D%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是「易于驾驭的介质」？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%A3%E7%A0%81%E6%98%AF%E6%98%93%E4%BA%8E%E9%A9%BE%E9%A9%AD%E7%9A%84%E4%BB%8B%E8%B4%A8%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么代码是易于驾驭的介质？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%99%E7%A7%8D%E6%98%93%E4%BA%8E%E9%A9%BE%E9%A9%AD%E7%9A%84%E4%BB%8B%E8%B4%A8%E5%B8%A6%E6%9D%A5%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">这种易于驾驭的介质带来了什么？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Maples7"
+      src="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+  <p class="site-author-name" itemprop="name">Maples7</p>
+  <div class="site-description" itemprop="description">价值、概率、长期与非线性</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Maples7" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Maples7" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/maples7" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;maples7" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/82391888/" title="豆瓣 → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;82391888&#x2F;" rel="noopener" target="_blank"><i class="fas fa-book-reader fa-fw"></i>豆瓣</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/maples74lq/" title="微博 → http:&#x2F;&#x2F;weibo.com&#x2F;maples74lq&#x2F;" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>微博</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maples7@163.com" title="邮箱 → mailto:maples7@163.com" rel="noopener" target="_blank"><i class="fas fa-at fa-fw"></i>邮箱</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://cv.maples7.com/" title="简历 → http:&#x2F;&#x2F;cv.maples7.com" rel="noopener" target="_blank"><i class="fas fa-file fa-fw"></i>简历</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Maples7" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+      <meta itemprop="name" content="Maples7">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maples7's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程的快感之「易于驾驭的介质」
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-09-20 23:17:20" itemprop="dateCreated datePublished" datetime="2016-09-20T23:17:20+08:00">2016-09-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-11-20 02:04:02" itemprop="dateModified" datetime="2021-11-20T02:04:02+08:00">2021-11-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" itemprop="url" rel="index"><span itemprop="name">一只代码狗的自我修养</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/" class="post-meta-item leancloud_visitors" data-flag-title="编程的快感之「易于驾驭的介质」" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/20/pleasure-of-programming-media-easy-to-manipulate/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote class="blockquote-center">
+<p><em>编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作</em></p>
+<p><strong>《人月神话》</strong></p>
+
+</blockquote>
+
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/1102259/">《人月神话》</a>是几乎每个程序员都或多或少了解过的一本书，著名的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/No_Silver_Bullet">「没有银弹(No Silver Bullet)」</a>的软件工程理论就被其作者<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fred_Brooks">Fred Brooks</a>收录在这本书中。</p>
+<p>这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题。简要归纳一下，原书提供了这样几个答案：</p>
+<span id="more"></span>
+<ul>
+<li>一种创建事物的纯粹快乐</li>
+<li>开发对他人有用的东西</li>
+<li>开发过程的强大魅力——将相互啮合的零部件组装在一起</li>
+<li>持续学习的快乐以及非重复性</li>
+<li><strong>在易于驾驭的介质上工作</strong></li>
+</ul>
+<p>我对「在易于驾驭的介质上工作」这个原因尤其认同，结合当下的现实，谈谈我的体会和想法。</p>
+<h3 id="什么是「易于驾驭的介质」？"><a href="#什么是「易于驾驭的介质」？" class="headerlink" title="什么是「易于驾驭的介质」？"></a>什么是「易于驾驭的介质」？</h3><p>要说这个世界上最易于驾驭的介质是什么，我目前能想到的就是人的大脑（思维）。没有具体的形态，无需任何实体的操作，你想到了什么思维就已经被你操纵到了哪里（我不大确定到底是你在操作大脑还是大脑在操纵你）。你可以在大脑里创造出各种各样没有实体的东西。程序员或者文艺工作者往往有这样的体验，当你才思泉涌时，往往觉得双手都跟不上大脑运转的速度，就好像高速运转的 CPU 无法容忍相对而言低速的 I/O 操作一样。</p>
+<p>我无法给「易于驾驭的介质」下一个明确的定义，不过如果假设大脑（思维）就是这个世界上最易于驾驭的介质的话，那我可以自然地说能被操纵（manipulate）的速度越接近大脑的速度，这种介质就是越容易被驾驭的。</p>
+<h3 id="为什么代码是易于驾驭的介质？"><a href="#为什么代码是易于驾驭的介质？" class="headerlink" title="为什么代码是易于驾驭的介质？"></a>为什么代码是易于驾驭的介质？</h3><p>我的个人经历就可以告诉我，代码绝对是工程领域最易于驾驭的介质。不同于传统的工科领域总是有具体的实体操纵对象或者危险难以控制的操纵对象，编程所操纵的对象——代码——算是太容易操纵的了，这是软件与硬件天然的区别。你无法说你磁盘上的那一串串 0 和 1 是实体的或者是危险的。即使不知名的宇宙射线打过来反转了你电脑内存中的某一个比特位，相信我，也不会有什么东西会爆炸的（或者极小概率）。</p>
+<p>基于此，编程工作的易于操作性在于，你只消用你的个人电脑，按照一定的规则在键盘上对代码做出任何你想要的更改，你的程序就可以按照你的预期做出你想要的行为，尽管它没有实体无法给你端茶倒水，但在今天这个互联网时代，却已经创造出了前所未有的价值。</p>
+<p>代码之于电脑，就像大脑之于人体一样。</p>
+<h3 id="这种易于驾驭的介质带来了什么？"><a href="#这种易于驾驭的介质带来了什么？" class="headerlink" title="这种易于驾驭的介质带来了什么？"></a>这种易于驾驭的介质带来了什么？</h3><ol>
+<li><strong>低廉的操作成本</strong>：与世俗的观念还是倾向于不想为看不见的东西的付费有关，操作代码的成本是低廉的，你只需要一台可计算设备即可。</li>
+<li><strong>容易传播和产生影响</strong>：下载和使用一个软件现在已经是秒秒钟的事情，好的软件已经非常容易传播和拥有庞大的用户，这同时意味着代码中的任何问题也可能会造成巨大的破坏。</li>
+<li><strong>低廉的试错成本</strong>：每一个产品迭代可能需要很多次才能达到用户满意的标准，一个不关键的 bug 可能需要很多次更新才能彻底解决，然而一个医生却无法把病人当成「小白鼠」来多次试验，一个建筑师却难以修补已建成建筑的设计缺陷。（此点灵感来自于：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/19690214">程序员混日子不完全手册</a>）</li>
+</ol>
+<p>把任何实体产业尽量转化为电脑中的 0 和 1，再利用其转化后的优势产生价值，这便是互联网+的本质。<br><br /></p>
+<center>**诸位，幸福地来码代码吧！**</center>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2016/11/27/traditional-edu-and-programming/" rel="bookmark">从个人经历漫谈传统教育与编程</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2017/07/13/comprehensively-learn-a-new-programming-lauguage/" rel="bookmark">如何系统地学习一门编程语言？</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2016/11/22/stay-hungry-stay-foolish/" rel="bookmark">学生心态与产品演进之路</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2016/12/09/show-your-respect/" rel="bookmark">程序员：请不要丢失你的敬畏心</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2017/05/24/programming-and-life/" rel="bookmark">程序与人生</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>听说，你想请我喝杯咖啡？☕️</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef0e7fe.gif" alt="Maples7 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef1f148.gif" alt="Maples7 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Maples7
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/" title="编程的快感之「易于驾驭的介质」">https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="https://github.com/Maples7">
+          <span class="icon">
+            <i class="fab fa-github"></i>
+          </span>
+
+          <span class="label">GitHub</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/WeChat-Official-Account.JPG">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="https://maples7.tuchong.com/">
+          <span class="icon">
+            <i class="fas fa-camera-retro"></i>
+          </span>
+
+          <span class="label">图虫</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 编程</a>
+              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/" rel="tag"><i class="fa fa-tag"></i> 程序员</a>
+              <a href="/tags/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%E3%80%8B/" rel="tag"><i class="fa fa-tag"></i> 《人月神话》</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/09/10/lost-stars/" rel="prev" title="失落之星">
+                  <i class="fa fa-chevron-left"></i> 失落之星
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/10/08/what-can-cache-do/" rel="next" title="缓存可以用来做些什么">
+                  缓存可以用来做些什么 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Maples7</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">124k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:53</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"ox9piPRb4PMLblpdjYObCAbP-gzGzoHsz","app_key":"AxGe3VngCSYm3M1TcS303rwj","server_url":"https://maples7.com","security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"maples7","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
