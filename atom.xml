@@ -120,9 +120,9 @@
     <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
     
     
-    <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
-    
     <category term="性能调优" scheme="https://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+    <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
     
     <category term="Elixir" scheme="https://maples7.com/tags/Elixir/"/>
     
@@ -161,11 +161,11 @@
     <link href="https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/"/>
     <id>https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</id>
     <published>2019-05-09T04:57:40.000Z</published>
-    <updated>2021-11-19T18:08:01.313Z</updated>
+    <updated>2021-11-22T16:52:28.686Z</updated>
     
     
     <summary type="html">&lt;p&gt;&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;心知天气&lt;/a&gt;作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;官网首页&lt;/a&gt;一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。&lt;/p&gt;
-&lt;img src=&quot;/uploads/seniverse-index.gif&quot; class=&quot;&quot; title=&quot;@lazy, 图片显示错误, 心知天气 API 服务实时访问量&quot;&gt;</summary>
+&lt;img src=&quot;/uploads/seniverse-index.gif&quot; class=&quot;&quot; title=&quot;心知天气 API 服务实时访问量&quot; alt=&quot;图片显示错误&quot;&gt;</summary>
     
     
     
