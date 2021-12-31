@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2021-12-08T03:28:33.045Z</updated>
+  <updated>2021-12-31T17:11:40.072Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2021 年书单</title>
+    <link href="https://maples7.com/2021/12/31/2021-booklist/"/>
+    <id>https://maples7.com/2021/12/31/2021-booklist/</id>
+    <published>2021-12-31T13:19:31.000Z</published>
+    <updated>2021-12-31T17:11:40.072Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;关于书单&quot;&gt;&lt;a href=&quot;#关于书单&quot; class=&quot;headerlink&quot; title=&quot;关于书单&quot;&gt;&lt;/a&gt;关于书单&lt;/h3&gt;&lt;p&gt;直奔主题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://book.douban.com/subject/35275524/&quot;&gt;晚婚&lt;/a&gt;：★★★★&lt;/p&gt;
+&lt;p&gt; 人物描写十分细节，情绪表达非常细腻，如果没有一定的人生阅历和生活体悟，很难相信作者能把书中的某些人情世故和人物动机描写得如此让人感同身受，这是某种源于生活的真切（而且很现代），但故事的戏剧性又提醒着读者小说创作高于生活的存在。&lt;/p&gt;
+&lt;p&gt; 相比于《新婚之夜》少了很多推理和悬疑的要素，但依然还是有很多伏笔在前后呼应。整个故事的基调是压抑的，给人无力感，的确是一部「漠然记」。还是很喜欢辽京的写故事风格。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
+    
+    <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
+    
+    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="摄影" scheme="https://maples7.com/tags/%E6%91%84%E5%BD%B1/"/>
+    
+  </entry>
   
   <entry>
     <title>在望京，没有方向</title>
@@ -146,9 +177,9 @@
     <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
     
     
-    <category term="性能调优" scheme="https://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
-    
     <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
+    
+    <category term="性能调优" scheme="https://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
     
     <category term="Elixir" scheme="https://maples7.com/tags/Elixir/"/>
     
@@ -454,36 +485,6 @@
     <category term="程序员" scheme="https://maples7.com/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/"/>
     
     <category term="编程语言" scheme="https://maples7.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>了不起的 Erlang</title>
-    <link href="https://maples7.com/2017/06/10/awesome-erlang/"/>
-    <id>https://maples7.com/2017/06/10/awesome-erlang/</id>
-    <published>2017-06-10T15:45:44.000Z</published>
-    <updated>2021-11-19T18:04:02.830Z</updated>
-    
-    
-    <summary type="html">&lt;blockquote class=&quot;blockquote-center&quot;&gt;
-&lt;p&gt;&lt;em&gt;Shared mutable state is the root of all evil&lt;/em&gt;&lt;br&gt;&lt;em&gt;共享的可变状态是万恶之源&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Pete Hunt&lt;/strong&gt;      &lt;/p&gt;
-
-&lt;/blockquote&gt;
-
-&lt;p&gt;大概是从去年年底开始，我开始断断续续地了解 Erlang 这门语言。之所以会想要去学习它，是因为它跟我已经比较熟悉的任何一门语言都有着截然不同的设计理念，而且我了解得越深，就越为其设计思想所折服。&lt;/p&gt;
-&lt;p&gt;虽然这门语言的年纪早已不算年轻，而且似乎从未「大众流行」过，但在如今 CPU 多核化和云计算的时代背景下，Erlang 却焕发出了不一样的生机。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-    <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
-    
-    <category term="函数式编程" scheme="https://maples7.com/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    <category term="并发" scheme="https://maples7.com/tags/%E5%B9%B6%E5%8F%91/"/>
     
   </entry>
   
