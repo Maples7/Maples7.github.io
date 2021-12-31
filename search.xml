@@ -531,6 +531,81 @@
       </tags>
   </entry>
   <entry>
+    <title>使用 Swagger 构建 Express API Server 的文档系统</title>
+    <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
+    <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
+<img data-src="https://i.loli.net/2018/08/06/5b672f1a563d0.png" class="" title="Swagger——The Most Popular Framework for APIs of The World" alt="图片显示错误">
+
+<span id="more"></span>
+
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>文档生成的「源」（或者说「依据」）与代码不分离，即直接用<code>jsdoc</code>注释生成文档；</li>
+<li>可以用同样的「源」同时实现对接口输入输出参数的验证，最大化保证文档与后端具体实现之间的一致性；</li>
+<li>文档在线可用性测试，并且可以完美解决跨域请求的问题；</li>
+<li>在后端接口还未完成时，可以 Mock 返回数据；</li>
+<li>最好能自动生成一些测试数据甚至自动进行测试；</li>
+</ul>
+<h2 id="从-JSDoc-到可视化文档"><a href="#从-JSDoc-到可视化文档" class="headerlink" title="从 JSDoc 到可视化文档"></a>从 JSDoc 到可视化文档</h2><h3 id="Step-1：定义接口模型"><a href="#Step-1：定义接口模型" class="headerlink" title="Step 1：定义接口模型"></a>Step 1：定义接口模型</h3><p>在 Controller 层每一条路由的函数注释上（具体来说，Routes 目录下或 Controller 目录下均可，只要配置好<code>Step 2</code>中的<code>swagger-jsdoc</code>，明确「源」所在的目录即可）按<code>Swagger YAML</code>语法定义接口模型，示例如下:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * definition:</span></span><br><span class="line"><span class="comment"> *   Puppy:</span></span><br><span class="line"><span class="comment"> *     properties:</span></span><br><span class="line"><span class="comment"> *       name:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       breed:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       age:</span></span><br><span class="line"><span class="comment"> *         type: integer</span></span><br><span class="line"><span class="comment"> *       sex:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   get:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Returns all puppies</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: An array of puppies</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.get(<span class="string">&#x27;/api/puppies&#x27;</span>, db.getAllPuppies);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   post:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Creates a new puppy</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     parameters:</span></span><br><span class="line"><span class="comment"> *       - name: puppy</span></span><br><span class="line"><span class="comment"> *         description: Puppy object</span></span><br><span class="line"><span class="comment"> *         in: body</span></span><br><span class="line"><span class="comment"> *         required: true</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: Successfully created</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.post(<span class="string">&#x27;/api/puppies&#x27;</span>, db.createPuppy);</span><br></pre></td></tr></table></figure>
+
+<p>一些抽象出来的<code>definition</code>直接在前面的<code>/** */</code>注释中定义即可。</p>
+<p>在生成的完整配置中，同一个路径下的配置（比如上述示例中<code>/api/puppies</code>下的<code>get</code>与<code>post</code>）会合并在这同一个路径之下，所以同一个路径下的全局配置只用写一遍就行了（比如下文<code>Mock返回数据</code>小节中使用<code>Swagger Router</code>中间件需要的<code>x-swagger-router-controller</code>配置）。</p>
+<h3 id="Step-2：生成-Swagger-接口定义"><a href="#Step-2：生成-Swagger-接口定义" class="headerlink" title="Step 2：生成 Swagger 接口定义"></a>Step 2：生成 Swagger 接口定义</h3><p>用 <a href="https://github.com/Surnet/swagger-jsdoc">swagger-jsdoc</a> 生成 JSON 格式的 Swagger 接口定义。<br>Demo：<a href="https://github.com/mjhea0/node-swagger-api">mjhea0/node-swagger-api</a>。</p>
+<p>这里不用把生成的 JSON 保存在本地磁盘上，直接用一个变量引用即可。</p>
+<h3 id="Step-3：用-Swagger-UI-生成可视化文档"><a href="#Step-3：用-Swagger-UI-生成可视化文档" class="headerlink" title="Step 3：用 Swagger UI 生成可视化文档"></a>Step 3：用 Swagger UI 生成可视化文档</h3><p>在线查看：打开<a href="http://petstore.swagger.io/">http://petstore.swagger.io/</a>，在顶部的 URL 栏输入可以获取<code>Step 2</code>中生成的 JSON 格式的 Swagger 文档定义的 URL，<del>一般来说可以是<a href="http://localhost:3000/swagger.json">http://localhost:3000/swagger.json</a> （需要自己手动在代码中书写路由和请求的返回）</del> 在使用了后文要说明的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>之后按照默认配置是 <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）。这种方式需要解决跨域请求的问题，详见后文。</p>
+<p>本地离线查看：<del>直接在本项目 public（静态文件目录）下放置离线版<code>Swagger UI</code>，直接打开即可查看。详见<code>Step 2</code>中的 Demo 及作者的博文说明。</del>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>，如果你直接使用默认配置：</p>
+<ul>
+<li><a href="http://localhost:3000/docs/">http://localhost:3000/docs/</a> 可以看到完整的可视化文档；</li>
+<li><a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）可以看到自己在<code>Step 2</code>中自动生成的 Swagger 接口定义。</li>
+</ul>
+<p>这个中间件可以让你在开发时再也无需操心可视化文档的前端实现和如何查看自动生成 Swagger 接口定义（以便确定是否符合规范和自己的需求）的问题。</p>
+<h2 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h2><h3 id="解决跨域请求的问题"><a href="#解决跨域请求的问题" class="headerlink" title="解决跨域请求的问题"></a>解决跨域请求的问题</h3><p>官方说明见：<a href="https://github.com/swagger-api/swagger-ui#cors-support">https://github.com/swagger-api/swagger-ui#cors-support</a>。<br>在<code>app.use(&#39;/&#39;, routes);</code>之前加一个如下的中间件设置一些 cors 相关的头可以解决问题:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  res.setHeader(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://petstore.swagger.io&#x27;</span>);</span><br><span class="line">  res.setHeader(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;GET, POST, DELETE, PUT, PATCH, OPTIONS&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  res.setHeader(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type, api_key, Authorization&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口参数验证"><a href="#接口参数验证" class="headerlink" title="接口参数验证"></a>接口参数验证</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-metadata">Swagger Metadata</a>和<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-validator">Swagger Validator</a>中间件：</p>
+<ul>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools Quick Start</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/tree/master/examples/2.0">Demo</a>；</li>
+</ul>
+<p>其中 Swagger Metadata 中间件做了匹配请求路由与 Swagger 定义路由以及解析参数的工作，Swagger Validator 中间件做了验证参数类型和其他已定义的参数限制的工作。</p>
+<h3 id="Mock-返回数据"><a href="#Mock-返回数据" class="headerlink" title="Mock 返回数据"></a>Mock 返回数据</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-router">Swagger Router 中间件</a>即可实现。</p>
+<p>正常情况下，根据你的 Swagger 定义会返回<code>Response Code</code>为<code>200</code>（当 Swagger 定义中已定义<code>200</code>的返回时）的类似这样的数据：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Sample text&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;breed&quot;</span>: <span class="string">&quot;Sample text&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;age&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">&quot;sex&quot;</span>: <span class="string">&quot;Sample text&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="自动生成测试代码"><a href="#自动生成测试代码" class="headerlink" title="自动生成测试代码"></a>自动生成测试代码</h3><p>使用<a href="https://github.com/apigee-127/swagger-test-templates">apigee-127/swagger-test-templates</a>可以根据你的 Swagger 定义自动生成对所有接口功能测试的脚手架代码（基本可以自动确定的地方都自动生成了），在你把自动生成的代码写入磁盘文件后，只需修改极少量的地方（一般是提供一些需要测试的参数）就可以使用测试。</p>
+<p>自动生成的代码长成这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> chai = <span class="built_in">require</span>(<span class="string">&#x27;chai&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> ZSchema = <span class="built_in">require</span>(<span class="string">&#x27;z-schema&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> validator = <span class="keyword">new</span> ZSchema(&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> supertest = <span class="built_in">require</span>(<span class="string">&#x27;supertest&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> api = supertest(<span class="string">&#x27;http://localhost:3000&#x27;</span>); <span class="comment">// supertest init;</span></span><br><span class="line"></span><br><span class="line">chai.should();</span><br><span class="line"></span><br><span class="line">describe(<span class="string">&#x27;/api/puppies&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  describe(<span class="string">&#x27;get&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">&#x27;should respond with 200 An array of puppies&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">      <span class="comment">/*eslint-disable*/</span></span><br><span class="line">      <span class="keyword">var</span> schema = &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="attr">items</span>: &#123;</span><br><span class="line">          <span class="attr">$ref</span>: <span class="string">&#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*eslint-enable*/</span></span><br><span class="line">      api</span><br><span class="line">        .get(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .set(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .expect(<span class="number">200</span>)</span><br><span class="line">        .end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> done(err);</span><br><span class="line"></span><br><span class="line">          validator.validate(res.body, schema).should.be.true;</span><br><span class="line">          done();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  describe(<span class="string">&#x27;post&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">&#x27;should respond with 200 Successfully created&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">      api</span><br><span class="line">        .post(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .set(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .send(&#123;</span><br><span class="line">          <span class="attr">puppy</span>: <span class="string">&#x27;DATA GOES HERE&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .expect(<span class="number">200</span>)</span><br><span class="line">        .end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> done(err);</span><br><span class="line"></span><br><span class="line">          res.body.should.equal(<span class="literal">null</span>); <span class="comment">// non-json response or no schema</span></span><br><span class="line">          done();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>之后可以考虑用 gulp 把测试串联起来进行自动化测试。npm 上已经有<a href="https://www.npmjs.com/package/gulp-swagger-test-templates">这样的包</a>，不过我还没有试过。</p>
+<p>目前这个包对于<code>Swagger 2.0</code>的支持还不是很完全，尤其是对<code>$ref</code>不能自动解析，这样的话需要手动改动的测试代码多一些，不过他们正在着力解决这个问题，估计下一个版本（1.3.0）就会加入对<code>$ref</code>的解析，详细的讨论可以<a href="https://github.com/apigee-127/swagger-test-templates/issues/104">看这个 issue</a>。同时，他们还在考虑添加通过 JSON-Schema 自动批量生成测试数据的功能，目测<a href="https://github.com/apigee-127/swagger-test-templates/pull/107">也将在下一个版本中推出</a>，值得期待。</p>
+<h3 id="Mock-或-Swagger-UI-失效"><a href="#Mock-或-Swagger-UI-失效" class="headerlink" title="Mock 或 Swagger UI 失效"></a>Mock 或 Swagger UI 失效</h3><p>由于异步的问题，如果你把<code>app.lieten</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数外面，那很可能在你的应用已经启动时，<code>swagger-tools</code>的中间件并没有加载完毕，导致中间件失效（不会报错）。</p>
+<p>鉴于此，应该尽量把<code>swaggerTools.initializeMiddleware</code>写在中间件链的后面部分，然后把位于其后的<code>app.use</code>（比如<code>app.use(&#39;/&#39;, routes);</code>）和<code>app.listen</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数内部。所以，<code>Express 4</code>中提倡的用<code>./bin/www</code>来启动应用的要求在这里可能无法被遵循了。</p>
+<p>更详细的讨论<a href="https://github.com/apigee-127/swagger-tools/issues/328">看这个 issue</a>。</p>
+<p>另外，Mock 失效还有可能是你已经提供了对应 Controller 来 Handle 对应的 Route 请求。并不是将 Swagger Router 中间件中的<code>useStubs</code>设为<code>true</code>就一定会启动 Mock，官方对此说明是：</p>
+<blockquote>
+<p>Stubs only work for requests where the controller and/or controller method is missing. Since you have a working controller method, enabling stub mode doesn’t do anything. It’s working as designed.</p>
+</blockquote>
+<p>更详细的讨论可以<a href="https://github.com/apigee-127/swagger-tools/issues/48">看这个 issue</a>。</p>
+<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>使用<code>DEBUG=swagger-tools* node app</code>启动项目，控制台会输出更多详细的信息。</p>
+<h2 id="完整的-Demo"><a href="#完整的-Demo" class="headerlink" title="完整的 Demo"></a>完整的 Demo</h2><p><a href="https://github.com/Maples7/swagger-express-demo">Maples7/swagger-express-demo</a>： 将前面所讲的内容整合进了一个小示例中，以供参考。</p>
+<h2 id="上手必读"><a href="#上手必读" class="headerlink" title="上手必读"></a>上手必读</h2><ol>
+<li><a href="http://swagger.io/specification/">swagger-spec</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools/docs/QuickStart.md</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md">swagger-tools/docs/Middleware.md</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/API.md">swagger-tools/docs/API.md</a>；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>API</tag>
+        <tag>Express</tag>
+        <tag>Swagger</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>失落之星</title>
     <url>/2016/09/10/lost-stars/</url>
     <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
@@ -636,81 +711,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>使用 Swagger 构建 Express API Server 的文档系统</title>
-    <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
-    <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
-<img data-src="https://i.loli.net/2018/08/06/5b672f1a563d0.png" class="" title="Swagger——The Most Popular Framework for APIs of The World" alt="图片显示错误">
-
-<span id="more"></span>
-
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>文档生成的「源」（或者说「依据」）与代码不分离，即直接用<code>jsdoc</code>注释生成文档；</li>
-<li>可以用同样的「源」同时实现对接口输入输出参数的验证，最大化保证文档与后端具体实现之间的一致性；</li>
-<li>文档在线可用性测试，并且可以完美解决跨域请求的问题；</li>
-<li>在后端接口还未完成时，可以 Mock 返回数据；</li>
-<li>最好能自动生成一些测试数据甚至自动进行测试；</li>
-</ul>
-<h2 id="从-JSDoc-到可视化文档"><a href="#从-JSDoc-到可视化文档" class="headerlink" title="从 JSDoc 到可视化文档"></a>从 JSDoc 到可视化文档</h2><h3 id="Step-1：定义接口模型"><a href="#Step-1：定义接口模型" class="headerlink" title="Step 1：定义接口模型"></a>Step 1：定义接口模型</h3><p>在 Controller 层每一条路由的函数注释上（具体来说，Routes 目录下或 Controller 目录下均可，只要配置好<code>Step 2</code>中的<code>swagger-jsdoc</code>，明确「源」所在的目录即可）按<code>Swagger YAML</code>语法定义接口模型，示例如下:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * definition:</span></span><br><span class="line"><span class="comment"> *   Puppy:</span></span><br><span class="line"><span class="comment"> *     properties:</span></span><br><span class="line"><span class="comment"> *       name:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       breed:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       age:</span></span><br><span class="line"><span class="comment"> *         type: integer</span></span><br><span class="line"><span class="comment"> *       sex:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   get:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Returns all puppies</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: An array of puppies</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.get(<span class="string">&#x27;/api/puppies&#x27;</span>, db.getAllPuppies);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   post:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Creates a new puppy</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     parameters:</span></span><br><span class="line"><span class="comment"> *       - name: puppy</span></span><br><span class="line"><span class="comment"> *         description: Puppy object</span></span><br><span class="line"><span class="comment"> *         in: body</span></span><br><span class="line"><span class="comment"> *         required: true</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: Successfully created</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.post(<span class="string">&#x27;/api/puppies&#x27;</span>, db.createPuppy);</span><br></pre></td></tr></table></figure>
-
-<p>一些抽象出来的<code>definition</code>直接在前面的<code>/** */</code>注释中定义即可。</p>
-<p>在生成的完整配置中，同一个路径下的配置（比如上述示例中<code>/api/puppies</code>下的<code>get</code>与<code>post</code>）会合并在这同一个路径之下，所以同一个路径下的全局配置只用写一遍就行了（比如下文<code>Mock返回数据</code>小节中使用<code>Swagger Router</code>中间件需要的<code>x-swagger-router-controller</code>配置）。</p>
-<h3 id="Step-2：生成-Swagger-接口定义"><a href="#Step-2：生成-Swagger-接口定义" class="headerlink" title="Step 2：生成 Swagger 接口定义"></a>Step 2：生成 Swagger 接口定义</h3><p>用 <a href="https://github.com/Surnet/swagger-jsdoc">swagger-jsdoc</a> 生成 JSON 格式的 Swagger 接口定义。<br>Demo：<a href="https://github.com/mjhea0/node-swagger-api">mjhea0/node-swagger-api</a>。</p>
-<p>这里不用把生成的 JSON 保存在本地磁盘上，直接用一个变量引用即可。</p>
-<h3 id="Step-3：用-Swagger-UI-生成可视化文档"><a href="#Step-3：用-Swagger-UI-生成可视化文档" class="headerlink" title="Step 3：用 Swagger UI 生成可视化文档"></a>Step 3：用 Swagger UI 生成可视化文档</h3><p>在线查看：打开<a href="http://petstore.swagger.io/">http://petstore.swagger.io/</a>，在顶部的 URL 栏输入可以获取<code>Step 2</code>中生成的 JSON 格式的 Swagger 文档定义的 URL，<del>一般来说可以是<a href="http://localhost:3000/swagger.json">http://localhost:3000/swagger.json</a> （需要自己手动在代码中书写路由和请求的返回）</del> 在使用了后文要说明的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>之后按照默认配置是 <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）。这种方式需要解决跨域请求的问题，详见后文。</p>
-<p>本地离线查看：<del>直接在本项目 public（静态文件目录）下放置离线版<code>Swagger UI</code>，直接打开即可查看。详见<code>Step 2</code>中的 Demo 及作者的博文说明。</del>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>，如果你直接使用默认配置：</p>
-<ul>
-<li><a href="http://localhost:3000/docs/">http://localhost:3000/docs/</a> 可以看到完整的可视化文档；</li>
-<li><a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）可以看到自己在<code>Step 2</code>中自动生成的 Swagger 接口定义。</li>
-</ul>
-<p>这个中间件可以让你在开发时再也无需操心可视化文档的前端实现和如何查看自动生成 Swagger 接口定义（以便确定是否符合规范和自己的需求）的问题。</p>
-<h2 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h2><h3 id="解决跨域请求的问题"><a href="#解决跨域请求的问题" class="headerlink" title="解决跨域请求的问题"></a>解决跨域请求的问题</h3><p>官方说明见：<a href="https://github.com/swagger-api/swagger-ui#cors-support">https://github.com/swagger-api/swagger-ui#cors-support</a>。<br>在<code>app.use(&#39;/&#39;, routes);</code>之前加一个如下的中间件设置一些 cors 相关的头可以解决问题:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  res.setHeader(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://petstore.swagger.io&#x27;</span>);</span><br><span class="line">  res.setHeader(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;GET, POST, DELETE, PUT, PATCH, OPTIONS&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  res.setHeader(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type, api_key, Authorization&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="接口参数验证"><a href="#接口参数验证" class="headerlink" title="接口参数验证"></a>接口参数验证</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-metadata">Swagger Metadata</a>和<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-validator">Swagger Validator</a>中间件：</p>
-<ul>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools Quick Start</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/tree/master/examples/2.0">Demo</a>；</li>
-</ul>
-<p>其中 Swagger Metadata 中间件做了匹配请求路由与 Swagger 定义路由以及解析参数的工作，Swagger Validator 中间件做了验证参数类型和其他已定义的参数限制的工作。</p>
-<h3 id="Mock-返回数据"><a href="#Mock-返回数据" class="headerlink" title="Mock 返回数据"></a>Mock 返回数据</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-router">Swagger Router 中间件</a>即可实现。</p>
-<p>正常情况下，根据你的 Swagger 定义会返回<code>Response Code</code>为<code>200</code>（当 Swagger 定义中已定义<code>200</code>的返回时）的类似这样的数据：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Sample text&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;breed&quot;</span>: <span class="string">&quot;Sample text&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;age&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">&quot;sex&quot;</span>: <span class="string">&quot;Sample text&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<h3 id="自动生成测试代码"><a href="#自动生成测试代码" class="headerlink" title="自动生成测试代码"></a>自动生成测试代码</h3><p>使用<a href="https://github.com/apigee-127/swagger-test-templates">apigee-127/swagger-test-templates</a>可以根据你的 Swagger 定义自动生成对所有接口功能测试的脚手架代码（基本可以自动确定的地方都自动生成了），在你把自动生成的代码写入磁盘文件后，只需修改极少量的地方（一般是提供一些需要测试的参数）就可以使用测试。</p>
-<p>自动生成的代码长成这样：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> chai = <span class="built_in">require</span>(<span class="string">&#x27;chai&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> ZSchema = <span class="built_in">require</span>(<span class="string">&#x27;z-schema&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> validator = <span class="keyword">new</span> ZSchema(&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> supertest = <span class="built_in">require</span>(<span class="string">&#x27;supertest&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> api = supertest(<span class="string">&#x27;http://localhost:3000&#x27;</span>); <span class="comment">// supertest init;</span></span><br><span class="line"></span><br><span class="line">chai.should();</span><br><span class="line"></span><br><span class="line">describe(<span class="string">&#x27;/api/puppies&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  describe(<span class="string">&#x27;get&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">&#x27;should respond with 200 An array of puppies&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">      <span class="comment">/*eslint-disable*/</span></span><br><span class="line">      <span class="keyword">var</span> schema = &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="attr">items</span>: &#123;</span><br><span class="line">          <span class="attr">$ref</span>: <span class="string">&#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*eslint-enable*/</span></span><br><span class="line">      api</span><br><span class="line">        .get(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .set(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .expect(<span class="number">200</span>)</span><br><span class="line">        .end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> done(err);</span><br><span class="line"></span><br><span class="line">          validator.validate(res.body, schema).should.be.true;</span><br><span class="line">          done();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  describe(<span class="string">&#x27;post&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    it(<span class="string">&#x27;should respond with 200 Successfully created&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">      api</span><br><span class="line">        .post(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .set(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .send(&#123;</span><br><span class="line">          <span class="attr">puppy</span>: <span class="string">&#x27;DATA GOES HERE&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .expect(<span class="number">200</span>)</span><br><span class="line">        .end(<span class="function"><span class="keyword">function</span>(<span class="params">err, res</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> done(err);</span><br><span class="line"></span><br><span class="line">          res.body.should.equal(<span class="literal">null</span>); <span class="comment">// non-json response or no schema</span></span><br><span class="line">          done();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>之后可以考虑用 gulp 把测试串联起来进行自动化测试。npm 上已经有<a href="https://www.npmjs.com/package/gulp-swagger-test-templates">这样的包</a>，不过我还没有试过。</p>
-<p>目前这个包对于<code>Swagger 2.0</code>的支持还不是很完全，尤其是对<code>$ref</code>不能自动解析，这样的话需要手动改动的测试代码多一些，不过他们正在着力解决这个问题，估计下一个版本（1.3.0）就会加入对<code>$ref</code>的解析，详细的讨论可以<a href="https://github.com/apigee-127/swagger-test-templates/issues/104">看这个 issue</a>。同时，他们还在考虑添加通过 JSON-Schema 自动批量生成测试数据的功能，目测<a href="https://github.com/apigee-127/swagger-test-templates/pull/107">也将在下一个版本中推出</a>，值得期待。</p>
-<h3 id="Mock-或-Swagger-UI-失效"><a href="#Mock-或-Swagger-UI-失效" class="headerlink" title="Mock 或 Swagger UI 失效"></a>Mock 或 Swagger UI 失效</h3><p>由于异步的问题，如果你把<code>app.lieten</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数外面，那很可能在你的应用已经启动时，<code>swagger-tools</code>的中间件并没有加载完毕，导致中间件失效（不会报错）。</p>
-<p>鉴于此，应该尽量把<code>swaggerTools.initializeMiddleware</code>写在中间件链的后面部分，然后把位于其后的<code>app.use</code>（比如<code>app.use(&#39;/&#39;, routes);</code>）和<code>app.listen</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数内部。所以，<code>Express 4</code>中提倡的用<code>./bin/www</code>来启动应用的要求在这里可能无法被遵循了。</p>
-<p>更详细的讨论<a href="https://github.com/apigee-127/swagger-tools/issues/328">看这个 issue</a>。</p>
-<p>另外，Mock 失效还有可能是你已经提供了对应 Controller 来 Handle 对应的 Route 请求。并不是将 Swagger Router 中间件中的<code>useStubs</code>设为<code>true</code>就一定会启动 Mock，官方对此说明是：</p>
-<blockquote>
-<p>Stubs only work for requests where the controller and/or controller method is missing. Since you have a working controller method, enabling stub mode doesn’t do anything. It’s working as designed.</p>
-</blockquote>
-<p>更详细的讨论可以<a href="https://github.com/apigee-127/swagger-tools/issues/48">看这个 issue</a>。</p>
-<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>使用<code>DEBUG=swagger-tools* node app</code>启动项目，控制台会输出更多详细的信息。</p>
-<h2 id="完整的-Demo"><a href="#完整的-Demo" class="headerlink" title="完整的 Demo"></a>完整的 Demo</h2><p><a href="https://github.com/Maples7/swagger-express-demo">Maples7/swagger-express-demo</a>： 将前面所讲的内容整合进了一个小示例中，以供参考。</p>
-<h2 id="上手必读"><a href="#上手必读" class="headerlink" title="上手必读"></a>上手必读</h2><ol>
-<li><a href="http://swagger.io/specification/">swagger-spec</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools/docs/QuickStart.md</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md">swagger-tools/docs/Middleware.md</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/API.md">swagger-tools/docs/API.md</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>API</tag>
-        <tag>Express</tag>
-        <tag>Swagger</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>我心中理想的 Web 开发流程</title>
     <url>/2016/10/19/ideal-web-development-work-flow/</url>
     <content><![CDATA[<p>本文总结一下在几个月的 Web 开发实践后，我认为的<strong>目前</strong>进行 Web 开发的一些<strong>工作流程</strong>上的最佳实践。</p>
@@ -788,80 +788,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>程序员：请不要丢失你的敬畏心</title>
-    <url>/2016/12/09/show-your-respect/</url>
-    <content><![CDATA[<center>**暗**</center>
-
-<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
-<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
-<span id="more"></span>
-
-<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
-<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
-<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
-<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
-<center>**明**</center>
-
-<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
-<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
-<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
-<p>就像读书的三境界一样，关于认知也有四重境界：</p>
-<ol>
-<li>You don’t know that you don’t know</li>
-<li>You know that you don’t know</li>
-<li>You know that you know</li>
-<li>You don’t know that you know</li>
-</ol>
-<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
-<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
-<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>敬畏之心</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
-<span id="more"></span>
-
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I/O 部分。注意，这并不说语言对此没有责任，难以优化的 I/O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node/JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha/should(chai)/supertest/istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>从个人经历漫谈传统教育与编程</title>
     <url>/2016/11/27/traditional-edu-and-programming/</url>
     <content><![CDATA[<center>**1**</center>
@@ -930,6 +856,80 @@ _Farewell and thanks to each for the company_
         <tag>编程</tag>
         <tag>程序员</tag>
         <tag>教育</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+<span id="more"></span>
+
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I/O 部分。注意，这并不说语言对此没有责任，难以优化的 I/O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node/JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha/should(chai)/supertest/istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序员：请不要丢失你的敬畏心</title>
+    <url>/2016/12/09/show-your-respect/</url>
+    <content><![CDATA[<center>**暗**</center>
+
+<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
+<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
+<span id="more"></span>
+
+<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
+<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
+<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
+<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
+<center>**明**</center>
+
+<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
+<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
+<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
+<p>就像读书的三境界一样，关于认知也有四重境界：</p>
+<ol>
+<li>You don’t know that you don’t know</li>
+<li>You know that you don’t know</li>
+<li>You know that you know</li>
+<li>You don’t know that you know</li>
+</ol>
+<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
+<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
+<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>敬畏之心</tag>
       </tags>
   </entry>
   <entry>
@@ -1287,25 +1287,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>毕业一周年 | 山大印象</title>
-    <url>/2017/05/07/grad-anniversary/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>山东大学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>程序与人生</title>
     <url>/2017/05/24/programming-and-life/</url>
     <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
@@ -1377,6 +1358,72 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>如何系统地学习一门编程语言？</title>
+    <url>/2017/07/13/comprehensively-learn-a-new-programming-lauguage/</url>
+    <content><![CDATA[<p>「学习一门新的编程语言」是每个程序员都必然会面对的一个课题（注：本文特指工程实践中常用的高级编程语言）。自从高一开始编程到现在，我也接触了不少的编程语言，有的语言已经能在工作中得心应手的使用；有的语言用的不多，但大概了解其设计，也能在官方文档的帮助下简单使用；还有的则之前很了解，但很长时间没有使用过了。</p>
+<p>换一份新的工作是最有机会让程序员接触到新的东西的，最近我就应工作需求开始接触一门新的编程语言，学习过程中难免会和已经熟悉的编程语言进行对比，然后发现其实编程语言的学习完全是有「套路」可循的，这篇博客试图总结一下这种「套路」。</p>
+<span id="more"></span>
+
+<p>总的来说，编程语言各种各样的特性共同决定了这门语言，这样的特性可能大到并发模型的设计，小到某个具体的语法特性。学习一门编程语言的过程就是不断了解这些语言特性并进行实践应用以及工程化使用的过程。系统性地把语言的主要特性明确清楚，可以快速地建立对一门语言的基本认识，并能做到胸有成竹地深入和细化。</p>
+<p>下面就一一说明学习一门新的编程语言至少需要明确的语言特性有哪些，供参考。</p>
+<h3 id="编译型-or-解释型"><a href="#编译型-or-解释型" class="headerlink" title="编译型 or 解释型"></a>编译型 or 解释型</h3><p>如今一门语言是编译型语言还是解释型语言似乎对工程开发的影响越来越小（而且大有相互靠拢之势，界限也变得越来越不清晰），这或多或少得益于各种编辑器和 IDE 对于中间过程的自动化处理。不过，明确一门编程语言是编译型还是解释型依然是基础且非常有必要的，这对于理解一些程序的深层行为逻辑会很有帮助。</p>
+<p>其实对于语言设计者来说，编译型和解释型从根本上是语言开发自由度和性能优化能力之间的博弈。</p>
+<h3 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h3><p>基本地，需要了解该语言都原生支持哪些数据类型，而其中哪些是简单／基础类型，哪些又是复杂／复合类型，各个类型之间又有哪些区别等等。</p>
+<p>更抽象来看，类型系统又可以从两个维度来定义：</p>
+<ul>
+<li>强类型 or 弱类型：核心的区别在于语言<strong>是否偏向于容忍隐式的类型转换</strong>。一个常见的错误理解是「C/C++ 是强类型语言」，实际上，在 C/C++ 中隐式类型转换很常见，它们是弱类型语言。与之相对的，Python 则是强类型语言。</li>
+<li>动态类型 or 静态类型：核心区别在于<strong>是否在编译时就能明确每一个变量的类型</strong>。对于静态类型来说，如果编译时存在类型错误，是无法编译通过的，而对于动态类型来说，由于程序运行时才能明确类型，所以类型错误通常不会导致编译出错（错误会在运行时暴露出来）。Python 就是动态类型，而 C/C++ 则是静态类型。</li>
+</ul>
+<h3 id="模块系统"><a href="#模块系统" class="headerlink" title="模块系统"></a>模块系统</h3><p>如今的高级语言基本都会有成熟的模块系统，好的模块系统对于构建大型工程项目来说必不可少，它可以大大提高程序的可复用能力和模块化能力。</p>
+<p>了解一门编程语言的模块系统大概至少需要了解这些细节：</p>
+<ul>
+<li>依赖的路径是如何解析的？</li>
+<li>如何引用自定义模块（文件）？</li>
+<li>如何引用第三方的模块或包？</li>
+</ul>
+<h4 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h4><p>与模块系统相关的一个很影响实际开发的问题是「变量的作用域（scope）是怎样的」。常见的可以自己问的问题是：</p>
+<ul>
+<li>什么情况下是全局作用域？</li>
+<li>什么时候又会是函数作用域？</li>
+<li>块作用域又是怎样的？</li>
+</ul>
+<p>不过，不同的语言对于作用域的定义和分类可能不同，需要具体情况具体了解。</p>
+<p>另外，明确语言是「动态作用域」还是「静态（词法）作用域」也非常重要：与动态类型和静态类型的区别类似，静态作用域是在<strong>书写代码</strong>或者说定义时确定的，而动态作用域是在<strong>运行时</strong>确定的。静态作用域关注函数在<strong>何处声明</strong>，而动态作用域关注函数从<strong>何处调用</strong>，其作用域链是基于运行时的调用栈的。可以看看<a href="https://www.zhihu.com/question/20032419/answer/112564460">这个例子</a>做进一步的区分。</p>
+<h3 id="支持的编程范式与特色"><a href="#支持的编程范式与特色" class="headerlink" title="支持的编程范式与特色"></a>支持的编程范式与特色</h3><p>编程语言支持哪样的编程范式对于工程项目也非常重要，这也基本和语言设计上的一些别具一格不那么常见的特色相关。比如函数式编程中的「函数是一等公民」、面向对象中的「封装、继承和多态」对应到编程语言上应该如何具体实现、面向并行的语言又是如何实现并发的等等。</p>
+<p>了解了这些特色你才能更清楚这门语言在工程中更擅长做哪样的事情，更适合哪些项目。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>基础的你需要了解基本的语法规则和特性，比如分支、循环、函数等等。更深入一些的时候则可以了解一下语言的架构设计、那些语言特性为什么会这样设计以及它们都是如何被实现的。了解实现不一定非得去看源码，搞清楚语言大体上的实现过程还是比较简单的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后，把前文的部分<a href="https://www.processon.com/chart_image/595f2e79e4b0a77c5aeb50d7.png">总结成一张思维导图</a>，希望能够让开始学习新编程语言的过程更清晰快速。</p>
+<img data-src="https://i.loli.net/2018/08/06/5b6731fe12be8.png" />
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>程序员</tag>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>毕业一周年 | 山大印象</title>
+    <url>/2017/05/07/grad-anniversary/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>山东大学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>被分化的树叶</title>
     <url>/2017/07/15/diversified-leaves/</url>
     <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
@@ -1430,53 +1477,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>独立书店</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何系统地学习一门编程语言？</title>
-    <url>/2017/07/13/comprehensively-learn-a-new-programming-lauguage/</url>
-    <content><![CDATA[<p>「学习一门新的编程语言」是每个程序员都必然会面对的一个课题（注：本文特指工程实践中常用的高级编程语言）。自从高一开始编程到现在，我也接触了不少的编程语言，有的语言已经能在工作中得心应手的使用；有的语言用的不多，但大概了解其设计，也能在官方文档的帮助下简单使用；还有的则之前很了解，但很长时间没有使用过了。</p>
-<p>换一份新的工作是最有机会让程序员接触到新的东西的，最近我就应工作需求开始接触一门新的编程语言，学习过程中难免会和已经熟悉的编程语言进行对比，然后发现其实编程语言的学习完全是有「套路」可循的，这篇博客试图总结一下这种「套路」。</p>
-<span id="more"></span>
-
-<p>总的来说，编程语言各种各样的特性共同决定了这门语言，这样的特性可能大到并发模型的设计，小到某个具体的语法特性。学习一门编程语言的过程就是不断了解这些语言特性并进行实践应用以及工程化使用的过程。系统性地把语言的主要特性明确清楚，可以快速地建立对一门语言的基本认识，并能做到胸有成竹地深入和细化。</p>
-<p>下面就一一说明学习一门新的编程语言至少需要明确的语言特性有哪些，供参考。</p>
-<h3 id="编译型-or-解释型"><a href="#编译型-or-解释型" class="headerlink" title="编译型 or 解释型"></a>编译型 or 解释型</h3><p>如今一门语言是编译型语言还是解释型语言似乎对工程开发的影响越来越小（而且大有相互靠拢之势，界限也变得越来越不清晰），这或多或少得益于各种编辑器和 IDE 对于中间过程的自动化处理。不过，明确一门编程语言是编译型还是解释型依然是基础且非常有必要的，这对于理解一些程序的深层行为逻辑会很有帮助。</p>
-<p>其实对于语言设计者来说，编译型和解释型从根本上是语言开发自由度和性能优化能力之间的博弈。</p>
-<h3 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h3><p>基本地，需要了解该语言都原生支持哪些数据类型，而其中哪些是简单／基础类型，哪些又是复杂／复合类型，各个类型之间又有哪些区别等等。</p>
-<p>更抽象来看，类型系统又可以从两个维度来定义：</p>
-<ul>
-<li>强类型 or 弱类型：核心的区别在于语言<strong>是否偏向于容忍隐式的类型转换</strong>。一个常见的错误理解是「C/C++ 是强类型语言」，实际上，在 C/C++ 中隐式类型转换很常见，它们是弱类型语言。与之相对的，Python 则是强类型语言。</li>
-<li>动态类型 or 静态类型：核心区别在于<strong>是否在编译时就能明确每一个变量的类型</strong>。对于静态类型来说，如果编译时存在类型错误，是无法编译通过的，而对于动态类型来说，由于程序运行时才能明确类型，所以类型错误通常不会导致编译出错（错误会在运行时暴露出来）。Python 就是动态类型，而 C/C++ 则是静态类型。</li>
-</ul>
-<h3 id="模块系统"><a href="#模块系统" class="headerlink" title="模块系统"></a>模块系统</h3><p>如今的高级语言基本都会有成熟的模块系统，好的模块系统对于构建大型工程项目来说必不可少，它可以大大提高程序的可复用能力和模块化能力。</p>
-<p>了解一门编程语言的模块系统大概至少需要了解这些细节：</p>
-<ul>
-<li>依赖的路径是如何解析的？</li>
-<li>如何引用自定义模块（文件）？</li>
-<li>如何引用第三方的模块或包？</li>
-</ul>
-<h4 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h4><p>与模块系统相关的一个很影响实际开发的问题是「变量的作用域（scope）是怎样的」。常见的可以自己问的问题是：</p>
-<ul>
-<li>什么情况下是全局作用域？</li>
-<li>什么时候又会是函数作用域？</li>
-<li>块作用域又是怎样的？</li>
-</ul>
-<p>不过，不同的语言对于作用域的定义和分类可能不同，需要具体情况具体了解。</p>
-<p>另外，明确语言是「动态作用域」还是「静态（词法）作用域」也非常重要：与动态类型和静态类型的区别类似，静态作用域是在<strong>书写代码</strong>或者说定义时确定的，而动态作用域是在<strong>运行时</strong>确定的。静态作用域关注函数在<strong>何处声明</strong>，而动态作用域关注函数从<strong>何处调用</strong>，其作用域链是基于运行时的调用栈的。可以看看<a href="https://www.zhihu.com/question/20032419/answer/112564460">这个例子</a>做进一步的区分。</p>
-<h3 id="支持的编程范式与特色"><a href="#支持的编程范式与特色" class="headerlink" title="支持的编程范式与特色"></a>支持的编程范式与特色</h3><p>编程语言支持哪样的编程范式对于工程项目也非常重要，这也基本和语言设计上的一些别具一格不那么常见的特色相关。比如函数式编程中的「函数是一等公民」、面向对象中的「封装、继承和多态」对应到编程语言上应该如何具体实现、面向并行的语言又是如何实现并发的等等。</p>
-<p>了解了这些特色你才能更清楚这门语言在工程中更擅长做哪样的事情，更适合哪些项目。</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>基础的你需要了解基本的语法规则和特性，比如分支、循环、函数等等。更深入一些的时候则可以了解一下语言的架构设计、那些语言特性为什么会这样设计以及它们都是如何被实现的。了解实现不一定非得去看源码，搞清楚语言大体上的实现过程还是比较简单的。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后，把前文的部分<a href="https://www.processon.com/chart_image/595f2e79e4b0a77c5aeb50d7.png">总结成一张思维导图</a>，希望能够让开始学习新编程语言的过程更清晰快速。</p>
-<img data-src="https://i.loli.net/2018/08/06/5b6731fe12be8.png" />
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>程序员</tag>
-        <tag>编程语言</tag>
       </tags>
   </entry>
   <entry>
@@ -1576,35 +1576,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>长按是好的交互方式吗？</title>
-    <url>/2018/12/19/long-press-sucks/</url>
-    <content><![CDATA[<p>长按是好的交互方式吗？</p>
-<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
-<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
-<span id="more"></span>
-
-<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
-<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
-<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
-<p>首先，「长按」交互本身是一种怎样的体验？</p>
-<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
-<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
-<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
-<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
-<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
-<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
-<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
-<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>交互设计</tag>
-        <tag>产品</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>完全理解并发</title>
     <url>/2018/10/21/understand-concurrency/</url>
     <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
@@ -1653,6 +1624,35 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>「完全理解」系列</tag>
         <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>长按是好的交互方式吗？</title>
+    <url>/2018/12/19/long-press-sucks/</url>
+    <content><![CDATA[<p>长按是好的交互方式吗？</p>
+<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
+<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
+<span id="more"></span>
+
+<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
+<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
+<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
+<p>首先，「长按」交互本身是一种怎样的体验？</p>
+<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
+<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
+<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
+<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
+<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
+<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
+<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
+<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>交互设计</tag>
+        <tag>产品</tag>
       </tags>
   </entry>
   <entry>
@@ -1709,6 +1709,27 @@ _Farewell and thanks to each for the company_
         <tag>冷数据</tag>
         <tag>在线数据</tag>
         <tag>离线数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>东北的冬</title>
+    <url>/2019/02/05/winter-of-north-east/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c598233d3831.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59830583ea1.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59829a17feb.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5983059de98.jpg" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩。</p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>东北</tag>
+        <tag>雪</tag>
+        <tag>林海</tag>
       </tags>
   </entry>
   <entry>
@@ -1791,102 +1812,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>Elixir 代码性能优化指北</title>
-    <url>/2019/12/05/elixir-code-performance-optimization/</url>
-    <content><![CDATA[<p>Elixir 作为基于 Erlang/OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix/Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
-<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
-<span id="more"></span>
-
-<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+/YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
-<ul>
-<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="keyword">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
-</li>
-<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = Map.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; Map.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
-</li>
-<li><p>List/Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, 0)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List/Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
-</li>
-<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="keyword">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(&amp;(&amp;<span class="number">1</span> !== <span class="keyword">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
-</li>
-<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="keyword">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      if List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      else</span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="keyword">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    if List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    else</span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
-</li>
-<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        Enum.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
-</li>
-</ul>
-<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Erlang</tag>
-        <tag>性能调优</tag>
-        <tag>Elixir</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>东北的冬</title>
-    <url>/2019/02/05/winter-of-north-east/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c598233d3831.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59830583ea1.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59829a17feb.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5983059de98.jpg" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩。</p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>东北</tag>
-        <tag>雪</tag>
-        <tag>林海</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>把 Airflow 搬进 Kubernetes</title>
     <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
     <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
@@ -1932,11 +1857,11 @@ _Farewell and thanks to each for the company_
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Cloud-Native</tag>
-        <tag>Kubernetes</tag>
         <tag>Airflow</tag>
+        <tag>Kubernetes</tag>
         <tag>Helm</tag>
         <tag>DevOps</tag>
+        <tag>Cloud-Native</tag>
       </tags>
   </entry>
   <entry>
@@ -2110,47 +2035,103 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>创业的准则</title>
-    <url>/2021/11/19/principles-4-startups/</url>
-    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
+    <title>Elixir 代码性能优化指北</title>
+    <url>/2019/12/05/elixir-code-performance-optimization/</url>
+    <content><![CDATA[<p>Elixir 作为基于 Erlang/OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix/Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
+<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
 <span id="more"></span>
 
-<ol>
-<li>找最优秀的人一起工作。 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</li>
-</ol>
-<ol start="2">
-<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
-<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
-<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
-<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
+<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+/YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
+<ul>
+<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="keyword">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
 </li>
-<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
-<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
-<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI/UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
+<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = Map.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; Map.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
 </li>
-<li><p>用产品和技术而不是营销手段说服用户。</p>
-<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
+<li><p>List/Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, 0)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List/Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
 </li>
-<li><p>建立制度，然后让更多的人自己做决定。</p>
-<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
-<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
-<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
+<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="keyword">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(&amp;(&amp;<span class="number">1</span> !== <span class="keyword">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
 </li>
-<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
-<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
+<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="keyword">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      if List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      else</span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="keyword">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    if List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    else</span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
 </li>
-<li><p>流程优化永远比赶进度更重要。</p>
-<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
+<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        Enum.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
 </li>
-</ol>
-<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
+</ul>
+<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Erlang</tag>
+        <tag>性能调优</tag>
+        <tag>Elixir</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在望京，没有方向</title>
+    <url>/2021/12/08/no-direction-in-wangjing/</url>
+    <content><![CDATA[<p>北京的初雪天很冷，却总能给人一种充满希望的感觉。雪一下，北京成了北平，茫茫的白色也成了一系列盛大节日的暗示。会来事儿的商家会早早在店面上添上一抹红，本来素朴的街道氛围一下就上来了。不管你白天因为工作上的什么事情而烦恼，在天刚黑的下班路上，都是一段最佳的放空自己的时间。宽阔的街道上一如继往的车水马龙，迎面的车道闪过一道道晃眼的白光，正向车道的红尾灯连成一片红色光带。是很堵，但人们都失去了一些平凡日子里的暴躁。当然，这很可能是前面路口交警的功劳。</p>
+<p>北京远不是一座浪漫的城市，现实的引力会牢牢的吸住每一个人，不让大家离地面太远。不仅不浪漫，甚至还很土气（「土」并不天然意味着「不能高档」和「不能高级」），然而这种「不浪漫」也正是这座城市吸引人的特点之一。生活会奖励真实，这里的每一个人都受其馈赠。望京当然也逃不过这引力。</p>
+<span id="more"></span>
+
+<p>没有二环内胡同大院的庄严古朴，没有三里屯的时尚摩登，也没有中关村的高知气息，望京在这样的北京城的东北角里，显得很普通。硬要说有什么不同，那大抵就是望京的路了。不同于北京大多数地方笔直朝向的道路，望京的路成了这些「笔直」的弯曲黏合部。沿着望京的路慢慢走，不知不觉你就偏离了原本的方向。这当然算不上什么望京「有名」的特色，但你也难忽略这件事的存在。</p>
+<p>普通的望京却没有普通的人，这样说其实不对，每一个在北京浮沉的人都是不普通的，跟望京没啥关系，望京依然还是那样普通。在路上的每一个人，都有可能有一段引人入胜的故事。这是一个爱听故事的人的天堂，要是你还有酒，那或许可以换到很多色彩斑斓的故事，或者不需要酒，那你得成为一个健谈的的士司机。但是，在某种程度上，这里的每个人又都是普通的。无论你曾经经历过什么，在这样一座偌大的城市里，你都能找到跟你有类似经历的人，没有人是完全独一无二的。</p>
+<p>望京可以算是目前北京城人口密集区的最外围的一个据点了，再往外走，选一个秋高气爽的日子，你就可以在北京郊区的农家小院里度过一个惬意的周末。当然，前提是你没有在望京迷失出城的方向。</p>
+<p>在望京，不仅没有方向，也没有音乐。当然，开出城区之后是有音乐的，但一回来望京就没有了。你可以在这里听到各种各样的旋律，但这里没有音乐。没有音乐人就很难拥有灵魂。</p>
+<p>也许望京有一种神秘的神奇磁场，每一个进入这片场区的人都在不知不觉中丧失了对自我、对生活的敏锐感知力。每个来这里的人都带着天然的对生活的期待，目标明确，反而慢慢地在一天又一天的循规蹈矩中迷失。中关村或许承载着人们更强烈得多的期待，但那里的人们在一天天的忙碌背后也会关注生活，或许是周围的校园气息对这种蓬勃的欲望起到了中和的作用，反而让其不仅有朝气活力的气质又能有随时静下心来的感知。</p>
+<p>望京大抵是少了点什么东西。</p>
+<p>在望京，务必带好你的罗盘再出发。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>产品</tag>
+        <tag>人生</tag>
         <tag>创业</tag>
+        <tag>北京</tag>
+        <tag>望京</tag>
       </tags>
   </entry>
   <entry>
@@ -2199,7 +2180,7 @@ _Farewell and thanks to each for the company_
 <p>「读万卷书，行万里路」，「身体和灵魂总要有一个在路上」，不看书的时候出门拍拍照是一个很好的跟自己独处的方式。当你能够专注的沉浸在如何拍到一张好照片的状态中时，很容易进入那种「心流」状态。专注于写代码也能达到这种状态。本质上，这都是一种利用自己沉淀的技术、品味和灵感进行创作的行为。</p>
 <p>摄影圈目前是有一些不好的风气和迷思的，我很庆幸我从一开始就树立比较正确的摄影价值观，就跟我接触其他我本不了解的领域（比如投资）一样，这样比较不容易被网络上各种各样的言论带偏。跑题的结论是，学习新东西最开始重要的不是快速掌握技术，而是树立正确的看待这个事情的观念。</p>
 <p>转回来，很多真正能让自己满意的好照片可能都诞生于不经意的一瞬间，而这样的时刻往往你的手边并没有相机。对于初学者而言，有一个能让你愿意经常带出去拍照的相机比去学习什么艰涩难懂的摄影理论和培养艺术品味要重要得多。希望明年仍然有机会会拍到很多不期而遇的好照片。</p>
-<h3 id="关于投资"><a href="#关于投资" class="headerlink" title="关于投资"></a>关于投资</h3><p><a href="https://maples7.com/2020/12/31/2020-booklist/">去年的「书单」</a>说过，我在几年前一个很偶然的机会开始接触投资。依然非常幸运的是，我从一开始就树立了比较正确的投资理念。这基本上是近几年我最大的收获之一，也很可能是我这一生很重要的收获之一。</p>
+<h3 id="关于投资"><a href="#关于投资" class="headerlink" title="关于投资"></a>关于投资</h3><p><a href="https://maples7.com/2019/12/31/2019-booklist/">前年的「书单」</a>说过，我在几年前一个很偶然的机会开始接触投资。依然非常幸运的是，我从一开始就树立了比较正确的投资理念。这基本上是近几年我最大的收获之一，也很可能是我这一生很重要的收获之一。</p>
 <p>投资其实是一个早就有前人公开最优解法的领域，但大多数人要么懒于学习、要么惧于尝试。它其实一点都不难，基本原理甚至相当简单。甚至于说，对于投资，大道至简才是最终的归途。当然，更多已经开始投资的人莽莽撞撞全凭一时的感觉来操作，运气好是可以短时间获得不错的收益，但很可能不是长久之计。这是一件非常考验人的耐心和毅力的一件事，但不同的人可能有不一样的适合自己的投资策略，一旦认定一种策略，剩下的就是绝不轻易放弃的不断「滚雪球」。</p>
 <h3 id="关于疫情"><a href="#关于疫情" class="headerlink" title="关于疫情"></a>关于疫情</h3><p>这两三年的头条自然是新冠疫情，疫情对人的异化作用远比大多数人想象的要深刻，甚至你现在看到电影里人多的场景都可能潜意识里感到不适。这几天有不少专业人士预言疫情会在 2022 年结束，我远没有这么乐观。对于国内的普通人来说，疫情什么时候结束已经不是最重要的事，重要的是如何减少疫情对自身的人生规划产生的影响。世界已经安定这么多年，没理由一直这样期待下去。这个道理对于投资同样也很重要。</p>
 <h3 id="关于预测"><a href="#关于预测" class="headerlink" title="关于预测"></a>关于预测</h3><p>我不敢说明年，我觉得三年内会有一场金融危机，或者是比金融危机更严重得多的危机。没什么 solid 的依据，就是一种直觉，当然，这不是这一天两天的直觉。当年，危机只是危机，即便它比任何一次危机还要严重，也不会是末日。危机过后，世界还会继续。当然，末日也总有一天会来，但应该不会这么早。</p>
@@ -2220,28 +2201,47 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>在望京，没有方向</title>
-    <url>/2021/12/08/no-direction-in-wangjing/</url>
-    <content><![CDATA[<p>北京的初雪天很冷，却总能给人一种充满希望的感觉。雪一下，北京成了北平，茫茫的白色也成了一系列盛大节日的暗示。会来事儿的商家会早早在店面上添上一抹红，本来素朴的街道氛围一下就上来了。不管你白天因为工作上的什么事情而烦恼，在天刚黑的下班路上，都是一段最佳的放空自己的时间。宽阔的街道上一如继往的车水马龙，迎面的车道闪过一道道晃眼的白光，正向车道的红尾灯连成一片红色光带。是很堵，但人们都失去了一些平凡日子里的暴躁。当然，这很可能是前面路口交警的功劳。</p>
-<p>北京远不是一座浪漫的城市，现实的引力会牢牢的吸住每一个人，不让大家离地面太远。不仅不浪漫，甚至还很土气（「土」并不天然意味着「不能高档」和「不能高级」），然而这种「不浪漫」也正是这座城市吸引人的特点之一。生活会奖励真实，这里的每一个人都受其馈赠。望京当然也逃不过这引力。</p>
+    <title>创业的准则</title>
+    <url>/2021/11/19/principles-4-startups/</url>
+    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
 <span id="more"></span>
 
-<p>没有二环内胡同大院的庄严古朴，没有三里屯的时尚摩登，也没有中关村的高知气息，望京在这样的北京城的东北角里，显得很普通。硬要说有什么不同，那大抵就是望京的路了。不同于北京大多数地方笔直朝向的道路，望京的路成了这些「笔直」的弯曲黏合部。沿着望京的路慢慢走，不知不觉你就偏离了原本的方向。这当然算不上什么望京「有名」的特色，但你也难忽略这件事的存在。</p>
-<p>普通的望京却没有普通的人，这样说其实不对，每一个在北京浮沉的人都是不普通的，跟望京没啥关系，望京依然还是那样普通。在路上的每一个人，都有可能有一段引人入胜的故事。这是一个爱听故事的人的天堂，要是你还有酒，那或许可以换到很多色彩斑斓的故事，或者不需要酒，那你得成为一个健谈的的士司机。但是，在某种程度上，这里的每个人又都是普通的。无论你曾经经历过什么，在这样一座偌大的城市里，你都能找到跟你有类似经历的人，没有人是完全独一无二的。</p>
-<p>望京可以算是目前北京城人口密集区的最外围的一个据点了，再往外走，选一个秋高气爽的日子，你就可以在北京郊区的农家小院里度过一个惬意的周末。当然，前提是你没有在望京迷失出城的方向。</p>
-<p>在望京，不仅没有方向，也没有音乐。当然，开出城区之后是有音乐的，但一回来望京就没有了。你可以在这里听到各种各样的旋律，但这里没有音乐。没有音乐人就很难拥有灵魂。</p>
-<p>也许望京有一种神秘的神奇磁场，每一个进入这片场区的人都在不知不觉中丧失了对自我、对生活的敏锐感知力。每个来这里的人都带着天然的对生活的期待，目标明确，反而慢慢地在一天又一天的循规蹈矩中迷失。中关村或许承载着人们更强烈得多的期待，但那里的人们在一天天的忙碌背后也会关注生活，或许是周围的校园气息对这种蓬勃的欲望起到了中和的作用，反而让其不仅有朝气活力的气质又能有随时静下心来的感知。</p>
-<p>望京大抵是少了点什么东西。</p>
-<p>在望京，务必带好你的罗盘再出发。</p>
+<ol>
+<li>找最优秀的人一起工作。 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</li>
+</ol>
+<ol start="2">
+<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
+<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
+<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
+<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
+</li>
+<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
+<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
+<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI/UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
+</li>
+<li><p>用产品和技术而不是营销手段说服用户。</p>
+<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
+</li>
+<li><p>建立制度，然后让更多的人自己做决定。</p>
+<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
+<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
+<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
+</li>
+<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
+<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
+</li>
+<li><p>流程优化永远比赶进度更重要。</p>
+<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
+</li>
+</ol>
+<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>人生</tag>
+        <tag>产品</tag>
         <tag>创业</tag>
-        <tag>北京</tag>
-        <tag>望京</tag>
       </tags>
   </entry>
 </search>
