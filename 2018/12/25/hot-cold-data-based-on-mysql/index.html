@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -18,13 +17,14 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="作为一家提供商业气象数据服务的创业公司，我们一直都有一项「欠交的作业」没有完成，那就是合理的数据规划和数据治理规范。对于早期的初创公司而言，可能很难从一开始就能构想到需要对数据存储进行合理的规划并制定长期规范，大多都是简单使用单实例的数据库，直到随着业务增长数据量累积到一个不得不严肃考虑这个问题的地步。 数据库发展简介数据量的增长其实一直是随着互联网的发展呈现爆发式增长的，因为各种各样的数据都在不">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="作为一家提供商业气象数据服务的创业公司，我们一直都有一项「欠交的作业」没有完成，那就是合理的数据规划和数据治理规范。对于早期的初创公司而言，可能很难从一开始就能构想到需要对数据存储进行合理的规划并制定长期规范，大多都是简单使用单实例的数据库，直到随着业务增长数据量累积到一个不得不严肃考虑这个问题的地步。 数据库发展简介数据量的增长其实一直是随着互联网的发展呈现爆发式增长的，因为各种各样的数据都在不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于 MySQL 的热数据与冷数据分离设计与实现">
 <meta property="og:url" content="https://maples7.com/2018/12/25/hot-cold-data-based-on-mysql/">
@@ -56,6 +56,7 @@
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
   <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
 
 
 
@@ -101,8 +102,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">88</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
         <li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
@@ -177,7 +178,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -188,7 +189,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -259,11 +260,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
       <meta itemprop="name" content="Maples7">
-      <meta itemprop="description" content="价值、概率、长期与非线性">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="基于 MySQL 的热数据与冷数据分离设计与实现 | Maples7's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -378,7 +384,7 @@
 <p>All problems in computer science can be solved by another level of indirection.<br>—— David Wheeler</p>
 </blockquote>
 <p>上述的具体业务场景更多的还是 case by case 的解决了「热数据」和「冷数据」的分离和转化问题，这意味着方案并不具有普适性，以后我们遇到其他的数据库或者不同的数据使用场景可能就不再适用。另外，很多时候，「热数据」和「冷数据」的划分并不是那么明晰的，对于「冷数据」的需求有可能转变为「热数据」需求，我们需要可以灵活切换的机制，做到数据源只抓取一次（「热数据」和「冷数据」不要分别抓取），而抓取到的数据可以任意自由的流淌到「热数据」或「冷数据」线使用，这意味着我们在数据抓取和数据存储之间应该再做一层隔离。</p>
-<p>要实现数据抓取和数据存储之间的隔离，我们可以采用「发布/订阅模式」：简单说，数据抓取服务在获取数据之后将数据发布到消息队列，后面的存储服务任意订阅这个消息队列再做存储，这样数据源只需要抓取一次，我们可以把它作为热数据使用，也可以作为冷数据使用，甚至可以即作为热数据又作为冷数据使用，切换起来也十分简单。这是后续系统架构可以改进的一个地方。</p>
+<p>要实现数据抓取和数据存储之间的隔离，我们可以采用「发布&#x2F;订阅模式」：简单说，数据抓取服务在获取数据之后将数据发布到消息队列，后面的存储服务任意订阅这个消息队列再做存储，这样数据源只需要抓取一次，我们可以把它作为热数据使用，也可以作为冷数据使用，甚至可以即作为热数据又作为冷数据使用，切换起来也十分简单。这是后续系统架构可以改进的一个地方。</p>
 <p>另外，离线数据中心仅仅使用 PolarDB 对于我们可能产生的数据量级而言也是远远不够的，我们还需要更低成本的数据存储方案来存储时间更久远、平时几乎不大会访问的一些需要被「归档」的数据，这个时候，一些基于列存储的 NoSQL 数据库可能可以派上用场。</p>
 <p>数据治理需要一个长期持续的过程，我们还在结合自身的业务场景不断的摸索当中。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
@@ -391,12 +397,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/03/08/mysql-run-faster/" rel="bookmark">MySQL 慢查询优化</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
@@ -539,14 +539,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">135k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:03</span>
   </span>
 </div>
 <div class="busuanzi-count">

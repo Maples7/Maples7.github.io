@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -18,13 +17,14 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Node.js 开发一般不容易遇到真正的模块循环依赖的情况，可是当你的项目开始达到一定的复杂度之后，你很有可能在你的 Node.js 编码生涯中遇到几次。而且如果你之前没有关于这方面的意识，Debug 可能会花费不少的时间。 我在最近的项目中就遇到了这种情况，而且不能轻易通过项目架构的重构来解决。具体来说，A 文件中需要用 B 文件中某些函数，B 文件又需要用到 A 文件中的某些函数。">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Node.js 开发一般不容易遇到真正的模块循环依赖的情况，可是当你的项目开始达到一定的复杂度之后，你很有可能在你的 Node.js 编码生涯中遇到几次。而且如果你之前没有关于这方面的意识，Debug 可能会花费不少的时间。 我在最近的项目中就遇到了这种情况，而且不能轻易通过项目架构的重构来解决。具体来说，A 文件中需要用 B 文件中某些函数，B 文件又需要用到 A 文件中的某些函数。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Node.js 中的模块循环依赖及其解决">
 <meta property="og:url" content="https://maples7.com/2016/08/17/cyclic-dependencies-in-node-and-its-solution/">
@@ -52,6 +52,7 @@
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
   <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
 
 
 
@@ -97,8 +98,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">88</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
         <li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
@@ -173,7 +174,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -184,7 +185,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -255,11 +256,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
       <meta itemprop="name" content="Maples7">
-      <meta itemprop="description" content="价值、概率、长期与非线性">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Node.js 中的模块循环依赖及其解决 | Maples7's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -353,10 +359,10 @@
 <p>官网给出了三个模块还不是循环依赖最简单的情形。实际上，两个模块就可以很清楚的表达出这种情况。根据递归的思想，解决了最简单的情形，这一类任意大小规模的问题也就解决了一半（另一半还需要探明随着问题规模增长，问题的解将会如何变化）。</p>
 <p>下面是一个两个模块循环依赖的问题最简情形：</p>
 <p><code>A.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;A: before logging b&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(b);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;A: after logging b&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: before logging b&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: after logging b&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><code>B.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;B: before logging a&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;B: after logging a&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: before logging a&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: after logging a&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>运行 <code>A.js</code>，将会看到如下输出：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">B: before logging a</span><br><span class="line">&#123;&#125;</span><br><span class="line">B: after logging a</span><br><span class="line">A: before logging b</span><br><span class="line">&#123; B: &#x27;this is b Object&#x27; &#125;</span><br><span class="line">A: after logging b</span><br></pre></td></tr></table></figure>
@@ -367,10 +373,10 @@
 <h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>想要解决这个问题有一个很简明的方法，那就是在循环依赖的每个模块中先导出自身，然后再导入其他模块（对于本文的举例来说，实际只需改动 <code>A.js</code> 就可以达到效果）。</p>
 <p>话不多说，放码过来：</p>
 <p><code>A.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;A: before log b&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(b);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;A: after log b&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: before log b&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: after log b&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
 <p><code>B.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;B: before log a&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;B: after log a&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: before log a&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: after log a&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>此时，在 A 和 B 中，都在 <code>require</code> 之前就导出了自身需要导出的模块，此时输出则是这样：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">B: before log a</span><br><span class="line">&#123; A: &#x27;this is a Object&#x27; &#125;</span><br><span class="line">B: after log a</span><br><span class="line">A: before log b</span><br><span class="line">&#123; B: &#x27;this is b Object&#x27; &#125;</span><br><span class="line">A: after log b</span><br></pre></td></tr></table></figure>
@@ -382,7 +388,7 @@
 <p>要想彻底弄明白 Node.js 模块加载的相关问题，一定得去读读 Node.js 相关部分的源码。其次，推荐阅读<a target="_blank" rel="noopener" href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第二章与<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/require.html">阮一峰的这篇日志</a>。</p>
 <p>有趣的是，ES6 特性中已经有了更优秀的 <code>import/export</code> 模块加载机制，就不会存在这样的问题（原因参考 References 第5条），然而 Node.js 还并不支持。Github 上有人提出过这个问题，Node.js 基金会成员 <a target="_blank" rel="noopener" href="https://github.com/bnoordhuis">@bnoordhuis</a> 对此的回复是：</p>
 <blockquote>
-<p>In a nutshell, <code>require()</code> is not going anywhere - removing it would break too much for too little gain - but we’ll almost certainly end up supporting ES6 import/export somehow, details TBD.</p>
+<p>In a nutshell, <code>require()</code> is not going anywhere - removing it would break too much for too little gain - but we’ll almost certainly end up supporting ES6 import&#x2F;export somehow, details TBD.</p>
 <p>Support for ES6 modules first needs to land in V8.</p>
 </blockquote>
 <p>详细的讨论可以到<a target="_blank" rel="noopener" href="https://github.com/nodejs/help/issues/53">这里</a>查看。</p>
@@ -402,24 +408,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/29/implement-a-clean-promise-with-es6-features/" rel="bookmark">用 ES6 特性实现一个标准的轻量级 Promise</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/24/understand-sync-async-and-blocking-non-blocking/" rel="bookmark">完全理解同步/异步与阻塞/非阻塞</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/09/05/build-qualified-restful-api-server/" rel="bookmark">构建合格的 RESTful API Server</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/09/06/build-doc-system-of-express-api-server-with-swagger/" rel="bookmark">使用 Swagger 构建 Express API Server 的文档系统</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/12/15/awesome-node/" rel="bookmark">为 Node.js 正名的二三事</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
@@ -560,14 +548,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">135k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:03</span>
   </span>
 </div>
 <div class="busuanzi-count">

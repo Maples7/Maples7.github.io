@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -18,13 +17,14 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。 NODE_ENV&#x3D;production在查找了一番资料之后，我在 Express 官网上发现了这样一段以前一直没有特别留意过的一段话：">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。 NODE_ENV&#x3D;production在查找了一番资料之后，我在 Express 官网上发现了这样一段以前一直没有特别留意过的一段话：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Express 性能调优">
 <meta property="og:url" content="https://maples7.com/2017/03/03/express-run-faster/">
@@ -52,6 +52,7 @@
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
   <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
 
 
 
@@ -97,8 +98,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">88</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
         <li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
@@ -158,7 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NODE-ENV-production"><span class="nav-number">1.</span> <span class="nav-text">NODE_ENV&#x3D;production</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-Express-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E6%8A%80%E5%B7%A7"><span class="nav-number">2.</span> <span class="nav-text">其他 Express 性能调优技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NODE-ENV-x3D-production"><span class="nav-number">1.</span> <span class="nav-text">NODE_ENV&#x3D;production</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-Express-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E6%8A%80%E5%B7%A7"><span class="nav-number">2.</span> <span class="nav-text">其他 Express 性能调优技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -173,7 +174,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -184,7 +185,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -255,11 +256,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
       <meta itemprop="name" content="Maples7">
-      <meta itemprop="description" content="价值、概率、长期与非线性">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Express 性能调优 | Maples7's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -340,7 +346,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
-<h2 id="NODE-ENV-production"><a href="#NODE-ENV-production" class="headerlink" title="NODE_ENV=production"></a>NODE_ENV=production</h2><p>在查找了一番资料之后，我在 <a target="_blank" rel="noopener" href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
+<h2 id="NODE-ENV-x3D-production"><a href="#NODE-ENV-x3D-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a target="_blank" rel="noopener" href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
 <span id="more"></span>
 
 <blockquote>
@@ -349,19 +355,19 @@
 <ul>
 <li>高速缓存视图模板。</li>
 <li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
-<li>生成简短的错误消息。     </li>
+<li>生成简短的错误消息。</li>
 </ul>
 <p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
 </blockquote>
 <p>遂顿悟！</p>
 <p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
-<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A/B 测试（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A/B_testing">A/B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
+<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
 <p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
 <p>测试结果如下：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
 
 <p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
-<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1/3 左右）。</p>
+<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
 <h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
 <ul>
 <li><strong>使用 gzip 压缩响应</strong>：用 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
@@ -385,24 +391,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/09/05/build-qualified-restful-api-server/" rel="bookmark">构建合格的 RESTful API Server</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/09/06/build-doc-system-of-express-api-server-with-swagger/" rel="bookmark">使用 Swagger 构建 Express API Server 的文档系统</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/17/cyclic-dependencies-in-node-and-its-solution/" rel="bookmark">Node.js 中的模块循环依赖及其解决</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/24/understand-sync-async-and-blocking-non-blocking/" rel="bookmark">完全理解同步/异步与阻塞/非阻塞</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/29/implement-a-clean-promise-with-es6-features/" rel="bookmark">用 ES6 特性实现一个标准的轻量级 Promise</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
@@ -543,14 +531,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">135k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:03</span>
   </span>
 </div>
 <div class="busuanzi-count">

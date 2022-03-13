@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2022-01-05T15:31:07.177Z</updated>
+  <updated>2022-03-13T12:12:34.449Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何开始稳健投资</title>
+    <link href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/"/>
+    <id>https://maples7.com/2022/03/13/how-to-start-investing-soundly/</id>
+    <published>2022-03-13T11:51:07.000Z</published>
+    <updated>2022-03-13T12:12:34.449Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA&quot;&gt;二级市场&lt;/a&gt;摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。&lt;/p&gt;
+&lt;h2 id=&quot;「投资」&quot;&gt;&lt;a href=&quot;#「投资」&quot; class=&quot;headerlink&quot; title=&quot;「投资」&quot;&gt;&lt;/a&gt;「投资」&lt;/h2&gt;&lt;h3 id=&quot;正确的金钱观&quot;&gt;&lt;a href=&quot;#正确的金钱观&quot; class=&quot;headerlink&quot; title=&quot;正确的金钱观&quot;&gt;&lt;/a&gt;正确的金钱观&lt;/h3&gt;&lt;p&gt;首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看&lt;a href=&quot;https://book.douban.com/subject/35295592/&quot;&gt;《小狗钱钱》&lt;/a&gt;和&lt;a href=&quot;https://book.douban.com/subject/25816940/&quot;&gt;《富爸爸·穷爸爸》&lt;/a&gt;来解决这方面的认知问题。&lt;/p&gt;
+&lt;p&gt;另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="理财" scheme="https://maples7.com/tags/%E7%90%86%E8%B4%A2/"/>
+    
+    <category term="基金" scheme="https://maples7.com/tags/%E5%9F%BA%E9%87%91/"/>
+    
+    <category term="ETF" scheme="https://maples7.com/tags/ETF/"/>
+    
+  </entry>
   
   <entry>
     <title>2021 年书单</title>
@@ -169,7 +196,7 @@
     <updated>2021-11-19T18:04:03.066Z</updated>
     
     
-    <summary type="html">&lt;p&gt;Elixir 作为基于 Erlang/OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者&lt;a href=&quot;https://github.com/mroth/phoenix-showdown&quot;&gt;对比过包括 Phoenix 在内不同的 Web Framework 的性能&lt;/a&gt;，可见如果采用 Phoenix/Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 &lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86&quot;&gt;APM&lt;/a&gt; 服务来监控系统状态和性能指标。&lt;/p&gt;
+    <summary type="html">&lt;p&gt;Elixir 作为基于 Erlang&amp;#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者&lt;a href=&quot;https://github.com/mroth/phoenix-showdown&quot;&gt;对比过包括 Phoenix 在内不同的 Web Framework 的性能&lt;/a&gt;，可见如果采用 Phoenix&amp;#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 &lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86&quot;&gt;APM&lt;/a&gt; 服务来监控系统状态和性能指标。&lt;/p&gt;
 &lt;p&gt;由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 &lt;a href=&quot;https://hexdocs.pm/elixir/Enum.html&quot;&gt;&lt;code&gt;Enum&lt;/code&gt;&lt;/a&gt;、&lt;a href=&quot;https://hexdocs.pm/elixir/Stream.html&quot;&gt;&lt;code&gt;Stream&lt;/code&gt;&lt;/a&gt;，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。&lt;/p&gt;</summary>
     
     
@@ -461,30 +488,6 @@
     <category term="意识流" scheme="https://maples7.com/tags/%E6%84%8F%E8%AF%86%E6%B5%81/"/>
     
     <category term="散文" scheme="https://maples7.com/tags/%E6%95%A3%E6%96%87/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何系统地学习一门编程语言？</title>
-    <link href="https://maples7.com/2017/07/13/comprehensively-learn-a-new-programming-lauguage/"/>
-    <id>https://maples7.com/2017/07/13/comprehensively-learn-a-new-programming-lauguage/</id>
-    <published>2017-07-12T18:05:48.000Z</published>
-    <updated>2021-11-19T18:04:02.845Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;「学习一门新的编程语言」是每个程序员都必然会面对的一个课题（注：本文特指工程实践中常用的高级编程语言）。自从高一开始编程到现在，我也接触了不少的编程语言，有的语言已经能在工作中得心应手的使用；有的语言用的不多，但大概了解其设计，也能在官方文档的帮助下简单使用；还有的则之前很了解，但很长时间没有使用过了。&lt;/p&gt;
-&lt;p&gt;换一份新的工作是最有机会让程序员接触到新的东西的，最近我就应工作需求开始接触一门新的编程语言，学习过程中难免会和已经熟悉的编程语言进行对比，然后发现其实编程语言的学习完全是有「套路」可循的，这篇博客试图总结一下这种「套路」。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-    <category term="编程" scheme="https://maples7.com/tags/%E7%BC%96%E7%A8%8B/"/>
-    
-    <category term="程序员" scheme="https://maples7.com/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/"/>
-    
-    <category term="编程语言" scheme="https://maples7.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
     
   </entry>
   

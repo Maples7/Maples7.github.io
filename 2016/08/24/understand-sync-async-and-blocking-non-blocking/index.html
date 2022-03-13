@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -18,13 +17,14 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。 可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。 本文力">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。 可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。 本文力">
 <meta property="og:type" content="article">
 <meta property="og:title" content="完全理解同步&#x2F;异步与阻塞&#x2F;非阻塞">
 <meta property="og:url" content="https://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">
@@ -58,6 +58,7 @@
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
   <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
 
 
 
@@ -103,8 +104,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">88</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
         <li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
@@ -179,7 +180,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -190,7 +191,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -261,11 +262,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
       <meta itemprop="name" content="Maples7">
-      <meta itemprop="description" content="价值、概率、长期与非线性">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="完全理解同步/异步与阻塞/非阻塞 | Maples7's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -327,7 +333,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
+      <span>2.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -351,9 +357,9 @@
 <span id="more"></span>
 
 <h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
-<p>在发起读取文件的请求时，应用层会调用系统内核的 I/O 接口。</p>
-<p>如果应用层调用的是阻塞型 I/O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
-<p>如果应用层调用的是非阻塞 I/O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
+<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
+<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
+<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
 <p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
 <p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
 <h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
@@ -366,7 +372,7 @@
 <p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
 <p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
 <p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
-<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I/O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I/O 线程并进行运算，而其他的线程都是 I/O 线程。I/O 线程在主线程的调度下与系统内核进行交互完成完成 I/O 操作并把数据返回给主线程，而主线程对 I/O 线程的调度就完全是上述异步非阻塞的（至于 I/O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I/O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
+<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
 <p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
 <h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
 <p>假设小明需要在网上下载一个软件：</p>
@@ -389,24 +395,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/17/cyclic-dependencies-in-node-and-its-solution/" rel="bookmark">Node.js 中的模块循环依赖及其解决</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/29/implement-a-clean-promise-with-es6-features/" rel="bookmark">用 ES6 特性实现一个标准的轻量级 Promise</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/09/05/build-qualified-restful-api-server/" rel="bookmark">构建合格的 RESTful API Server</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/09/06/build-doc-system-of-express-api-server-with-swagger/" rel="bookmark">使用 Swagger 构建 Express API Server 的文档系统</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/12/15/awesome-node/" rel="bookmark">为 Node.js 正名的二三事</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
@@ -550,14 +538,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">135k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:03</span>
   </span>
 </div>
 <div class="busuanzi-count">

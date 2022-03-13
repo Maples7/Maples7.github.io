@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -18,18 +17,19 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者对比过包括 Phoenix 在内不同的 Web Framework 的性能，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者对比过包括 Phoenix 在内不同的 Web Framework 的性能，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Elixir 代码性能优化指北">
 <meta property="og:url" content="https://maples7.com/2019/12/05/elixir-code-performance-optimization/">
 <meta property="og:site_name" content="Maples7&#39;s Blog">
-<meta property="og:description" content="Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者对比过包括 Phoenix 在内不同的 Web Framework 的性能，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因">
+<meta property="og:description" content="Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者对比过包括 Phoenix 在内不同的 Web Framework 的性能，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-05T13:20:20.000Z">
 <meta property="article:modified_time" content="2021-11-19T18:04:03.066Z">
@@ -52,6 +52,7 @@
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
   <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
 
 
 
@@ -97,8 +98,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">88</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
         <li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
@@ -172,7 +173,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,7 +184,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -254,11 +255,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
       <meta itemprop="name" content="Maples7">
-      <meta itemprop="description" content="价值、概率、长期与非线性">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Elixir 代码性能优化指北 | Maples7's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -320,7 +326,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.3k</span>
+      <span>5.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -338,15 +344,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Elixir 作为基于 Erlang/OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a target="_blank" rel="noopener" href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix/Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
+        <p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a target="_blank" rel="noopener" href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
 <p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a target="_blank" rel="noopener" href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a target="_blank" rel="noopener" href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
 <span id="more"></span>
 
-<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a target="_blank" rel="noopener" href="https://developers.google.com/youtube/v3/getting-started#partial">Google+/YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
+<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a target="_blank" rel="noopener" href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
 <ul>
 <li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
 <p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="keyword">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
 <p>改动后：</p>
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
@@ -362,30 +368,30 @@
 
 <p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
 </li>
-<li><p>List/Tuple 直接用模式匹配取值：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
+<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
 <p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chars = elem(item, 0)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 
 <p>改动后：</p>
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
 
-<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List/Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
+<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
 </li>
 <li><p>匿名函数用 <code>&amp;</code> 改写：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
 <p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enum.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="keyword">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enum.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
 
 <p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enum.filter(&amp;(&amp;<span class="number">1</span> !== <span class="keyword">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enum.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
 
 <p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
 </li>
 <li><p>在函数参数中直接匹配复杂数据结构内部的值：<a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a target="_blank" rel="noopener" href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
 <p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="keyword">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      if List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      else</span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
 
 <p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="keyword">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    if List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    else</span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
 
 <p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
 </li>
@@ -407,21 +413,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/02/09/why-oo-sucks/" rel="bookmark">译文 | 为什么面向对象很糟糕</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/06/10/awesome-erlang/" rel="bookmark">了不起的 Erlang</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/03/03/express-run-faster/" rel="bookmark">Express 性能调优</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/03/08/mysql-run-faster/" rel="bookmark">MySQL 慢查询优化</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
@@ -562,14 +553,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">135k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:03</span>
   </span>
 </div>
 <div class="busuanzi-count">

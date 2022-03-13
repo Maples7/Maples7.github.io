@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
-<meta name="generator" content="Hexo 6.0.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -18,13 +17,14 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。 本来不想把这篇文章加入到「完全理解」系列，因为觉得「并发」涉及到的东西实在是很多，而我想凭借一篇博客企图「完全理解」那是不现实的。但虽然不能做到「完全理解」，但我还是会尝试尽力提纲挈领的把「并发」相关的">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。 本来不想把这篇文章加入到「完全理解」系列，因为觉得「并发」涉及到的东西实在是很多，而我想凭借一篇博客企图「完全理解」那是不现实的。但虽然不能做到「完全理解」，但我还是会尝试尽力提纲挈领的把「并发」相关的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="完全理解并发">
 <meta property="og:url" content="https://maples7.com/2018/10/21/understand-concurrency/">
@@ -53,6 +53,7 @@
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
   <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
 
 
 
@@ -98,8 +99,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">88</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
         <li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
@@ -174,7 +175,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -185,7 +186,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -256,11 +257,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
       <meta itemprop="name" content="Maples7">
-      <meta itemprop="description" content="价值、概率、长期与非线性">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="价值、概率、长期与非线性">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="完全理解并发 | Maples7's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -322,7 +328,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.5k</span>
+      <span>4.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -354,8 +360,8 @@
 <p>在计算机诞生之初，是没有操作系统这种东西存在的，当时人们只能先把打孔纸带通过输入机将程序传入计算机，再启动运行。在程序执行完毕之后，打印机把计算结果输出，在现场监督程序执行的程序员再取走纸带。在这个时期，同一个计算机系统在同一时间只能处理唯一确定的一件事情。</p>
 <p>后来人们发明了批处理系统。批处理系统相当于计算机上的一个任务监督程序，在它的控制和调度下，计算机能够自动的、成批的处理一个或多个用户的任务。在批处理系统的帮助下，各个任务之间可以自动衔接，减少了需要人工建立任务和手工操作的时间，提高了计算机的利用效率。</p>
 <p>再后来，随着 CPU 性能的不断提升，出现了分时系统和实时系统。分时系统是把 CPU 的运行时间分成很短的时间片，按时间片轮流把 CPU 分配给各联机任务使用。若某个任务在分配给它的时间片内不能完成其计算，则该任务暂时中断，把 CPU 让给另一任务使用，等待下一轮调度时再继续其运行。由于计算机速度很快，各个任务之间轮转得也很快，给每个用户的感觉是他独占了一台计算机。而每个用户可以通过自己的终端向系统发出各种操作控制命令，在充分的人机交互情况下，完成作业的运行。为了解决分时系统不能及时响应用户指令的情况，又出现了能够在严格的时间范围内完成事件处理、及时响应随机外部事件的实时系统。</p>
-<p>IBM 于 1964 年伴随着大型机 System/360 推出了通用操作系统 OS/360，这个通用的操作系统使得不同型号的计算机设备也可以在同样的操作系统控制下使用同样的外部设备（如打印机）和更上层的软件，并且这些设备之间可以相互连接，共同工作。通用操作系统使得不同型号的计算机设备之间能够真正组成网络来处理复杂的任务。<del>软件工程领域的著作<a target="_blank" rel="noopener" href="https://book.douban.com/subject/2230248/">《人月神话》</a>也是诞生于 IBM 的这个项目。</del></p>
-<p>再往后就是我们相对更加熟悉的 Unix/Linux/Windows/OS X 这些现代操作系统诞生、迭代、版本更替的历史，目前这些操作系统的并发能力已经远远超出了当时的 OS/360，而现代计算机网络的加持更是使得理论上的计算机并发处理能力几乎已经没有了上限。</p>
+<p>IBM 于 1964 年伴随着大型机 System&#x2F;360 推出了通用操作系统 OS&#x2F;360，这个通用的操作系统使得不同型号的计算机设备也可以在同样的操作系统控制下使用同样的外部设备（如打印机）和更上层的软件，并且这些设备之间可以相互连接，共同工作。通用操作系统使得不同型号的计算机设备之间能够真正组成网络来处理复杂的任务。<del>软件工程领域的著作<a target="_blank" rel="noopener" href="https://book.douban.com/subject/2230248/">《人月神话》</a>也是诞生于 IBM 的这个项目。</del></p>
+<p>再往后就是我们相对更加熟悉的 Unix&#x2F;Linux&#x2F;Windows&#x2F;OS X 这些现代操作系统诞生、迭代、版本更替的历史，目前这些操作系统的并发能力已经远远超出了当时的 OS&#x2F;360，而现代计算机网络的加持更是使得理论上的计算机并发处理能力几乎已经没有了上限。</p>
 <p>从整个计算机操作系统的历史我们可以清晰的看到历史上的计算机科学家们是如何一步一步来提升计算机处理任务的效率的。从一开始需要手工的开启、监督、结束单一任务，到使用批处理系统来自动化的监督任务流水线，再到使用分时系统来让 CPU 在多个任务之间不停的轮转，然后用后文要详述的多 CPU 使用多进程和多线程的方式来进一步提升多任务的执行效率，最后我们使用通用计算机系统来组成庞大的计算集群来处理复杂的各种各样需要随机响应的任务，并发能力一次比一次有了质的提升。</p>
 <p>如果说<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B">「摩尔定律」</a>使得 CPU 的性能可以指数级的增长来从单机速度上提升任务完成的效率，那么不断的提升并发能力则是更高屋建瓴的考虑如何不间断不浪费的来「压榨」CPU 的高性能，这种思考问题的维度比一门心思的考虑提升单 CPU 的速度更具有现实意义，对于解决现有问题来说是更加高明的选择。尤其是在「摩尔定律」行将失效的今天，采用分布式的方式提高整个系统的并发处理能力几乎成了唯一的选择。</p>
 <h2 id="多进程与多线程"><a href="#多进程与多线程" class="headerlink" title="多进程与多线程"></a>多进程与多线程</h2><p>让我们先回到单机时代，来了解目前主流的并发模型——多进程与多线程。现代操作系统早已进入多 CPU 时代，自然会支持多进程和多线程。「进程」就是操作系统中一个具有独立功能的程序，操作系统管理所有进程的执行并且以进程为单位分配存储空间。一个进程还可以拥有多个并发的执行流程，这些并发的执行流程是可以获得 CPU 调度和分派的基本执行单元，也就是线程。</p>
@@ -367,10 +373,10 @@
 <p>以大多数人都熟悉的 Redis 为例，我们可以使用 Redis 的 set 指令，把 key 作为锁的标志。尤其注意的是，这个操作原子性包含了查看锁存不存在、加锁和设置过期时间三步操作，它们合在一起应该具有原子性（至少前两步）。也就是说，如果我们需要先使用 get 指令查看锁存不存在再决定是否加锁，这个锁已经不是一把好「锁」了。好在 <a target="_blank" rel="noopener" href="https://redis.io/commands/set">Redis 2.6.12 以上的 set 指令</a> 支持了同时加参数设置过期时间和判断 key 是否存在，比如使用 <code>SET lock_key lock EX 5000 NX</code>，NX 保证了锁不存在时才上锁，而 Redis 指令本身具有原子性，这样就实现了一把看起来还不错的锁。在任务执行完毕后我们还需要用 del 指令主动把锁删掉以释放资源。</p>
 <p>上述例子只是一个简单的场景，这个锁其实还并不是完美的。思考这样的问题：如果某一次操作线程 A 执行的特别慢，超过了过期时间，这个时候锁已经自动过期失效了，这样就有可能两个线程同时在执行了。如何避免这样的问题这里不再详述，感兴趣的同学可以参考末尾 References 里面的内容。总之，实现一把完美的分布式锁可能并没有想象中那么简单。</p>
 <h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p>对于高级编程语言而言，多进程和多线程的并发模型更多的还是与操作系统底层对于并发的实现是保持一致的。也就是说，在它们的抽象层级上，实现并发的方式基本只是复刻了操作系统底层的并发模型。而 JavaScript 却不一样。</p>
-<p>JavaScript 在诞生时就被定位为在网页前端执行的脚本，为了保证线程安全，而且主线程也不会被 I/O 等待所阻塞而失去响应，JavaScript 在设计阶段就采用了「异步事件模型」。这个模型并不是 JavaScript 独有的，它只是借用了这个古老的模型来解决它自身的问题。</p>
-<p>在实际情况中，异步事件模型也是采用多线程的方式来实施的。但是对于开发人员而言，你永远只需要跟主线程打交道，而所有的这些交互都是所谓「异步」的，也就是说，你调用的任何一个 API 都在执行成功后主动告知你执行结果，这样你就可以不必被任何 I/O 所堵塞（详细的关于异步、同步、阻塞和非阻塞的辨析可以看这里：<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">《完全理解同步/异步与阻塞/非阻塞》</a>）。既然不会被阻塞，那么你可以以很快的速度调用很多个你需要调用的 I/O，这些 API 在自己执行完毕后会主动返回结果，你可以拿着结果来继续做后续的事情，而其他时刻你完全是「自由」的。</p>
+<p>JavaScript 在诞生时就被定位为在网页前端执行的脚本，为了保证线程安全，而且主线程也不会被 I&#x2F;O 等待所阻塞而失去响应，JavaScript 在设计阶段就采用了「异步事件模型」。这个模型并不是 JavaScript 独有的，它只是借用了这个古老的模型来解决它自身的问题。</p>
+<p>在实际情况中，异步事件模型也是采用多线程的方式来实施的。但是对于开发人员而言，你永远只需要跟主线程打交道，而所有的这些交互都是所谓「异步」的，也就是说，你调用的任何一个 API 都在执行成功后主动告知你执行结果，这样你就可以不必被任何 I&#x2F;O 所堵塞（详细的关于异步、同步、阻塞和非阻塞的辨析可以看这里：<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">《完全理解同步&#x2F;异步与阻塞&#x2F;非阻塞》</a>）。既然不会被阻塞，那么你可以以很快的速度调用很多个你需要调用的 I&#x2F;O，这些 API 在自己执行完毕后会主动返回结果，你可以拿着结果来继续做后续的事情，而其他时刻你完全是「自由」的。</p>
 <p>在这个并发模型中，你不再需要处理各种「锁」的问题，因为真正和你交互的只有主线程。可是作为开发者，你可能需要考虑如何处理代码中的各种异步流程。因为在异步的世界里，代码不再是简单的按照书写顺序来顺序执行的，如何在工程中清晰合理的组织这些流程是在这个并发模型下需要考虑的问题。</p>
-<h2 id="各种各样的并发模型"><a href="#各种各样的并发模型" class="headerlink" title="各种各样的并发模型"></a>各种各样的并发模型</h2><p>这个世界上除了多进程/多线程的并发模型和异步事件并发模型，还有很多其他的并发模型，比如 Erlang 的 Actor 并发模型和 Golang 的 CSP 并发模型。在 Erlang 的并发世界里，有很多比内核线程还要轻量级的对象，它们之间通过各种 Message 来进行数据共享。这些对象非常轻，可以同时成千上万的被创建出来实现并发，而对象之间都通过发消息来进行数据交换，根本不需要「锁」。</p>
+<h2 id="各种各样的并发模型"><a href="#各种各样的并发模型" class="headerlink" title="各种各样的并发模型"></a>各种各样的并发模型</h2><p>这个世界上除了多进程&#x2F;多线程的并发模型和异步事件并发模型，还有很多其他的并发模型，比如 Erlang 的 Actor 并发模型和 Golang 的 CSP 并发模型。在 Erlang 的并发世界里，有很多比内核线程还要轻量级的对象，它们之间通过各种 Message 来进行数据共享。这些对象非常轻，可以同时成千上万的被创建出来实现并发，而对象之间都通过发消息来进行数据交换，根本不需要「锁」。</p>
 <p>在一个没有「锁」的世界里，并发的效率是可以大大的提升的。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每一个并发模型都有其存在的意义和价值，不过在具体的业务场景下，采用不同的并发模型的好坏却是客观的。</p>
 <p>真理是存在的，可以被不断逼近却永远无法被任何事物所完美诠释。在技术的领域里，没有永恒的真理，但是真理永远值得被追求。</p>
@@ -386,18 +392,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2016/08/24/understand-sync-async-and-blocking-non-blocking/" rel="bookmark">完全理解同步/异步与阻塞/非阻塞</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/10/17/understand-callback/" rel="bookmark">完全理解回调函数</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2017/06/10/awesome-erlang/" rel="bookmark">了不起的 Erlang</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
@@ -537,14 +531,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">135k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:03</span>
   </span>
 </div>
 <div class="busuanzi-count">
