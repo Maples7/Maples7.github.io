@@ -31,6 +31,25 @@
       </tags>
   </entry>
   <entry>
+    <title>无复屠苏梦，挑灯夜未央</title>
+    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6aaec0.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6894bf.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a19b2.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6baeb1.gif" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>黑白</tag>
+        <tag>Sony DSC-RX100</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>没有微信的 24 小时里</title>
     <url>/2014/09/25/24h-without-wechat/</url>
     <content><![CDATA[<p>也是前不久在《简书周刊》上看到一篇文章，作者讲述自己在删除了所有手机上的社交 App 后的种种感受。或许我们都早已承认社交网络已经深刻的影响着我们的日常生活，但在看到那篇文章之前，我还真没有意识到离开以微信为首的社交 Apps 之后会是一番怎样真切的感受。</p>
@@ -55,25 +74,6 @@
       <tags>
         <tag>微信</tag>
         <tag>社交网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>无复屠苏梦，挑灯夜未央</title>
-    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6aaec0.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6894bf.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a19b2.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6baeb1.gif" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>黑白</tag>
-        <tag>Sony DSC-RX100</tag>
       </tags>
   </entry>
   <entry>
@@ -531,6 +531,32 @@
       </tags>
   </entry>
   <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用 Swagger 构建 Express API Server 的文档系统</title>
     <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
     <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
@@ -603,32 +629,6 @@
         <tag>API</tag>
         <tag>Express</tag>
         <tag>Swagger</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -754,40 +754,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>学生心态与产品演进之路</title>
-    <url>/2016/11/22/stay-hungry-stay-foolish/</url>
-    <content><![CDATA[<p>对于工作稳定的开发者而言，我们每天大多数时间都是在做着我们熟悉的事情。一个又一个不同的业务丢过来，我们却基本上总是使用着我们早已熟悉的技术栈。很多技术先驱们提倡开发者要学会远离自己的 comfort zone，学习一些新的我们所不曾了解的东西。是的，一个没有更高技术追求的开发者很难长久的在技术这条路上走得长远，更是难以达到一定的技术高度。</p>
-<p>选择了开发者这条职业之路，也就同时意味着这将是一条不断学习新知的道路。这篇文章将指出一个已经对自己常用的技术栈熟知的开发者，在学习新知的过程中可能会遇到的一个典型的问题。也许这个问题不仅仅是针对开发者，任何一个对自己常接触的业务领域技能熟知的职业人，在接触到新的知识领域时，都有可能会遇到这样的问题。</p>
-<span id="more"></span>
-
-<p>作为开发者，一个典型的场景就是我们需要在已有技术知识的基础上学习一些新的技术。你可能需要学习一个新框架如何使用、一个第三方服务的 API 如何合理的调用，更甚者，你可能得从后端开发转到前端开发、从移动端开发转到后端开发等等。在学习新东西的过程中，我发现我们极易犯一个心态上的错误——即不能正确的以一个小白的心态来学习新的知识。</p>
-<p>这样说可能对开发者而言有失公允，实际情况可能是，我们会主动的使用我们已经掌握的知识作为参考和背景知识来辅助学习新的知识，这其实是一件很自然也很正确的事情。然而，不知道有没有人有这样的感觉，一个已经有一定使用某一框架开发经验的程序员，与一个毫无开发经验的毕业生，同时学习另一个新的框架来实现一个不算太有难度的业务，往往那个毕业生可以先交出成品。当然，这件事不尽然，但确实有这样的情况发生。表面上，似乎已有的开发经验成为了我们学习新知的负担，真的是这样吗？</p>
-<p>造成这种现象的原因我觉得可能有以下几种：</p>
-<p><strong>1. 可能你并没有真正打心底里认同这门新的技术。</strong></p>
-<p>你可能一开始只是听别人说，有些好奇，于是尝试着去了解这门新的技术，然而发现它并没有你想像的那么好，很多指导思想十分陈旧，使用起来也不是那么的优雅。情况可能真的就如你想的那样，也许你已经掌握的技术确实比这门新技术设计上要先进一些，但我觉得另一种概率更大的可能是你还没有真正体会到这门新技术的精髓。它可能表面上看起来有一些蠢，和你已有的认知有一些出入，但你不妨再耐心一些，深入进去，多问一些为什么，了解这门技术这样设计的真正动因，当你真正开始认同这门新技术的时候，你可能就真正打开了另一个新世界的大门了。</p>
-<p>我之所以说「你可能还没有真正了解新技术的精髓」这种情况的概率更大的原因是，我们在已有技术的基础上，往往能一眼分辨出比这种技术设计更丑陋的技术有哪些，却不能立马分辨出比这种技术设计更优秀的优秀之处在哪里，这是我们所掌握的编程思想所决定的。既然是能诱使你好奇去尝试学习使用的技术，我想一般应该是设计更先进的技术吧。</p>
-<p>当然，你也可能完全是因为团队或上级要求，去学习一门新的技术，如果这门技术的确比你已经掌握的技术设计上更糟糕（或者技术社区中确实大部分人都这样认为），那确实挺难打心底里去认同的。这种情况我建议你好好准备准备，充分了解这门新技术比你掌握的技术差在哪里，然后跟团队的技术 Leader 好好谈谈，争取策反他吧。</p>
-<p><strong>2. 你对自己的代码质量要求太高了。</strong></p>
-<p>这种情况可能更普遍。对于大多数摆正心态的有经验的程序员而言，并不是他们没有认真学习新的知识，而往往是他们对自己的代码质量要求太高。</p>
-<p>我们在已有的知识积累中沉淀出了一些做任何类型开发都需要了解的一些知识，并内化到了自己的知识体系中，比如一些软件工程的思想、一些常用的设计模式等，这些经典的思想限制着我们不愿意写出太烂的代码。我们总是想着我们的代码分层良好、复用程度高、易于后期维护、易于扩展、安全性更好等等，然而此时我们对具体的新技术的掌握还并不允许我们写出这个技术领域符合这些通用技术思想要求的代码。这种具体的技术可能是一门新的语言，你在对这种语言的语法都还不熟悉的情况下，是不可能写出高质量的代码的。然而犹如一张白纸的应届生是不会有这样的顾虑的，能够实现功能可能对他们就已经一种全新的尝试了，所以他们往往可能能更快的做出一个成形的东西来。</p>
-<p>这可以说是一种「了解得更多的烦恼」，我们唯一能做的就是摆正心态，再脚踏实地一些，不要还没学会走路就企图要跑。新技术在你还没掌握之前对你而言它就是新的。如果你以前用你已经了解过的技术随随便便就能写出高质量的代码，那么在这个全新的领域里，我们还是得从一行行的烂代码开始积累起。</p>
-<p>另外需要说明的是，原有的经验积累并不是毫无用处的，我们正是因为了解我们写出的新代码的缺陷可能在哪些地方，我们才能更加明确我们改进的方向。如果要比较谁能把工程代码写得（或改进得）更好，那我想应届生们是断然比不过有经验的老程序员们的。其次，一些其他的软技能，比如查找资料的能力、借助互联网解决问题的能力、对 Bug 可能原因的敏感度等等，这些也是宝贵经验带来的财富。</p>
-<p>其实做产品也很容易犯这样类似的错误。</p>
-<p>一些没有经验的产品经理或者做自己 Side Project 的程序员，往往一开始就把自己的产品构思得很好，并且企图第一版就把功能做得很完美。这样的想法能好，但是太不现实。「罗马不是一天建成的」，任何伟大的产品也是从一点一滴琐碎的改进中积累来的。一开始，它们可能很烂，性能差、页面分布不合理，甚至有明显的 Bug 等等，但经过不断的迭代与打磨，慢慢的它才会变得优秀、变得无可替代、变得不可或缺。尤其是在这样一个互联网浪潮下，任何的机会都经不起犹豫和等待，一个一开始就追求完美的产品，等不到出生，就已经死了。</p>
-<p>说了这么多（甚至个人觉得好像有点儿鸡汤味儿……），其实总结起来也就还是乔布斯的那句话：</p>
-<p><em>Stay hungry, stay foolish.</em></p>
-<p>不仅仅是在行动上，更是在心态和产品设计理念上，用这句话来武装自己。保持学生心态，一点一滴脚踏实地的积累和迭代，才能调和出不一样的色彩。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>学生心态</tag>
-        <tag>产品经理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>从个人经历漫谈传统教育与编程</title>
     <url>/2016/11/27/traditional-edu-and-programming/</url>
     <content><![CDATA[<center>**1**</center>
@@ -859,40 +825,37 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>程序员：请不要丢失你的敬畏心</title>
-    <url>/2016/12/09/show-your-respect/</url>
-    <content><![CDATA[<center>**暗**</center>
-
-<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
-<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
+    <title>学生心态与产品演进之路</title>
+    <url>/2016/11/22/stay-hungry-stay-foolish/</url>
+    <content><![CDATA[<p>对于工作稳定的开发者而言，我们每天大多数时间都是在做着我们熟悉的事情。一个又一个不同的业务丢过来，我们却基本上总是使用着我们早已熟悉的技术栈。很多技术先驱们提倡开发者要学会远离自己的 comfort zone，学习一些新的我们所不曾了解的东西。是的，一个没有更高技术追求的开发者很难长久的在技术这条路上走得长远，更是难以达到一定的技术高度。</p>
+<p>选择了开发者这条职业之路，也就同时意味着这将是一条不断学习新知的道路。这篇文章将指出一个已经对自己常用的技术栈熟知的开发者，在学习新知的过程中可能会遇到的一个典型的问题。也许这个问题不仅仅是针对开发者，任何一个对自己常接触的业务领域技能熟知的职业人，在接触到新的知识领域时，都有可能会遇到这样的问题。</p>
 <span id="more"></span>
 
-<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
-<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
-<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
-<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
-<center>**明**</center>
-
-<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
-<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
-<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
-<p>就像读书的三境界一样，关于认知也有四重境界：</p>
-<ol>
-<li>You don’t know that you don’t know</li>
-<li>You know that you don’t know</li>
-<li>You know that you know</li>
-<li>You don’t know that you know</li>
-</ol>
-<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
-<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
-<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
+<p>作为开发者，一个典型的场景就是我们需要在已有技术知识的基础上学习一些新的技术。你可能需要学习一个新框架如何使用、一个第三方服务的 API 如何合理的调用，更甚者，你可能得从后端开发转到前端开发、从移动端开发转到后端开发等等。在学习新东西的过程中，我发现我们极易犯一个心态上的错误——即不能正确的以一个小白的心态来学习新的知识。</p>
+<p>这样说可能对开发者而言有失公允，实际情况可能是，我们会主动的使用我们已经掌握的知识作为参考和背景知识来辅助学习新的知识，这其实是一件很自然也很正确的事情。然而，不知道有没有人有这样的感觉，一个已经有一定使用某一框架开发经验的程序员，与一个毫无开发经验的毕业生，同时学习另一个新的框架来实现一个不算太有难度的业务，往往那个毕业生可以先交出成品。当然，这件事不尽然，但确实有这样的情况发生。表面上，似乎已有的开发经验成为了我们学习新知的负担，真的是这样吗？</p>
+<p>造成这种现象的原因我觉得可能有以下几种：</p>
+<p><strong>1. 可能你并没有真正打心底里认同这门新的技术。</strong></p>
+<p>你可能一开始只是听别人说，有些好奇，于是尝试着去了解这门新的技术，然而发现它并没有你想像的那么好，很多指导思想十分陈旧，使用起来也不是那么的优雅。情况可能真的就如你想的那样，也许你已经掌握的技术确实比这门新技术设计上要先进一些，但我觉得另一种概率更大的可能是你还没有真正体会到这门新技术的精髓。它可能表面上看起来有一些蠢，和你已有的认知有一些出入，但你不妨再耐心一些，深入进去，多问一些为什么，了解这门技术这样设计的真正动因，当你真正开始认同这门新技术的时候，你可能就真正打开了另一个新世界的大门了。</p>
+<p>我之所以说「你可能还没有真正了解新技术的精髓」这种情况的概率更大的原因是，我们在已有技术的基础上，往往能一眼分辨出比这种技术设计更丑陋的技术有哪些，却不能立马分辨出比这种技术设计更优秀的优秀之处在哪里，这是我们所掌握的编程思想所决定的。既然是能诱使你好奇去尝试学习使用的技术，我想一般应该是设计更先进的技术吧。</p>
+<p>当然，你也可能完全是因为团队或上级要求，去学习一门新的技术，如果这门技术的确比你已经掌握的技术设计上更糟糕（或者技术社区中确实大部分人都这样认为），那确实挺难打心底里去认同的。这种情况我建议你好好准备准备，充分了解这门新技术比你掌握的技术差在哪里，然后跟团队的技术 Leader 好好谈谈，争取策反他吧。</p>
+<p><strong>2. 你对自己的代码质量要求太高了。</strong></p>
+<p>这种情况可能更普遍。对于大多数摆正心态的有经验的程序员而言，并不是他们没有认真学习新的知识，而往往是他们对自己的代码质量要求太高。</p>
+<p>我们在已有的知识积累中沉淀出了一些做任何类型开发都需要了解的一些知识，并内化到了自己的知识体系中，比如一些软件工程的思想、一些常用的设计模式等，这些经典的思想限制着我们不愿意写出太烂的代码。我们总是想着我们的代码分层良好、复用程度高、易于后期维护、易于扩展、安全性更好等等，然而此时我们对具体的新技术的掌握还并不允许我们写出这个技术领域符合这些通用技术思想要求的代码。这种具体的技术可能是一门新的语言，你在对这种语言的语法都还不熟悉的情况下，是不可能写出高质量的代码的。然而犹如一张白纸的应届生是不会有这样的顾虑的，能够实现功能可能对他们就已经一种全新的尝试了，所以他们往往可能能更快的做出一个成形的东西来。</p>
+<p>这可以说是一种「了解得更多的烦恼」，我们唯一能做的就是摆正心态，再脚踏实地一些，不要还没学会走路就企图要跑。新技术在你还没掌握之前对你而言它就是新的。如果你以前用你已经了解过的技术随随便便就能写出高质量的代码，那么在这个全新的领域里，我们还是得从一行行的烂代码开始积累起。</p>
+<p>另外需要说明的是，原有的经验积累并不是毫无用处的，我们正是因为了解我们写出的新代码的缺陷可能在哪些地方，我们才能更加明确我们改进的方向。如果要比较谁能把工程代码写得（或改进得）更好，那我想应届生们是断然比不过有经验的老程序员们的。其次，一些其他的软技能，比如查找资料的能力、借助互联网解决问题的能力、对 Bug 可能原因的敏感度等等，这些也是宝贵经验带来的财富。</p>
+<p>其实做产品也很容易犯这样类似的错误。</p>
+<p>一些没有经验的产品经理或者做自己 Side Project 的程序员，往往一开始就把自己的产品构思得很好，并且企图第一版就把功能做得很完美。这样的想法能好，但是太不现实。「罗马不是一天建成的」，任何伟大的产品也是从一点一滴琐碎的改进中积累来的。一开始，它们可能很烂，性能差、页面分布不合理，甚至有明显的 Bug 等等，但经过不断的迭代与打磨，慢慢的它才会变得优秀、变得无可替代、变得不可或缺。尤其是在这样一个互联网浪潮下，任何的机会都经不起犹豫和等待，一个一开始就追求完美的产品，等不到出生，就已经死了。</p>
+<p>说了这么多（甚至个人觉得好像有点儿鸡汤味儿……），其实总结起来也就还是乔布斯的那句话：</p>
+<p><em>Stay hungry, stay foolish.</em></p>
+<p>不仅仅是在行动上，更是在心态和产品设计理念上，用这句话来武装自己。保持学生心态，一点一滴脚踏实地的积累和迭代，才能调和出不一样的色彩。</p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
         <tag>程序员</tag>
-        <tag>敬畏之心</tag>
+        <tag>学生心态</tag>
+        <tag>产品经理</tag>
       </tags>
   </entry>
   <entry>
@@ -1013,6 +976,43 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>程序员：请不要丢失你的敬畏心</title>
+    <url>/2016/12/09/show-your-respect/</url>
+    <content><![CDATA[<center>**暗**</center>
+
+<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
+<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
+<span id="more"></span>
+
+<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
+<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
+<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
+<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
+<center>**明**</center>
+
+<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
+<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
+<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
+<p>就像读书的三境界一样，关于认知也有四重境界：</p>
+<ol>
+<li>You don’t know that you don’t know</li>
+<li>You know that you don’t know</li>
+<li>You know that you know</li>
+<li>You don’t know that you know</li>
+</ol>
+<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
+<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
+<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>敬畏之心</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>译文 | 为什么面向对象很糟糕</title>
     <url>/2017/02/09/why-oo-sucks/</url>
     <content><![CDATA[<blockquote>
@@ -1075,6 +1075,58 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>Express 性能调优</title>
+    <url>/2017/03/03/express-run-faster/</url>
+    <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
+<h2 id="NODE-ENV-x3D-production"><a href="#NODE-ENV-x3D-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
+<span id="more"></span>
+
+<blockquote>
+<p>NODE_ENV 环境变量指定运行应用程序的环境（通常是开发或者生产环境）。为了改进性能，最简单的方法是将 NODE_ENV 设置为“production”。     </p>
+<p>将 NODE_ENV 设置为“production”会使 Express：</p>
+<ul>
+<li>高速缓存视图模板。</li>
+<li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
+<li>生成简短的错误消息。</li>
+</ul>
+<p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
+</blockquote>
+<p>遂顿悟！</p>
+<p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
+<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
+<p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
+<p>测试结果如下：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
+
+<p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
+<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
+<h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
+<ul>
+<li><strong>使用 gzip 压缩响应</strong>：用 <a href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
+<li><strong>代码中不使用同步函数</strong>：项目启动时可以一次性使用同步函数进行一些有时序性的操作（比如加载路由），但在之后的长期运行过程中，具体对外的接口执行流程中不应该存在同步函数；</li>
+<li><strong>正确进行日志记录</strong>：不要简单的用 <code>console</code>（都是同步函数）或自己写文件操作，直接用成熟的日志包（如 Winston、Bunyan、log4js 等），必要的情况下可能还需要使用消息队列；</li>
+<li><strong>使用进程管理器</strong>：除了提高应用的可用性之外，还可以根据 CPU 核心数生成相应的应用实例，充分利用 Node.js 的优势压榨 CPU 的资源，常用的有 StrongLoop Process Manager、PM2、Forever；</li>
+<li><strong>使用反向代理</strong>：直接用 Nginx 做反向代理吧，一方面可以做 CDN 缓存静态资源，另一方面还能够利用它做简单的负载均衡。不过需要注意的几点是：<ul>
+<li>多实例下「粘性会话」需要把状态存储在第三方高速介质中，一般用 Redis 就好；或者，采用 JWT 鉴权方案实现接口无状态（更推荐，同时为了安全站点一定要强制使用 HTTPS）；</li>
+<li>Nginx 做反向代理时不应该将其与应用放在同一台主机上，原因可以看这里：<a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">生产环境最佳实践：性能和可靠性 - Express 官方文档</a></li>
+<li><a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Express</tag>
+        <tag>性能调优</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL 慢查询优化</title>
     <url>/2017/03/08/mysql-run-faster/</url>
     <content><![CDATA[<p>在前一篇博客<a href="http://maples7.com/2017/03/03/express-run-faster/">《Express 性能调优》</a>中，我讲述了 Express 项目应该如何进行性能优化，但那些基本都只是官方文档上就已经明确指出的东西，也是对一个 Express 项目<strong>在性能上的基本要求</strong>。如果你已经足够仔细的阅读过文档，那么上一篇文章对你的收益几乎是 0。</p>
@@ -1120,8 +1172,8 @@ _Farewell and thanks to each for the company_
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
         <tag>性能调优</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1235,123 +1287,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>Express 性能调优</title>
-    <url>/2017/03/03/express-run-faster/</url>
-    <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
-<h2 id="NODE-ENV-x3D-production"><a href="#NODE-ENV-x3D-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
-<span id="more"></span>
-
-<blockquote>
-<p>NODE_ENV 环境变量指定运行应用程序的环境（通常是开发或者生产环境）。为了改进性能，最简单的方法是将 NODE_ENV 设置为“production”。     </p>
-<p>将 NODE_ENV 设置为“production”会使 Express：</p>
-<ul>
-<li>高速缓存视图模板。</li>
-<li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
-<li>生成简短的错误消息。</li>
-</ul>
-<p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
-</blockquote>
-<p>遂顿悟！</p>
-<p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
-<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
-<p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
-<p>测试结果如下：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
-
-<p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
-<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
-<h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
-<ul>
-<li><strong>使用 gzip 压缩响应</strong>：用 <a href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
-<li><strong>代码中不使用同步函数</strong>：项目启动时可以一次性使用同步函数进行一些有时序性的操作（比如加载路由），但在之后的长期运行过程中，具体对外的接口执行流程中不应该存在同步函数；</li>
-<li><strong>正确进行日志记录</strong>：不要简单的用 <code>console</code>（都是同步函数）或自己写文件操作，直接用成熟的日志包（如 Winston、Bunyan、log4js 等），必要的情况下可能还需要使用消息队列；</li>
-<li><strong>使用进程管理器</strong>：除了提高应用的可用性之外，还可以根据 CPU 核心数生成相应的应用实例，充分利用 Node.js 的优势压榨 CPU 的资源，常用的有 StrongLoop Process Manager、PM2、Forever；</li>
-<li><strong>使用反向代理</strong>：直接用 Nginx 做反向代理吧，一方面可以做 CDN 缓存静态资源，另一方面还能够利用它做简单的负载均衡。不过需要注意的几点是：<ul>
-<li>多实例下「粘性会话」需要把状态存储在第三方高速介质中，一般用 Redis 就好；或者，采用 JWT 鉴权方案实现接口无状态（更推荐，同时为了安全站点一定要强制使用 HTTPS）；</li>
-<li>Nginx 做反向代理时不应该将其与应用放在同一台主机上，原因可以看这里：<a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">生产环境最佳实践：性能和可靠性 - Express 官方文档</a></li>
-<li><a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Express</tag>
-        <tag>性能调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>毕业一周年 | 山大印象</title>
-    <url>/2017/05/07/grad-anniversary/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>山东大学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>了不起的 Erlang</title>
-    <url>/2017/06/10/awesome-erlang/</url>
-    <content><![CDATA[<blockquote class="blockquote-center">
-<p><em>Shared mutable state is the root of all evil</em><br><em>共享的可变状态是万恶之源</em></p>
-<p><strong>Pete Hunt</strong>      </p>
-
-</blockquote>
-
-<p>大概是从去年年底开始，我开始断断续续地了解 Erlang 这门语言。之所以会想要去学习它，是因为它跟我已经比较熟悉的任何一门语言都有着截然不同的设计理念，而且我了解得越深，就越为其设计思想所折服。</p>
-<p>虽然这门语言的年纪早已不算年轻，而且似乎从未「大众流行」过，但在如今 CPU 多核化和云计算的时代背景下，Erlang 却焕发出了不一样的生机。</p>
-<span id="more"></span>
-
-<p>Erlang 在构建高可用服务上有其独特的优势，这与 Web 服务的要求不谋而合，其设计理念值得每一名 Web 后端开发工程师去了解。</p>
-<p>在介绍 Erlang 的几个核心概念之前，需要先说明的是，本文所指的 Erlang 不仅仅指这门语言本身，而是指整个构建于 Erlang 虚拟机之上的技术体系，这就至少包括了 Erlang 语言、Elixir 语言及围绕它们所展开的技术模型的设计。</p>
-<p>语言并不那么重要，重要的是蕴含在语言之中的设计理念和设计思想。</p>
-<h2 id="不可变状态"><a href="#不可变状态" class="headerlink" title="不可变状态"></a>不可变状态</h2><p>Erlang 是一种一次性赋值（single-assignment variable）的动态类型函数式编程语言。单次赋值意味着每个变量只能被赋值一次，如果试图在变量被赋值后改变它的值，程序会出错。</p>
-<p>如果你初次接触单次赋值这个概念，可能会感到很难理解，但这并不是 Erlang 的原创。函数式编程的重要特点之一就是「不可变状态」（immutable state），Erlang 正符合这个特点。</p>
-<p>实际上，在 Erlang 里，变量获得值是一次成功模式匹配操作的结果。如果你有着 C-like 编程语言的背景，你一定知道 <code>=</code> 表示的是一个赋值语句，而且大有各种入门书籍告诉你务必要与数学中的 <code>=</code> 符号区分开来，并很可能会举出 <code>i = i + 1</code> 这样在 C-like 语言中很常见，但在数学中明显不存在的式子（除非是在反证法中）。而在 Erlang 里，<code>=</code> 是一次模式匹配操作，<code>Lhs = Rhs</code> 的真正意思是：计算右侧（Rhs）的值，然后将结果与左侧（Lhs）的模式相匹配。这更多的像是<strong>回归了数学中 <code>=</code> 符号的本意</strong>。实际上，这也并不奇怪，函数式编程这种编程范型就是为了将电脑运算视为数学上的函数计算，同时还要避免使用程序本身的状态和易变的对象。</p>
-<p>那为什么「不可变状态」会让编程变得更美好呢？</p>
-<p>一个表面上明显的好处是让调试程序变得更简单。引起程序出错的常见原因就是变量得到了意料之外的值，为了防止意料之外的状态进入内部，我们可能不得不在 API 入口处进行参数校验，这意味着我们不得不写出大块的「防御式编程」的代码（这与后文要讲到的 “Let it crash” 特性一脉相承）。在 C-like 的语言里，变量可以被多次修改，因此每一个修改了变量值的地方都有可能是错误产生的地方，而在 Erlang 里，检查这样的错误只需要 check 一处即可。</p>
-<p>另一个更深层次的好处是，「不可变状态」是使得程序运行不会产生副作用的保证之一，而<strong>没有副作用意味着可以让程序并行</strong>，这与后文的 Actor 并发模型又是一脉相承的。</p>
-<h2 id="Actor-并发模型"><a href="#Actor-并发模型" class="headerlink" title="Actor 并发模型"></a>Actor 并发模型</h2><p>并发模型有很多种，大多数人最熟悉的还是 Java 所采用的基于锁和线程的并发模型，但也有其他的如 Golang 采用的 CSP 模型和 Erlang 的 Actor 模型，如果你对并发模型感兴趣，可以参阅<a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a>这本书。</p>
-<p>如果是传统编程语言来为多核 CPU 编程，就不可避免的需要程序员去对付共享内存的问题。进而为了不破坏共享内存，自然而然地又产生了「锁」的概念，即在必要的时候给这些内存加锁来解决共享内存的问题，而且访问这些共享内存的程序在操作共享内存时还万万不能崩溃，否则很可能产生难以追踪且无法预料的错误（可以与后文的 “Let it crash” 特性对比）。这就跟《人类简史》中所说的「农业社会是人类构建错误社会形态的开始」的概念类似，我们很可能从一开始就构建了不正确的模型，从而只能滚雪球式的将错就错、一错到底。而在 Erlang 里，没有可变状态，没有共享内存，也没有锁，这使得要让程序并行变得很简单。</p>
-<p>Erlang 的基本并发单元是进程（Process），它们是一些独立的小型虚拟机。但这与操作系统的进程并不相同，Erlang 的进程是是隶属于编程语言而不是操作系统的。一方面，这意味着 Erlang 是跨平台的，而且它在任何操作系统上都会具有相同的逻辑行为，使得编写可移植的代码完全不是问题；另一方面，这些进程是 Erlang 虚拟机自身实现的，所以它们非常的轻量，创建和销毁都十分快速，占用的资源也非常小，这意味着大量的进程可以并存。</p>
-<p>当然，Erlang 的进程是不共享任何内存的，它们相互之间完全独立，而唯一的交互方式是消息（CSP 模型也是如此）。</p>
-<p>到此为止，我想题记中的那句「共享的可变状态是万恶之源」就不难理解了。</p>
-<h2 id="Let-it-crash"><a href="#Let-it-crash" class="headerlink" title="Let it crash"></a>Let it crash</h2><p>在一般的传统语言里，我们总是被教导着要写「防御性代码」。那可能意味你代码中任何层次抽象出的每一个接口都应当检查传入的参数、可能意味着代码中需要大量的与业务逻辑交织在一起的错误检查代码。这是可以理解的，因为在基于锁和线程的并发模型中，编写多进程代码极其困难，多数程序都只有一个进程，所以如果这个进程随随便便就会崩溃，用专业的话说那就是程序的「鲁棒性」太差了。</p>
-<p>而在 Erlang 里对于错误的处理方式与在传统顺序编程的处理方式完全不同。</p>
-<p>在 Erlang 里，由于我们有大量的轻量级进程可供支配，所以任何的单进程的故障都不会那么重要。一般情况下，在 Erlang 里我们只需要编写极少量的防御性代码（注意，这里有个过犹不及的误解，在编程时我们不能把 <em>Let it crash</em> 当成一个可以被滥用的特性，也就是不要明知道某个地方可能 crash 却不予理睬），而可以把重点放在纠正性代码上。</p>
-<p>在 Erlang 里，系统中的 Process 会划分为两个角色：一部分负责解决业务问题，另一部分则负责在错误发生时纠正错误。负责解决业务问题的部分会尽可能少的使用防御性代码，同时也会假设传入函数的所有参数都是正确的。而纠正错误的部分不会与解决业务的部分耦合在一起，所以这也意味着它们在大部分情况下是<strong>可以被复用</strong>的。</p>
-<p>抽象来说，传统的错误处理方式与 Erlang 的错误处理理念实际上是对于问题发生时解决问题的两种不同思路。传统的方式强调尽可能的避免错误发生的可能，但有过编程经验的人基本都知道，要想避免所有错误发生的可能，这是不可能的。而 Erlang 处理错误的角度则不同，它是在错误已经发生后，不管这个错误是怎样的产生的（当然事后还是要具体分析原因的），或者是什么类型的错误，我们都把 A 进程发生的错误交由与之相关的 B 进程来处理，来试图纠正这个错误，使得整个系统恢复到一个我们已知的可控的状态。同时 A 进程直接 crash 掉就好。Erlang 把错误处理的注意力放在的错误发生后的清理工作上。这一点，其实与 Node.js 集群部署时的理念有类似之处，进程分为主进程和工作进程，但 Erlang 在这一点上做得更为彻底，而且在语言层面上就是这样设计的。</p>
-<p><em>Let it crash</em> 所带来的好处其实有很多，除了前面已经说到的不用写大量与业务代码交织在一起的防御性代码和在错误发生时可以不管原因统一处理之外，他还能使得发生的错误不至于被恶化造成不可控的更严重的后果，因为发生错误的 Process 已经被 crash 了。它也使得错误能够立即被上述的 B 进程处理，而且错误不会继续运行导致调试也变得困难。更深入地，它还使得我们在设计系统时可以有意识地把业务部分和错误恢复部分当成两个独立的问题来思考，这一点是非常符合 <a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a> 的要求的（我在上一篇博文<a href="http://maples7.com/2017/05/24/programming-and-life/#%E5%88%86%E5%B7%A5%E6%98%8E%E7%A1%AE%EF%BC%8C%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">《程序与人生》</a>中也有提到这一点），即特定问题由特定专业分工明确的不同代码来解决。</p>
-<h2 id="GitHub-语言颜色"><a href="#GitHub-语言颜色" class="headerlink" title="GitHub 语言颜色"></a>GitHub 语言颜色</h2><p>最后，说一个 tricky 的理由，在 GitHub 上代表 Erlang 和 Elixir 的颜色是紫色（Elixir 的颜色更深一点），这个已经暗示了这门技术的尊贵之处了。</p>
-<p>哈哈，开个玩笑。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>希望这篇文章能真正引发你对于 Erlang 这门设计优秀的语言的兴趣与关注，并同时推荐你看<a href="https://book.douban.com/subject/25892728/">《Erlang程序设计（第2版）》</a> 这本书，它是由 Erlang 的设计和发明者、「Erlang 之父」Joe Armstrong 亲笔撰写的，所以在语言的诸多设计理念上都有非常清晰的讲解。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Erlang</tag>
-        <tag>函数式编程</tag>
-        <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>程序与人生</title>
     <url>/2017/05/24/programming-and-life/</url>
     <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
@@ -1374,6 +1309,25 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>程序员</tag>
         <tag>人生</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>毕业一周年 | 山大印象</title>
+    <url>/2017/05/07/grad-anniversary/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>山东大学</tag>
       </tags>
   </entry>
   <entry>
@@ -1424,6 +1378,52 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>了不起的 Erlang</title>
+    <url>/2017/06/10/awesome-erlang/</url>
+    <content><![CDATA[<blockquote class="blockquote-center">
+<p><em>Shared mutable state is the root of all evil</em><br><em>共享的可变状态是万恶之源</em></p>
+<p><strong>Pete Hunt</strong>      </p>
+
+</blockquote>
+
+<p>大概是从去年年底开始，我开始断断续续地了解 Erlang 这门语言。之所以会想要去学习它，是因为它跟我已经比较熟悉的任何一门语言都有着截然不同的设计理念，而且我了解得越深，就越为其设计思想所折服。</p>
+<p>虽然这门语言的年纪早已不算年轻，而且似乎从未「大众流行」过，但在如今 CPU 多核化和云计算的时代背景下，Erlang 却焕发出了不一样的生机。</p>
+<span id="more"></span>
+
+<p>Erlang 在构建高可用服务上有其独特的优势，这与 Web 服务的要求不谋而合，其设计理念值得每一名 Web 后端开发工程师去了解。</p>
+<p>在介绍 Erlang 的几个核心概念之前，需要先说明的是，本文所指的 Erlang 不仅仅指这门语言本身，而是指整个构建于 Erlang 虚拟机之上的技术体系，这就至少包括了 Erlang 语言、Elixir 语言及围绕它们所展开的技术模型的设计。</p>
+<p>语言并不那么重要，重要的是蕴含在语言之中的设计理念和设计思想。</p>
+<h2 id="不可变状态"><a href="#不可变状态" class="headerlink" title="不可变状态"></a>不可变状态</h2><p>Erlang 是一种一次性赋值（single-assignment variable）的动态类型函数式编程语言。单次赋值意味着每个变量只能被赋值一次，如果试图在变量被赋值后改变它的值，程序会出错。</p>
+<p>如果你初次接触单次赋值这个概念，可能会感到很难理解，但这并不是 Erlang 的原创。函数式编程的重要特点之一就是「不可变状态」（immutable state），Erlang 正符合这个特点。</p>
+<p>实际上，在 Erlang 里，变量获得值是一次成功模式匹配操作的结果。如果你有着 C-like 编程语言的背景，你一定知道 <code>=</code> 表示的是一个赋值语句，而且大有各种入门书籍告诉你务必要与数学中的 <code>=</code> 符号区分开来，并很可能会举出 <code>i = i + 1</code> 这样在 C-like 语言中很常见，但在数学中明显不存在的式子（除非是在反证法中）。而在 Erlang 里，<code>=</code> 是一次模式匹配操作，<code>Lhs = Rhs</code> 的真正意思是：计算右侧（Rhs）的值，然后将结果与左侧（Lhs）的模式相匹配。这更多的像是<strong>回归了数学中 <code>=</code> 符号的本意</strong>。实际上，这也并不奇怪，函数式编程这种编程范型就是为了将电脑运算视为数学上的函数计算，同时还要避免使用程序本身的状态和易变的对象。</p>
+<p>那为什么「不可变状态」会让编程变得更美好呢？</p>
+<p>一个表面上明显的好处是让调试程序变得更简单。引起程序出错的常见原因就是变量得到了意料之外的值，为了防止意料之外的状态进入内部，我们可能不得不在 API 入口处进行参数校验，这意味着我们不得不写出大块的「防御式编程」的代码（这与后文要讲到的 “Let it crash” 特性一脉相承）。在 C-like 的语言里，变量可以被多次修改，因此每一个修改了变量值的地方都有可能是错误产生的地方，而在 Erlang 里，检查这样的错误只需要 check 一处即可。</p>
+<p>另一个更深层次的好处是，「不可变状态」是使得程序运行不会产生副作用的保证之一，而<strong>没有副作用意味着可以让程序并行</strong>，这与后文的 Actor 并发模型又是一脉相承的。</p>
+<h2 id="Actor-并发模型"><a href="#Actor-并发模型" class="headerlink" title="Actor 并发模型"></a>Actor 并发模型</h2><p>并发模型有很多种，大多数人最熟悉的还是 Java 所采用的基于锁和线程的并发模型，但也有其他的如 Golang 采用的 CSP 模型和 Erlang 的 Actor 模型，如果你对并发模型感兴趣，可以参阅<a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a>这本书。</p>
+<p>如果是传统编程语言来为多核 CPU 编程，就不可避免的需要程序员去对付共享内存的问题。进而为了不破坏共享内存，自然而然地又产生了「锁」的概念，即在必要的时候给这些内存加锁来解决共享内存的问题，而且访问这些共享内存的程序在操作共享内存时还万万不能崩溃，否则很可能产生难以追踪且无法预料的错误（可以与后文的 “Let it crash” 特性对比）。这就跟《人类简史》中所说的「农业社会是人类构建错误社会形态的开始」的概念类似，我们很可能从一开始就构建了不正确的模型，从而只能滚雪球式的将错就错、一错到底。而在 Erlang 里，没有可变状态，没有共享内存，也没有锁，这使得要让程序并行变得很简单。</p>
+<p>Erlang 的基本并发单元是进程（Process），它们是一些独立的小型虚拟机。但这与操作系统的进程并不相同，Erlang 的进程是是隶属于编程语言而不是操作系统的。一方面，这意味着 Erlang 是跨平台的，而且它在任何操作系统上都会具有相同的逻辑行为，使得编写可移植的代码完全不是问题；另一方面，这些进程是 Erlang 虚拟机自身实现的，所以它们非常的轻量，创建和销毁都十分快速，占用的资源也非常小，这意味着大量的进程可以并存。</p>
+<p>当然，Erlang 的进程是不共享任何内存的，它们相互之间完全独立，而唯一的交互方式是消息（CSP 模型也是如此）。</p>
+<p>到此为止，我想题记中的那句「共享的可变状态是万恶之源」就不难理解了。</p>
+<h2 id="Let-it-crash"><a href="#Let-it-crash" class="headerlink" title="Let it crash"></a>Let it crash</h2><p>在一般的传统语言里，我们总是被教导着要写「防御性代码」。那可能意味你代码中任何层次抽象出的每一个接口都应当检查传入的参数、可能意味着代码中需要大量的与业务逻辑交织在一起的错误检查代码。这是可以理解的，因为在基于锁和线程的并发模型中，编写多进程代码极其困难，多数程序都只有一个进程，所以如果这个进程随随便便就会崩溃，用专业的话说那就是程序的「鲁棒性」太差了。</p>
+<p>而在 Erlang 里对于错误的处理方式与在传统顺序编程的处理方式完全不同。</p>
+<p>在 Erlang 里，由于我们有大量的轻量级进程可供支配，所以任何的单进程的故障都不会那么重要。一般情况下，在 Erlang 里我们只需要编写极少量的防御性代码（注意，这里有个过犹不及的误解，在编程时我们不能把 <em>Let it crash</em> 当成一个可以被滥用的特性，也就是不要明知道某个地方可能 crash 却不予理睬），而可以把重点放在纠正性代码上。</p>
+<p>在 Erlang 里，系统中的 Process 会划分为两个角色：一部分负责解决业务问题，另一部分则负责在错误发生时纠正错误。负责解决业务问题的部分会尽可能少的使用防御性代码，同时也会假设传入函数的所有参数都是正确的。而纠正错误的部分不会与解决业务的部分耦合在一起，所以这也意味着它们在大部分情况下是<strong>可以被复用</strong>的。</p>
+<p>抽象来说，传统的错误处理方式与 Erlang 的错误处理理念实际上是对于问题发生时解决问题的两种不同思路。传统的方式强调尽可能的避免错误发生的可能，但有过编程经验的人基本都知道，要想避免所有错误发生的可能，这是不可能的。而 Erlang 处理错误的角度则不同，它是在错误已经发生后，不管这个错误是怎样的产生的（当然事后还是要具体分析原因的），或者是什么类型的错误，我们都把 A 进程发生的错误交由与之相关的 B 进程来处理，来试图纠正这个错误，使得整个系统恢复到一个我们已知的可控的状态。同时 A 进程直接 crash 掉就好。Erlang 把错误处理的注意力放在的错误发生后的清理工作上。这一点，其实与 Node.js 集群部署时的理念有类似之处，进程分为主进程和工作进程，但 Erlang 在这一点上做得更为彻底，而且在语言层面上就是这样设计的。</p>
+<p><em>Let it crash</em> 所带来的好处其实有很多，除了前面已经说到的不用写大量与业务代码交织在一起的防御性代码和在错误发生时可以不管原因统一处理之外，他还能使得发生的错误不至于被恶化造成不可控的更严重的后果，因为发生错误的 Process 已经被 crash 了。它也使得错误能够立即被上述的 B 进程处理，而且错误不会继续运行导致调试也变得困难。更深入地，它还使得我们在设计系统时可以有意识地把业务部分和错误恢复部分当成两个独立的问题来思考，这一点是非常符合 <a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a> 的要求的（我在上一篇博文<a href="http://maples7.com/2017/05/24/programming-and-life/#%E5%88%86%E5%B7%A5%E6%98%8E%E7%A1%AE%EF%BC%8C%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">《程序与人生》</a>中也有提到这一点），即特定问题由特定专业分工明确的不同代码来解决。</p>
+<h2 id="GitHub-语言颜色"><a href="#GitHub-语言颜色" class="headerlink" title="GitHub 语言颜色"></a>GitHub 语言颜色</h2><p>最后，说一个 tricky 的理由，在 GitHub 上代表 Erlang 和 Elixir 的颜色是紫色（Elixir 的颜色更深一点），这个已经暗示了这门技术的尊贵之处了。</p>
+<p>哈哈，开个玩笑。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>希望这篇文章能真正引发你对于 Erlang 这门设计优秀的语言的兴趣与关注，并同时推荐你看<a href="https://book.douban.com/subject/25892728/">《Erlang程序设计（第2版）》</a> 这本书，它是由 Erlang 的设计和发明者、「Erlang 之父」Joe Armstrong 亲笔撰写的，所以在语言的诸多设计理念上都有非常清晰的讲解。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Erlang</tag>
+        <tag>函数式编程</tag>
+        <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>被分化的树叶</title>
     <url>/2017/07/15/diversified-leaves/</url>
     <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
@@ -1452,31 +1452,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>意识流</tag>
         <tag>散文</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>独立书店的生存困境</title>
-    <url>/2017/08/23/arduous-independent-bookstores/</url>
-    <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
-<span id="more"></span>
-
-<p>讲到中国内地的书店，目光自然首先要聚焦到文化中心——北京。</p>
-<p>在被戏称为「宇宙中心」的海淀区五道口，高校环伺，不少别具一格的独立书店藏匿其中，这之中最有名的要数目前位于<a href="http://www.tsinghua.edu.cn/">清华</a>南门附近的<a href="http://www.allsagesbooks.com/GUANYU/JIANJIE.HTM">万圣书园</a>。如果你第一次来这个书店，很可能会感到失望——「名声在外的万圣书园原来就是这个破败的样子？」。这也侧面反映出了大环境下独立书店的生存不易。北京的房价自不必多说，更何况是在五道口，2012 年的搬迁直接就让万圣书园的面积缩水了 300 多平米。目前，万圣书园凭借着创办人<a href="https://zh.wikipedia.org/wiki/%E5%88%98%E8%8B%8F%E9%87%8C">刘苏里</a>在文化圈的影响力，依然吸引着众多爱书之人慕名前来，而且这里还时不时会举办一些新书发布会、读书会等活动，客流量还算可观，依傍其旁的醒客咖啡也势必把客单价提高了不少。万圣书园最大的优势就在于其书籍收录之广泛全面，这从店面内直接码放到天花板的书架就可以看出。如果你想找别的书店找不到的书，如果你想找某个品类下一系列相关的书，<del>如果你还想逗一逗书店里的万圣猫，</del>来万圣书园看看吧。</p>
-<p>与万圣书园隔街相望的是<a href="https://baike.baidu.com/item/%E8%B1%86%E7%93%A3%E4%B9%A6%E5%BA%97">豆瓣书店</a>。这个书店的店面就更小了，总共也就约五十平米。它最大的特色就是专营旧书，这也可能是它至今还能在著名的万圣书园对面存活下来的原因。旧书并不是指二手书，而是指那些出版年代久远，可能即将被出版社销毁的库存书。但可别因为这样就小看了这些书的质量，能进入豆瓣书店的书都是店长去北京的各大出版社收罗的。因此，你总是能在豆瓣书店找到很多奇特又便宜的旧书，它们可能出版了 5-20 年甚至更长的时间，但你还是很有可能在它们中发现你感兴趣的东西。豆瓣书店每个月还会设计不一样的书签放在门口，供顾客随意取用收藏。值得一提的是，豆瓣书店跟<a href="https://www.douban.com/">豆瓣网</a>没有任何关系，纯粹只是起名的巧合而已<del>，不然店面就不会这么小了（甚至有热心的豆瓣网友呼吁豆瓣网收购豆瓣书店）</del>。</p>
-<p>另一个在<a href="http://www.pku.edu.cn/">北大</a>师生心中拥有崇高地位的书店是<a href="http://www.jiemian.com/article/1426822.html">野草书店</a>。本来它已经在北大校园内呆了 14 年了，但因为今年初夏的店面招标失败，被迫搬离了北大，来到了万圣书园附近的一个地下超市的旁边。野草书店可能是这三个书店里网络营销做得最好的。书店经理赵亮用几个手机几个微信号在网上维护着一两万个野草书店的忠实客户，微博上也会时常更新最新到货的新书（可网购邮寄），再配合令人难以想象的折扣力度，野草书店在线上线下应该都还经营得不错。听北大的朋友说，他们以前经常拿着老师开的书单来野草书店购书。</p>
-<p>位于成府路上的这三个独立书店可以说是北京众多独立书店的代表，它们各有各的特色，能够在艰难环境中存活下来的原因更是各不相同。</p>
-<p>跳出北京，南方的一些半独立书店就和北京这几个书店的经营策略不完全相同<del>，至少它们的店面都有着现代化的精致装修和室内设计</del>。</p>
-<p>拿 2015 年年底在苏州开业的<a href="https://www.esliteliving.com/store/store.aspx?a=CN&l=gb&storeno=201511180004">诚品书店</a>来说，它已经被打造成集潮流生活、风格美学、创意设计于一体，照顾现代人品质生活方方面面的一个联合体。这里不仅仅做到了藏书丰富（尤其是一些外文书和台版书），是爱书之人的首选，同时也吸引了一群对生活品质有要求的人。和诚品有着类似经营策略的还有<a href="https://zh.wikipedia.org/wiki/%E6%96%B9%E6%89%80">方所</a>，目前总共只有四家，分别位于广州、成都、重庆和青岛。方所甚至比诚品有着更高的「艺术」和「审美」追求，基本都开在奢侈品林立的中心商务区。</p>
-<p>另外一些规模相对小一些的半独立书店，像<a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%A5%BF%E5%BC%97%E4%B9%A6%E5%BA%97">西西弗书店</a>、广州北京路上的<a href="https://baike.baidu.com/item/%E8%81%94%E5%90%88%E4%B9%A6%E5%BA%97">联合书店</a>，虽然还没有达到像苏州诚品这样多位一体的状态，但靠着经常举办的特色活动，也吸引着一批对特定领域感兴趣的人群的光顾，再加上店内的饮品店和一些其他的配套服务，应该也都还有尚可观的经营状态。</p>
-<p>综合来看，虽然本文所列出的书店有的似乎还活得不错，但整个实体书店行业一定是一年不如一年了。高昂的地价成本，加上纸质书相对于电子书的固有成本，以及电商时代人们购书习惯的逐渐变化，使得这些书店不得不树立自己的特色、塑造自己别具一格的品牌形象，来吸引那些有特定需求的人群。好在，这个时间节点上，有不少人还是偏爱纸质书阅读的。</p>
-<p>很多爱书之人都有这样的一个梦想，那就是退休之后开一家有个性的书店。随着时间的推移和时代的发展，这个梦想可能会变得越来越遥不可及。对于现有的这些独立书店来说，如果不迅速找准自己的特色和定位，扬长补短，那它们的命运都值得让人担忧。</p>
-<p>或许，在独立书店这个领域，光有一点点理想主义情怀，还远远不够。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>独立书店</tag>
       </tags>
   </entry>
   <entry>
@@ -1512,25 +1487,28 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>今晚月色真美</title>
-    <url>/2017/12/21/love/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
-
-<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
-<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
+    <title>独立书店的生存困境</title>
+    <url>/2017/08/23/arduous-independent-bookstores/</url>
+    <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
 <span id="more"></span>
 
-<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
-<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
-<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
-<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
-<p>我，好像是你的。</p>
+<p>讲到中国内地的书店，目光自然首先要聚焦到文化中心——北京。</p>
+<p>在被戏称为「宇宙中心」的海淀区五道口，高校环伺，不少别具一格的独立书店藏匿其中，这之中最有名的要数目前位于<a href="http://www.tsinghua.edu.cn/">清华</a>南门附近的<a href="http://www.allsagesbooks.com/GUANYU/JIANJIE.HTM">万圣书园</a>。如果你第一次来这个书店，很可能会感到失望——「名声在外的万圣书园原来就是这个破败的样子？」。这也侧面反映出了大环境下独立书店的生存不易。北京的房价自不必多说，更何况是在五道口，2012 年的搬迁直接就让万圣书园的面积缩水了 300 多平米。目前，万圣书园凭借着创办人<a href="https://zh.wikipedia.org/wiki/%E5%88%98%E8%8B%8F%E9%87%8C">刘苏里</a>在文化圈的影响力，依然吸引着众多爱书之人慕名前来，而且这里还时不时会举办一些新书发布会、读书会等活动，客流量还算可观，依傍其旁的醒客咖啡也势必把客单价提高了不少。万圣书园最大的优势就在于其书籍收录之广泛全面，这从店面内直接码放到天花板的书架就可以看出。如果你想找别的书店找不到的书，如果你想找某个品类下一系列相关的书，<del>如果你还想逗一逗书店里的万圣猫，</del>来万圣书园看看吧。</p>
+<p>与万圣书园隔街相望的是<a href="https://baike.baidu.com/item/%E8%B1%86%E7%93%A3%E4%B9%A6%E5%BA%97">豆瓣书店</a>。这个书店的店面就更小了，总共也就约五十平米。它最大的特色就是专营旧书，这也可能是它至今还能在著名的万圣书园对面存活下来的原因。旧书并不是指二手书，而是指那些出版年代久远，可能即将被出版社销毁的库存书。但可别因为这样就小看了这些书的质量，能进入豆瓣书店的书都是店长去北京的各大出版社收罗的。因此，你总是能在豆瓣书店找到很多奇特又便宜的旧书，它们可能出版了 5-20 年甚至更长的时间，但你还是很有可能在它们中发现你感兴趣的东西。豆瓣书店每个月还会设计不一样的书签放在门口，供顾客随意取用收藏。值得一提的是，豆瓣书店跟<a href="https://www.douban.com/">豆瓣网</a>没有任何关系，纯粹只是起名的巧合而已<del>，不然店面就不会这么小了（甚至有热心的豆瓣网友呼吁豆瓣网收购豆瓣书店）</del>。</p>
+<p>另一个在<a href="http://www.pku.edu.cn/">北大</a>师生心中拥有崇高地位的书店是<a href="http://www.jiemian.com/article/1426822.html">野草书店</a>。本来它已经在北大校园内呆了 14 年了，但因为今年初夏的店面招标失败，被迫搬离了北大，来到了万圣书园附近的一个地下超市的旁边。野草书店可能是这三个书店里网络营销做得最好的。书店经理赵亮用几个手机几个微信号在网上维护着一两万个野草书店的忠实客户，微博上也会时常更新最新到货的新书（可网购邮寄），再配合令人难以想象的折扣力度，野草书店在线上线下应该都还经营得不错。听北大的朋友说，他们以前经常拿着老师开的书单来野草书店购书。</p>
+<p>位于成府路上的这三个独立书店可以说是北京众多独立书店的代表，它们各有各的特色，能够在艰难环境中存活下来的原因更是各不相同。</p>
+<p>跳出北京，南方的一些半独立书店就和北京这几个书店的经营策略不完全相同<del>，至少它们的店面都有着现代化的精致装修和室内设计</del>。</p>
+<p>拿 2015 年年底在苏州开业的<a href="https://www.esliteliving.com/store/store.aspx?a=CN&l=gb&storeno=201511180004">诚品书店</a>来说，它已经被打造成集潮流生活、风格美学、创意设计于一体，照顾现代人品质生活方方面面的一个联合体。这里不仅仅做到了藏书丰富（尤其是一些外文书和台版书），是爱书之人的首选，同时也吸引了一群对生活品质有要求的人。和诚品有着类似经营策略的还有<a href="https://zh.wikipedia.org/wiki/%E6%96%B9%E6%89%80">方所</a>，目前总共只有四家，分别位于广州、成都、重庆和青岛。方所甚至比诚品有着更高的「艺术」和「审美」追求，基本都开在奢侈品林立的中心商务区。</p>
+<p>另外一些规模相对小一些的半独立书店，像<a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%A5%BF%E5%BC%97%E4%B9%A6%E5%BA%97">西西弗书店</a>、广州北京路上的<a href="https://baike.baidu.com/item/%E8%81%94%E5%90%88%E4%B9%A6%E5%BA%97">联合书店</a>，虽然还没有达到像苏州诚品这样多位一体的状态，但靠着经常举办的特色活动，也吸引着一批对特定领域感兴趣的人群的光顾，再加上店内的饮品店和一些其他的配套服务，应该也都还有尚可观的经营状态。</p>
+<p>综合来看，虽然本文所列出的书店有的似乎还活得不错，但整个实体书店行业一定是一年不如一年了。高昂的地价成本，加上纸质书相对于电子书的固有成本，以及电商时代人们购书习惯的逐渐变化，使得这些书店不得不树立自己的特色、塑造自己别具一格的品牌形象，来吸引那些有特定需求的人群。好在，这个时间节点上，有不少人还是偏爱纸质书阅读的。</p>
+<p>很多爱书之人都有这样的一个梦想，那就是退休之后开一家有个性的书店。随着时间的推移和时代的发展，这个梦想可能会变得越来越遥不可及。对于现有的这些独立书店来说，如果不迅速找准自己的特色和定位，扬长补短，那它们的命运都值得让人担忧。</p>
+<p>或许，在独立书店这个领域，光有一点点理想主义情怀，还远远不够。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>感情</tag>
+        <tag>独立书店</tag>
       </tags>
   </entry>
   <entry>
@@ -1656,43 +1634,25 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>2018 年书单</title>
-    <url>/2018/12/31/2018-booklist/</url>
-    <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
-<p>回到「书单」的正题。在<a href="http://maples7.com/2016/12/31/2016-booklist/">之前的年终书单总结</a>中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— <a href="https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W">Kindle PaperWhite 4</a>（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。</p>
+    <title>今晚月色真美</title>
+    <url>/2017/12/21/love/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
+
+<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
+<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
 <span id="more"></span>
 
-<p>废话先不多说，还是按老规矩先列今年看过的书的书单。</p>
-<ol>
-<li><p><a href="https://www.zhihu.com/pub/book/19550356">设计之美</a>：★★★☆<br>前言写得是真好，整本书写得最好的部分也是前言。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26320659/">万物生长</a>：★★★★<br>冯唐的文字远比<a href="https://zh.wikipedia.org/wiki/%E7%8E%8B%E5%B0%8F%E6%B3%A2">王小波</a>的瑰丽绚烂，像被一个习惯了炒食堂大锅菜的师傅炒出的菜，加足了各种重口的佐料，分明就是他自己前不久写的那篇在朋友圈疯转的文章所说的「油腻」。<br>被称为「某某第二」的人永远不能成为「某某」，也永远达不到世俗意义上「某某」的高度，这一点，几乎是一条铁律。号称「王小波第二」的冯唐永远也成不了王小波，是因为他的文字看不到王小波能看到的东西，技巧十足，却没有让人想去细细揣摩的深意。<br>然而这个世界上没有谁需要去成为谁，冯唐不必易老，照样会让世界变得更丰富。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26943161/">未来简史：从智人到智神</a>：★★★★<br>第一部分基本是在重复<a href="https://book.douban.com/subject/26953606/">《人类简史》</a>的观点；第二部分写得比较有意思，把人文主义主导世界的现实情况剖析得鞭辟入里；第三部阐述了数据宗教的概念，基本也没有什么新东西。<br>预言未来当然比叙述历史要难很多，没有《人类简史》那么脉络清晰且具有说服力，不过书中的很多观点都是值得了解的。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27085265/">北京，北京</a>：★★<br>「年轻人没了幻想，一不小心就俗了」；<br>作家要是没了追求，文字一不小心就俗透了。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/25881855/">大教堂与集市</a>：★★★★☆<br>可以和<a href="https://book.douban.com/subject/26358448/">《人月神话》</a>一起看。<br><a href="https://en.wikipedia.org/wiki/Fred_Brooks">Brooks</a> 证明了「人月」在软件工程领域的非线性叠加性，而 <a href="https://en.wikipedia.org/wiki/Eric_S._Raymond">Eric S.Raymond</a> 则告诉我们「开源」大概是破局的唯一方式。<br>这部二十多年前写就的作品在如今看来也毫不过时，甚至书中的一些预言都一一应验。开源运动绝对是上世纪末以来黑客们最伟大的宗教活动。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27070488/">围城</a>：★★★★★<br>钱钟书太厉害了，把人物形象简直刻画得惟妙惟肖，个个都像是生活中栩栩如生的样子。<br>一个围城，围住了中国人的人情、世俗、琐碎与人生的苍凉。<br><a href="https://zh.wikipedia.org/wiki/%E9%9F%A9%E5%AF%92">韩寒</a>的所谓<a href="https://book.douban.com/subject/24697636/">《三重门》</a>不及《围城》的 0.01%。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26663519/">MacTalk 跨越边界</a>：★★★☆<br>比前作的干货更少，也看得出对于书本身的内容而言所体现出的作者的野心更少，基本都是些日常感悟和书评。大概已经无需再考虑要证明什么，可以放开手脚写想写的东西。<br>在我所接触到的所有技术人的自媒体当中，不管技术如何，<a href="http://macshuo.com/?page_id=2">池建强</a>和<a href="https://www.zhihu.com/people/tchen/">陈天</a>算是文字写得流畅优美、可读性非常强的两位了。<br>作为枕边读物还行。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26997376/">我是猫</a>：★★★☆<br>简直就是夏目漱石的自嘲式自传。这本书在浮躁的时候是不能读的，只有在悠闲的时候静下心来慢慢跟随「猫」的视野，才能感受到作为一个旁观者的乐趣。跟《围城》的写作手法和主旨其实有一些类似，但可读性并没有那么高，独特的视角也是本书的特色之一吧。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26984868/">神奇动物在哪里（原创电影剧本）</a>：★★★★<br>看完电影再看剧本画面简直扑面而来，第一部无论是剧本还是电影都很不错啊，好奇<a href="https://movie.douban.com/subject/26147417/">第二部</a>的剧本到底是怎么样的，至少从电影的观赏程度上肯定不如第一部，当然也有可能第二部的定位就是为了挖大坑。<br>不过呢，出版的剧本其实并不是为了拍电影工作的原始剧本，而是根据已上映电影内容的再编辑，这样看估计出版的剧本也不会很好了。<a href="https://www.jkrowling.com/">罗姨</a>的确是应该找个专业剧作家一起合作啊。</p>
-</li>
-</ol>
-<p>今年看完的书差不多就是这样了，另外我是那种齐头并进看多本书的类型，每天看心情选择一本想看的书，投入也开心。而书单只会列出在当年看完的书，那些可能看了一半的书不好评价故不在此列，有些书甚至可能会持续一两年还没看完，但最终基本还是会有所了结。以后我也会慢慢把所有在看的书都转移到 Kindle 上去。</p>
-<p>2018 年年初其实制定了一个非常高难度的计划，实现了其中最核心的部分，我个人觉得是幸运且满足的。2018 年似乎也是一个大环境非常不好的一年，「经济衰退」、「资本寒冬」在 2018 年的冬季被各种媒体频频提起，这似乎让 2019 更加让我期待，因为那意味着更加强烈的变化。变化和起落才是世界的真相，而太多人对自我、对世界有太大的误解，对人性和环境有太高的期待，太执拗于自我而丧失了格局。这也是今年我自我感觉更成熟的地方之一，经历得更多也越来越包容，接受各种各样的不同、缺憾、丰富和可能性，但同时也有了更坚定的自我意识。</p>
-<p>另一个今年值得一提的收获是开始探索了一个全新的领域并乐在其中，这也是一个很可能对人生有很大影响的领域。我一直推崇「顿悟」式的习得方式，因为大部分事后复盘看起来比较重要的「获得」其实都非常偶然，可遇不可求，不管这背后的原因是来自于你长期的努力和平时的积累、目前所到达的境界和眼界还是纯粹的运气，就在那一刻，不多不少，不紧不慢，你突然有所发现，打开了新世界的大门。这背后个人努力对最终结果起到了多大的作用，并不好说。「偶然」也是世界的一种真相和常态，很多人对此也有很大的误解。作为人类我们唯一能做的，只能是尽可能多的去了解一些不一样的东西，以求能更贴近真相一些。</p>
-<p>2019 年，我希望我可以更纯粹、更极致、更理想主义，坚定自我，从心所欲，也用更开放的胸怀和包容的态度待人接物，年度书单还将一直继续下去。</p>
+<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
+<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
+<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
+<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
+<p>我，好像是你的。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>书单</tag>
+        <tag>感情</tag>
       </tags>
   </entry>
   <entry>
@@ -1773,6 +1733,85 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>2018 年书单</title>
+    <url>/2018/12/31/2018-booklist/</url>
+    <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
+<p>回到「书单」的正题。在<a href="http://maples7.com/2016/12/31/2016-booklist/">之前的年终书单总结</a>中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— <a href="https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W">Kindle PaperWhite 4</a>（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。</p>
+<span id="more"></span>
+
+<p>废话先不多说，还是按老规矩先列今年看过的书的书单。</p>
+<ol>
+<li><p><a href="https://www.zhihu.com/pub/book/19550356">设计之美</a>：★★★☆<br>前言写得是真好，整本书写得最好的部分也是前言。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26320659/">万物生长</a>：★★★★<br>冯唐的文字远比<a href="https://zh.wikipedia.org/wiki/%E7%8E%8B%E5%B0%8F%E6%B3%A2">王小波</a>的瑰丽绚烂，像被一个习惯了炒食堂大锅菜的师傅炒出的菜，加足了各种重口的佐料，分明就是他自己前不久写的那篇在朋友圈疯转的文章所说的「油腻」。<br>被称为「某某第二」的人永远不能成为「某某」，也永远达不到世俗意义上「某某」的高度，这一点，几乎是一条铁律。号称「王小波第二」的冯唐永远也成不了王小波，是因为他的文字看不到王小波能看到的东西，技巧十足，却没有让人想去细细揣摩的深意。<br>然而这个世界上没有谁需要去成为谁，冯唐不必易老，照样会让世界变得更丰富。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26943161/">未来简史：从智人到智神</a>：★★★★<br>第一部分基本是在重复<a href="https://book.douban.com/subject/26953606/">《人类简史》</a>的观点；第二部分写得比较有意思，把人文主义主导世界的现实情况剖析得鞭辟入里；第三部阐述了数据宗教的概念，基本也没有什么新东西。<br>预言未来当然比叙述历史要难很多，没有《人类简史》那么脉络清晰且具有说服力，不过书中的很多观点都是值得了解的。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27085265/">北京，北京</a>：★★<br>「年轻人没了幻想，一不小心就俗了」；<br>作家要是没了追求，文字一不小心就俗透了。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25881855/">大教堂与集市</a>：★★★★☆<br>可以和<a href="https://book.douban.com/subject/26358448/">《人月神话》</a>一起看。<br><a href="https://en.wikipedia.org/wiki/Fred_Brooks">Brooks</a> 证明了「人月」在软件工程领域的非线性叠加性，而 <a href="https://en.wikipedia.org/wiki/Eric_S._Raymond">Eric S.Raymond</a> 则告诉我们「开源」大概是破局的唯一方式。<br>这部二十多年前写就的作品在如今看来也毫不过时，甚至书中的一些预言都一一应验。开源运动绝对是上世纪末以来黑客们最伟大的宗教活动。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27070488/">围城</a>：★★★★★<br>钱钟书太厉害了，把人物形象简直刻画得惟妙惟肖，个个都像是生活中栩栩如生的样子。<br>一个围城，围住了中国人的人情、世俗、琐碎与人生的苍凉。<br><a href="https://zh.wikipedia.org/wiki/%E9%9F%A9%E5%AF%92">韩寒</a>的所谓<a href="https://book.douban.com/subject/24697636/">《三重门》</a>不及《围城》的 0.01%。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26663519/">MacTalk 跨越边界</a>：★★★☆<br>比前作的干货更少，也看得出对于书本身的内容而言所体现出的作者的野心更少，基本都是些日常感悟和书评。大概已经无需再考虑要证明什么，可以放开手脚写想写的东西。<br>在我所接触到的所有技术人的自媒体当中，不管技术如何，<a href="http://macshuo.com/?page_id=2">池建强</a>和<a href="https://www.zhihu.com/people/tchen/">陈天</a>算是文字写得流畅优美、可读性非常强的两位了。<br>作为枕边读物还行。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26997376/">我是猫</a>：★★★☆<br>简直就是夏目漱石的自嘲式自传。这本书在浮躁的时候是不能读的，只有在悠闲的时候静下心来慢慢跟随「猫」的视野，才能感受到作为一个旁观者的乐趣。跟《围城》的写作手法和主旨其实有一些类似，但可读性并没有那么高，独特的视角也是本书的特色之一吧。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26984868/">神奇动物在哪里（原创电影剧本）</a>：★★★★<br>看完电影再看剧本画面简直扑面而来，第一部无论是剧本还是电影都很不错啊，好奇<a href="https://movie.douban.com/subject/26147417/">第二部</a>的剧本到底是怎么样的，至少从电影的观赏程度上肯定不如第一部，当然也有可能第二部的定位就是为了挖大坑。<br>不过呢，出版的剧本其实并不是为了拍电影工作的原始剧本，而是根据已上映电影内容的再编辑，这样看估计出版的剧本也不会很好了。<a href="https://www.jkrowling.com/">罗姨</a>的确是应该找个专业剧作家一起合作啊。</p>
+</li>
+</ol>
+<p>今年看完的书差不多就是这样了，另外我是那种齐头并进看多本书的类型，每天看心情选择一本想看的书，投入也开心。而书单只会列出在当年看完的书，那些可能看了一半的书不好评价故不在此列，有些书甚至可能会持续一两年还没看完，但最终基本还是会有所了结。以后我也会慢慢把所有在看的书都转移到 Kindle 上去。</p>
+<p>2018 年年初其实制定了一个非常高难度的计划，实现了其中最核心的部分，我个人觉得是幸运且满足的。2018 年似乎也是一个大环境非常不好的一年，「经济衰退」、「资本寒冬」在 2018 年的冬季被各种媒体频频提起，这似乎让 2019 更加让我期待，因为那意味着更加强烈的变化。变化和起落才是世界的真相，而太多人对自我、对世界有太大的误解，对人性和环境有太高的期待，太执拗于自我而丧失了格局。这也是今年我自我感觉更成熟的地方之一，经历得更多也越来越包容，接受各种各样的不同、缺憾、丰富和可能性，但同时也有了更坚定的自我意识。</p>
+<p>另一个今年值得一提的收获是开始探索了一个全新的领域并乐在其中，这也是一个很可能对人生有很大影响的领域。我一直推崇「顿悟」式的习得方式，因为大部分事后复盘看起来比较重要的「获得」其实都非常偶然，可遇不可求，不管这背后的原因是来自于你长期的努力和平时的积累、目前所到达的境界和眼界还是纯粹的运气，就在那一刻，不多不少，不紧不慢，你突然有所发现，打开了新世界的大门。这背后个人努力对最终结果起到了多大的作用，并不好说。「偶然」也是世界的一种真相和常态，很多人对此也有很大的误解。作为人类我们唯一能做的，只能是尽可能多的去了解一些不一样的东西，以求能更贴近真相一些。</p>
+<p>2019 年，我希望我可以更纯粹、更极致、更理想主义，坚定自我，从心所欲，也用更开放的胸怀和包容的态度待人接物，年度书单还将一直继续下去。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>心知天气数据 API 产品的高并发实践</title>
+    <url>/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</url>
+    <content><![CDATA[<p><a href="https://www.seniverse.com/">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a href="https://www.seniverse.com/">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p>
+<img data-src="/uploads/seniverse-index.gif" class="" title="心知天气 API 服务实时访问量" alt="图片显示错误">
+
+<span id="more"></span>
+
+<h2 id="访问量特点"><a href="#访问量特点" class="headerlink" title="访问量特点"></a>访问量特点</h2><p>天气数据的基本属性和客户本身的业务需求决定了客户来如何调用我们的数据接口。对于部分使用我们数据进行数据展示的 2C 业务的客户而言，访问量潮汐跟人的行为规律有着明显的相关性，这大致表现为白天比晚上并发量更高；而对于部分使用天气数据做数据分析和研究或者其他需要批量请求天气数据的客户而言，他们大多会选择在整点时刻来批量请求不同的数据，所以整点时刻往往会有突发的高峰访问量。</p>
+<p><img data-src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点"></p>
+<p>在叠加了不同客户需求的总体 API 服务的访问量，可以看出以下几个特点：</p>
+<ul>
+<li>以「天」为单位周期性明显</li>
+<li>每天零点时刻并发量会激增</li>
+<li>整点和半点时刻存在高并发小周期</li>
+</ul>
+<p>只有了解了我们客户的需求特点，才能设计出更合适的技术架构来应对随之而来的挑战。</p>
+<h2 id="石器时代"><a href="#石器时代" class="headerlink" title="石器时代"></a>石器时代</h2><p>在创业初期，「云计算」的理念开始兴起，创始团队在斟酌优劣之后，选择将整个系统构建于云服务提供商<a href="https://www.aliyun.com/">阿里云</a>之上，如此一来心知天气团队也不必自己再手工搭建和管理需要的硬件资源，这对于创业公司而言是一个不错的选择。和大多数早期创业公司一样，囿于资源和技术积累，最早我们也是将 API 服务实例直接部署在<a href="https://cn.aliyun.com/product/ecs">阿里云 ECS</a> 之上，对外通过<a href="https://www.aliyun.com/product/slb">负载均衡 SLB</a> 提供统一的 API 入口。</p>
+<p>随着心知天气数据服务体验的不断完善，客户数量也不断增多，API 服务所需要承载的流量也持续上涨。由于我们已经构建了上述这样的基础架构体系，在并发量最高的时期，我们需要手工维护高达 40 台左右的 ECS。而每个 ECS 上有自己独立但不完全一致的运行环境，不管是应对访问量突变还是部署新的版本，都无法做到比较快速的响应和执行。</p>
+<p>在这个阶段，我们产品的 API 数据和逻辑都还比较简单，所有关于用户信息处理、位置服务和数据处理的逻辑都揉杂在一个单体服务中，最终部署时也是一个一个独立的单体式架构通过 SLB 共同对外提供服务。</p>
+<h2 id="青铜时代"><a href="#青铜时代" class="headerlink" title="青铜时代"></a>青铜时代</h2><p>随着心知天气数据种类的不断增多，数据处理和 API 服务的逻辑也变得各不相同，比如城市级数据和公里级网格数据就有着完全不一样的处理和取数逻辑。在这种情况下，基于程序的可维护性考虑，我们很快决定根据数据处理逻辑的不同将数据服务拆分为几个不同的微服务，各自对外提供不同的天气数据 API。而为了复用取数之前的权限校验、访问量和各种日志统计的逻辑，我们开始引入网关系统。</p>
+<p>API 网关最重要的是性能和稳定性要足够好，所有的 API 请求都需要经过网关。在通过网关的校验之后，数据服务负责获取需要的天气数据，其结果再通过网关返回给外部用户。如此一来，不同的几个数据服务退化成无状态的纯数据服务，即每个数据服务节点不再考虑任何与用户相关的逻辑，只是简单的根据请求条件将所有处理好的数据从存储系统中取出后返回，网关作为唯一的请求入口来统一处理所有的权限校验和访问量、日志的各种统计。</p>
+<p>基于<a href="https://konghq.com/">开源的网关系统 Kong</a>，我们使用 Lua 进行了大量的二次定制开发，从而形成了心知天气自己的一套网关体系。这套系统不仅满足网关基本的路由逻辑，还能更好的处理和我们自身业务深度耦合的用户权限校验、访问量统计以及以用户为核心的日志记录。Kong 天生也是支持集群的，所以在理论上我们可以无限横向扩展网关的处理能力。</p>
+<p>在这样的架构之下，心知天气的 API 服务很好的遵循了<a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E4%B8%80%E5%8A%9F%E8%83%BD%E5%8E%9F%E5%88%99">「单一职责」的原则</a>，使得我们的代码维护和版本更新都能以更快速且代价更小的方式进行。但另一方面，我们还是需要手工维护大量的 ECS 集群，甚至由于天气数据服务的多样化，手工维护多个不同种类服务的集群将面对更繁重的挑战。不过，由于我们将服务进行了更好的拆分和分层，变成了一个个更小的微服务，使得我们能把它们进行更好的分布式部署，进而可以横向扩展来提高整个服务集群处理并发请求的能力。这一阶段既是我们成功向微服务架构的转变阶段，也可以看作是我们迈向更现代的后端架构的过渡阶段。</p>
+<h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p><a href="https://pivotal.io/cloud-native">Cloud-Native</a> 的概念是 2015 年被首次提出的，随后就获得了技术社区的大量关注。顺着之前架构演进的思路，我们很快开始用 Cloud-Native 的理念来武装整个后端系统架构。在去年，我们正式开始用 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/">Kubernetes</a> 来改造和管理我们所有对外的线上服务，这些架构设计同时也与阿里云提供的云服务深度结合。</p>
+<p>从网关到数据服务，目前我们都已经完成了容器化的改造，并且所有服务都使用 Kubernetes 来编排和管理，这意味着我们真正统一了各个服务的运行时环境，从而可以快速复制出新的服务节点。借助 Kubernetes，我们现在可以做到容器级别的自动伸缩，在并发量高的时候服务节点能够自动横向扩展以提高整个集群的并发处理能力，进而可以给用户提供更加优质稳定的天气数据 API 服务。</p>
+<p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
+<p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
+<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:hi@seniverse.com?subject=文章转载授权申请">心知天气</a>获取授权】</strong></p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>高并发</tag>
+        <tag>系统架构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>把 Airflow 搬进 Kubernetes</title>
     <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
     <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
@@ -1819,50 +1858,11 @@ _Farewell and thanks to each for the company_
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Cloud-Native</tag>
-        <tag>Kubernetes</tag>
         <tag>Airflow</tag>
+        <tag>Kubernetes</tag>
         <tag>Helm</tag>
         <tag>DevOps</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>心知天气数据 API 产品的高并发实践</title>
-    <url>/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</url>
-    <content><![CDATA[<p><a href="https://www.seniverse.com/">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a href="https://www.seniverse.com/">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p>
-<img data-src="/uploads/seniverse-index.gif" class="" title="心知天气 API 服务实时访问量" alt="图片显示错误">
-
-<span id="more"></span>
-
-<h2 id="访问量特点"><a href="#访问量特点" class="headerlink" title="访问量特点"></a>访问量特点</h2><p>天气数据的基本属性和客户本身的业务需求决定了客户来如何调用我们的数据接口。对于部分使用我们数据进行数据展示的 2C 业务的客户而言，访问量潮汐跟人的行为规律有着明显的相关性，这大致表现为白天比晚上并发量更高；而对于部分使用天气数据做数据分析和研究或者其他需要批量请求天气数据的客户而言，他们大多会选择在整点时刻来批量请求不同的数据，所以整点时刻往往会有突发的高峰访问量。</p>
-<p><img data-src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点"></p>
-<p>在叠加了不同客户需求的总体 API 服务的访问量，可以看出以下几个特点：</p>
-<ul>
-<li>以「天」为单位周期性明显</li>
-<li>每天零点时刻并发量会激增</li>
-<li>整点和半点时刻存在高并发小周期</li>
-</ul>
-<p>只有了解了我们客户的需求特点，才能设计出更合适的技术架构来应对随之而来的挑战。</p>
-<h2 id="石器时代"><a href="#石器时代" class="headerlink" title="石器时代"></a>石器时代</h2><p>在创业初期，「云计算」的理念开始兴起，创始团队在斟酌优劣之后，选择将整个系统构建于云服务提供商<a href="https://www.aliyun.com/">阿里云</a>之上，如此一来心知天气团队也不必自己再手工搭建和管理需要的硬件资源，这对于创业公司而言是一个不错的选择。和大多数早期创业公司一样，囿于资源和技术积累，最早我们也是将 API 服务实例直接部署在<a href="https://cn.aliyun.com/product/ecs">阿里云 ECS</a> 之上，对外通过<a href="https://www.aliyun.com/product/slb">负载均衡 SLB</a> 提供统一的 API 入口。</p>
-<p>随着心知天气数据服务体验的不断完善，客户数量也不断增多，API 服务所需要承载的流量也持续上涨。由于我们已经构建了上述这样的基础架构体系，在并发量最高的时期，我们需要手工维护高达 40 台左右的 ECS。而每个 ECS 上有自己独立但不完全一致的运行环境，不管是应对访问量突变还是部署新的版本，都无法做到比较快速的响应和执行。</p>
-<p>在这个阶段，我们产品的 API 数据和逻辑都还比较简单，所有关于用户信息处理、位置服务和数据处理的逻辑都揉杂在一个单体服务中，最终部署时也是一个一个独立的单体式架构通过 SLB 共同对外提供服务。</p>
-<h2 id="青铜时代"><a href="#青铜时代" class="headerlink" title="青铜时代"></a>青铜时代</h2><p>随着心知天气数据种类的不断增多，数据处理和 API 服务的逻辑也变得各不相同，比如城市级数据和公里级网格数据就有着完全不一样的处理和取数逻辑。在这种情况下，基于程序的可维护性考虑，我们很快决定根据数据处理逻辑的不同将数据服务拆分为几个不同的微服务，各自对外提供不同的天气数据 API。而为了复用取数之前的权限校验、访问量和各种日志统计的逻辑，我们开始引入网关系统。</p>
-<p>API 网关最重要的是性能和稳定性要足够好，所有的 API 请求都需要经过网关。在通过网关的校验之后，数据服务负责获取需要的天气数据，其结果再通过网关返回给外部用户。如此一来，不同的几个数据服务退化成无状态的纯数据服务，即每个数据服务节点不再考虑任何与用户相关的逻辑，只是简单的根据请求条件将所有处理好的数据从存储系统中取出后返回，网关作为唯一的请求入口来统一处理所有的权限校验和访问量、日志的各种统计。</p>
-<p>基于<a href="https://konghq.com/">开源的网关系统 Kong</a>，我们使用 Lua 进行了大量的二次定制开发，从而形成了心知天气自己的一套网关体系。这套系统不仅满足网关基本的路由逻辑，还能更好的处理和我们自身业务深度耦合的用户权限校验、访问量统计以及以用户为核心的日志记录。Kong 天生也是支持集群的，所以在理论上我们可以无限横向扩展网关的处理能力。</p>
-<p>在这样的架构之下，心知天气的 API 服务很好的遵循了<a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E4%B8%80%E5%8A%9F%E8%83%BD%E5%8E%9F%E5%88%99">「单一职责」的原则</a>，使得我们的代码维护和版本更新都能以更快速且代价更小的方式进行。但另一方面，我们还是需要手工维护大量的 ECS 集群，甚至由于天气数据服务的多样化，手工维护多个不同种类服务的集群将面对更繁重的挑战。不过，由于我们将服务进行了更好的拆分和分层，变成了一个个更小的微服务，使得我们能把它们进行更好的分布式部署，进而可以横向扩展来提高整个服务集群处理并发请求的能力。这一阶段既是我们成功向微服务架构的转变阶段，也可以看作是我们迈向更现代的后端架构的过渡阶段。</p>
-<h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p><a href="https://pivotal.io/cloud-native">Cloud-Native</a> 的概念是 2015 年被首次提出的，随后就获得了技术社区的大量关注。顺着之前架构演进的思路，我们很快开始用 Cloud-Native 的理念来武装整个后端系统架构。在去年，我们正式开始用 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/">Kubernetes</a> 来改造和管理我们所有对外的线上服务，这些架构设计同时也与阿里云提供的云服务深度结合。</p>
-<p>从网关到数据服务，目前我们都已经完成了容器化的改造，并且所有服务都使用 Kubernetes 来编排和管理，这意味着我们真正统一了各个服务的运行时环境，从而可以快速复制出新的服务节点。借助 Kubernetes，我们现在可以做到容器级别的自动伸缩，在并发量高的时候服务节点能够自动横向扩展以提高整个集群的并发处理能力，进而可以给用户提供更加优质稳定的天气数据 API 服务。</p>
-<p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
-<p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:hi@seniverse.com?subject=文章转载授权申请">心知天气</a>获取授权】</strong></p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>高并发</tag>
-        <tag>系统架构</tag>
+        <tag>Cloud-Native</tag>
       </tags>
   </entry>
   <entry>
@@ -2043,6 +2043,51 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>创业的准则</title>
+    <url>/2021/11/19/principles-4-startups/</url>
+    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
+<span id="more"></span>
+
+<ol>
+<li><p>找最优秀的人一起工作。</p>
+<p> 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。</p>
+<p> 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</p>
+</li>
+<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
+<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
+<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
+<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
+</li>
+<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
+<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
+<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI&#x2F;UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
+</li>
+<li><p>用产品和技术而不是营销手段说服用户。</p>
+<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
+</li>
+<li><p>建立制度，然后让更多的人自己做决定。</p>
+<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
+<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
+<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
+</li>
+<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
+<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
+</li>
+<li><p>流程优化永远比赶进度更重要。</p>
+<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
+</li>
+</ol>
+<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>产品</tag>
+        <tag>创业</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2020 年书单</title>
     <url>/2020/12/31/2020-booklist/</url>
     <content><![CDATA[<p>2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。</p>
@@ -2106,51 +2151,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>创业的准则</title>
-    <url>/2021/11/19/principles-4-startups/</url>
-    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
-<span id="more"></span>
-
-<ol>
-<li><p>找最优秀的人一起工作。</p>
-<p> 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。</p>
-<p> 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</p>
-</li>
-<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
-<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
-<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
-<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
-</li>
-<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
-<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
-<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI&#x2F;UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
-</li>
-<li><p>用产品和技术而不是营销手段说服用户。</p>
-<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
-</li>
-<li><p>建立制度，然后让更多的人自己做决定。</p>
-<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
-<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
-<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
-</li>
-<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
-<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
-</li>
-<li><p>流程优化永远比赶进度更重要。</p>
-<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
-</li>
-</ol>
-<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>产品</tag>
-        <tag>创业</tag>
       </tags>
   </entry>
   <entry>
@@ -2274,10 +2274,10 @@ _Farewell and thanks to each for the company_
 <li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
 <li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
 </ol>
-<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略还只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
-<p>以上的示例策略讨论，还只是针对一个品种而言，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
+<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
+<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
 <h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。</p>
-<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
+<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
 <p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
 <p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
