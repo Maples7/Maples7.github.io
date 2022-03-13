@@ -1013,6 +1013,58 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>Express 性能调优</title>
+    <url>/2017/03/03/express-run-faster/</url>
+    <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
+<h2 id="NODE-ENV-x3D-production"><a href="#NODE-ENV-x3D-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
+<span id="more"></span>
+
+<blockquote>
+<p>NODE_ENV 环境变量指定运行应用程序的环境（通常是开发或者生产环境）。为了改进性能，最简单的方法是将 NODE_ENV 设置为“production”。     </p>
+<p>将 NODE_ENV 设置为“production”会使 Express：</p>
+<ul>
+<li>高速缓存视图模板。</li>
+<li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
+<li>生成简短的错误消息。</li>
+</ul>
+<p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
+</blockquote>
+<p>遂顿悟！</p>
+<p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
+<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
+<p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
+<p>测试结果如下：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
+
+<p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
+<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
+<h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
+<ul>
+<li><strong>使用 gzip 压缩响应</strong>：用 <a href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
+<li><strong>代码中不使用同步函数</strong>：项目启动时可以一次性使用同步函数进行一些有时序性的操作（比如加载路由），但在之后的长期运行过程中，具体对外的接口执行流程中不应该存在同步函数；</li>
+<li><strong>正确进行日志记录</strong>：不要简单的用 <code>console</code>（都是同步函数）或自己写文件操作，直接用成熟的日志包（如 Winston、Bunyan、log4js 等），必要的情况下可能还需要使用消息队列；</li>
+<li><strong>使用进程管理器</strong>：除了提高应用的可用性之外，还可以根据 CPU 核心数生成相应的应用实例，充分利用 Node.js 的优势压榨 CPU 的资源，常用的有 StrongLoop Process Manager、PM2、Forever；</li>
+<li><strong>使用反向代理</strong>：直接用 Nginx 做反向代理吧，一方面可以做 CDN 缓存静态资源，另一方面还能够利用它做简单的负载均衡。不过需要注意的几点是：<ul>
+<li>多实例下「粘性会话」需要把状态存储在第三方高速介质中，一般用 Redis 就好；或者，采用 JWT 鉴权方案实现接口无状态（更推荐，同时为了安全站点一定要强制使用 HTTPS）；</li>
+<li>Nginx 做反向代理时不应该将其与应用放在同一台主机上，原因可以看这里：<a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">生产环境最佳实践：性能和可靠性 - Express 官方文档</a></li>
+<li><a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Express</tag>
+        <tag>性能调优</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>译文 | 为什么面向对象很糟糕</title>
     <url>/2017/02/09/why-oo-sucks/</url>
     <content><![CDATA[<blockquote>
@@ -1072,78 +1124,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>面向对象</tag>
         <tag>Erlang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Express 性能调优</title>
-    <url>/2017/03/03/express-run-faster/</url>
-    <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
-<h2 id="NODE-ENV-x3D-production"><a href="#NODE-ENV-x3D-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
-<span id="more"></span>
-
-<blockquote>
-<p>NODE_ENV 环境变量指定运行应用程序的环境（通常是开发或者生产环境）。为了改进性能，最简单的方法是将 NODE_ENV 设置为“production”。     </p>
-<p>将 NODE_ENV 设置为“production”会使 Express：</p>
-<ul>
-<li>高速缓存视图模板。</li>
-<li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
-<li>生成简短的错误消息。</li>
-</ul>
-<p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
-</blockquote>
-<p>遂顿悟！</p>
-<p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
-<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
-<p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
-<p>测试结果如下：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [<span class="comment">#/sec] (mean)</span></span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
-
-<p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
-<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
-<h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
-<ul>
-<li><strong>使用 gzip 压缩响应</strong>：用 <a href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
-<li><strong>代码中不使用同步函数</strong>：项目启动时可以一次性使用同步函数进行一些有时序性的操作（比如加载路由），但在之后的长期运行过程中，具体对外的接口执行流程中不应该存在同步函数；</li>
-<li><strong>正确进行日志记录</strong>：不要简单的用 <code>console</code>（都是同步函数）或自己写文件操作，直接用成熟的日志包（如 Winston、Bunyan、log4js 等），必要的情况下可能还需要使用消息队列；</li>
-<li><strong>使用进程管理器</strong>：除了提高应用的可用性之外，还可以根据 CPU 核心数生成相应的应用实例，充分利用 Node.js 的优势压榨 CPU 的资源，常用的有 StrongLoop Process Manager、PM2、Forever；</li>
-<li><strong>使用反向代理</strong>：直接用 Nginx 做反向代理吧，一方面可以做 CDN 缓存静态资源，另一方面还能够利用它做简单的负载均衡。不过需要注意的几点是：<ul>
-<li>多实例下「粘性会话」需要把状态存储在第三方高速介质中，一般用 Redis 就好；或者，采用 JWT 鉴权方案实现接口无状态（更推荐，同时为了安全站点一定要强制使用 HTTPS）；</li>
-<li>Nginx 做反向代理时不应该将其与应用放在同一台主机上，原因可以看这里：<a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">生产环境最佳实践：性能和可靠性 - Express 官方文档</a></li>
-<li><a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Express</tag>
-        <tag>性能调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>印象青岛</title>
-    <url>/2017/03/14/qingdao/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241202ea.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6732410961d.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241122ee.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b67324124390.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241310f1.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b67324137461.jpg" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12595727/">https://maples7.tuchong.com/12595727/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>风光</tag>
       </tags>
   </entry>
   <entry>
@@ -1243,6 +1223,26 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>印象青岛</title>
+    <url>/2017/03/14/qingdao/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241202ea.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6732410961d.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241122ee.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b67324124390.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241310f1.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b67324137461.jpg" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12595727/">https://maples7.tuchong.com/12595727/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>风光</tag>
       </tags>
   </entry>
   <entry>
@@ -1424,6 +1424,37 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>被分化的树叶</title>
+    <url>/2017/07/15/diversified-leaves/</url>
+    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
+<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
+<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
+<span id="more"></span>
+
+<p>树叶们早已经被分化了。</p>
+<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
+<p>太阳越升越高，雾也开始渐渐散去。</p>
+<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
+<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
+<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
+<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
+<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
+<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
+<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
+<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
+<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
+<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
+<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>意识流</tag>
+        <tag>散文</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>独立书店的生存困境</title>
     <url>/2017/08/23/arduous-independent-bookstores/</url>
     <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
@@ -1478,37 +1509,6 @@ _Farewell and thanks to each for the company_
         <tag>「完全理解」系列</tag>
         <tag>回调函数</tag>
         <tag>控制反转</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>被分化的树叶</title>
-    <url>/2017/07/15/diversified-leaves/</url>
-    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
-<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
-<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
-<span id="more"></span>
-
-<p>树叶们早已经被分化了。</p>
-<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
-<p>太阳越升越高，雾也开始渐渐散去。</p>
-<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
-<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
-<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
-<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
-<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
-<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
-<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
-<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
-<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
-<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
-<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>意识流</tag>
-        <tag>散文</tag>
       </tags>
   </entry>
   <entry>
@@ -1866,6 +1866,81 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>Elixir 代码性能优化指北</title>
+    <url>/2019/12/05/elixir-code-performance-optimization/</url>
+    <content><![CDATA[<p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
+<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
+<span id="more"></span>
+
+<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
+<ul>
+<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
+</li>
+<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = Map.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; Map.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
+</li>
+<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
+</li>
+<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
+</li>
+<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
+</li>
+<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        Enum.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
+</li>
+</ul>
+<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>性能调优</tag>
+        <tag>Erlang</tag>
+        <tag>Elixir</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2019 年书单</title>
     <url>/2019/12/31/2019-booklist/</url>
     <content><![CDATA[<p>2019 年对很多人来说似乎是艰难的一年，在这个世界愈发趋于动荡和不信任的大背景下，越来越多的疑惑、迷茫和不确定性从上至下笼罩在每一个人可以感知到的日常生活中。或许只是一种周期，或许就是一种趋势，各种事物的分化与混乱变得越来越明显。如果从热力学第二定律的角度来看，维持事物不走向无序是需要额外付出很多努力的，那说明人类社会目前做的共同有效努力还不够；如果从唯物论的发展观来看，事物总是螺旋式向上发展的，周期中同时也蕴含着一些不可逆的改变。把 2019 年放在历史的长河中，我不知道它处在世界发展周期的哪个部分，但很可能不是在「好」（大部分人认为的世俗意义上的「好」）的那一半。这可能是前些年某些事件的发生导致了现在的局面，同时也可能是未来很长一段时间不同局面的开始。</p>
@@ -1942,78 +2017,29 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>Elixir 代码性能优化指北</title>
-    <url>/2019/12/05/elixir-code-performance-optimization/</url>
-    <content><![CDATA[<p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
-<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
+    <title>「必然」有多必然？</title>
+    <url>/2020/05/19/how-certain-is-certain/</url>
+    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
+<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
 <span id="more"></span>
 
-<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
-<ul>
-<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
-</li>
-<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = Map.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; Map.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
-</li>
-<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
-</li>
-<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
-</li>
-<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">Enum.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> List.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, Enum.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
-</li>
-<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        Enum.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; Enum.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; Map.new(<span class="keyword">fn</span> pair -&gt; List.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; Map.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
-</li>
-</ul>
-<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
+<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
+<p>所以已经发生的「必然」到底多必然？</p>
+<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
+<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
+<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
+<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
+<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
+<p>我想我是得看一些关于复杂系统理论的书了。</p>
 ]]></content>
       <categories>
-        <category>一只代码狗的自我修养</category>
+        <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>Erlang</tag>
-        <tag>性能调优</tag>
-        <tag>Elixir</tag>
+        <tag>人生</tag>
+        <tag>必然</tag>
+        <tag>哲学</tag>
+        <tag>复杂系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2083,29 +2109,28 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>「必然」有多必然？</title>
-    <url>/2020/05/19/how-certain-is-certain/</url>
-    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
-<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
+    <title>在望京，没有方向</title>
+    <url>/2021/12/08/no-direction-in-wangjing/</url>
+    <content><![CDATA[<p>北京的初雪天很冷，却总能给人一种充满希望的感觉。雪一下，北京成了北平，茫茫的白色也成了一系列盛大节日的暗示。会来事儿的商家会早早在店面上添上一抹红，本来素朴的街道氛围一下就上来了。不管你白天因为工作上的什么事情而烦恼，在天刚黑的下班路上，都是一段最佳的放空自己的时间。宽阔的街道上一如继往的车水马龙，迎面的车道闪过一道道晃眼的白光，正向车道的红尾灯连成一片红色光带。是很堵，但人们都失去了一些平凡日子里的暴躁。当然，这很可能是前面路口交警的功劳。</p>
+<p>北京远不是一座浪漫的城市，现实的引力会牢牢的吸住每一个人，不让大家离地面太远。不仅不浪漫，甚至还很土气（「土」并不天然意味着「不能高档」和「不能高级」），然而这种「不浪漫」也正是这座城市吸引人的特点之一。生活会奖励真实，这里的每一个人都受其馈赠。望京当然也逃不过这引力。</p>
 <span id="more"></span>
 
-<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
-<p>所以已经发生的「必然」到底多必然？</p>
-<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
-<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
-<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
-<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
-<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
-<p>我想我是得看一些关于复杂系统理论的书了。</p>
+<p>没有二环内胡同大院的庄严古朴，没有三里屯的时尚摩登，也没有中关村的高知气息，望京在这样的北京城的东北角里，显得很普通。硬要说有什么不同，那大抵就是望京的路了。不同于北京大多数地方笔直朝向的道路，望京的路成了这些「笔直」的弯曲黏合部。沿着望京的路慢慢走，不知不觉你就偏离了原本的方向。这当然算不上什么望京「有名」的特色，但你也难忽略这件事的存在。</p>
+<p>普通的望京却没有普通的人，这样说其实不对，每一个在北京浮沉的人都是不普通的，跟望京没啥关系，望京依然还是那样普通。在路上的每一个人，都有可能有一段引人入胜的故事。这是一个爱听故事的人的天堂，要是你还有酒，那或许可以换到很多色彩斑斓的故事，或者不需要酒，那你得成为一个健谈的的士司机。但是，在某种程度上，这里的每个人又都是普通的。无论你曾经经历过什么，在这样一座偌大的城市里，你都能找到跟你有类似经历的人，没有人是完全独一无二的。</p>
+<p>望京可以算是目前北京城人口密集区的最外围的一个据点了，再往外走，选一个秋高气爽的日子，你就可以在北京郊区的农家小院里度过一个惬意的周末。当然，前提是你没有在望京迷失出城的方向。</p>
+<p>在望京，不仅没有方向，也没有音乐。当然，开出城区之后是有音乐的，但一回来望京就没有了。你可以在这里听到各种各样的旋律，但这里没有音乐。没有音乐人就很难拥有灵魂。</p>
+<p>也许望京有一种神秘的神奇磁场，每一个进入这片场区的人都在不知不觉中丧失了对自我、对生活的敏锐感知力。每个来这里的人都带着天然的对生活的期待，目标明确，反而慢慢地在一天又一天的循规蹈矩中迷失。中关村或许承载着人们更强烈得多的期待，但那里的人们在一天天的忙碌背后也会关注生活，或许是周围的校园气息对这种蓬勃的欲望起到了中和的作用，反而让其不仅有朝气活力的气质又能有随时静下心来的感知。</p>
+<p>望京大抵是少了点什么东西。</p>
+<p>在望京，务必带好你的罗盘再出发。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
         <tag>人生</tag>
-        <tag>必然</tag>
-        <tag>哲学</tag>
-        <tag>复杂系统</tag>
+        <tag>创业</tag>
+        <tag>北京</tag>
+        <tag>望京</tag>
       </tags>
   </entry>
   <entry>
@@ -2151,82 +2176,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>产品</tag>
         <tag>创业</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在望京，没有方向</title>
-    <url>/2021/12/08/no-direction-in-wangjing/</url>
-    <content><![CDATA[<p>北京的初雪天很冷，却总能给人一种充满希望的感觉。雪一下，北京成了北平，茫茫的白色也成了一系列盛大节日的暗示。会来事儿的商家会早早在店面上添上一抹红，本来素朴的街道氛围一下就上来了。不管你白天因为工作上的什么事情而烦恼，在天刚黑的下班路上，都是一段最佳的放空自己的时间。宽阔的街道上一如继往的车水马龙，迎面的车道闪过一道道晃眼的白光，正向车道的红尾灯连成一片红色光带。是很堵，但人们都失去了一些平凡日子里的暴躁。当然，这很可能是前面路口交警的功劳。</p>
-<p>北京远不是一座浪漫的城市，现实的引力会牢牢的吸住每一个人，不让大家离地面太远。不仅不浪漫，甚至还很土气（「土」并不天然意味着「不能高档」和「不能高级」），然而这种「不浪漫」也正是这座城市吸引人的特点之一。生活会奖励真实，这里的每一个人都受其馈赠。望京当然也逃不过这引力。</p>
-<span id="more"></span>
-
-<p>没有二环内胡同大院的庄严古朴，没有三里屯的时尚摩登，也没有中关村的高知气息，望京在这样的北京城的东北角里，显得很普通。硬要说有什么不同，那大抵就是望京的路了。不同于北京大多数地方笔直朝向的道路，望京的路成了这些「笔直」的弯曲黏合部。沿着望京的路慢慢走，不知不觉你就偏离了原本的方向。这当然算不上什么望京「有名」的特色，但你也难忽略这件事的存在。</p>
-<p>普通的望京却没有普通的人，这样说其实不对，每一个在北京浮沉的人都是不普通的，跟望京没啥关系，望京依然还是那样普通。在路上的每一个人，都有可能有一段引人入胜的故事。这是一个爱听故事的人的天堂，要是你还有酒，那或许可以换到很多色彩斑斓的故事，或者不需要酒，那你得成为一个健谈的的士司机。但是，在某种程度上，这里的每个人又都是普通的。无论你曾经经历过什么，在这样一座偌大的城市里，你都能找到跟你有类似经历的人，没有人是完全独一无二的。</p>
-<p>望京可以算是目前北京城人口密集区的最外围的一个据点了，再往外走，选一个秋高气爽的日子，你就可以在北京郊区的农家小院里度过一个惬意的周末。当然，前提是你没有在望京迷失出城的方向。</p>
-<p>在望京，不仅没有方向，也没有音乐。当然，开出城区之后是有音乐的，但一回来望京就没有了。你可以在这里听到各种各样的旋律，但这里没有音乐。没有音乐人就很难拥有灵魂。</p>
-<p>也许望京有一种神秘的神奇磁场，每一个进入这片场区的人都在不知不觉中丧失了对自我、对生活的敏锐感知力。每个来这里的人都带着天然的对生活的期待，目标明确，反而慢慢地在一天又一天的循规蹈矩中迷失。中关村或许承载着人们更强烈得多的期待，但那里的人们在一天天的忙碌背后也会关注生活，或许是周围的校园气息对这种蓬勃的欲望起到了中和的作用，反而让其不仅有朝气活力的气质又能有随时静下心来的感知。</p>
-<p>望京大抵是少了点什么东西。</p>
-<p>在望京，务必带好你的罗盘再出发。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>人生</tag>
-        <tag>创业</tag>
-        <tag>北京</tag>
-        <tag>望京</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何开始稳健投资</title>
-    <url>/2022/03/13/how-to-start-investing-soundly/</url>
-    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
-<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
-<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
-<span id="more"></span>
-
-<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
-<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
-<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
-<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
-<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
-<ol>
-<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
-<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
-<li>投资不能降低自己的生活品质。</li>
-<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
-<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
-<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
-<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
-</ol>
-<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
-<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
-<p>选定了投资品种，我们如何开始买入卖出呢？</p>
-<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
-<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，充分考虑你的存量资金和未来稳定的现金流下（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就明确想好你未来所有会投入市场的资金量。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
-<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。具体而言，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如何市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
-<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
-<ol>
-<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
-<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
-</ol>
-<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。</p>
-<p>以上的示例策略讨论，还只是针对一个品种而言，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相对性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
-<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。</p>
-<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，我感觉跟现在的阶段很类似。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
-<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
-<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>投资</tag>
-        <tag>理财</tag>
-        <tag>基金</tag>
-        <tag>ETF</tag>
       </tags>
   </entry>
   <entry>
@@ -2290,6 +2239,57 @@ _Farewell and thanks to each for the company_
         <tag>人生</tag>
         <tag>投资</tag>
         <tag>摄影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何开始稳健投资</title>
+    <url>/2022/03/13/how-to-start-investing-soundly/</url>
+    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
+<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
+<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
+<span id="more"></span>
+
+<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
+<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
+<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
+<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
+<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
+<ol>
+<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
+<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
+<li>投资不能降低自己的生活品质。</li>
+<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
+<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
+<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
+<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
+</ol>
+<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
+<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
+<p>选定了投资品种，我们如何开始买入卖出呢？</p>
+<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
+<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，充分考虑你的存量资金和未来稳定的现金流下（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就明确想好你未来所有会投入市场的资金量。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
+<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。具体而言，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如何市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
+<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
+<ol>
+<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
+<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
+</ol>
+<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。</p>
+<p>以上的示例策略讨论，还只是针对一个品种而言，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相对性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
+<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。</p>
+<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，我感觉跟现在的阶段很类似。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
+<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
+<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
+]]></content>
+      <categories>
+        <category>滚雪球</category>
+      </categories>
+      <tags>
+        <tag>投资</tag>
+        <tag>理财</tag>
+        <tag>基金</tag>
+        <tag>ETF</tag>
       </tags>
   </entry>
 </search>
