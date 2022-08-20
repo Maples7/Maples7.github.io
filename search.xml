@@ -112,73 +112,6 @@
       </tags>
   </entry>
   <entry>
-    <title>非关系型数据库中的「关系」实现</title>
-    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
-    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
-<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
-<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
-<span id="more"></span>
-
-<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
-<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
-<p>方法如下：</p>
-<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
-<p>举例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
-<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
-<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
-<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
-<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
-<p>引用方法又可分为两种：</p>
-<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
-<p>方法简单，不再举例赘述。</p>
-<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
-<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
-<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
-<p>样例如下：</p>
-<p>在 user.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在 msgboard.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
-<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
-<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
-<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
-<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
-<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>巴山蜀水毓灵秀</title>
-    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a96f4.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af68b036.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a29bb.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a482e.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>光影</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>我的密码管理策略</title>
     <url>/2016/04/06/my-strategy-about-passwords-management/</url>
     <content><![CDATA[<p>[ 本文来自于<a href="https://www.zhihu.com/question/19695004/answer/93985563">我的知乎回答</a>，现整理修改后记于博客。]</p>
@@ -249,6 +182,73 @@
       <tags>
         <tag>密码管理</tag>
         <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>非关系型数据库中的「关系」实现</title>
+    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
+    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
+<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
+<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+<span id="more"></span>
+
+<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
+<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
+<p>方法如下：</p>
+<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
+<p>举例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
+<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
+<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
+<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
+<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
+<p>引用方法又可分为两种：</p>
+<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
+<p>方法简单，不再举例赘述。</p>
+<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
+<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
+<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
+<p>样例如下：</p>
+<p>在 user.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 msgboard.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
+<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
+<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
+<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
+<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
+<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>巴山蜀水毓灵秀</title>
+    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a96f4.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af68b036.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a29bb.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a482e.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>光影</tag>
       </tags>
   </entry>
   <entry>
@@ -374,6 +374,82 @@
       </tags>
   </entry>
   <entry>
+    <title>用 ES6 特性实现一个标准的轻量级 Promise</title>
+    <url>/2016/08/29/implement-a-clean-promise-with-es6-features/</url>
+    <content><![CDATA[<p>Promise 应该是目前 JavaScript 中最流行的异步流程控制解决方案，本文将介绍如何使用 JavaScript ES6 的语言特性，实现一个轻量级的通过了所有<a href="https://github.com/promises-aplus/promises-tests">官方测例</a>标准的 Promise 库。了解其原理，深入其实现。实际上，Promise 也早已被写入 JavaScript ES6 的标准，作为官方支持的标准异步流程控制解决方案之一。用 ES6 语法实现一个 ES6 中的 Promise，虽然看似没有必要，不过对于深入理解 Promise 以便更好的使用大有裨益。</p>
+<p>为了您的最佳阅读体验，在阅读本文之前，建议您已经做到如下事情：</p>
+<ul>
+<li>可以熟练使用至少任意一个 Promise 库，如 bluebird、Q 等；</li>
+<li>了解 Promise 标准，可以<a href="https://promisesaplus.com/">看这里</a>；</li>
+<li>熟悉主要的 JavaScript ES6 特性；</li>
+</ul>
+<span id="more"></span>
+<h3 id="构造函数之前的准备"><a href="#构造函数之前的准备" class="headerlink" title="构造函数之前的准备"></a>构造函数之前的准备</h3><p>我们都知道，Promise 总共有三种状态：pending、fullfilled（resolved）和 rejected。所以我们对于每一个 Promise 实例都需要一个变量记录其现有的状态。</p>
+<p>然后还需要一个变量记录其 settled 之后的结果。另外，Promise 作为一个异步流程控制库，在上游的 Promise 还处于 pending 状态时下游 Promise 是不能执行的，所以我们至少需要一个数组来记录当前 Promise 还未 settled 时它后续的一些操作（你可以用两个数组分别记录 resolved 和 rejected 之后不同的操作；也可以用一个数组，然后每个元素都是包含两个属性的对象，分别记录 resolved 和 rejected 之后不同的操作）。</p>
+<p>另外，借用面向对象的说法，这些变量对 Promise 而言应该是私有的，即不应该对外界暴露（这也是符合标准的）。所以待会儿构造函数之中应该定义一些私有变量，而 ES6 的 Symbol 类型则可以完美实现我们所需的私有变量。</p>
+<p>代码如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义 Promise 状态</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">STATUS</span> = &#123;</span><br><span class="line">    <span class="attr">PENDING</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">RESOLVED</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">REJECTED</span>: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> _status = <span class="title class_">Symbol</span>(<span class="string">&#x27;status&#x27;</span>); <span class="comment">// 用于 status 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _result = <span class="title class_">Symbol</span>(<span class="string">&#x27;result&#x27;</span>); <span class="comment">// 用于 result 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _callbacks = <span class="title class_">Symbol</span>(<span class="string">&#x27;callbacks&#x27;</span>); <span class="comment">// 用于 callbacks 私有变量的 Symbol</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们将 Promise 状态定义到一个对象之中，并且用属性名语义化状态，值其实没什么意义，但是这样写符合「让错误更早的暴露出来」的编程原则，让编译器（或解释器）去帮我们提前检测错误，总比写在字符串在运行时才把定位还不一定准确的错误暴露出来要好。</p>
+<p>其次，还定义了几个用于定义私有变量的 Symbol。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>构造函数无非是给变量做一些初始化的工作，然后执行用户传入的函数。关键在于我们需要定义好传入的函数的参数，即<code>resolve</code>和<code>reject</code>函数。</p>
+<p>先看代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params">exec</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> self = <span class="variable language_">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!(<span class="keyword">typeof</span> (exec) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Promise constructor argument exec must be a function.&#x27;</span>) </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>; </span><br><span class="line">    self[_result] = <span class="literal">undefined</span>;</span><br><span class="line">    self[_callbacks] = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">resolve</span>(<span class="params">value</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>;</span><br><span class="line">                self[_result] = value;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onResolved</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">reject</span>(<span class="params">reason</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>;</span><br><span class="line">                self[_result] = reason;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onRejected</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="title function_">exec</span>(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造函数里，首先限制了用户传入的参数必须为函数，然后将状态置为<code>pending</code>，并初始化<code>result</code>和<code>callbacks</code>。</p>
+<p>之后，尝试运行用户传入的函数，并提供我们自己定义的<code>resolve</code>和<code>reject</code>函数作为参数。因为运行函数可能会抛出难以预期的错误，所以外面用<code>try...catch</code>包裹一层，并把错误用<code>reject</code>处理，表示当前 Promise 被 reject。</p>
+<p>这里的关键在于我们自己定义的<code>resolve</code>和<code>reject</code>函数。</p>
+<p>其实<code>resolve</code>和<code>reject</code>的逻辑也很简单，首先因为标准里规定对于<code>resolve</code>和<code>reject</code>的调用必须是异步的，来避免阻塞（<code>.then</code>方法的两个参数同理），所以外面套了一层<code>nextTick</code>（这里对前后端做了兼容，前端指向<code>setTimeout</code>，后端指向<code>process.nextTick</code>）。内层首先保证当前 Promise 还处于<code>pending</code>状态（标准规定状态只能由<code>pending</code>转向其他两个，并且一经转变不能更改），然后分别将状态置为<code>resolved</code>或<code>rejected</code>，最后顺次执行之前由于还未 settled 时存储在<code>callbacks</code>里面的后续回调函数集。</p>
+<h3 id="then"><a href="#then" class="headerlink" title=".then"></a>.then</h3><p><code>.then</code>函数接受两个函数作为参数，分别对应前一个 Promise 被 resolve 或 reject 之后的回调。</p>
+<p>首先来看一下函数的主逻辑：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span> (self[_status]) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onResolved, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onRejected, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            self[_callbacks].<span class="title function_">push</span>(&#123;</span><br><span class="line">                <span class="attr">onResolved</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onResolved, resolve, reject, childPromise),</span><br><span class="line">                <span class="attr">onRejected</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onRejected, resolve, reject, childPromise)</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="attr">default</span>: </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Invalid status value&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据前一个 Promise 的状态，分三种情况，其中<code>resolved</code>和<code>rejected</code>时是类似的：<code>new</code>一个新的 Promise 实例作为当前的 Promise，同理异步执行传入的函数（细节见下文<code>childExec</code>函数）。而当状态是<code>pending</code>时，我们只能先把回调函数先压入前一个 Promise 的回调函数队列，等<code>settled</code>后再执行。</p>
+<h4 id="childExec"><a href="#childExec" class="headerlink" title="childExec"></a>childExec</h4><p><code>childExec</code>本身是为了最大化复用代码而重构独立出来的一个函数，代码很简单：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">childExec</span>(<span class="params">value, onDone, resolve, reject, childPromise</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        value = <span class="title function_">onDone</span>(value);</span><br><span class="line">        <span class="title function_">solver</span>(childPromise, value, resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解释一下：不管是前一个 Promise 是<code>rejected</code>还是<code>resolved</code>，用传入<code>.then</code>的对应的回调函数执行前一个 Promise settled 之后的结果<code>result</code>，然后执行<code>solver</code>（见下文对<code>solver</code>的分析）。同样的，外面需要包裹一层<code>try...catch</code>。</p>
+<h4 id="solver"><a href="#solver" class="headerlink" title="solver"></a>solver</h4><p><code>solver</code>函数是不同的 Promise 实现之间（比如 bluebird 对 Promise 的实现与 ES6 原生对 Promise 的实现）能够无缝调用的关键。对此，<a href="https://promisesaplus.com/#point-45">Promise 标准中也有详述，甚至已经把这个函数的逻辑和流转都已经完完本本的列出来了，任何 Promise 实现只要遵循这个标准，就可以实现不同 Promise 实现之间的交叉调用</a>。</p>
+<p>看代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">solver</span>(<span class="params">promise, result, resolve, reject</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> then, settled = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (promise === result) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Cycle Promises&#x27;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result <span class="keyword">instanceof</span> <span class="title class_">Promise</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (result[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(<span class="function"><span class="params">v</span> =&gt;</span> <span class="title function_">solver</span>(promise, v, resolve, reject), reject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(resolve, reject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((result !== <span class="literal">null</span>) &amp;&amp; (<span class="keyword">typeof</span> (result) === <span class="string">&#x27;object&#x27;</span> || <span class="keyword">typeof</span> (result) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            then = result.<span class="property">then</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> (then) === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">                then.<span class="title function_">call</span>(result, <span class="function"><span class="params">s</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">solver</span>(promise, s, resolve, reject);</span><br><span class="line">                &#125;, <span class="function"><span class="params">r</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">reject</span>(r);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">            settled = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：</p>
+<ul>
+<li>如果上一个 Promise 的<code>result</code>跟子 Promise 还是同一个对象，显然是循环调用了，按标准规定抛出<code>TypeError</code>；</li>
+<li>如果上一个 Promise 的<code>result</code>还是本 Promise 实现的实例，那挺好，直接调用它的<code>then</code>就好。不过，上一个 Promise 返回的新 Promise 可能还没有 settled，所以如果没有 settled，我们在它的<code>onResolved</code>函数中直接继续执行<code>solver</code>直到它被 settled（看起来像用递归的形式表现循环迭代）；</li>
+<li>如果返回的不是当前 Promise 实现的实例，但是它是一个有<code>.then</code>方法的对象或者函数，那我们直接用它的<code>then</code>方法<code>call</code>在<code>result</code>上，并且在它的回调函数<code>onResolved</code>中用<code>.then</code>传递的<code>s</code>继续调用<code>solver</code>或者在<code>onRejected</code>函数中<code>reject</code>掉这个 Promise。值得注意的是，由于一个 Promise 只能被 settled 一次，而第三方的<code>.then</code>方法我们不知道里面具体是什么内容，所以用一个<code>Boolean</code>量<code>settled</code>来标记，保证它只被 settled 一次，之后的调用都直接被忽略（标准也是这样规定的）；</li>
+<li>如果只是一个简单值，直接<code>resolve</code>。</li>
+</ul>
+<p>另外，尽管在<code>childExec</code>中我们已经用<code>try...catch</code>包裹了一层，但是异步调用的错误依然可能不会被捕获，所以这里依然需要<code>try...catch</code>。</p>
+<p>至此，一个符合标准的 Promise 最小化实现就已经完成了。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在你的 Promise 写好后，需要进行测试，至少需要通过的官方测例在这里：<a href="https://github.com/promises-aplus/promises-tests">Promises&#x2F;A+ Compliance Test Suite</a>。通过所有测例之后表明你的 Promise 实现是基本符合标准的。</p>
+<p>按其说明，你需要提供一个这样的类静态函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="title function_">deferred</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> dfd = &#123;&#125;;</span><br><span class="line">    dfd.<span class="property">promise</span> = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        dfd.<span class="property">resolve</span> = resolve;</span><br><span class="line">        dfd.<span class="property">reject</span> = reject;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> dfd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数返回一个对象，并用<code>resolve</code>和<code>reject</code>属性引用构造函数中自定义的<code>resolve</code>和<code>reject</code>函数，用<code>promise</code>属性引用一个 Promise 实例。</p>
+<p>之后用<code>promises-aplus-tests</code>命令运行测试（需要提前安装<code>promises-aplus-tests</code>包）。</p>
+<h3 id="常用的其他辅助接口"><a href="#常用的其他辅助接口" class="headerlink" title="常用的其他辅助接口"></a>常用的其他辅助接口</h3><p>一个成熟的 Promise 包肯定不会只有一个简单的<code>.then</code>方法，不过其他的的辅助接口都是在此最简基础上慢慢迭代出来的，相当于是一些方便用户使用的语法糖。</p>
+<p>你可以在下文给出的 GitHub 源码链接中查看我的其他辅助方法的实现，逻辑基本都很清晰，本文不赘述了。</p>
+<h3 id="Join-Me"><a href="#Join-Me" class="headerlink" title="Join Me"></a>Join Me</h3><p>目前，我的这个 Promise 实现已经放在了 npm 和 GitHub 上：</p>
+<ul>
+<li>npm：<a href="https://www.npmjs.com/package/clean-promise">clean-promise</a></li>
+<li>GitHub: <a href="https://github.com/Maples7/clean-promise">Maples7&#x2F;clean-promise: a minimal implement of Promise</a></li>
+</ul>
+<p>Any issues and PRs are welcomed! :D</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果要细致的讲解每一个细节，恐怕 5 篇这样长度的文章还显不够，本文也只是将实现的骨架勾勒了出来。不过，源码是一个软件产品最好的背书，我就不啰嗦了。</p>
+<p>个人觉得实现 Promise 的难度在于它本身的逻辑比较绕，因为标准设计得就比较精巧，每一个地方的衔接都经过深思熟虑，往往一个方法就会产生一个新的 Promise，有一种层层迭代的感觉，类似于「蚕」的结构，所以把层次厘清确实需要花一番功夫，要有耐心。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://github.com/xieranmaya/blog/issues/3">剖析 Promise 内部结构，一步一步实现一个完整的、能通过所有 Test case 的 Promise 类 #3 </a>；</li>
+<li><a href="https://promisesaplus.com/">Promises&#x2F;A+</a>；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>JavaScript</tag>
+        <tag>ES6</tag>
+        <tag>Promise</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>构建合格的 RESTful API Server</title>
     <url>/2016/09/05/build-qualified-restful-api-server/</url>
     <content><![CDATA[<p>这一篇我要把 References 写在前面：</p>
@@ -452,82 +528,6 @@
         <tag>RESTful</tag>
         <tag>API</tag>
         <tag>Express</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用 ES6 特性实现一个标准的轻量级 Promise</title>
-    <url>/2016/08/29/implement-a-clean-promise-with-es6-features/</url>
-    <content><![CDATA[<p>Promise 应该是目前 JavaScript 中最流行的异步流程控制解决方案，本文将介绍如何使用 JavaScript ES6 的语言特性，实现一个轻量级的通过了所有<a href="https://github.com/promises-aplus/promises-tests">官方测例</a>标准的 Promise 库。了解其原理，深入其实现。实际上，Promise 也早已被写入 JavaScript ES6 的标准，作为官方支持的标准异步流程控制解决方案之一。用 ES6 语法实现一个 ES6 中的 Promise，虽然看似没有必要，不过对于深入理解 Promise 以便更好的使用大有裨益。</p>
-<p>为了您的最佳阅读体验，在阅读本文之前，建议您已经做到如下事情：</p>
-<ul>
-<li>可以熟练使用至少任意一个 Promise 库，如 bluebird、Q 等；</li>
-<li>了解 Promise 标准，可以<a href="https://promisesaplus.com/">看这里</a>；</li>
-<li>熟悉主要的 JavaScript ES6 特性；</li>
-</ul>
-<span id="more"></span>
-<h3 id="构造函数之前的准备"><a href="#构造函数之前的准备" class="headerlink" title="构造函数之前的准备"></a>构造函数之前的准备</h3><p>我们都知道，Promise 总共有三种状态：pending、fullfilled（resolved）和 rejected。所以我们对于每一个 Promise 实例都需要一个变量记录其现有的状态。</p>
-<p>然后还需要一个变量记录其 settled 之后的结果。另外，Promise 作为一个异步流程控制库，在上游的 Promise 还处于 pending 状态时下游 Promise 是不能执行的，所以我们至少需要一个数组来记录当前 Promise 还未 settled 时它后续的一些操作（你可以用两个数组分别记录 resolved 和 rejected 之后不同的操作；也可以用一个数组，然后每个元素都是包含两个属性的对象，分别记录 resolved 和 rejected 之后不同的操作）。</p>
-<p>另外，借用面向对象的说法，这些变量对 Promise 而言应该是私有的，即不应该对外界暴露（这也是符合标准的）。所以待会儿构造函数之中应该定义一些私有变量，而 ES6 的 Symbol 类型则可以完美实现我们所需的私有变量。</p>
-<p>代码如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义 Promise 状态</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">STATUS</span> = &#123;</span><br><span class="line">    <span class="attr">PENDING</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">RESOLVED</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">REJECTED</span>: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> _status = <span class="title class_">Symbol</span>(<span class="string">&#x27;status&#x27;</span>); <span class="comment">// 用于 status 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _result = <span class="title class_">Symbol</span>(<span class="string">&#x27;result&#x27;</span>); <span class="comment">// 用于 result 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _callbacks = <span class="title class_">Symbol</span>(<span class="string">&#x27;callbacks&#x27;</span>); <span class="comment">// 用于 callbacks 私有变量的 Symbol</span></span><br></pre></td></tr></table></figure>
-
-<p>这里我们将 Promise 状态定义到一个对象之中，并且用属性名语义化状态，值其实没什么意义，但是这样写符合「让错误更早的暴露出来」的编程原则，让编译器（或解释器）去帮我们提前检测错误，总比写在字符串在运行时才把定位还不一定准确的错误暴露出来要好。</p>
-<p>其次，还定义了几个用于定义私有变量的 Symbol。</p>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>构造函数无非是给变量做一些初始化的工作，然后执行用户传入的函数。关键在于我们需要定义好传入的函数的参数，即<code>resolve</code>和<code>reject</code>函数。</p>
-<p>先看代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params">exec</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> self = <span class="variable language_">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!(<span class="keyword">typeof</span> (exec) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Promise constructor argument exec must be a function.&#x27;</span>) </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>; </span><br><span class="line">    self[_result] = <span class="literal">undefined</span>;</span><br><span class="line">    self[_callbacks] = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">resolve</span>(<span class="params">value</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>;</span><br><span class="line">                self[_result] = value;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onResolved</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">reject</span>(<span class="params">reason</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>;</span><br><span class="line">                self[_result] = reason;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onRejected</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="title function_">exec</span>(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在构造函数里，首先限制了用户传入的参数必须为函数，然后将状态置为<code>pending</code>，并初始化<code>result</code>和<code>callbacks</code>。</p>
-<p>之后，尝试运行用户传入的函数，并提供我们自己定义的<code>resolve</code>和<code>reject</code>函数作为参数。因为运行函数可能会抛出难以预期的错误，所以外面用<code>try...catch</code>包裹一层，并把错误用<code>reject</code>处理，表示当前 Promise 被 reject。</p>
-<p>这里的关键在于我们自己定义的<code>resolve</code>和<code>reject</code>函数。</p>
-<p>其实<code>resolve</code>和<code>reject</code>的逻辑也很简单，首先因为标准里规定对于<code>resolve</code>和<code>reject</code>的调用必须是异步的，来避免阻塞（<code>.then</code>方法的两个参数同理），所以外面套了一层<code>nextTick</code>（这里对前后端做了兼容，前端指向<code>setTimeout</code>，后端指向<code>process.nextTick</code>）。内层首先保证当前 Promise 还处于<code>pending</code>状态（标准规定状态只能由<code>pending</code>转向其他两个，并且一经转变不能更改），然后分别将状态置为<code>resolved</code>或<code>rejected</code>，最后顺次执行之前由于还未 settled 时存储在<code>callbacks</code>里面的后续回调函数集。</p>
-<h3 id="then"><a href="#then" class="headerlink" title=".then"></a>.then</h3><p><code>.then</code>函数接受两个函数作为参数，分别对应前一个 Promise 被 resolve 或 reject 之后的回调。</p>
-<p>首先来看一下函数的主逻辑：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span> (self[_status]) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onResolved, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onRejected, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            self[_callbacks].<span class="title function_">push</span>(&#123;</span><br><span class="line">                <span class="attr">onResolved</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onResolved, resolve, reject, childPromise),</span><br><span class="line">                <span class="attr">onRejected</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onRejected, resolve, reject, childPromise)</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="attr">default</span>: </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Invalid status value&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据前一个 Promise 的状态，分三种情况，其中<code>resolved</code>和<code>rejected</code>时是类似的：<code>new</code>一个新的 Promise 实例作为当前的 Promise，同理异步执行传入的函数（细节见下文<code>childExec</code>函数）。而当状态是<code>pending</code>时，我们只能先把回调函数先压入前一个 Promise 的回调函数队列，等<code>settled</code>后再执行。</p>
-<h4 id="childExec"><a href="#childExec" class="headerlink" title="childExec"></a>childExec</h4><p><code>childExec</code>本身是为了最大化复用代码而重构独立出来的一个函数，代码很简单：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">childExec</span>(<span class="params">value, onDone, resolve, reject, childPromise</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        value = <span class="title function_">onDone</span>(value);</span><br><span class="line">        <span class="title function_">solver</span>(childPromise, value, resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>解释一下：不管是前一个 Promise 是<code>rejected</code>还是<code>resolved</code>，用传入<code>.then</code>的对应的回调函数执行前一个 Promise settled 之后的结果<code>result</code>，然后执行<code>solver</code>（见下文对<code>solver</code>的分析）。同样的，外面需要包裹一层<code>try...catch</code>。</p>
-<h4 id="solver"><a href="#solver" class="headerlink" title="solver"></a>solver</h4><p><code>solver</code>函数是不同的 Promise 实现之间（比如 bluebird 对 Promise 的实现与 ES6 原生对 Promise 的实现）能够无缝调用的关键。对此，<a href="https://promisesaplus.com/#point-45">Promise 标准中也有详述，甚至已经把这个函数的逻辑和流转都已经完完本本的列出来了，任何 Promise 实现只要遵循这个标准，就可以实现不同 Promise 实现之间的交叉调用</a>。</p>
-<p>看代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">solver</span>(<span class="params">promise, result, resolve, reject</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> then, settled = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (promise === result) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Cycle Promises&#x27;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result <span class="keyword">instanceof</span> <span class="title class_">Promise</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (result[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(<span class="function"><span class="params">v</span> =&gt;</span> <span class="title function_">solver</span>(promise, v, resolve, reject), reject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(resolve, reject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((result !== <span class="literal">null</span>) &amp;&amp; (<span class="keyword">typeof</span> (result) === <span class="string">&#x27;object&#x27;</span> || <span class="keyword">typeof</span> (result) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            then = result.<span class="property">then</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> (then) === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">                then.<span class="title function_">call</span>(result, <span class="function"><span class="params">s</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">solver</span>(promise, s, resolve, reject);</span><br><span class="line">                &#125;, <span class="function"><span class="params">r</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">reject</span>(r);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">            settled = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>分析：</p>
-<ul>
-<li>如果上一个 Promise 的<code>result</code>跟子 Promise 还是同一个对象，显然是循环调用了，按标准规定抛出<code>TypeError</code>；</li>
-<li>如果上一个 Promise 的<code>result</code>还是本 Promise 实现的实例，那挺好，直接调用它的<code>then</code>就好。不过，上一个 Promise 返回的新 Promise 可能还没有 settled，所以如果没有 settled，我们在它的<code>onResolved</code>函数中直接继续执行<code>solver</code>直到它被 settled（看起来像用递归的形式表现循环迭代）；</li>
-<li>如果返回的不是当前 Promise 实现的实例，但是它是一个有<code>.then</code>方法的对象或者函数，那我们直接用它的<code>then</code>方法<code>call</code>在<code>result</code>上，并且在它的回调函数<code>onResolved</code>中用<code>.then</code>传递的<code>s</code>继续调用<code>solver</code>或者在<code>onRejected</code>函数中<code>reject</code>掉这个 Promise。值得注意的是，由于一个 Promise 只能被 settled 一次，而第三方的<code>.then</code>方法我们不知道里面具体是什么内容，所以用一个<code>Boolean</code>量<code>settled</code>来标记，保证它只被 settled 一次，之后的调用都直接被忽略（标准也是这样规定的）；</li>
-<li>如果只是一个简单值，直接<code>resolve</code>。</li>
-</ul>
-<p>另外，尽管在<code>childExec</code>中我们已经用<code>try...catch</code>包裹了一层，但是异步调用的错误依然可能不会被捕获，所以这里依然需要<code>try...catch</code>。</p>
-<p>至此，一个符合标准的 Promise 最小化实现就已经完成了。</p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在你的 Promise 写好后，需要进行测试，至少需要通过的官方测例在这里：<a href="https://github.com/promises-aplus/promises-tests">Promises&#x2F;A+ Compliance Test Suite</a>。通过所有测例之后表明你的 Promise 实现是基本符合标准的。</p>
-<p>按其说明，你需要提供一个这样的类静态函数：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="title function_">deferred</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> dfd = &#123;&#125;;</span><br><span class="line">    dfd.<span class="property">promise</span> = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        dfd.<span class="property">resolve</span> = resolve;</span><br><span class="line">        dfd.<span class="property">reject</span> = reject;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> dfd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个函数返回一个对象，并用<code>resolve</code>和<code>reject</code>属性引用构造函数中自定义的<code>resolve</code>和<code>reject</code>函数，用<code>promise</code>属性引用一个 Promise 实例。</p>
-<p>之后用<code>promises-aplus-tests</code>命令运行测试（需要提前安装<code>promises-aplus-tests</code>包）。</p>
-<h3 id="常用的其他辅助接口"><a href="#常用的其他辅助接口" class="headerlink" title="常用的其他辅助接口"></a>常用的其他辅助接口</h3><p>一个成熟的 Promise 包肯定不会只有一个简单的<code>.then</code>方法，不过其他的的辅助接口都是在此最简基础上慢慢迭代出来的，相当于是一些方便用户使用的语法糖。</p>
-<p>你可以在下文给出的 GitHub 源码链接中查看我的其他辅助方法的实现，逻辑基本都很清晰，本文不赘述了。</p>
-<h3 id="Join-Me"><a href="#Join-Me" class="headerlink" title="Join Me"></a>Join Me</h3><p>目前，我的这个 Promise 实现已经放在了 npm 和 GitHub 上：</p>
-<ul>
-<li>npm：<a href="https://www.npmjs.com/package/clean-promise">clean-promise</a></li>
-<li>GitHub: <a href="https://github.com/Maples7/clean-promise">Maples7&#x2F;clean-promise: a minimal implement of Promise</a></li>
-</ul>
-<p>Any issues and PRs are welcomed! :D</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果要细致的讲解每一个细节，恐怕 5 篇这样长度的文章还显不够，本文也只是将实现的骨架勾勒了出来。不过，源码是一个软件产品最好的背书，我就不啰嗦了。</p>
-<p>个人觉得实现 Promise 的难度在于它本身的逻辑比较绕，因为标准设计得就比较精巧，每一个地方的衔接都经过深思熟虑，往往一个方法就会产生一个新的 Promise，有一种层层迭代的感觉，类似于「蚕」的结构，所以把层次厘清确实需要花一番功夫，要有耐心。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://github.com/xieranmaya/blog/issues/3">剖析 Promise 内部结构，一步一步实现一个完整的、能通过所有 Test case 的 Promise 类 #3 </a>；</li>
-<li><a href="https://promisesaplus.com/">Promises&#x2F;A+</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>JavaScript</tag>
-        <tag>ES6</tag>
-        <tag>Promise</tag>
       </tags>
   </entry>
   <entry>
@@ -629,6 +629,48 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>Lost Stars</tag>
         <tag>诗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编程的快感之「易于驾驭的介质」</title>
+    <url>/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</url>
+    <content><![CDATA[<blockquote class="blockquote-center">
+<p><em>编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作</em></p>
+<p><strong>《人月神话》</strong></p>
+
+</blockquote>
+
+<p><a href="https://book.douban.com/subject/1102259/">《人月神话》</a>是几乎每个程序员都或多或少了解过的一本书，著名的<a href="https://en.wikipedia.org/wiki/No_Silver_Bullet">「没有银弹(No Silver Bullet)」</a>的软件工程理论就被其作者<a href="https://en.wikipedia.org/wiki/Fred_Brooks">Fred Brooks</a>收录在这本书中。</p>
+<p>这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题。简要归纳一下，原书提供了这样几个答案：</p>
+<span id="more"></span>
+<ul>
+<li>一种创建事物的纯粹快乐</li>
+<li>开发对他人有用的东西</li>
+<li>开发过程的强大魅力——将相互啮合的零部件组装在一起</li>
+<li>持续学习的快乐以及非重复性</li>
+<li><strong>在易于驾驭的介质上工作</strong></li>
+</ul>
+<p>我对「在易于驾驭的介质上工作」这个原因尤其认同，结合当下的现实，谈谈我的体会和想法。</p>
+<h3 id="什么是「易于驾驭的介质」？"><a href="#什么是「易于驾驭的介质」？" class="headerlink" title="什么是「易于驾驭的介质」？"></a>什么是「易于驾驭的介质」？</h3><p>要说这个世界上最易于驾驭的介质是什么，我目前能想到的就是人的大脑（思维）。没有具体的形态，无需任何实体的操作，你想到了什么思维就已经被你操纵到了哪里（我不大确定到底是你在操作大脑还是大脑在操纵你）。你可以在大脑里创造出各种各样没有实体的东西。程序员或者文艺工作者往往有这样的体验，当你才思泉涌时，往往觉得双手都跟不上大脑运转的速度，就好像高速运转的 CPU 无法容忍相对而言低速的 I&#x2F;O 操作一样。</p>
+<p>我无法给「易于驾驭的介质」下一个明确的定义，不过如果假设大脑（思维）就是这个世界上最易于驾驭的介质的话，那我可以自然地说能被操纵（manipulate）的速度越接近大脑的速度，这种介质就是越容易被驾驭的。</p>
+<h3 id="为什么代码是易于驾驭的介质？"><a href="#为什么代码是易于驾驭的介质？" class="headerlink" title="为什么代码是易于驾驭的介质？"></a>为什么代码是易于驾驭的介质？</h3><p>我的个人经历就可以告诉我，代码绝对是工程领域最易于驾驭的介质。不同于传统的工科领域总是有具体的实体操纵对象或者危险难以控制的操纵对象，编程所操纵的对象——代码——算是太容易操纵的了，这是软件与硬件天然的区别。你无法说你磁盘上的那一串串 0 和 1 是实体的或者是危险的。即使不知名的宇宙射线打过来反转了你电脑内存中的某一个比特位，相信我，也不会有什么东西会爆炸的（或者极小概率）。</p>
+<p>基于此，编程工作的易于操作性在于，你只消用你的个人电脑，按照一定的规则在键盘上对代码做出任何你想要的更改，你的程序就可以按照你的预期做出你想要的行为，尽管它没有实体无法给你端茶倒水，但在今天这个互联网时代，却已经创造出了前所未有的价值。</p>
+<p>代码之于电脑，就像大脑之于人体一样。</p>
+<h3 id="这种易于驾驭的介质带来了什么？"><a href="#这种易于驾驭的介质带来了什么？" class="headerlink" title="这种易于驾驭的介质带来了什么？"></a>这种易于驾驭的介质带来了什么？</h3><ol>
+<li><strong>低廉的操作成本</strong>：与世俗的观念还是倾向于不想为看不见的东西的付费有关，操作代码的成本是低廉的，你只需要一台可计算设备即可。</li>
+<li><strong>容易传播和产生影响</strong>：下载和使用一个软件现在已经是秒秒钟的事情，好的软件已经非常容易传播和拥有庞大的用户，这同时意味着代码中的任何问题也可能会造成巨大的破坏。</li>
+<li><strong>低廉的试错成本</strong>：每一个产品迭代可能需要很多次才能达到用户满意的标准，一个不关键的 bug 可能需要很多次更新才能彻底解决，然而一个医生却无法把病人当成「小白鼠」来多次试验，一个建筑师却难以修补已建成建筑的设计缺陷。（此点灵感来自于：<a href="https://zhuanlan.zhihu.com/p/19690214">程序员混日子不完全手册</a>）</li>
+</ol>
+<p>把任何实体产业尽量转化为电脑中的 0 和 1，再利用其转化后的优势产生价值，这便是互联网+的本质。<br><br /></p>
+<center>**诸位，幸福地来码代码吧！**</center>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>程序员</tag>
+        <tag>《人月神话》</tag>
       </tags>
   </entry>
   <entry>
@@ -740,51 +782,9 @@ _Farewell and thanks to each for the company_
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
+        <tag>程序员</tag>
         <tag>学生心态</tag>
         <tag>产品经理</tag>
-        <tag>程序员</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>编程的快感之「易于驾驭的介质」</title>
-    <url>/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</url>
-    <content><![CDATA[<blockquote class="blockquote-center">
-<p><em>编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作</em></p>
-<p><strong>《人月神话》</strong></p>
-
-</blockquote>
-
-<p><a href="https://book.douban.com/subject/1102259/">《人月神话》</a>是几乎每个程序员都或多或少了解过的一本书，著名的<a href="https://en.wikipedia.org/wiki/No_Silver_Bullet">「没有银弹(No Silver Bullet)」</a>的软件工程理论就被其作者<a href="https://en.wikipedia.org/wiki/Fred_Brooks">Fred Brooks</a>收录在这本书中。</p>
-<p>这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题。简要归纳一下，原书提供了这样几个答案：</p>
-<span id="more"></span>
-<ul>
-<li>一种创建事物的纯粹快乐</li>
-<li>开发对他人有用的东西</li>
-<li>开发过程的强大魅力——将相互啮合的零部件组装在一起</li>
-<li>持续学习的快乐以及非重复性</li>
-<li><strong>在易于驾驭的介质上工作</strong></li>
-</ul>
-<p>我对「在易于驾驭的介质上工作」这个原因尤其认同，结合当下的现实，谈谈我的体会和想法。</p>
-<h3 id="什么是「易于驾驭的介质」？"><a href="#什么是「易于驾驭的介质」？" class="headerlink" title="什么是「易于驾驭的介质」？"></a>什么是「易于驾驭的介质」？</h3><p>要说这个世界上最易于驾驭的介质是什么，我目前能想到的就是人的大脑（思维）。没有具体的形态，无需任何实体的操作，你想到了什么思维就已经被你操纵到了哪里（我不大确定到底是你在操作大脑还是大脑在操纵你）。你可以在大脑里创造出各种各样没有实体的东西。程序员或者文艺工作者往往有这样的体验，当你才思泉涌时，往往觉得双手都跟不上大脑运转的速度，就好像高速运转的 CPU 无法容忍相对而言低速的 I&#x2F;O 操作一样。</p>
-<p>我无法给「易于驾驭的介质」下一个明确的定义，不过如果假设大脑（思维）就是这个世界上最易于驾驭的介质的话，那我可以自然地说能被操纵（manipulate）的速度越接近大脑的速度，这种介质就是越容易被驾驭的。</p>
-<h3 id="为什么代码是易于驾驭的介质？"><a href="#为什么代码是易于驾驭的介质？" class="headerlink" title="为什么代码是易于驾驭的介质？"></a>为什么代码是易于驾驭的介质？</h3><p>我的个人经历就可以告诉我，代码绝对是工程领域最易于驾驭的介质。不同于传统的工科领域总是有具体的实体操纵对象或者危险难以控制的操纵对象，编程所操纵的对象——代码——算是太容易操纵的了，这是软件与硬件天然的区别。你无法说你磁盘上的那一串串 0 和 1 是实体的或者是危险的。即使不知名的宇宙射线打过来反转了你电脑内存中的某一个比特位，相信我，也不会有什么东西会爆炸的（或者极小概率）。</p>
-<p>基于此，编程工作的易于操作性在于，你只消用你的个人电脑，按照一定的规则在键盘上对代码做出任何你想要的更改，你的程序就可以按照你的预期做出你想要的行为，尽管它没有实体无法给你端茶倒水，但在今天这个互联网时代，却已经创造出了前所未有的价值。</p>
-<p>代码之于电脑，就像大脑之于人体一样。</p>
-<h3 id="这种易于驾驭的介质带来了什么？"><a href="#这种易于驾驭的介质带来了什么？" class="headerlink" title="这种易于驾驭的介质带来了什么？"></a>这种易于驾驭的介质带来了什么？</h3><ol>
-<li><strong>低廉的操作成本</strong>：与世俗的观念还是倾向于不想为看不见的东西的付费有关，操作代码的成本是低廉的，你只需要一台可计算设备即可。</li>
-<li><strong>容易传播和产生影响</strong>：下载和使用一个软件现在已经是秒秒钟的事情，好的软件已经非常容易传播和拥有庞大的用户，这同时意味着代码中的任何问题也可能会造成巨大的破坏。</li>
-<li><strong>低廉的试错成本</strong>：每一个产品迭代可能需要很多次才能达到用户满意的标准，一个不关键的 bug 可能需要很多次更新才能彻底解决，然而一个医生却无法把病人当成「小白鼠」来多次试验，一个建筑师却难以修补已建成建筑的设计缺陷。（此点灵感来自于：<a href="https://zhuanlan.zhihu.com/p/19690214">程序员混日子不完全手册</a>）</li>
-</ol>
-<p>把任何实体产业尽量转化为电脑中的 0 和 1，再利用其转化后的优势产生价值，这便是互联网+的本质。<br><br /></p>
-<center>**诸位，幸福地来码代码吧！**</center>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>编程</tag>
-        <tag>《人月神话》</tag>
       </tags>
   </entry>
   <entry>
@@ -853,46 +853,9 @@ _Farewell and thanks to each for the company_
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>程序员</tag>
         <tag>编程</tag>
+        <tag>程序员</tag>
         <tag>教育</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
-<span id="more"></span>
-
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
       </tags>
   </entry>
   <entry>
@@ -930,6 +893,43 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>程序员</tag>
         <tag>敬畏之心</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+<span id="more"></span>
+
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
       </tags>
   </entry>
   <entry>
@@ -1418,8 +1418,8 @@ _Farewell and thanks to each for the company_
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>程序员</tag>
         <tag>编程</tag>
+        <tag>程序员</tag>
         <tag>编程语言</tag>
       </tags>
   </entry>
@@ -1773,6 +1773,45 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>心知天气数据 API 产品的高并发实践</title>
+    <url>/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</url>
+    <content><![CDATA[<p><a href="https://www.seniverse.com/">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a href="https://www.seniverse.com/">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p>
+<img data-src="/uploads/seniverse-index.gif" class="" title="心知天气 API 服务实时访问量" alt="图片显示错误">
+
+<span id="more"></span>
+
+<h2 id="访问量特点"><a href="#访问量特点" class="headerlink" title="访问量特点"></a>访问量特点</h2><p>天气数据的基本属性和客户本身的业务需求决定了客户来如何调用我们的数据接口。对于部分使用我们数据进行数据展示的 2C 业务的客户而言，访问量潮汐跟人的行为规律有着明显的相关性，这大致表现为白天比晚上并发量更高；而对于部分使用天气数据做数据分析和研究或者其他需要批量请求天气数据的客户而言，他们大多会选择在整点时刻来批量请求不同的数据，所以整点时刻往往会有突发的高峰访问量。</p>
+<p><img data-src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点"></p>
+<p>在叠加了不同客户需求的总体 API 服务的访问量，可以看出以下几个特点：</p>
+<ul>
+<li>以「天」为单位周期性明显</li>
+<li>每天零点时刻并发量会激增</li>
+<li>整点和半点时刻存在高并发小周期</li>
+</ul>
+<p>只有了解了我们客户的需求特点，才能设计出更合适的技术架构来应对随之而来的挑战。</p>
+<h2 id="石器时代"><a href="#石器时代" class="headerlink" title="石器时代"></a>石器时代</h2><p>在创业初期，「云计算」的理念开始兴起，创始团队在斟酌优劣之后，选择将整个系统构建于云服务提供商<a href="https://www.aliyun.com/">阿里云</a>之上，如此一来心知天气团队也不必自己再手工搭建和管理需要的硬件资源，这对于创业公司而言是一个不错的选择。和大多数早期创业公司一样，囿于资源和技术积累，最早我们也是将 API 服务实例直接部署在<a href="https://cn.aliyun.com/product/ecs">阿里云 ECS</a> 之上，对外通过<a href="https://www.aliyun.com/product/slb">负载均衡 SLB</a> 提供统一的 API 入口。</p>
+<p>随着心知天气数据服务体验的不断完善，客户数量也不断增多，API 服务所需要承载的流量也持续上涨。由于我们已经构建了上述这样的基础架构体系，在并发量最高的时期，我们需要手工维护高达 40 台左右的 ECS。而每个 ECS 上有自己独立但不完全一致的运行环境，不管是应对访问量突变还是部署新的版本，都无法做到比较快速的响应和执行。</p>
+<p>在这个阶段，我们产品的 API 数据和逻辑都还比较简单，所有关于用户信息处理、位置服务和数据处理的逻辑都揉杂在一个单体服务中，最终部署时也是一个一个独立的单体式架构通过 SLB 共同对外提供服务。</p>
+<h2 id="青铜时代"><a href="#青铜时代" class="headerlink" title="青铜时代"></a>青铜时代</h2><p>随着心知天气数据种类的不断增多，数据处理和 API 服务的逻辑也变得各不相同，比如城市级数据和公里级网格数据就有着完全不一样的处理和取数逻辑。在这种情况下，基于程序的可维护性考虑，我们很快决定根据数据处理逻辑的不同将数据服务拆分为几个不同的微服务，各自对外提供不同的天气数据 API。而为了复用取数之前的权限校验、访问量和各种日志统计的逻辑，我们开始引入网关系统。</p>
+<p>API 网关最重要的是性能和稳定性要足够好，所有的 API 请求都需要经过网关。在通过网关的校验之后，数据服务负责获取需要的天气数据，其结果再通过网关返回给外部用户。如此一来，不同的几个数据服务退化成无状态的纯数据服务，即每个数据服务节点不再考虑任何与用户相关的逻辑，只是简单的根据请求条件将所有处理好的数据从存储系统中取出后返回，网关作为唯一的请求入口来统一处理所有的权限校验和访问量、日志的各种统计。</p>
+<p>基于<a href="https://konghq.com/">开源的网关系统 Kong</a>，我们使用 Lua 进行了大量的二次定制开发，从而形成了心知天气自己的一套网关体系。这套系统不仅满足网关基本的路由逻辑，还能更好的处理和我们自身业务深度耦合的用户权限校验、访问量统计以及以用户为核心的日志记录。Kong 天生也是支持集群的，所以在理论上我们可以无限横向扩展网关的处理能力。</p>
+<p>在这样的架构之下，心知天气的 API 服务很好的遵循了<a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E4%B8%80%E5%8A%9F%E8%83%BD%E5%8E%9F%E5%88%99">「单一职责」的原则</a>，使得我们的代码维护和版本更新都能以更快速且代价更小的方式进行。但另一方面，我们还是需要手工维护大量的 ECS 集群，甚至由于天气数据服务的多样化，手工维护多个不同种类服务的集群将面对更繁重的挑战。不过，由于我们将服务进行了更好的拆分和分层，变成了一个个更小的微服务，使得我们能把它们进行更好的分布式部署，进而可以横向扩展来提高整个服务集群处理并发请求的能力。这一阶段既是我们成功向微服务架构的转变阶段，也可以看作是我们迈向更现代的后端架构的过渡阶段。</p>
+<h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p><a href="https://pivotal.io/cloud-native">Cloud-Native</a> 的概念是 2015 年被首次提出的，随后就获得了技术社区的大量关注。顺着之前架构演进的思路，我们很快开始用 Cloud-Native 的理念来武装整个后端系统架构。在去年，我们正式开始用 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/">Kubernetes</a> 来改造和管理我们所有对外的线上服务，这些架构设计同时也与阿里云提供的云服务深度结合。</p>
+<p>从网关到数据服务，目前我们都已经完成了容器化的改造，并且所有服务都使用 Kubernetes 来编排和管理，这意味着我们真正统一了各个服务的运行时环境，从而可以快速复制出新的服务节点。借助 Kubernetes，我们现在可以做到容器级别的自动伸缩，在并发量高的时候服务节点能够自动横向扩展以提高整个集群的并发处理能力，进而可以给用户提供更加优质稳定的天气数据 API 服务。</p>
+<p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
+<p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
+<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:hi@seniverse.com?subject=文章转载授权申请">心知天气</a>获取授权】</strong></p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>高并发</tag>
+        <tag>系统架构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>把 Airflow 搬进 Kubernetes</title>
     <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
     <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
@@ -1902,71 +1941,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>心知天气数据 API 产品的高并发实践</title>
-    <url>/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</url>
-    <content><![CDATA[<p><a href="https://www.seniverse.com/">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a href="https://www.seniverse.com/">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p>
-<img data-src="/uploads/seniverse-index.gif" class="" title="心知天气 API 服务实时访问量" alt="图片显示错误">
-
-<span id="more"></span>
-
-<h2 id="访问量特点"><a href="#访问量特点" class="headerlink" title="访问量特点"></a>访问量特点</h2><p>天气数据的基本属性和客户本身的业务需求决定了客户来如何调用我们的数据接口。对于部分使用我们数据进行数据展示的 2C 业务的客户而言，访问量潮汐跟人的行为规律有着明显的相关性，这大致表现为白天比晚上并发量更高；而对于部分使用天气数据做数据分析和研究或者其他需要批量请求天气数据的客户而言，他们大多会选择在整点时刻来批量请求不同的数据，所以整点时刻往往会有突发的高峰访问量。</p>
-<p><img data-src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点"></p>
-<p>在叠加了不同客户需求的总体 API 服务的访问量，可以看出以下几个特点：</p>
-<ul>
-<li>以「天」为单位周期性明显</li>
-<li>每天零点时刻并发量会激增</li>
-<li>整点和半点时刻存在高并发小周期</li>
-</ul>
-<p>只有了解了我们客户的需求特点，才能设计出更合适的技术架构来应对随之而来的挑战。</p>
-<h2 id="石器时代"><a href="#石器时代" class="headerlink" title="石器时代"></a>石器时代</h2><p>在创业初期，「云计算」的理念开始兴起，创始团队在斟酌优劣之后，选择将整个系统构建于云服务提供商<a href="https://www.aliyun.com/">阿里云</a>之上，如此一来心知天气团队也不必自己再手工搭建和管理需要的硬件资源，这对于创业公司而言是一个不错的选择。和大多数早期创业公司一样，囿于资源和技术积累，最早我们也是将 API 服务实例直接部署在<a href="https://cn.aliyun.com/product/ecs">阿里云 ECS</a> 之上，对外通过<a href="https://www.aliyun.com/product/slb">负载均衡 SLB</a> 提供统一的 API 入口。</p>
-<p>随着心知天气数据服务体验的不断完善，客户数量也不断增多，API 服务所需要承载的流量也持续上涨。由于我们已经构建了上述这样的基础架构体系，在并发量最高的时期，我们需要手工维护高达 40 台左右的 ECS。而每个 ECS 上有自己独立但不完全一致的运行环境，不管是应对访问量突变还是部署新的版本，都无法做到比较快速的响应和执行。</p>
-<p>在这个阶段，我们产品的 API 数据和逻辑都还比较简单，所有关于用户信息处理、位置服务和数据处理的逻辑都揉杂在一个单体服务中，最终部署时也是一个一个独立的单体式架构通过 SLB 共同对外提供服务。</p>
-<h2 id="青铜时代"><a href="#青铜时代" class="headerlink" title="青铜时代"></a>青铜时代</h2><p>随着心知天气数据种类的不断增多，数据处理和 API 服务的逻辑也变得各不相同，比如城市级数据和公里级网格数据就有着完全不一样的处理和取数逻辑。在这种情况下，基于程序的可维护性考虑，我们很快决定根据数据处理逻辑的不同将数据服务拆分为几个不同的微服务，各自对外提供不同的天气数据 API。而为了复用取数之前的权限校验、访问量和各种日志统计的逻辑，我们开始引入网关系统。</p>
-<p>API 网关最重要的是性能和稳定性要足够好，所有的 API 请求都需要经过网关。在通过网关的校验之后，数据服务负责获取需要的天气数据，其结果再通过网关返回给外部用户。如此一来，不同的几个数据服务退化成无状态的纯数据服务，即每个数据服务节点不再考虑任何与用户相关的逻辑，只是简单的根据请求条件将所有处理好的数据从存储系统中取出后返回，网关作为唯一的请求入口来统一处理所有的权限校验和访问量、日志的各种统计。</p>
-<p>基于<a href="https://konghq.com/">开源的网关系统 Kong</a>，我们使用 Lua 进行了大量的二次定制开发，从而形成了心知天气自己的一套网关体系。这套系统不仅满足网关基本的路由逻辑，还能更好的处理和我们自身业务深度耦合的用户权限校验、访问量统计以及以用户为核心的日志记录。Kong 天生也是支持集群的，所以在理论上我们可以无限横向扩展网关的处理能力。</p>
-<p>在这样的架构之下，心知天气的 API 服务很好的遵循了<a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E4%B8%80%E5%8A%9F%E8%83%BD%E5%8E%9F%E5%88%99">「单一职责」的原则</a>，使得我们的代码维护和版本更新都能以更快速且代价更小的方式进行。但另一方面，我们还是需要手工维护大量的 ECS 集群，甚至由于天气数据服务的多样化，手工维护多个不同种类服务的集群将面对更繁重的挑战。不过，由于我们将服务进行了更好的拆分和分层，变成了一个个更小的微服务，使得我们能把它们进行更好的分布式部署，进而可以横向扩展来提高整个服务集群处理并发请求的能力。这一阶段既是我们成功向微服务架构的转变阶段，也可以看作是我们迈向更现代的后端架构的过渡阶段。</p>
-<h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p><a href="https://pivotal.io/cloud-native">Cloud-Native</a> 的概念是 2015 年被首次提出的，随后就获得了技术社区的大量关注。顺着之前架构演进的思路，我们很快开始用 Cloud-Native 的理念来武装整个后端系统架构。在去年，我们正式开始用 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/">Kubernetes</a> 来改造和管理我们所有对外的线上服务，这些架构设计同时也与阿里云提供的云服务深度结合。</p>
-<p>从网关到数据服务，目前我们都已经完成了容器化的改造，并且所有服务都使用 Kubernetes 来编排和管理，这意味着我们真正统一了各个服务的运行时环境，从而可以快速复制出新的服务节点。借助 Kubernetes，我们现在可以做到容器级别的自动伸缩，在并发量高的时候服务节点能够自动横向扩展以提高整个集群的并发处理能力，进而可以给用户提供更加优质稳定的天气数据 API 服务。</p>
-<p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
-<p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:hi@seniverse.com?subject=文章转载授权申请">心知天气</a>获取授权】</strong></p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>高并发</tag>
-        <tag>系统架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「必然」有多必然？</title>
-    <url>/2020/05/19/how-certain-is-certain/</url>
-    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
-<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
-<span id="more"></span>
-
-<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
-<p>所以已经发生的「必然」到底多必然？</p>
-<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
-<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
-<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
-<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
-<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
-<p>我想我是得看一些关于复杂系统理论的书了。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>人生</tag>
-        <tag>必然</tag>
-        <tag>哲学</tag>
-        <tag>复杂系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2019 年书单</title>
     <url>/2019/12/31/2019-booklist/</url>
     <content><![CDATA[<p>2019 年对很多人来说似乎是艰难的一年，在这个世界愈发趋于动荡和不信任的大背景下，越来越多的疑惑、迷茫和不确定性从上至下笼罩在每一个人可以感知到的日常生活中。或许只是一种周期，或许就是一种趋势，各种事物的分化与混乱变得越来越明显。如果从热力学第二定律的角度来看，维持事物不走向无序是需要额外付出很多努力的，那说明人类社会目前做的共同有效努力还不够；如果从唯物论的发展观来看，事物总是螺旋式向上发展的，周期中同时也蕴含着一些不可逆的改变。把 2019 年放在历史的长河中，我不知道它处在世界发展周期的哪个部分，但很可能不是在「好」（大部分人认为的世俗意义上的「好」）的那一半。这可能是前些年某些事件的发生导致了现在的局面，同时也可能是未来很长一段时间不同局面的开始。</p>
@@ -2040,6 +2014,32 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「必然」有多必然？</title>
+    <url>/2020/05/19/how-certain-is-certain/</url>
+    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
+<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
+<span id="more"></span>
+
+<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
+<p>所以已经发生的「必然」到底多必然？</p>
+<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
+<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
+<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
+<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
+<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
+<p>我想我是得看一些关于复杂系统理论的书了。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>人生</tag>
+        <tag>必然</tag>
+        <tag>哲学</tag>
+        <tag>复杂系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2291,5 +2291,48 @@ _Farewell and thanks to each for the company_
         <tag>基金</tag>
         <tag>ETF</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>一套大概率可行的具体投资策略</title>
+    <url>/2022/08/20/a-specific-investment-strategy/</url>
+    <content><![CDATA[<p>这一篇是接着上一篇<a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a>的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对<a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些<del>，毕竟谁没有幻想过自己突然哪一天突然失忆了呢</del>。</p>
+<p>既然是「具体投资策略」，一定要有必要的细节。但事先声明，这些细节只是我正在实践的细节，并不代表任何人拿去就可以直接套用，比如其中的资金配比、仓位配比等等，都不一定得是我接下来要说的那个比例，因为有一些比例只是根据市场历史得出的实践经验，并没有很 solid 的理论支撑。如果你也要跟着这一套策略实践，请根据自身的实际情况进行相应的调整，只要大致的方向和思路没问题就行。投资，很多时候<a href="http://www.globalhha.com/doclib/index.php?m=Home&c=article&a=viewarticle&id=16">要追求一种「模糊的正确」，而不要「精确的错误」</a>。</p>
+<span id="more"></span>
+
+<p>另外，再次设置一个合理的预期，这套策略预计只能做到比 GDP 增长速度高两个点的平均年化水平，或者说跑赢通胀的水平，如果运气好赚到了更多，那纯属运气好。快速暴富的投资策略，也有很多，出门右转即可。</p>
+<p>先做一个假设：假设你有一千万的可投资金。这里先需要一点注解：</p>
+<ol>
+<li>在上一篇讲过「本金从哪里来」，如果你的本金太少，进行二级市场投资对个人的资产增值整体来说意义不大，当然我并不是说你得攒够一千万才能开始，这里只是举个例子，方便后面进行对应比例的计算。实际操作中，按照你的具体可投资金按比例折算即可。</li>
+<li>什么是「可投资金」？指的是你可以<strong>随时</strong>（姑且按一周内算）拿出来进行投资的资金，不包括你买的银行定期等任何其他不能马上变现的资产。而且这些钱在可预见的三到五年内都没有需要用到其他地方的计划和打算，比如买房、买车等。所以，也不要把你应急用的备用资金（没有收入的情况下至少一两年的开销）、买保险的资金、可能的用于医疗保健的资金等算在内。</li>
+</ol>
+<p>回到这一千万的可投资金，我会把它们先分成两部分：</p>
+<ul>
+<li>第一部分，两百万（20%）购买货币基金、稳健的国债或者合适的信托基金（取决于实际资金量），重点是同样需要保证这两百万的流动性，也就是能随时拿出来用。但是，你对这两百万的心理预期应该是 <strong>99.99%</strong> 的情况下不会真的拿来用。这部分相当于你的可投资金的压舱石，所以你几乎永远都不会处在满仓的状态下。剩下可能会用到这两百万的 0.01% 的情况是：往差了想是你对未来的资金规划考虑不足，在投资以外出现了必须要用钱的场景，那没办法，只能先挪用这部分钱；往好了想是市场真的出现了五年、十年甚至二十年一次的机会，我不会允许自己错过这样的机会，在之后要说的更具体的体系之外，我很可能会用这两百万的一部分进行额外的仓位补充，比如今年（2022 年）上半年出现的中概股从历史最高下跌到几乎 20% 的位置这样的情况，我预计这可能是五年难得一遇的机会，会拿出少部分这两百万进行额外的补仓。同时，这里 callback 到了为什么我们需要买指数基金，因为它们几乎不会死，但是个股在这方面的风险就会高很多，即便是公司的市场竞争力减弱，都很可能造成股价的一蹶不振，从此一路下跌，直至退市，甚至公司倒闭。</li>
+<li>第二部分，八百万（80%）用来进行真正的日常指数基金投资。接下来的部分重点针对这八百万如何操作。</li>
+</ul>
+<p>首先先介绍策略的理念，然后介绍具体买哪些品种，同样资金需要按比例分配到各个不同的子策略和品种上。</p>
+<p>我会按 2:3:5 的比例来分配这剩下的八百万资金，也就是 160 万、240 万和 400 万，分别用于短期、中期和长期的投资策略。为什么要这样分？因为这应该是一个全天候的策略。市场的走势是没法预测的，不同的走势需要不同的策略要应对，具体来说短期策略用于市场在中底部不断横盘震荡的时期、中期策略用于有较大周期性波动特点的市场或品种、长期策略则是用真正价值投资的核心理念来收割大周期或宏观经济上涨的红利。其次，一个针对人性弱点的考量：为了让你在经历各种市场风浪手痒时不至于经常操作长期策略，可以用短期和中期策略来获得对市场的参与感。这三种子策略的理念分别是这样的：</p>
+<p>短期策略 —— 完全按<strong>场内基金</strong>的<strong>网格</strong>策略来交易操作，这里我必须得直接贴上 E 大写过的系列文章，已经非常详细的把这个子策略如何操作的写得清清楚楚了，而且根据具体的实践这个子策略还在不断完善和进化中，我不必再赘述了（另外，文中提到的「留利润」的操作并不适合我，所以我并没有这样做，我自己会严格区分短期、中期、长期各个策略的界限，不期望用分配给短期的资金来赚取长期的利润，否则会让我自己的心态受到影响从而容易做出不理智的操作）：</p>
+<ol>
+<li><a href="https://mp.weixin.qq.com/s/uxktt5ZpNo03FpQQX-aG7g">波段策略.网格之一：写在前面、体系以及策略</a></li>
+<li><a href="https://mp.weixin.qq.com/s/-czfqGvxkDcay_tSI1jv5g">波段策略.网格之二：网格策略基础&#x2F;1.0版</a></li>
+<li><a href="https://mp.weixin.qq.com/s/8pRKsjiQSZzrmH-uWCkRLQ">波段策略.网格之三：网格策略进阶&#x2F;2.0版</a></li>
+</ol>
+<p>中期策略和长期策略 —— 这两个子策略都用<strong>场外基金</strong>操作即可，因为它们都不会需要频繁的进行交易。中期策略和长期策略不同的是，中期策略会根据当时当下的市场状态和各个品种的估值分位进行买入卖出，对于各个品种的相互占比没有那么严格，目的是为了赚取雷达内的品种半年以上波动的利润；而长期策略则会严格考虑各个品种的配比，是按至少三年以上为一个完整的买入卖出周期的预期来衡量的，目的是赚取市场真正价值上涨的利润。</p>
+<p>接下来讨论买哪些品种，注意，上述的三个子策略对于品种的选择方式都是一致的，只是长期策略需要更多的考虑品种的相对配比。可以这样来理解，长期策略占用了我们最多的用来投资的资金，作为压舱石，我们期望它是足够稳健和健康的，不会因为偏重于单一品种而使得这个策略有很大的波动和回撤。但是不同的品种在某一时期可能会处在各自不同的走势阶段，作为一个全天候策略，中期策略和短期策略此时就可以因地制宜灵活的对这一部分的需求进行补足。</p>
+<p>要买的品种大致包含两大部分 —— 宽基指数和行业指数。先说一个有用的结论：买相关性低的品种能降低整个策略的风险，平滑整体收益曲线的波动。所以后面说的品种都是指的相关性低的大类，不会到具体的某个基金。另外，任何一个不可再分的大类品种仓位比例都不要超过 20%，同样是为了降低整个策略的风险 —— 即便投错也不至于错得太离谱。话不多说，结合前面所有的内容，直接上一个按比例配置的思维导图：</p>
+<img data-src="/uploads/investment-strategy.png" class="" title="投资品种比例思维导图" alt="图片显示错误">
+
+<p>必须再一次说明的是，图片中的比例和上文中的所有比例都不是一层不变的，需要根据个体情况和当前市场情况进行调整，但大的相对比例关系和基本的原则是不会轻易改变的。其次，图片中的某个品种的仓位比例是指<strong>仓位上限</strong>，不是每时每刻都要买满的，而且很多大类品种在不同的时期可能有更多的选择，比如 A 股的行业部分、海外成熟市场、商品等，都不局限于图上列出的那几种。另外如前所述，投资部分 80% 的资金会按 2:3:5 的大致比例分配到短期、中期和长期的子策略上。</p>
+<p>最后还需要解决一个大问题：什么时候买、什么时候卖。这是最难的部分，我也还在不断的摸索之中，但你最好也能在真金白银买入之前就想好自己的具体买入卖出策略。</p>
+<p>总体上还是按估值的原则来决定什么时候开始买，当某个品质开始进入低估区域的时候短期、中期和长期策略都可以开始买。<strong>假设</strong>一个品种从历史最高点跌了 50% 进入低估区域，跌到 20% 分位是可能的大底，那你的买入区域就应该分布在从最高点往下跌 50% ~ 80% 的区域。你可以提前把所有需要买入这个品种的资金分成很多份，从跌 50% 开始买第一份，到跌 80% 的时候可以把所有提前分配的资金份数买满，包括短期、中期和长期策略中的资金。至于如何判断一个品种是否开始低估，可以<strong>参考</strong>各种投资机构和市场大 V 出的市场温度表，或者自己计算。另外必须强调的一点是，<strong>一定要控制买入的节奏</strong>，如果一个品种到了低估区域，<strong>一般</strong>也要控制自己的中期和长期策略一个月最多买一到两份资金（网格买入取决于波动情况）。</p>
+<p>如何卖出？短期（网格）策略一份资金的买入已经决定了这份资金的卖出条件，无需赘述。中期策略的卖出介于短期策略和长期策略之间，算是一个比较大的波段策略，当某份资金买入过了半年以上，收益率在 15% 以上且结合一些趋势分析判断可以考虑进行卖出。长期策略则卖出操作要少很多，你可以选择牛市不来坚决不卖，或者某份资金买入经过了三年且在趋势或基本面真正发生变化之际选择卖出这一份资金。如何卖出比如何买入更难，你需要根据每个子策略的基本原则和特点提前约定好你自己的具体卖出策略。这可以是综合价值投资、趋势投资和技术投资思想的综合分析。</p>
+<p>最后，这套策略应当是在具体实践中根据经验不断完善改进的。注意的是，需要改进的是策略，而不是把某一次操作十分主观的归入某种例外。不断修正体系用来应对任何的市场情况，才会是一套可以复制和长期运行的全天候市场策略。</p>
+<p>下一篇<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」</a>我大概率会讲讲个人如何记账，因为记账是投资入门的首要前提，这样才能在投资过程中随时了解自己的资金情况和分配于各个投资策略之间的资金比例关系。</p>
+<p>P.S. 我本人不看好近两年世界宏观经济形势，股市有风险，入市需谨慎。</p>
+]]></content>
+      <categories>
+        <category>滚雪球</category>
+      </categories>
   </entry>
 </search>
