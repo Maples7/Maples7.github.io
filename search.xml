@@ -185,6 +185,26 @@
       </tags>
   </entry>
   <entry>
+    <title>巴山蜀水毓灵秀</title>
+    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a96f4.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af68b036.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a29bb.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a482e.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>光影</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>非关系型数据库中的「关系」实现</title>
     <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
     <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
@@ -229,26 +249,6 @@
       <tags>
         <tag>NoSQL</tag>
         <tag>MongoDB</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>巴山蜀水毓灵秀</title>
-    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a96f4.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af68b036.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a29bb.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a482e.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>光影</tag>
       </tags>
   </entry>
   <entry>
@@ -1075,6 +1075,56 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>MySQL 慢查询优化</title>
+    <url>/2017/03/08/mysql-run-faster/</url>
+    <content><![CDATA[<p>在前一篇博客<a href="http://maples7.com/2017/03/03/express-run-faster/">《Express 性能调优》</a>中，我讲述了 Express 项目应该如何进行性能优化，但那些基本都只是官方文档上就已经明确指出的东西，也是对一个 Express 项目<strong>在性能上的基本要求</strong>。如果你已经足够仔细的阅读过文档，那么上一篇文章对你的收益几乎是 0。</p>
+<p>除了规范所指出的基本要求，要优化一个 Web 项目的方法还有很多，比如合理的在后端给返回数据加缓存、充分利用浏览器的前端缓存、CDN，实在不行甚至需要「劳师动众」的部署多台机器做集群和负载均衡等等。这一篇博客的重点将放在数据库慢查询的优化上，这个话题对于 Web 项目而言更具有普适的意义。一方面它不局限于任何一种技术栈（当然这一篇以使用最普遍的 MySQL 为例），另一方面它更是直接在业务逻辑层面从代码本质上来优化你的项目性能，这往往也是单实例服务下性能的瓶颈所在。</p>
+<span id="more"></span>
+
+<p>实际上，这也是上一篇博客所讲的的同一个实践项目性能优化的深入。本来那个项目已经基本按文档规范进行了部署（<code>NODE_ENV</code> 的问题只是为了新版展示的临时修改），在那些方面能够对其进行优化的空间已经有限了，所以这个话题才是长期的项目维护实践中更有意义的部分。</p>
+<h2 id="开启-MySQL-慢查询日志"><a href="#开启-MySQL-慢查询日志" class="headerlink" title="开启 MySQL 慢查询日志"></a>开启 MySQL 慢查询日志</h2><p>一个起步就不简单的原因是，我们如何才能定位到那些真正形成瓶颈的慢查询。一个普通项目中的 SQL 可能就有大几十甚至上百个，而「凶手们」就藏匿其中。</p>
+<p>一个朴素的想法是在项目中每一个 SQL 执行前后打上时间戳来估计执行时间，暂且不论由于各种因素的影响这种估算可能不准确，更让人不可接受的是这对原始代码造成的极大的侵入。</p>
+<p>好在 MySQL 提供了慢查询日志。这个日志会记录所有执行时间超过 <code>long_query_time</code>（默认是 10s）的 SQL 及相关的信息。</p>
+<p>在 MySQL 的 Console 中：  </p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mysql&gt; show variables like <span class="string">&#x27;long_query_time&#x27;</span>;</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| Variable_name   | Value     |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| long_query_time | 10.000000 |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like <span class="string">&#x27;slow_query%&#x27;</span>;</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| Variable_name       | Value                                |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| slow_query_log      | OFF                                  |</span><br><span class="line">| slow_query_log_file | /var/log/mysql/log-slow-queries.log  |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里，<code>slow_query_log</code> 指的是慢查询日志是否开启，<code>slow_query_log_file</code> 指明了日志所在的位置。</p>
+<p>在 MySQL 的配置文件 my.cnf 的 <code>[mysqld]</code> 项下可以配置慢查询日志开启，一般来讲如下配置即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">slow_query_log=1</span><br><span class="line">slow_query_log_file=/var/log/mysql/log-slow-queries.log</span><br><span class="line">long_query_time=2</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，应该赋予 <code>slow_query_log_file</code> 指向的目录 mysql 用户的写入权限：<code>chown mysql.mysql -R /var/log/mysql</code>，一般用默认的目录就好。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html">6.4.5 The Slow Query Log</a>。</p>
+<p>之后需重载 MySQL 配置生效：<code>/etc/init.d/mysql reload</code>。</p>
+<h2 id="分析慢查询日志"><a href="#分析慢查询日志" class="headerlink" title="分析慢查询日志"></a>分析慢查询日志</h2><p>在开启了 MySQL 慢查询日志一段时间之后，日志中就会把所有超过 <code>long_query_time</code> 的 SQL 记录下来。另一个有用的相关 MySQL 命令是 <code>mysqldumpslow</code>：由于慢查询日志可能很大或者很难分析，使用它可以获得 MySQL 对慢查询日志的一个总结报告，直接获得我们想要的统计分析后的结果。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldumpslow.html">5.6.8 mysqldumpslow — Summarize Slow Query Log Files</a>。</p>
+<p>当然，你也可以打开日志文件自己来查询、分析。</p>
+<h2 id="优化-SQL"><a href="#优化-SQL" class="headerlink" title="优化 SQL"></a>优化 SQL</h2><p>在得知哪些 SQL 是慢查询之后，我们就可以定位到具体的业务接口并针对性的进行优化了。</p>
+<p>首先，你要看是否能在不改变现有业务逻辑的前提下改进查询的速度。一个典型的场景是，你需要查询数据库中是否存在符合某个条件的记录，返回一个布尔值来表示有或者没有，一般用于通知提醒。如果程序员在撰写接口时没把性能放在心上，那么他就有可能写出 <code>SELECT count(*) FROM tbl_xxx WHERE XXXX</code> 这样的查询，当数据量一大时（而且索引不恰当或没有索引）这个查询会相当之慢，但如果改成 <code>SELECT id FROM tbl_xxx WHERE XXXX LIMIT 1</code> 这样来查询，对速度的提升则是巨大的。这个例子并不是我凭空捏造的，最近在实际项目中我就看到了跟这个例子一模一样的场景。</p>
+<p>能够找到上述的通过改变查询方式而又不改变业务逻辑的慢查询是幸运的，因为这些场景往往意味着只需重写 SQL 语句就能带来显著的性能提升，而且稍有经验的程序员在一开始就不会写出能够明显改良的查询语句。在绝大多数情况下，SQL 足够复杂而且难以做任何有价值的改动，这时就需要通过优化索引来提升效率了。</p>
+<p>如何更好的创建数据库索引绝对是一门技术活，我也并不觉得简简单单就能厘得很清楚，很多时候还是得具体 SQL 具体分析，甚至多条 SQL 一起来分析。可以先读一读这篇美团点评技术团队的文章：<a href="http://tech.meituan.com/mysql-index.html">MySQL索引原理及慢查询优化</a>，更深入的了解则可以阅读<a href="https://book.douban.com/subject/23008813/">《高性能MySQL》</a>一书。引用一下美团点评技术团队文章中提到的几个原则：</p>
+<blockquote>
+<ol>
+<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整；</li>
+<li>&#x3D;和in可以乱序，比如a &#x3D; 1 and b &#x3D; 2 and c &#x3D; 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式；</li>
+<li>尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)&#x2F;count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录；</li>
+<li>索引列不能参与计算，保持列“干净”，比如from_unixtime(create_time) &#x3D; ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time &#x3D; unix_timestamp(’2014-05-29’);</li>
+<li>尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</li>
+</ol>
+</blockquote>
+<p>常用的套路是在定位到慢查询语句之后，使用 <code>EXPLAIN</code> + <code>SQL</code> 来了解 MySQL 在执行这条数据时的一些细节，比如是否进行了优化、是否使用了索引等等。基于 <code>Explain</code> 的返回结果我们就可以根据 MySQL 的执行细节进一步分析是否应该优化搜索、怎样优化索引。</p>
+<p>就在这几天，美团技术团队开源了一款用于分析如何优化 SQL 的工具——<a href="https://github.com/Meituan-Dianping/SQLAdvisor">SQLAdvisor</a>，有兴趣可以试试。</p>
+<p>优化索引也并不是万能的，这种情况下只能考虑通过其他方式来缓和性能上的瓶颈了。</p>
+<blockquote>
+<p>查询容易，优化不易，且写且珍惜！</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>性能调优</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Express 性能调优</title>
     <url>/2017/03/03/express-run-faster/</url>
     <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
@@ -1124,105 +1174,6 @@ _Farewell and thanks to each for the company_
         <tag>Node.js</tag>
         <tag>Express</tag>
         <tag>性能调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL 慢查询优化</title>
-    <url>/2017/03/08/mysql-run-faster/</url>
-    <content><![CDATA[<p>在前一篇博客<a href="http://maples7.com/2017/03/03/express-run-faster/">《Express 性能调优》</a>中，我讲述了 Express 项目应该如何进行性能优化，但那些基本都只是官方文档上就已经明确指出的东西，也是对一个 Express 项目<strong>在性能上的基本要求</strong>。如果你已经足够仔细的阅读过文档，那么上一篇文章对你的收益几乎是 0。</p>
-<p>除了规范所指出的基本要求，要优化一个 Web 项目的方法还有很多，比如合理的在后端给返回数据加缓存、充分利用浏览器的前端缓存、CDN，实在不行甚至需要「劳师动众」的部署多台机器做集群和负载均衡等等。这一篇博客的重点将放在数据库慢查询的优化上，这个话题对于 Web 项目而言更具有普适的意义。一方面它不局限于任何一种技术栈（当然这一篇以使用最普遍的 MySQL 为例），另一方面它更是直接在业务逻辑层面从代码本质上来优化你的项目性能，这往往也是单实例服务下性能的瓶颈所在。</p>
-<span id="more"></span>
-
-<p>实际上，这也是上一篇博客所讲的的同一个实践项目性能优化的深入。本来那个项目已经基本按文档规范进行了部署（<code>NODE_ENV</code> 的问题只是为了新版展示的临时修改），在那些方面能够对其进行优化的空间已经有限了，所以这个话题才是长期的项目维护实践中更有意义的部分。</p>
-<h2 id="开启-MySQL-慢查询日志"><a href="#开启-MySQL-慢查询日志" class="headerlink" title="开启 MySQL 慢查询日志"></a>开启 MySQL 慢查询日志</h2><p>一个起步就不简单的原因是，我们如何才能定位到那些真正形成瓶颈的慢查询。一个普通项目中的 SQL 可能就有大几十甚至上百个，而「凶手们」就藏匿其中。</p>
-<p>一个朴素的想法是在项目中每一个 SQL 执行前后打上时间戳来估计执行时间，暂且不论由于各种因素的影响这种估算可能不准确，更让人不可接受的是这对原始代码造成的极大的侵入。</p>
-<p>好在 MySQL 提供了慢查询日志。这个日志会记录所有执行时间超过 <code>long_query_time</code>（默认是 10s）的 SQL 及相关的信息。</p>
-<p>在 MySQL 的 Console 中：  </p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mysql&gt; show variables like <span class="string">&#x27;long_query_time&#x27;</span>;</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| Variable_name   | Value     |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| long_query_time | 10.000000 |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like <span class="string">&#x27;slow_query%&#x27;</span>;</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| Variable_name       | Value                                |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| slow_query_log      | OFF                                  |</span><br><span class="line">| slow_query_log_file | /var/log/mysql/log-slow-queries.log  |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
-
-<p>在这里，<code>slow_query_log</code> 指的是慢查询日志是否开启，<code>slow_query_log_file</code> 指明了日志所在的位置。</p>
-<p>在 MySQL 的配置文件 my.cnf 的 <code>[mysqld]</code> 项下可以配置慢查询日志开启，一般来讲如下配置即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">slow_query_log=1</span><br><span class="line">slow_query_log_file=/var/log/mysql/log-slow-queries.log</span><br><span class="line">long_query_time=2</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，应该赋予 <code>slow_query_log_file</code> 指向的目录 mysql 用户的写入权限：<code>chown mysql.mysql -R /var/log/mysql</code>，一般用默认的目录就好。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html">6.4.5 The Slow Query Log</a>。</p>
-<p>之后需重载 MySQL 配置生效：<code>/etc/init.d/mysql reload</code>。</p>
-<h2 id="分析慢查询日志"><a href="#分析慢查询日志" class="headerlink" title="分析慢查询日志"></a>分析慢查询日志</h2><p>在开启了 MySQL 慢查询日志一段时间之后，日志中就会把所有超过 <code>long_query_time</code> 的 SQL 记录下来。另一个有用的相关 MySQL 命令是 <code>mysqldumpslow</code>：由于慢查询日志可能很大或者很难分析，使用它可以获得 MySQL 对慢查询日志的一个总结报告，直接获得我们想要的统计分析后的结果。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldumpslow.html">5.6.8 mysqldumpslow — Summarize Slow Query Log Files</a>。</p>
-<p>当然，你也可以打开日志文件自己来查询、分析。</p>
-<h2 id="优化-SQL"><a href="#优化-SQL" class="headerlink" title="优化 SQL"></a>优化 SQL</h2><p>在得知哪些 SQL 是慢查询之后，我们就可以定位到具体的业务接口并针对性的进行优化了。</p>
-<p>首先，你要看是否能在不改变现有业务逻辑的前提下改进查询的速度。一个典型的场景是，你需要查询数据库中是否存在符合某个条件的记录，返回一个布尔值来表示有或者没有，一般用于通知提醒。如果程序员在撰写接口时没把性能放在心上，那么他就有可能写出 <code>SELECT count(*) FROM tbl_xxx WHERE XXXX</code> 这样的查询，当数据量一大时（而且索引不恰当或没有索引）这个查询会相当之慢，但如果改成 <code>SELECT id FROM tbl_xxx WHERE XXXX LIMIT 1</code> 这样来查询，对速度的提升则是巨大的。这个例子并不是我凭空捏造的，最近在实际项目中我就看到了跟这个例子一模一样的场景。</p>
-<p>能够找到上述的通过改变查询方式而又不改变业务逻辑的慢查询是幸运的，因为这些场景往往意味着只需重写 SQL 语句就能带来显著的性能提升，而且稍有经验的程序员在一开始就不会写出能够明显改良的查询语句。在绝大多数情况下，SQL 足够复杂而且难以做任何有价值的改动，这时就需要通过优化索引来提升效率了。</p>
-<p>如何更好的创建数据库索引绝对是一门技术活，我也并不觉得简简单单就能厘得很清楚，很多时候还是得具体 SQL 具体分析，甚至多条 SQL 一起来分析。可以先读一读这篇美团点评技术团队的文章：<a href="http://tech.meituan.com/mysql-index.html">MySQL索引原理及慢查询优化</a>，更深入的了解则可以阅读<a href="https://book.douban.com/subject/23008813/">《高性能MySQL》</a>一书。引用一下美团点评技术团队文章中提到的几个原则：</p>
-<blockquote>
-<ol>
-<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整；</li>
-<li>&#x3D;和in可以乱序，比如a &#x3D; 1 and b &#x3D; 2 and c &#x3D; 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式；</li>
-<li>尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)&#x2F;count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录；</li>
-<li>索引列不能参与计算，保持列“干净”，比如from_unixtime(create_time) &#x3D; ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time &#x3D; unix_timestamp(’2014-05-29’);</li>
-<li>尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</li>
-</ol>
-</blockquote>
-<p>常用的套路是在定位到慢查询语句之后，使用 <code>EXPLAIN</code> + <code>SQL</code> 来了解 MySQL 在执行这条数据时的一些细节，比如是否进行了优化、是否使用了索引等等。基于 <code>Explain</code> 的返回结果我们就可以根据 MySQL 的执行细节进一步分析是否应该优化搜索、怎样优化索引。</p>
-<p>就在这几天，美团技术团队开源了一款用于分析如何优化 SQL 的工具——<a href="https://github.com/Meituan-Dianping/SQLAdvisor">SQLAdvisor</a>，有兴趣可以试试。</p>
-<p>优化索引也并不是万能的，这种情况下只能考虑通过其他方式来缓和性能上的瓶颈了。</p>
-<blockquote>
-<p>查询容易，优化不易，且写且珍惜！</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>性能调优</tag>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>译文 | 入门概念：CSS 选择器是如何工作的</title>
-    <url>/2017/03/13/how-css-selectors-work/</url>
-    <content><![CDATA[<blockquote>
-<p>作者：<a href="https://twitter.com/chriscoyier">Chris Coyier</a><br>参考原文地址：<a href="https://css-tricks.com/how-css-selectors-work/">Beginner Concepts: How CSS Selectors Work</a>。</p>
-</blockquote>
-<p>你刚接触 CSS 吗？这篇文章就是为你准备的！也许理解 CSS 最关键的就是理解「选择器」。选择器可以让你定位到具体的 HTML 元素并且把样式应用于它们之上。不过现在让我们暂时忘掉「样式」，而只是专注于「选择」。</p>
-<p>在接下来的例子中，CSS 将会存在于一个被命名为 <code>style.css</code> 的文件中，并且被叫做 <code>index.html</code> 的 HTML 文档所引用。HTML 与 CSS 是分离的，这样能将「设计」与「内容」分离，这也是 CSS 出彩的地方。</p>
-<span id="more"></span>
-
-<p>HTML 文件看起来会像是这样：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>We&#x27;re learning selectors!<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;yay&quot;</span>&gt;</span>Yay<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>CSS 文件则只会包含选择器的代码区块，就像你接下来会看到的一样。</p>
-<h2 id="ID-选择器（ID-Selector）"><a href="#ID-选择器（ID-Selector）" class="headerlink" title="ID 选择器（ID Selector）"></a>ID 选择器（ID Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#happy-cake</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;sad-cake&quot;</span>&gt;</span>Wrong ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span>That&#x27;s not an ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>根据 <a href="https://css-tricks.com/specifics-on-css-specificity/">CSS 选择器优先级（CSS specificity）</a>，ID 选择器是优先级最高的选择器类型。这意味着它「打败」了其他的选择器类型和「以胜者姿态」而定义的样式。听起来很棒，但是那也是<a href="https://css-tricks.com/a-line-in-the-sand/">被诟病的地方</a>，因为在我们需要的时候，使用那些低优先级的选择器会更容易重载值。</p>
-<h2 id="类选择器（Class-Selector）"><a href="#类选择器（Class-Selector）" class="headerlink" title="类选择器（Class Selector）"></a>类选择器（Class Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;module&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&quot;country module iceland&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;.module&quot;</span>&gt;</span>The dot is for CSS, not HTML<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bigmodule&quot;</span>&gt;</span>Wrong class<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>类选择器是你的朋友。它们很可能是这里最有用和最全能的选择器。其一，是因为它们在所有浏览器中都得到了很好的支持；其二，你还可以在 HTML 元素中添加多个「类」（class）（只需要用一个空格分开）；其三，你可以用 JavaScript 来明确地的操作类。</p>
-<h2 id="元素选择器（Tag-Selector）"><a href="#元素选择器（Tag-Selector）" class="headerlink" title="元素选择器（Tag Selector）"></a>元素选择器（Tag Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">h2</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hi, Mom<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Anywhere<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;h2&quot;</span>&gt;</span>Wrong tag, can&#x27;t trick it<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line">&lt;h2class=&quot;yolo&quot;&gt;Make sure that tag has a space after it!<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>当改变某个独一无二的 HTML 元素的属性时，元素选择器是最有用的，比如在 <code>&lt;ul&gt;</code> 上设置 <code>list-style</code> 或是在 <code>&lt;pre&gt;</code> 上设置 <code>tab-size</code>。同理，在<a href="https://css-tricks.com/poll-results-what-css-reset-do-you-use/">重新设定</a>某个元素的浏览器默认样式时也很有用。</p>
-<p>但不要太过于依赖它们。通常来说，写一个类来定义样式可以作用于任何 HTML 元素，这会更有用。</p>
-<h2 id="属性选择器（Attribute-Selector）"><a href="#属性选择器（Attribute-Selector）" class="headerlink" title="属性选择器（Attribute Selector）"></a>属性选择器（Attribute Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-attr">[data-modal=<span class="string">&quot;open&quot;</span>]</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;open&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&#x27;closed&#x27;</span> <span class="attr">data-modal</span>=<span class="string">&#x27;open&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;false&quot;</span>&gt;</span>Wrong value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>&gt;</span>No value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal-open</span>&gt;</span>Wrong attribute<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>你可能会争论说<a href="https://css-tricks.com/attribute-selectors/">属性选择器</a>比类选择器更有用，因为它们有一样的优先级但是前者却可以是任何属性（不仅仅是 <code>class</code>），这个属性的值你还可以进行选择。</p>
-<p>你说得没错，但是属性选择器 IE6 不支持。</p>
-<h2 id="位置选择器（Positional-Selectors）"><a href="#位置选择器（Positional-Selectors）" class="headerlink" title="位置选择器（Positional Selectors）"></a>位置选择器（Positional Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>yep, I&#x27;m #2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>除了 <a href="https://css-tricks.com/how-nth-child-works/"><code>:nth-child</code></a>，还有几种不同的位置选择器。使用简单的表达式（比如 <code>3n</code>&#x3D;”every third”），你可以基于它们在 HTML 中的位置来选择元素。你可以<a href="https://css-tricks.com/examples/nth-child-tester/">在这里测试你的想法</a>或者<a href="https://css-tricks.com/useful-nth-child-recipies/">在这里了解更多的实例</a>。</p>
-<h2 id="其他的伪选择器（Pseudo-Selectors）"><a href="#其他的伪选择器（Pseudo-Selectors）" class="headerlink" title="其他的伪选择器（Pseudo Selectors）"></a>其他的伪选择器（Pseudo Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:empty</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">data-blah</span>&gt;</span><span class="comment">&lt;!-- nothin&#x27; --&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><code>:empty</code> 是<a href="https://css-tricks.com/pseudo-class-selectors/">众多伪选择器</a>中的一个，你可以凭借冒号 <code>:</code> 来识别它们。它们通常代表着你不能仅仅通过元素和属性就能定位到的东西。</p>
-<p>请注意，它们与用双冒号（<code>::</code>）来识别的<a href="http://css-tricks.com/pseudo-element-roundup/">伪元素（pseudo elements）</a>有一点不同。伪元素负责借助它们选择的内容来往页面添加东西。</p>
-<h2 id="更多提升内容"><a href="#更多提升内容" class="headerlink" title="更多提升内容"></a>更多提升内容</h2><p>选择器可以被组合到一起使用。比如：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span><span class="selector-class">.news</span> &#123;  </span><br><span class="line">  <span class="comment">/* Selects elements with BOTH of those classes */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#site-footer</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">  <span class="comment">/* Adds content after an element with that ID */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">section</span><span class="selector-attr">[data-open]</span> &#123;</span><br><span class="line">  <span class="comment">/* Selects only section elements if they have this attribute */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>也有像 <code>~</code>、<code>+</code> 和 <code>&gt;</code> 这样的<a href="https://css-tricks.com/child-and-sibling-selectors/">选择器组合运算子（selector combinators）</a>可以用来对选择器造成影响，就像这样：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &gt; <span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="comment">/* Select h2 elements that are direct children of an element with that class */</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="selector-tag">h2</span> + <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="comment">/* Select p elements that are directly following an h2 element */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">li</span> ~ <span class="selector-tag">li</span> &#123;</span><br><span class="line">  <span class="comment">/* Select li elements that are siblings (and following) another li element. */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在 CSS-Tricks，这里有<a href="https://css-tricks.com/almanac/">一个完整的索引</a>，覆盖了 CSS 中的所有的选择器及其属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>CSS</tag>
       </tags>
   </entry>
   <entry>
@@ -1287,47 +1238,52 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>毕业一周年 | 山大印象</title>
-    <url>/2017/05/07/grad-anniversary/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
-
+    <title>译文 | 入门概念：CSS 选择器是如何工作的</title>
+    <url>/2017/03/13/how-css-selectors-work/</url>
+    <content><![CDATA[<blockquote>
+<p>作者：<a href="https://twitter.com/chriscoyier">Chris Coyier</a><br>参考原文地址：<a href="https://css-tricks.com/how-css-selectors-work/">Beginner Concepts: How CSS Selectors Work</a>。</p>
+</blockquote>
+<p>你刚接触 CSS 吗？这篇文章就是为你准备的！也许理解 CSS 最关键的就是理解「选择器」。选择器可以让你定位到具体的 HTML 元素并且把样式应用于它们之上。不过现在让我们暂时忘掉「样式」，而只是专注于「选择」。</p>
+<p>在接下来的例子中，CSS 将会存在于一个被命名为 <code>style.css</code> 的文件中，并且被叫做 <code>index.html</code> 的 HTML 文档所引用。HTML 与 CSS 是分离的，这样能将「设计」与「内容」分离，这也是 CSS 出彩的地方。</p>
 <span id="more"></span>
 
-<br />
+<p>HTML 文件看起来会像是这样：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>We&#x27;re learning selectors!<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;yay&quot;</span>&gt;</span>Yay<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>山东大学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序与人生</title>
-    <url>/2017/05/24/programming-and-life/</url>
-    <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
-<p>越来越发现，前人总结的一些众所周知并经过时间验证过的关于写代码的道理，只要我们换个角度来类比和思考，同样可以适用于我们人生历程的一些方面。这篇文章就是我想到的一些例子，小标题都是写代码时所谓的一些「金科玉律」，而我会试图通过这些相通的「规律」，衍生出个人对人生某个方面的思考，可能小到微不足道的个人习惯，大到能够决定人生方向的人生观。</p>
-<span id="more"></span>
+<p>CSS 文件则只会包含选择器的代码区块，就像你接下来会看到的一样。</p>
+<h2 id="ID-选择器（ID-Selector）"><a href="#ID-选择器（ID-Selector）" class="headerlink" title="ID 选择器（ID Selector）"></a>ID 选择器（ID Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#happy-cake</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;sad-cake&quot;</span>&gt;</span>Wrong ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span>That&#x27;s not an ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>根据 <a href="https://css-tricks.com/specifics-on-css-specificity/">CSS 选择器优先级（CSS specificity）</a>，ID 选择器是优先级最高的选择器类型。这意味着它「打败」了其他的选择器类型和「以胜者姿态」而定义的样式。听起来很棒，但是那也是<a href="https://css-tricks.com/a-line-in-the-sand/">被诟病的地方</a>，因为在我们需要的时候，使用那些低优先级的选择器会更容易重载值。</p>
+<h2 id="类选择器（Class-Selector）"><a href="#类选择器（Class-Selector）" class="headerlink" title="类选择器（Class Selector）"></a>类选择器（Class Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;module&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&quot;country module iceland&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;.module&quot;</span>&gt;</span>The dot is for CSS, not HTML<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bigmodule&quot;</span>&gt;</span>Wrong class<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>类选择器是你的朋友。它们很可能是这里最有用和最全能的选择器。其一，是因为它们在所有浏览器中都得到了很好的支持；其二，你还可以在 HTML 元素中添加多个「类」（class）（只需要用一个空格分开）；其三，你可以用 JavaScript 来明确地的操作类。</p>
+<h2 id="元素选择器（Tag-Selector）"><a href="#元素选择器（Tag-Selector）" class="headerlink" title="元素选择器（Tag Selector）"></a>元素选择器（Tag Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">h2</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hi, Mom<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Anywhere<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;h2&quot;</span>&gt;</span>Wrong tag, can&#x27;t trick it<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line">&lt;h2class=&quot;yolo&quot;&gt;Make sure that tag has a space after it!<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当改变某个独一无二的 HTML 元素的属性时，元素选择器是最有用的，比如在 <code>&lt;ul&gt;</code> 上设置 <code>list-style</code> 或是在 <code>&lt;pre&gt;</code> 上设置 <code>tab-size</code>。同理，在<a href="https://css-tricks.com/poll-results-what-css-reset-do-you-use/">重新设定</a>某个元素的浏览器默认样式时也很有用。</p>
+<p>但不要太过于依赖它们。通常来说，写一个类来定义样式可以作用于任何 HTML 元素，这会更有用。</p>
+<h2 id="属性选择器（Attribute-Selector）"><a href="#属性选择器（Attribute-Selector）" class="headerlink" title="属性选择器（Attribute Selector）"></a>属性选择器（Attribute Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-attr">[data-modal=<span class="string">&quot;open&quot;</span>]</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;open&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&#x27;closed&#x27;</span> <span class="attr">data-modal</span>=<span class="string">&#x27;open&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;false&quot;</span>&gt;</span>Wrong value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>&gt;</span>No value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal-open</span>&gt;</span>Wrong attribute<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>你可能会争论说<a href="https://css-tricks.com/attribute-selectors/">属性选择器</a>比类选择器更有用，因为它们有一样的优先级但是前者却可以是任何属性（不仅仅是 <code>class</code>），这个属性的值你还可以进行选择。</p>
+<p>你说得没错，但是属性选择器 IE6 不支持。</p>
+<h2 id="位置选择器（Positional-Selectors）"><a href="#位置选择器（Positional-Selectors）" class="headerlink" title="位置选择器（Positional Selectors）"></a>位置选择器（Positional Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>yep, I&#x27;m #2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>除了 <a href="https://css-tricks.com/how-nth-child-works/"><code>:nth-child</code></a>，还有几种不同的位置选择器。使用简单的表达式（比如 <code>3n</code>&#x3D;”every third”），你可以基于它们在 HTML 中的位置来选择元素。你可以<a href="https://css-tricks.com/examples/nth-child-tester/">在这里测试你的想法</a>或者<a href="https://css-tricks.com/useful-nth-child-recipies/">在这里了解更多的实例</a>。</p>
+<h2 id="其他的伪选择器（Pseudo-Selectors）"><a href="#其他的伪选择器（Pseudo-Selectors）" class="headerlink" title="其他的伪选择器（Pseudo Selectors）"></a>其他的伪选择器（Pseudo Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:empty</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">data-blah</span>&gt;</span><span class="comment">&lt;!-- nothin&#x27; --&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>:empty</code> 是<a href="https://css-tricks.com/pseudo-class-selectors/">众多伪选择器</a>中的一个，你可以凭借冒号 <code>:</code> 来识别它们。它们通常代表着你不能仅仅通过元素和属性就能定位到的东西。</p>
+<p>请注意，它们与用双冒号（<code>::</code>）来识别的<a href="http://css-tricks.com/pseudo-element-roundup/">伪元素（pseudo elements）</a>有一点不同。伪元素负责借助它们选择的内容来往页面添加东西。</p>
+<h2 id="更多提升内容"><a href="#更多提升内容" class="headerlink" title="更多提升内容"></a>更多提升内容</h2><p>选择器可以被组合到一起使用。比如：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span><span class="selector-class">.news</span> &#123;  </span><br><span class="line">  <span class="comment">/* Selects elements with BOTH of those classes */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#site-footer</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">  <span class="comment">/* Adds content after an element with that ID */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">section</span><span class="selector-attr">[data-open]</span> &#123;</span><br><span class="line">  <span class="comment">/* Selects only section elements if they have this attribute */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="做好垃圾回收"><a href="#做好垃圾回收" class="headerlink" title="做好垃圾回收"></a>做好垃圾回收</h2><p>任何使用 C&#x2F;C++ 写代码的程序员都会在编码时尤其注意一个问题，那就是及时进行垃圾回收。具体来说，由于 C&#x2F;C++ 本身不具有自动垃圾回收的机制，所以但凡程序向操作系统「借用」了一块内存来存放新生成的对象，都必须在对应对象的生命期结束之后的某个时刻主动的进行内存释放，即手动进行垃圾回收。如果没有进行合适的垃圾回收，则系统会陷入了我们常说的「内存泄漏」的问题——由于无用的内存得不到及时的释放，导致程序占用的内存越来越多，最后导致内存不足而整个系统无法正常运行。</p>
-<p>一个合格的 C&#x2F;C++ 程序员会把主动进行垃圾回收的习惯带到生活中，小到随手关灯、随手关门、把用过的会议室恢复原样，中到把借来的东西物归原主，甚至大到整个人类对发展过程中对生态环境破坏的及时弥补，其内在其实都是自然的「垃圾回收」原则。</p>
-<h2 id="永远不忘把错误默默吞掉"><a href="#永远不忘把错误默默吞掉" class="headerlink" title="永远不忘把错误默默吞掉"></a>永远不忘把错误默默吞掉</h2><p><em>“Errors should never pass silently”</em> 是<a href="https://en.wikipedia.org/wiki/Zen_of_Python">《The Zen of Python》</a>中重要的一条，它告诉我们永远不要忽视代码中的「异常」（Exception）。无论你是像目前大多数语言或框架所设计的把「异常」向上「抛」到一个足够高的层次然后统一记录日志并做处理然后程序继续运行，还是像 Erlang 那样崇尚 <em>let it crash</em> 的思想把所有被「异常」所「感染」到的轻量级 Process 全部挂掉，其相同的基点都是不能把异常默默的忽视掉。</p>
-<p>其内在的逻辑在于，我们绝不能忽视系统中的任何一个错误，把问题暴露出来总是比隐藏问题要更好。任何一个不加处理和纠正的错误，对于有状态的系统而言，可能导致系统处于一个完全失常的状态，其行为得不到有效的控制；对于无状态的系统而言，则可能使得任何触发了这个错误的用户请求都产生错误的结果和返回，即便不直接把 Process 挂掉，也至少把错误捕捉到且记录日志并视问题严重程度适当进行告警，否则问题将永远得不到解决。</p>
-<p>生活中其实也是如此。当我们遇到问题时，人的本能反应都是逃避的，但逃避永远解决不了我们遇到的问题。选择直面问题和困难是强者和自信者的逻辑和选择，人生也只有在不断的打怪升级中进阶成为更好的自己。具体来说，学习时遇到难点要想办法去弄懂原理，人际交往中遇到误会要及时沟通，工作时遇到阻碍要直面解决等等。</p>
-<h2 id="分工明确，关注点分离"><a href="#分工明确，关注点分离" class="headerlink" title="分工明确，关注点分离"></a>分工明确，关注点分离</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a>是面向对象程序设计的核心概念之一，它强调把业务逻辑的代码与解决特定领域问题的代码分离，这样才能使得代码具有「高内聚，低耦合，分层明确」的特点，也就是使得日后由于需求变动带来的维护修改能够以尽可能小的影响面来进行。其实 Erlang 的 actor 并发模型设计对此也有所体现，整个系统任务被拆分成一个个不同的小任务，被大量的轻量级 Work Process 来执行，而 Process 之间唯一的交互方式是通过 messages（这就是好比各个子系统通过 API 来进行黑盒交互），这样的并发模型就完全避免了传统的共享内存式并发的 data race、死锁等固有问题。</p>
-<p>人类社会整个就是一个分工明确的动态系统，不同人一定会有不同的专长和兴趣，在走向社会之后也一定会或主动或被动的走到合适自己的岗位上去。而整个人类社会系统是不断动态发展的，正是由于明确的分工机制，客观世界的某个具体的变化不必需要人类全体都进行调整来适应，这样人类社会总体上才得以能够勉力跟上客观世界变化的速度。其实道理很简单，就拿最近影响面极广的 WannaCry 勒索病毒事件来说，即便微软早在两三月前就已经推送了补丁修复漏洞，但由于需要调整的用户数量太大（即便假设所有用户对系统更新都持开放态度），所以肯定还是会有大量来不及进行调整的用户中招。更明确的说，个体数量越多，则所有个体都从当前状态调整到另一个确定状态所遇到的阻力就越大。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实如果有心，还可以发现很多沉淀下来的技术「准则」都可以有更哲学更生活化的解读和理解，也欢迎留言提供你的「新发现」。</p>
-<p>程序与人生，不仅仅是写程序的人生，更是透着程序思想哲思的人生。</p>
+<p>也有像 <code>~</code>、<code>+</code> 和 <code>&gt;</code> 这样的<a href="https://css-tricks.com/child-and-sibling-selectors/">选择器组合运算子（selector combinators）</a>可以用来对选择器造成影响，就像这样：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &gt; <span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="comment">/* Select h2 elements that are direct children of an element with that class */</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="selector-tag">h2</span> + <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="comment">/* Select p elements that are directly following an h2 element */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">li</span> ~ <span class="selector-tag">li</span> &#123;</span><br><span class="line">  <span class="comment">/* Select li elements that are siblings (and following) another li element. */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 CSS-Tricks，这里有<a href="https://css-tricks.com/almanac/">一个完整的索引</a>，覆盖了 CSS 中的所有的选择器及其属性。</p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>程序员</tag>
-        <tag>人生</tag>
+        <tag>CSS</tag>
       </tags>
   </entry>
   <entry>
@@ -1374,6 +1330,81 @@ _Farewell and thanks to each for the company_
         <tag>Erlang</tag>
         <tag>函数式编程</tag>
         <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>毕业一周年 | 山大印象</title>
+    <url>/2017/05/07/grad-anniversary/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>山东大学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序与人生</title>
+    <url>/2017/05/24/programming-and-life/</url>
+    <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
+<p>越来越发现，前人总结的一些众所周知并经过时间验证过的关于写代码的道理，只要我们换个角度来类比和思考，同样可以适用于我们人生历程的一些方面。这篇文章就是我想到的一些例子，小标题都是写代码时所谓的一些「金科玉律」，而我会试图通过这些相通的「规律」，衍生出个人对人生某个方面的思考，可能小到微不足道的个人习惯，大到能够决定人生方向的人生观。</p>
+<span id="more"></span>
+
+<h2 id="做好垃圾回收"><a href="#做好垃圾回收" class="headerlink" title="做好垃圾回收"></a>做好垃圾回收</h2><p>任何使用 C&#x2F;C++ 写代码的程序员都会在编码时尤其注意一个问题，那就是及时进行垃圾回收。具体来说，由于 C&#x2F;C++ 本身不具有自动垃圾回收的机制，所以但凡程序向操作系统「借用」了一块内存来存放新生成的对象，都必须在对应对象的生命期结束之后的某个时刻主动的进行内存释放，即手动进行垃圾回收。如果没有进行合适的垃圾回收，则系统会陷入了我们常说的「内存泄漏」的问题——由于无用的内存得不到及时的释放，导致程序占用的内存越来越多，最后导致内存不足而整个系统无法正常运行。</p>
+<p>一个合格的 C&#x2F;C++ 程序员会把主动进行垃圾回收的习惯带到生活中，小到随手关灯、随手关门、把用过的会议室恢复原样，中到把借来的东西物归原主，甚至大到整个人类对发展过程中对生态环境破坏的及时弥补，其内在其实都是自然的「垃圾回收」原则。</p>
+<h2 id="永远不忘把错误默默吞掉"><a href="#永远不忘把错误默默吞掉" class="headerlink" title="永远不忘把错误默默吞掉"></a>永远不忘把错误默默吞掉</h2><p><em>“Errors should never pass silently”</em> 是<a href="https://en.wikipedia.org/wiki/Zen_of_Python">《The Zen of Python》</a>中重要的一条，它告诉我们永远不要忽视代码中的「异常」（Exception）。无论你是像目前大多数语言或框架所设计的把「异常」向上「抛」到一个足够高的层次然后统一记录日志并做处理然后程序继续运行，还是像 Erlang 那样崇尚 <em>let it crash</em> 的思想把所有被「异常」所「感染」到的轻量级 Process 全部挂掉，其相同的基点都是不能把异常默默的忽视掉。</p>
+<p>其内在的逻辑在于，我们绝不能忽视系统中的任何一个错误，把问题暴露出来总是比隐藏问题要更好。任何一个不加处理和纠正的错误，对于有状态的系统而言，可能导致系统处于一个完全失常的状态，其行为得不到有效的控制；对于无状态的系统而言，则可能使得任何触发了这个错误的用户请求都产生错误的结果和返回，即便不直接把 Process 挂掉，也至少把错误捕捉到且记录日志并视问题严重程度适当进行告警，否则问题将永远得不到解决。</p>
+<p>生活中其实也是如此。当我们遇到问题时，人的本能反应都是逃避的，但逃避永远解决不了我们遇到的问题。选择直面问题和困难是强者和自信者的逻辑和选择，人生也只有在不断的打怪升级中进阶成为更好的自己。具体来说，学习时遇到难点要想办法去弄懂原理，人际交往中遇到误会要及时沟通，工作时遇到阻碍要直面解决等等。</p>
+<h2 id="分工明确，关注点分离"><a href="#分工明确，关注点分离" class="headerlink" title="分工明确，关注点分离"></a>分工明确，关注点分离</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a>是面向对象程序设计的核心概念之一，它强调把业务逻辑的代码与解决特定领域问题的代码分离，这样才能使得代码具有「高内聚，低耦合，分层明确」的特点，也就是使得日后由于需求变动带来的维护修改能够以尽可能小的影响面来进行。其实 Erlang 的 actor 并发模型设计对此也有所体现，整个系统任务被拆分成一个个不同的小任务，被大量的轻量级 Work Process 来执行，而 Process 之间唯一的交互方式是通过 messages（这就是好比各个子系统通过 API 来进行黑盒交互），这样的并发模型就完全避免了传统的共享内存式并发的 data race、死锁等固有问题。</p>
+<p>人类社会整个就是一个分工明确的动态系统，不同人一定会有不同的专长和兴趣，在走向社会之后也一定会或主动或被动的走到合适自己的岗位上去。而整个人类社会系统是不断动态发展的，正是由于明确的分工机制，客观世界的某个具体的变化不必需要人类全体都进行调整来适应，这样人类社会总体上才得以能够勉力跟上客观世界变化的速度。其实道理很简单，就拿最近影响面极广的 WannaCry 勒索病毒事件来说，即便微软早在两三月前就已经推送了补丁修复漏洞，但由于需要调整的用户数量太大（即便假设所有用户对系统更新都持开放态度），所以肯定还是会有大量来不及进行调整的用户中招。更明确的说，个体数量越多，则所有个体都从当前状态调整到另一个确定状态所遇到的阻力就越大。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实如果有心，还可以发现很多沉淀下来的技术「准则」都可以有更哲学更生活化的解读和理解，也欢迎留言提供你的「新发现」。</p>
+<p>程序与人生，不仅仅是写程序的人生，更是透着程序思想哲思的人生。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>人生</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>被分化的树叶</title>
+    <url>/2017/07/15/diversified-leaves/</url>
+    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
+<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
+<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
+<span id="more"></span>
+
+<p>树叶们早已经被分化了。</p>
+<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
+<p>太阳越升越高，雾也开始渐渐散去。</p>
+<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
+<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
+<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
+<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
+<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
+<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
+<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
+<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
+<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
+<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
+<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>意识流</tag>
+        <tag>散文</tag>
       </tags>
   </entry>
   <entry>
@@ -1424,62 +1455,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>被分化的树叶</title>
-    <url>/2017/07/15/diversified-leaves/</url>
-    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
-<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
-<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
-<span id="more"></span>
-
-<p>树叶们早已经被分化了。</p>
-<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
-<p>太阳越升越高，雾也开始渐渐散去。</p>
-<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
-<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
-<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
-<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
-<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
-<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
-<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
-<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
-<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
-<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
-<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>意识流</tag>
-        <tag>散文</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>独立书店的生存困境</title>
-    <url>/2017/08/23/arduous-independent-bookstores/</url>
-    <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
-<span id="more"></span>
-
-<p>讲到中国内地的书店，目光自然首先要聚焦到文化中心——北京。</p>
-<p>在被戏称为「宇宙中心」的海淀区五道口，高校环伺，不少别具一格的独立书店藏匿其中，这之中最有名的要数目前位于<a href="http://www.tsinghua.edu.cn/">清华</a>南门附近的<a href="http://www.allsagesbooks.com/GUANYU/JIANJIE.HTM">万圣书园</a>。如果你第一次来这个书店，很可能会感到失望——「名声在外的万圣书园原来就是这个破败的样子？」。这也侧面反映出了大环境下独立书店的生存不易。北京的房价自不必多说，更何况是在五道口，2012 年的搬迁直接就让万圣书园的面积缩水了 300 多平米。目前，万圣书园凭借着创办人<a href="https://zh.wikipedia.org/wiki/%E5%88%98%E8%8B%8F%E9%87%8C">刘苏里</a>在文化圈的影响力，依然吸引着众多爱书之人慕名前来，而且这里还时不时会举办一些新书发布会、读书会等活动，客流量还算可观，依傍其旁的醒客咖啡也势必把客单价提高了不少。万圣书园最大的优势就在于其书籍收录之广泛全面，这从店面内直接码放到天花板的书架就可以看出。如果你想找别的书店找不到的书，如果你想找某个品类下一系列相关的书，<del>如果你还想逗一逗书店里的万圣猫，</del>来万圣书园看看吧。</p>
-<p>与万圣书园隔街相望的是<a href="https://baike.baidu.com/item/%E8%B1%86%E7%93%A3%E4%B9%A6%E5%BA%97">豆瓣书店</a>。这个书店的店面就更小了，总共也就约五十平米。它最大的特色就是专营旧书，这也可能是它至今还能在著名的万圣书园对面存活下来的原因。旧书并不是指二手书，而是指那些出版年代久远，可能即将被出版社销毁的库存书。但可别因为这样就小看了这些书的质量，能进入豆瓣书店的书都是店长去北京的各大出版社收罗的。因此，你总是能在豆瓣书店找到很多奇特又便宜的旧书，它们可能出版了 5-20 年甚至更长的时间，但你还是很有可能在它们中发现你感兴趣的东西。豆瓣书店每个月还会设计不一样的书签放在门口，供顾客随意取用收藏。值得一提的是，豆瓣书店跟<a href="https://www.douban.com/">豆瓣网</a>没有任何关系，纯粹只是起名的巧合而已<del>，不然店面就不会这么小了（甚至有热心的豆瓣网友呼吁豆瓣网收购豆瓣书店）</del>。</p>
-<p>另一个在<a href="http://www.pku.edu.cn/">北大</a>师生心中拥有崇高地位的书店是<a href="http://www.jiemian.com/article/1426822.html">野草书店</a>。本来它已经在北大校园内呆了 14 年了，但因为今年初夏的店面招标失败，被迫搬离了北大，来到了万圣书园附近的一个地下超市的旁边。野草书店可能是这三个书店里网络营销做得最好的。书店经理赵亮用几个手机几个微信号在网上维护着一两万个野草书店的忠实客户，微博上也会时常更新最新到货的新书（可网购邮寄），再配合令人难以想象的折扣力度，野草书店在线上线下应该都还经营得不错。听北大的朋友说，他们以前经常拿着老师开的书单来野草书店购书。</p>
-<p>位于成府路上的这三个独立书店可以说是北京众多独立书店的代表，它们各有各的特色，能够在艰难环境中存活下来的原因更是各不相同。</p>
-<p>跳出北京，南方的一些半独立书店就和北京这几个书店的经营策略不完全相同<del>，至少它们的店面都有着现代化的精致装修和室内设计</del>。</p>
-<p>拿 2015 年年底在苏州开业的<a href="https://www.esliteliving.com/store/store.aspx?a=CN&l=gb&storeno=201511180004">诚品书店</a>来说，它已经被打造成集潮流生活、风格美学、创意设计于一体，照顾现代人品质生活方方面面的一个联合体。这里不仅仅做到了藏书丰富（尤其是一些外文书和台版书），是爱书之人的首选，同时也吸引了一群对生活品质有要求的人。和诚品有着类似经营策略的还有<a href="https://zh.wikipedia.org/wiki/%E6%96%B9%E6%89%80">方所</a>，目前总共只有四家，分别位于广州、成都、重庆和青岛。方所甚至比诚品有着更高的「艺术」和「审美」追求，基本都开在奢侈品林立的中心商务区。</p>
-<p>另外一些规模相对小一些的半独立书店，像<a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%A5%BF%E5%BC%97%E4%B9%A6%E5%BA%97">西西弗书店</a>、广州北京路上的<a href="https://baike.baidu.com/item/%E8%81%94%E5%90%88%E4%B9%A6%E5%BA%97">联合书店</a>，虽然还没有达到像苏州诚品这样多位一体的状态，但靠着经常举办的特色活动，也吸引着一批对特定领域感兴趣的人群的光顾，再加上店内的饮品店和一些其他的配套服务，应该也都还有尚可观的经营状态。</p>
-<p>综合来看，虽然本文所列出的书店有的似乎还活得不错，但整个实体书店行业一定是一年不如一年了。高昂的地价成本，加上纸质书相对于电子书的固有成本，以及电商时代人们购书习惯的逐渐变化，使得这些书店不得不树立自己的特色、塑造自己别具一格的品牌形象，来吸引那些有特定需求的人群。好在，这个时间节点上，有不少人还是偏爱纸质书阅读的。</p>
-<p>很多爱书之人都有这样的一个梦想，那就是退休之后开一家有个性的书店。随着时间的推移和时代的发展，这个梦想可能会变得越来越遥不可及。对于现有的这些独立书店来说，如果不迅速找准自己的特色和定位，扬长补短，那它们的命运都值得让人担忧。</p>
-<p>或许，在独立书店这个领域，光有一点点理想主义情怀，还远远不够。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>独立书店</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>完全理解回调函数</title>
     <url>/2017/10/17/understand-callback/</url>
     <content><![CDATA[<p>什么是回调函数？</p>
@@ -1509,6 +1484,31 @@ _Farewell and thanks to each for the company_
         <tag>「完全理解」系列</tag>
         <tag>回调函数</tag>
         <tag>控制反转</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>独立书店的生存困境</title>
+    <url>/2017/08/23/arduous-independent-bookstores/</url>
+    <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
+<span id="more"></span>
+
+<p>讲到中国内地的书店，目光自然首先要聚焦到文化中心——北京。</p>
+<p>在被戏称为「宇宙中心」的海淀区五道口，高校环伺，不少别具一格的独立书店藏匿其中，这之中最有名的要数目前位于<a href="http://www.tsinghua.edu.cn/">清华</a>南门附近的<a href="http://www.allsagesbooks.com/GUANYU/JIANJIE.HTM">万圣书园</a>。如果你第一次来这个书店，很可能会感到失望——「名声在外的万圣书园原来就是这个破败的样子？」。这也侧面反映出了大环境下独立书店的生存不易。北京的房价自不必多说，更何况是在五道口，2012 年的搬迁直接就让万圣书园的面积缩水了 300 多平米。目前，万圣书园凭借着创办人<a href="https://zh.wikipedia.org/wiki/%E5%88%98%E8%8B%8F%E9%87%8C">刘苏里</a>在文化圈的影响力，依然吸引着众多爱书之人慕名前来，而且这里还时不时会举办一些新书发布会、读书会等活动，客流量还算可观，依傍其旁的醒客咖啡也势必把客单价提高了不少。万圣书园最大的优势就在于其书籍收录之广泛全面，这从店面内直接码放到天花板的书架就可以看出。如果你想找别的书店找不到的书，如果你想找某个品类下一系列相关的书，<del>如果你还想逗一逗书店里的万圣猫，</del>来万圣书园看看吧。</p>
+<p>与万圣书园隔街相望的是<a href="https://baike.baidu.com/item/%E8%B1%86%E7%93%A3%E4%B9%A6%E5%BA%97">豆瓣书店</a>。这个书店的店面就更小了，总共也就约五十平米。它最大的特色就是专营旧书，这也可能是它至今还能在著名的万圣书园对面存活下来的原因。旧书并不是指二手书，而是指那些出版年代久远，可能即将被出版社销毁的库存书。但可别因为这样就小看了这些书的质量，能进入豆瓣书店的书都是店长去北京的各大出版社收罗的。因此，你总是能在豆瓣书店找到很多奇特又便宜的旧书，它们可能出版了 5-20 年甚至更长的时间，但你还是很有可能在它们中发现你感兴趣的东西。豆瓣书店每个月还会设计不一样的书签放在门口，供顾客随意取用收藏。值得一提的是，豆瓣书店跟<a href="https://www.douban.com/">豆瓣网</a>没有任何关系，纯粹只是起名的巧合而已<del>，不然店面就不会这么小了（甚至有热心的豆瓣网友呼吁豆瓣网收购豆瓣书店）</del>。</p>
+<p>另一个在<a href="http://www.pku.edu.cn/">北大</a>师生心中拥有崇高地位的书店是<a href="http://www.jiemian.com/article/1426822.html">野草书店</a>。本来它已经在北大校园内呆了 14 年了，但因为今年初夏的店面招标失败，被迫搬离了北大，来到了万圣书园附近的一个地下超市的旁边。野草书店可能是这三个书店里网络营销做得最好的。书店经理赵亮用几个手机几个微信号在网上维护着一两万个野草书店的忠实客户，微博上也会时常更新最新到货的新书（可网购邮寄），再配合令人难以想象的折扣力度，野草书店在线上线下应该都还经营得不错。听北大的朋友说，他们以前经常拿着老师开的书单来野草书店购书。</p>
+<p>位于成府路上的这三个独立书店可以说是北京众多独立书店的代表，它们各有各的特色，能够在艰难环境中存活下来的原因更是各不相同。</p>
+<p>跳出北京，南方的一些半独立书店就和北京这几个书店的经营策略不完全相同<del>，至少它们的店面都有着现代化的精致装修和室内设计</del>。</p>
+<p>拿 2015 年年底在苏州开业的<a href="https://www.esliteliving.com/store/store.aspx?a=CN&l=gb&storeno=201511180004">诚品书店</a>来说，它已经被打造成集潮流生活、风格美学、创意设计于一体，照顾现代人品质生活方方面面的一个联合体。这里不仅仅做到了藏书丰富（尤其是一些外文书和台版书），是爱书之人的首选，同时也吸引了一群对生活品质有要求的人。和诚品有着类似经营策略的还有<a href="https://zh.wikipedia.org/wiki/%E6%96%B9%E6%89%80">方所</a>，目前总共只有四家，分别位于广州、成都、重庆和青岛。方所甚至比诚品有着更高的「艺术」和「审美」追求，基本都开在奢侈品林立的中心商务区。</p>
+<p>另外一些规模相对小一些的半独立书店，像<a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%A5%BF%E5%BC%97%E4%B9%A6%E5%BA%97">西西弗书店</a>、广州北京路上的<a href="https://baike.baidu.com/item/%E8%81%94%E5%90%88%E4%B9%A6%E5%BA%97">联合书店</a>，虽然还没有达到像苏州诚品这样多位一体的状态，但靠着经常举办的特色活动，也吸引着一批对特定领域感兴趣的人群的光顾，再加上店内的饮品店和一些其他的配套服务，应该也都还有尚可观的经营状态。</p>
+<p>综合来看，虽然本文所列出的书店有的似乎还活得不错，但整个实体书店行业一定是一年不如一年了。高昂的地价成本，加上纸质书相对于电子书的固有成本，以及电商时代人们购书习惯的逐渐变化，使得这些书店不得不树立自己的特色、塑造自己别具一格的品牌形象，来吸引那些有特定需求的人群。好在，这个时间节点上，有不少人还是偏爱纸质书阅读的。</p>
+<p>很多爱书之人都有这样的一个梦想，那就是退休之后开一家有个性的书店。随着时间的推移和时代的发展，这个梦想可能会变得越来越遥不可及。对于现有的这些独立书店来说，如果不迅速找准自己的特色和定位，扬长补短，那它们的命运都值得让人担忧。</p>
+<p>或许，在独立书店这个领域，光有一点点理想主义情怀，还远远不够。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>独立书店</tag>
       </tags>
   </entry>
   <entry>
@@ -1576,6 +1576,35 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>长按是好的交互方式吗？</title>
+    <url>/2018/12/19/long-press-sucks/</url>
+    <content><![CDATA[<p>长按是好的交互方式吗？</p>
+<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
+<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
+<span id="more"></span>
+
+<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
+<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
+<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
+<p>首先，「长按」交互本身是一种怎样的体验？</p>
+<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
+<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
+<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
+<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
+<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
+<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
+<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
+<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>交互设计</tag>
+        <tag>产品</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>完全理解并发</title>
     <url>/2018/10/21/understand-concurrency/</url>
     <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
@@ -1624,35 +1653,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>「完全理解」系列</tag>
         <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>长按是好的交互方式吗？</title>
-    <url>/2018/12/19/long-press-sucks/</url>
-    <content><![CDATA[<p>长按是好的交互方式吗？</p>
-<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
-<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
-<span id="more"></span>
-
-<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
-<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
-<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
-<p>首先，「长按」交互本身是一种怎样的体验？</p>
-<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
-<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
-<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
-<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
-<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
-<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
-<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
-<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>交互设计</tag>
-        <tag>产品</tag>
       </tags>
   </entry>
   <entry>
@@ -2179,6 +2179,57 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>如何开始稳健投资</title>
+    <url>/2022/03/13/how-to-start-investing-soundly/</url>
+    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
+<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
+<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
+<span id="more"></span>
+
+<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
+<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
+<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
+<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
+<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
+<ol>
+<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
+<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
+<li>投资不能降低自己的生活品质。</li>
+<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
+<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
+<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
+<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
+</ol>
+<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
+<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
+<p>选定了投资品种，我们如何开始买入卖出呢？</p>
+<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
+<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，<strong>充分考虑你的存量资金和未来稳定的现金流下</strong>（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就<strong>明确想好</strong>你未来所有会投入市场的<strong>资金总量</strong>。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
+<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。更具体一点，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如果市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
+<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
+<ol>
+<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
+<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
+</ol>
+<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
+<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
+<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。对于小白第一个的投资周期，在你还没有投入很多资金到资本市场的时候，没有亏损很重要，不过，能够在不同的市场阶段充分感受那个当下自己在心态、策略上的优势和不足，体会资本市场和世界运行的特点，不断沉淀出自己的经验和体会，可能会更重要。</p>
+<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
+<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
+<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
+]]></content>
+      <categories>
+        <category>滚雪球</category>
+      </categories>
+      <tags>
+        <tag>投资</tag>
+        <tag>理财</tag>
+        <tag>基金</tag>
+        <tag>ETF</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2021 年书单</title>
     <url>/2021/12/31/2021-booklist/</url>
     <content><![CDATA[<h3 id="关于书单"><a href="#关于书单" class="headerlink" title="关于书单"></a>关于书单</h3><p>直奔主题：</p>
@@ -2290,60 +2341,9 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>如何开始稳健投资</title>
-    <url>/2022/03/13/how-to-start-investing-soundly/</url>
-    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
-<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
-<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
-<span id="more"></span>
-
-<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
-<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
-<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
-<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
-<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
-<ol>
-<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
-<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
-<li>投资不能降低自己的生活品质。</li>
-<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
-<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
-<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
-<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
-</ol>
-<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
-<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
-<p>选定了投资品种，我们如何开始买入卖出呢？</p>
-<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
-<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，<strong>充分考虑你的存量资金和未来稳定的现金流下</strong>（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就<strong>明确想好</strong>你未来所有会投入市场的<strong>资金总量</strong>。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
-<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。更具体一点，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如果市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
-<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
-<ol>
-<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
-<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
-</ol>
-<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
-<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
-<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。对于小白第一个的投资周期，在你还没有投入很多资金到资本市场的时候，没有亏损很重要，不过，能够在不同的市场阶段充分感受那个当下自己在心态、策略上的优势和不足，体会资本市场和世界运行的特点，不断沉淀出自己的经验和体会，可能会更重要。</p>
-<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
-<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
-<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
-]]></content>
-      <categories>
-        <category>滚雪球</category>
-      </categories>
-      <tags>
-        <tag>投资</tag>
-        <tag>理财</tag>
-        <tag>基金</tag>
-        <tag>ETF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>尘埃落定，为什么我依然要力挺《二舅》</title>
     <url>/2022/09/04/why-i-support-erjiu/</url>
-    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应为没有人会指责我写这篇是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
+    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应为没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
 <p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
 <p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，恰恰相反，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
 <span id="more"></span>
