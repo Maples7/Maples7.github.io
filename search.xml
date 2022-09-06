@@ -31,6 +31,25 @@
       </tags>
   </entry>
   <entry>
+    <title>无复屠苏梦，挑灯夜未央</title>
+    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6aaec0.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6894bf.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a19b2.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6baeb1.gif"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>黑白</tag>
+        <tag>Sony DSC-RX100</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>没有微信的 24 小时里</title>
     <url>/2014/09/25/24h-without-wechat/</url>
     <content><![CDATA[<p>也是前不久在《简书周刊》上看到一篇文章，作者讲述自己在删除了所有手机上的社交 App 后的种种感受。或许我们都早已承认社交网络已经深刻的影响着我们的日常生活，但在看到那篇文章之前，我还真没有意识到离开以微信为首的社交 Apps 之后会是一番怎样真切的感受。</p>
@@ -55,25 +74,6 @@
       <tags>
         <tag>微信</tag>
         <tag>社交网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>无复屠苏梦，挑灯夜未央</title>
-    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6aaec0.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6894bf.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a19b2.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6baeb1.gif" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>黑白</tag>
-        <tag>Sony DSC-RX100</tag>
       </tags>
   </entry>
   <entry>
@@ -234,7 +234,7 @@
   <entry>
     <title>巴山蜀水毓灵秀</title>
     <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a96f4.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af68b036.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a29bb.gif" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a482e.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif" /></div></div></div>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
 
 <span id="more"></span>
 
@@ -374,82 +374,6 @@
       </tags>
   </entry>
   <entry>
-    <title>用 ES6 特性实现一个标准的轻量级 Promise</title>
-    <url>/2016/08/29/implement-a-clean-promise-with-es6-features/</url>
-    <content><![CDATA[<p>Promise 应该是目前 JavaScript 中最流行的异步流程控制解决方案，本文将介绍如何使用 JavaScript ES6 的语言特性，实现一个轻量级的通过了所有<a href="https://github.com/promises-aplus/promises-tests">官方测例</a>标准的 Promise 库。了解其原理，深入其实现。实际上，Promise 也早已被写入 JavaScript ES6 的标准，作为官方支持的标准异步流程控制解决方案之一。用 ES6 语法实现一个 ES6 中的 Promise，虽然看似没有必要，不过对于深入理解 Promise 以便更好的使用大有裨益。</p>
-<p>为了您的最佳阅读体验，在阅读本文之前，建议您已经做到如下事情：</p>
-<ul>
-<li>可以熟练使用至少任意一个 Promise 库，如 bluebird、Q 等；</li>
-<li>了解 Promise 标准，可以<a href="https://promisesaplus.com/">看这里</a>；</li>
-<li>熟悉主要的 JavaScript ES6 特性；</li>
-</ul>
-<span id="more"></span>
-<h3 id="构造函数之前的准备"><a href="#构造函数之前的准备" class="headerlink" title="构造函数之前的准备"></a>构造函数之前的准备</h3><p>我们都知道，Promise 总共有三种状态：pending、fullfilled（resolved）和 rejected。所以我们对于每一个 Promise 实例都需要一个变量记录其现有的状态。</p>
-<p>然后还需要一个变量记录其 settled 之后的结果。另外，Promise 作为一个异步流程控制库，在上游的 Promise 还处于 pending 状态时下游 Promise 是不能执行的，所以我们至少需要一个数组来记录当前 Promise 还未 settled 时它后续的一些操作（你可以用两个数组分别记录 resolved 和 rejected 之后不同的操作；也可以用一个数组，然后每个元素都是包含两个属性的对象，分别记录 resolved 和 rejected 之后不同的操作）。</p>
-<p>另外，借用面向对象的说法，这些变量对 Promise 而言应该是私有的，即不应该对外界暴露（这也是符合标准的）。所以待会儿构造函数之中应该定义一些私有变量，而 ES6 的 Symbol 类型则可以完美实现我们所需的私有变量。</p>
-<p>代码如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义 Promise 状态</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">STATUS</span> = &#123;</span><br><span class="line">    <span class="attr">PENDING</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">RESOLVED</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">REJECTED</span>: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> _status = <span class="title class_">Symbol</span>(<span class="string">&#x27;status&#x27;</span>); <span class="comment">// 用于 status 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _result = <span class="title class_">Symbol</span>(<span class="string">&#x27;result&#x27;</span>); <span class="comment">// 用于 result 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _callbacks = <span class="title class_">Symbol</span>(<span class="string">&#x27;callbacks&#x27;</span>); <span class="comment">// 用于 callbacks 私有变量的 Symbol</span></span><br></pre></td></tr></table></figure>
-
-<p>这里我们将 Promise 状态定义到一个对象之中，并且用属性名语义化状态，值其实没什么意义，但是这样写符合「让错误更早的暴露出来」的编程原则，让编译器（或解释器）去帮我们提前检测错误，总比写在字符串在运行时才把定位还不一定准确的错误暴露出来要好。</p>
-<p>其次，还定义了几个用于定义私有变量的 Symbol。</p>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>构造函数无非是给变量做一些初始化的工作，然后执行用户传入的函数。关键在于我们需要定义好传入的函数的参数，即<code>resolve</code>和<code>reject</code>函数。</p>
-<p>先看代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params">exec</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> self = <span class="variable language_">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!(<span class="keyword">typeof</span> (exec) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Promise constructor argument exec must be a function.&#x27;</span>) </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>; </span><br><span class="line">    self[_result] = <span class="literal">undefined</span>;</span><br><span class="line">    self[_callbacks] = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">resolve</span>(<span class="params">value</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>;</span><br><span class="line">                self[_result] = value;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onResolved</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">reject</span>(<span class="params">reason</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>;</span><br><span class="line">                self[_result] = reason;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onRejected</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="title function_">exec</span>(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在构造函数里，首先限制了用户传入的参数必须为函数，然后将状态置为<code>pending</code>，并初始化<code>result</code>和<code>callbacks</code>。</p>
-<p>之后，尝试运行用户传入的函数，并提供我们自己定义的<code>resolve</code>和<code>reject</code>函数作为参数。因为运行函数可能会抛出难以预期的错误，所以外面用<code>try...catch</code>包裹一层，并把错误用<code>reject</code>处理，表示当前 Promise 被 reject。</p>
-<p>这里的关键在于我们自己定义的<code>resolve</code>和<code>reject</code>函数。</p>
-<p>其实<code>resolve</code>和<code>reject</code>的逻辑也很简单，首先因为标准里规定对于<code>resolve</code>和<code>reject</code>的调用必须是异步的，来避免阻塞（<code>.then</code>方法的两个参数同理），所以外面套了一层<code>nextTick</code>（这里对前后端做了兼容，前端指向<code>setTimeout</code>，后端指向<code>process.nextTick</code>）。内层首先保证当前 Promise 还处于<code>pending</code>状态（标准规定状态只能由<code>pending</code>转向其他两个，并且一经转变不能更改），然后分别将状态置为<code>resolved</code>或<code>rejected</code>，最后顺次执行之前由于还未 settled 时存储在<code>callbacks</code>里面的后续回调函数集。</p>
-<h3 id="then"><a href="#then" class="headerlink" title=".then"></a>.then</h3><p><code>.then</code>函数接受两个函数作为参数，分别对应前一个 Promise 被 resolve 或 reject 之后的回调。</p>
-<p>首先来看一下函数的主逻辑：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span> (self[_status]) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onResolved, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onRejected, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            self[_callbacks].<span class="title function_">push</span>(&#123;</span><br><span class="line">                <span class="attr">onResolved</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onResolved, resolve, reject, childPromise),</span><br><span class="line">                <span class="attr">onRejected</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onRejected, resolve, reject, childPromise)</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="attr">default</span>: </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Invalid status value&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据前一个 Promise 的状态，分三种情况，其中<code>resolved</code>和<code>rejected</code>时是类似的：<code>new</code>一个新的 Promise 实例作为当前的 Promise，同理异步执行传入的函数（细节见下文<code>childExec</code>函数）。而当状态是<code>pending</code>时，我们只能先把回调函数先压入前一个 Promise 的回调函数队列，等<code>settled</code>后再执行。</p>
-<h4 id="childExec"><a href="#childExec" class="headerlink" title="childExec"></a>childExec</h4><p><code>childExec</code>本身是为了最大化复用代码而重构独立出来的一个函数，代码很简单：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">childExec</span>(<span class="params">value, onDone, resolve, reject, childPromise</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        value = <span class="title function_">onDone</span>(value);</span><br><span class="line">        <span class="title function_">solver</span>(childPromise, value, resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>解释一下：不管是前一个 Promise 是<code>rejected</code>还是<code>resolved</code>，用传入<code>.then</code>的对应的回调函数执行前一个 Promise settled 之后的结果<code>result</code>，然后执行<code>solver</code>（见下文对<code>solver</code>的分析）。同样的，外面需要包裹一层<code>try...catch</code>。</p>
-<h4 id="solver"><a href="#solver" class="headerlink" title="solver"></a>solver</h4><p><code>solver</code>函数是不同的 Promise 实现之间（比如 bluebird 对 Promise 的实现与 ES6 原生对 Promise 的实现）能够无缝调用的关键。对此，<a href="https://promisesaplus.com/#point-45">Promise 标准中也有详述，甚至已经把这个函数的逻辑和流转都已经完完本本的列出来了，任何 Promise 实现只要遵循这个标准，就可以实现不同 Promise 实现之间的交叉调用</a>。</p>
-<p>看代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">solver</span>(<span class="params">promise, result, resolve, reject</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> then, settled = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (promise === result) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Cycle Promises&#x27;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result <span class="keyword">instanceof</span> <span class="title class_">Promise</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (result[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(<span class="function"><span class="params">v</span> =&gt;</span> <span class="title function_">solver</span>(promise, v, resolve, reject), reject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(resolve, reject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((result !== <span class="literal">null</span>) &amp;&amp; (<span class="keyword">typeof</span> (result) === <span class="string">&#x27;object&#x27;</span> || <span class="keyword">typeof</span> (result) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            then = result.<span class="property">then</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> (then) === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">                then.<span class="title function_">call</span>(result, <span class="function"><span class="params">s</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">solver</span>(promise, s, resolve, reject);</span><br><span class="line">                &#125;, <span class="function"><span class="params">r</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">reject</span>(r);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">            settled = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>分析：</p>
-<ul>
-<li>如果上一个 Promise 的<code>result</code>跟子 Promise 还是同一个对象，显然是循环调用了，按标准规定抛出<code>TypeError</code>；</li>
-<li>如果上一个 Promise 的<code>result</code>还是本 Promise 实现的实例，那挺好，直接调用它的<code>then</code>就好。不过，上一个 Promise 返回的新 Promise 可能还没有 settled，所以如果没有 settled，我们在它的<code>onResolved</code>函数中直接继续执行<code>solver</code>直到它被 settled（看起来像用递归的形式表现循环迭代）；</li>
-<li>如果返回的不是当前 Promise 实现的实例，但是它是一个有<code>.then</code>方法的对象或者函数，那我们直接用它的<code>then</code>方法<code>call</code>在<code>result</code>上，并且在它的回调函数<code>onResolved</code>中用<code>.then</code>传递的<code>s</code>继续调用<code>solver</code>或者在<code>onRejected</code>函数中<code>reject</code>掉这个 Promise。值得注意的是，由于一个 Promise 只能被 settled 一次，而第三方的<code>.then</code>方法我们不知道里面具体是什么内容，所以用一个<code>Boolean</code>量<code>settled</code>来标记，保证它只被 settled 一次，之后的调用都直接被忽略（标准也是这样规定的）；</li>
-<li>如果只是一个简单值，直接<code>resolve</code>。</li>
-</ul>
-<p>另外，尽管在<code>childExec</code>中我们已经用<code>try...catch</code>包裹了一层，但是异步调用的错误依然可能不会被捕获，所以这里依然需要<code>try...catch</code>。</p>
-<p>至此，一个符合标准的 Promise 最小化实现就已经完成了。</p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在你的 Promise 写好后，需要进行测试，至少需要通过的官方测例在这里：<a href="https://github.com/promises-aplus/promises-tests">Promises&#x2F;A+ Compliance Test Suite</a>。通过所有测例之后表明你的 Promise 实现是基本符合标准的。</p>
-<p>按其说明，你需要提供一个这样的类静态函数：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="title function_">deferred</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> dfd = &#123;&#125;;</span><br><span class="line">    dfd.<span class="property">promise</span> = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        dfd.<span class="property">resolve</span> = resolve;</span><br><span class="line">        dfd.<span class="property">reject</span> = reject;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> dfd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个函数返回一个对象，并用<code>resolve</code>和<code>reject</code>属性引用构造函数中自定义的<code>resolve</code>和<code>reject</code>函数，用<code>promise</code>属性引用一个 Promise 实例。</p>
-<p>之后用<code>promises-aplus-tests</code>命令运行测试（需要提前安装<code>promises-aplus-tests</code>包）。</p>
-<h3 id="常用的其他辅助接口"><a href="#常用的其他辅助接口" class="headerlink" title="常用的其他辅助接口"></a>常用的其他辅助接口</h3><p>一个成熟的 Promise 包肯定不会只有一个简单的<code>.then</code>方法，不过其他的的辅助接口都是在此最简基础上慢慢迭代出来的，相当于是一些方便用户使用的语法糖。</p>
-<p>你可以在下文给出的 GitHub 源码链接中查看我的其他辅助方法的实现，逻辑基本都很清晰，本文不赘述了。</p>
-<h3 id="Join-Me"><a href="#Join-Me" class="headerlink" title="Join Me"></a>Join Me</h3><p>目前，我的这个 Promise 实现已经放在了 npm 和 GitHub 上：</p>
-<ul>
-<li>npm：<a href="https://www.npmjs.com/package/clean-promise">clean-promise</a></li>
-<li>GitHub: <a href="https://github.com/Maples7/clean-promise">Maples7&#x2F;clean-promise: a minimal implement of Promise</a></li>
-</ul>
-<p>Any issues and PRs are welcomed! :D</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果要细致的讲解每一个细节，恐怕 5 篇这样长度的文章还显不够，本文也只是将实现的骨架勾勒了出来。不过，源码是一个软件产品最好的背书，我就不啰嗦了。</p>
-<p>个人觉得实现 Promise 的难度在于它本身的逻辑比较绕，因为标准设计得就比较精巧，每一个地方的衔接都经过深思熟虑，往往一个方法就会产生一个新的 Promise，有一种层层迭代的感觉，类似于「蚕」的结构，所以把层次厘清确实需要花一番功夫，要有耐心。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://github.com/xieranmaya/blog/issues/3">剖析 Promise 内部结构，一步一步实现一个完整的、能通过所有 Test case 的 Promise 类 #3 </a>；</li>
-<li><a href="https://promisesaplus.com/">Promises&#x2F;A+</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>JavaScript</tag>
-        <tag>ES6</tag>
-        <tag>Promise</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>构建合格的 RESTful API Server</title>
     <url>/2016/09/05/build-qualified-restful-api-server/</url>
     <content><![CDATA[<p>这一篇我要把 References 写在前面：</p>
@@ -528,6 +452,82 @@
         <tag>RESTful</tag>
         <tag>API</tag>
         <tag>Express</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用 ES6 特性实现一个标准的轻量级 Promise</title>
+    <url>/2016/08/29/implement-a-clean-promise-with-es6-features/</url>
+    <content><![CDATA[<p>Promise 应该是目前 JavaScript 中最流行的异步流程控制解决方案，本文将介绍如何使用 JavaScript ES6 的语言特性，实现一个轻量级的通过了所有<a href="https://github.com/promises-aplus/promises-tests">官方测例</a>标准的 Promise 库。了解其原理，深入其实现。实际上，Promise 也早已被写入 JavaScript ES6 的标准，作为官方支持的标准异步流程控制解决方案之一。用 ES6 语法实现一个 ES6 中的 Promise，虽然看似没有必要，不过对于深入理解 Promise 以便更好的使用大有裨益。</p>
+<p>为了您的最佳阅读体验，在阅读本文之前，建议您已经做到如下事情：</p>
+<ul>
+<li>可以熟练使用至少任意一个 Promise 库，如 bluebird、Q 等；</li>
+<li>了解 Promise 标准，可以<a href="https://promisesaplus.com/">看这里</a>；</li>
+<li>熟悉主要的 JavaScript ES6 特性；</li>
+</ul>
+<span id="more"></span>
+<h3 id="构造函数之前的准备"><a href="#构造函数之前的准备" class="headerlink" title="构造函数之前的准备"></a>构造函数之前的准备</h3><p>我们都知道，Promise 总共有三种状态：pending、fullfilled（resolved）和 rejected。所以我们对于每一个 Promise 实例都需要一个变量记录其现有的状态。</p>
+<p>然后还需要一个变量记录其 settled 之后的结果。另外，Promise 作为一个异步流程控制库，在上游的 Promise 还处于 pending 状态时下游 Promise 是不能执行的，所以我们至少需要一个数组来记录当前 Promise 还未 settled 时它后续的一些操作（你可以用两个数组分别记录 resolved 和 rejected 之后不同的操作；也可以用一个数组，然后每个元素都是包含两个属性的对象，分别记录 resolved 和 rejected 之后不同的操作）。</p>
+<p>另外，借用面向对象的说法，这些变量对 Promise 而言应该是私有的，即不应该对外界暴露（这也是符合标准的）。所以待会儿构造函数之中应该定义一些私有变量，而 ES6 的 Symbol 类型则可以完美实现我们所需的私有变量。</p>
+<p>代码如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义 Promise 状态</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">STATUS</span> = &#123;</span><br><span class="line">    <span class="attr">PENDING</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">RESOLVED</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">REJECTED</span>: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> _status = <span class="title class_">Symbol</span>(<span class="string">&#x27;status&#x27;</span>); <span class="comment">// 用于 status 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _result = <span class="title class_">Symbol</span>(<span class="string">&#x27;result&#x27;</span>); <span class="comment">// 用于 result 私有变量的 Symbol</span></span><br><span class="line"><span class="keyword">const</span> _callbacks = <span class="title class_">Symbol</span>(<span class="string">&#x27;callbacks&#x27;</span>); <span class="comment">// 用于 callbacks 私有变量的 Symbol</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们将 Promise 状态定义到一个对象之中，并且用属性名语义化状态，值其实没什么意义，但是这样写符合「让错误更早的暴露出来」的编程原则，让编译器（或解释器）去帮我们提前检测错误，总比写在字符串在运行时才把定位还不一定准确的错误暴露出来要好。</p>
+<p>其次，还定义了几个用于定义私有变量的 Symbol。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>构造函数无非是给变量做一些初始化的工作，然后执行用户传入的函数。关键在于我们需要定义好传入的函数的参数，即<code>resolve</code>和<code>reject</code>函数。</p>
+<p>先看代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params">exec</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> self = <span class="variable language_">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!(<span class="keyword">typeof</span> (exec) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Promise constructor argument exec must be a function.&#x27;</span>) </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>; </span><br><span class="line">    self[_result] = <span class="literal">undefined</span>;</span><br><span class="line">    self[_callbacks] = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">resolve</span>(<span class="params">value</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>;</span><br><span class="line">                self[_result] = value;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onResolved</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">reject</span>(<span class="params">reason</span>) &#123;</span><br><span class="line">        <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (self[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">                self[_status] = <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>;</span><br><span class="line">                self[_result] = reason;</span><br><span class="line">                self[_callbacks].<span class="title function_">map</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">onRejected</span>(self[_result]));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="title function_">exec</span>(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造函数里，首先限制了用户传入的参数必须为函数，然后将状态置为<code>pending</code>，并初始化<code>result</code>和<code>callbacks</code>。</p>
+<p>之后，尝试运行用户传入的函数，并提供我们自己定义的<code>resolve</code>和<code>reject</code>函数作为参数。因为运行函数可能会抛出难以预期的错误，所以外面用<code>try...catch</code>包裹一层，并把错误用<code>reject</code>处理，表示当前 Promise 被 reject。</p>
+<p>这里的关键在于我们自己定义的<code>resolve</code>和<code>reject</code>函数。</p>
+<p>其实<code>resolve</code>和<code>reject</code>的逻辑也很简单，首先因为标准里规定对于<code>resolve</code>和<code>reject</code>的调用必须是异步的，来避免阻塞（<code>.then</code>方法的两个参数同理），所以外面套了一层<code>nextTick</code>（这里对前后端做了兼容，前端指向<code>setTimeout</code>，后端指向<code>process.nextTick</code>）。内层首先保证当前 Promise 还处于<code>pending</code>状态（标准规定状态只能由<code>pending</code>转向其他两个，并且一经转变不能更改），然后分别将状态置为<code>resolved</code>或<code>rejected</code>，最后顺次执行之前由于还未 settled 时存储在<code>callbacks</code>里面的后续回调函数集。</p>
+<h3 id="then"><a href="#then" class="headerlink" title=".then"></a>.then</h3><p><code>.then</code>函数接受两个函数作为参数，分别对应前一个 Promise 被 resolve 或 reject 之后的回调。</p>
+<p>首先来看一下函数的主逻辑：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span> (self[_status]) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">RESOLVED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onResolved, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">REJECTED</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> <span class="title function_">childExec</span>(self[_result], onRejected, resolve, reject, childPromise));</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>:</span><br><span class="line">        childPromise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            self[_callbacks].<span class="title function_">push</span>(&#123;</span><br><span class="line">                <span class="attr">onResolved</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onResolved, resolve, reject, childPromise),</span><br><span class="line">                <span class="attr">onRejected</span>: <span class="function">(<span class="params">value</span>) =&gt;</span> <span class="title function_">childExec</span>(value, onRejected, resolve, reject, childPromise)</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="attr">default</span>: </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Invalid status value&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据前一个 Promise 的状态，分三种情况，其中<code>resolved</code>和<code>rejected</code>时是类似的：<code>new</code>一个新的 Promise 实例作为当前的 Promise，同理异步执行传入的函数（细节见下文<code>childExec</code>函数）。而当状态是<code>pending</code>时，我们只能先把回调函数先压入前一个 Promise 的回调函数队列，等<code>settled</code>后再执行。</p>
+<h4 id="childExec"><a href="#childExec" class="headerlink" title="childExec"></a>childExec</h4><p><code>childExec</code>本身是为了最大化复用代码而重构独立出来的一个函数，代码很简单：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">childExec</span>(<span class="params">value, onDone, resolve, reject, childPromise</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        value = <span class="title function_">onDone</span>(value);</span><br><span class="line">        <span class="title function_">solver</span>(childPromise, value, resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="title function_">reject</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解释一下：不管是前一个 Promise 是<code>rejected</code>还是<code>resolved</code>，用传入<code>.then</code>的对应的回调函数执行前一个 Promise settled 之后的结果<code>result</code>，然后执行<code>solver</code>（见下文对<code>solver</code>的分析）。同样的，外面需要包裹一层<code>try...catch</code>。</p>
+<h4 id="solver"><a href="#solver" class="headerlink" title="solver"></a>solver</h4><p><code>solver</code>函数是不同的 Promise 实现之间（比如 bluebird 对 Promise 的实现与 ES6 原生对 Promise 的实现）能够无缝调用的关键。对此，<a href="https://promisesaplus.com/#point-45">Promise 标准中也有详述，甚至已经把这个函数的逻辑和流转都已经完完本本的列出来了，任何 Promise 实现只要遵循这个标准，就可以实现不同 Promise 实现之间的交叉调用</a>。</p>
+<p>看代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">solver</span>(<span class="params">promise, result, resolve, reject</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> then, settled = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (promise === result) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;Cycle Promises&#x27;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (result <span class="keyword">instanceof</span> <span class="title class_">Promise</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (result[_status] === <span class="variable constant_">STATUS</span>.<span class="property">PENDING</span>) &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(<span class="function"><span class="params">v</span> =&gt;</span> <span class="title function_">solver</span>(promise, v, resolve, reject), reject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result.<span class="title function_">then</span>(resolve, reject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((result !== <span class="literal">null</span>) &amp;&amp; (<span class="keyword">typeof</span> (result) === <span class="string">&#x27;object&#x27;</span> || <span class="keyword">typeof</span> (result) === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            then = result.<span class="property">then</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> (then) === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">                then.<span class="title function_">call</span>(result, <span class="function"><span class="params">s</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">solver</span>(promise, s, resolve, reject);</span><br><span class="line">                &#125;, <span class="function"><span class="params">r</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">                    settled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">return</span> <span class="title function_">reject</span>(r);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (settled) <span class="keyword">return</span>;</span><br><span class="line">            settled = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">resolve</span>(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：</p>
+<ul>
+<li>如果上一个 Promise 的<code>result</code>跟子 Promise 还是同一个对象，显然是循环调用了，按标准规定抛出<code>TypeError</code>；</li>
+<li>如果上一个 Promise 的<code>result</code>还是本 Promise 实现的实例，那挺好，直接调用它的<code>then</code>就好。不过，上一个 Promise 返回的新 Promise 可能还没有 settled，所以如果没有 settled，我们在它的<code>onResolved</code>函数中直接继续执行<code>solver</code>直到它被 settled（看起来像用递归的形式表现循环迭代）；</li>
+<li>如果返回的不是当前 Promise 实现的实例，但是它是一个有<code>.then</code>方法的对象或者函数，那我们直接用它的<code>then</code>方法<code>call</code>在<code>result</code>上，并且在它的回调函数<code>onResolved</code>中用<code>.then</code>传递的<code>s</code>继续调用<code>solver</code>或者在<code>onRejected</code>函数中<code>reject</code>掉这个 Promise。值得注意的是，由于一个 Promise 只能被 settled 一次，而第三方的<code>.then</code>方法我们不知道里面具体是什么内容，所以用一个<code>Boolean</code>量<code>settled</code>来标记，保证它只被 settled 一次，之后的调用都直接被忽略（标准也是这样规定的）；</li>
+<li>如果只是一个简单值，直接<code>resolve</code>。</li>
+</ul>
+<p>另外，尽管在<code>childExec</code>中我们已经用<code>try...catch</code>包裹了一层，但是异步调用的错误依然可能不会被捕获，所以这里依然需要<code>try...catch</code>。</p>
+<p>至此，一个符合标准的 Promise 最小化实现就已经完成了。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>在你的 Promise 写好后，需要进行测试，至少需要通过的官方测例在这里：<a href="https://github.com/promises-aplus/promises-tests">Promises&#x2F;A+ Compliance Test Suite</a>。通过所有测例之后表明你的 Promise 实现是基本符合标准的。</p>
+<p>按其说明，你需要提供一个这样的类静态函数：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="title function_">deferred</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> dfd = &#123;&#125;;</span><br><span class="line">    dfd.<span class="property">promise</span> = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        dfd.<span class="property">resolve</span> = resolve;</span><br><span class="line">        dfd.<span class="property">reject</span> = reject;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> dfd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数返回一个对象，并用<code>resolve</code>和<code>reject</code>属性引用构造函数中自定义的<code>resolve</code>和<code>reject</code>函数，用<code>promise</code>属性引用一个 Promise 实例。</p>
+<p>之后用<code>promises-aplus-tests</code>命令运行测试（需要提前安装<code>promises-aplus-tests</code>包）。</p>
+<h3 id="常用的其他辅助接口"><a href="#常用的其他辅助接口" class="headerlink" title="常用的其他辅助接口"></a>常用的其他辅助接口</h3><p>一个成熟的 Promise 包肯定不会只有一个简单的<code>.then</code>方法，不过其他的的辅助接口都是在此最简基础上慢慢迭代出来的，相当于是一些方便用户使用的语法糖。</p>
+<p>你可以在下文给出的 GitHub 源码链接中查看我的其他辅助方法的实现，逻辑基本都很清晰，本文不赘述了。</p>
+<h3 id="Join-Me"><a href="#Join-Me" class="headerlink" title="Join Me"></a>Join Me</h3><p>目前，我的这个 Promise 实现已经放在了 npm 和 GitHub 上：</p>
+<ul>
+<li>npm：<a href="https://www.npmjs.com/package/clean-promise">clean-promise</a></li>
+<li>GitHub: <a href="https://github.com/Maples7/clean-promise">Maples7&#x2F;clean-promise: a minimal implement of Promise</a></li>
+</ul>
+<p>Any issues and PRs are welcomed! :D</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果要细致的讲解每一个细节，恐怕 5 篇这样长度的文章还显不够，本文也只是将实现的骨架勾勒了出来。不过，源码是一个软件产品最好的背书，我就不啰嗦了。</p>
+<p>个人觉得实现 Promise 的难度在于它本身的逻辑比较绕，因为标准设计得就比较精巧，每一个地方的衔接都经过深思熟虑，往往一个方法就会产生一个新的 Promise，有一种层层迭代的感觉，类似于「蚕」的结构，所以把层次厘清确实需要花一番功夫，要有耐心。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://github.com/xieranmaya/blog/issues/3">剖析 Promise 内部结构，一步一步实现一个完整的、能通过所有 Test case 的 Promise 类 #3 </a>；</li>
+<li><a href="https://promisesaplus.com/">Promises&#x2F;A+</a>；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>JavaScript</tag>
+        <tag>ES6</tag>
+        <tag>Promise</tag>
       </tags>
   </entry>
   <entry>
@@ -859,43 +859,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
-<span id="more"></span>
-
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>程序员：请不要丢失你的敬畏心</title>
     <url>/2016/12/09/show-your-respect/</url>
     <content><![CDATA[<center>**暗**</center>
@@ -933,65 +896,40 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <url>/2017/02/09/why-oo-sucks/</url>
-    <content><![CDATA[<blockquote>
-<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
-</blockquote>
-<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
-<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
 <span id="more"></span>
 
-<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
-<blockquote>
-<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
-</blockquote>
-<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
-<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
-<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
-<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
-<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
-<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
-<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
-<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
-<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
-<p>这里没有与之相关联的那些方法。</p>
-<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
-<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
-<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
-<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
-<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
-<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
-<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
-<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
-<ul>
-<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
-<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
-<li>纯粹的声明式语言说：这里没有状态一说。</li>
-</ul>
-<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
-<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
-<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
-<li>理由一：它被认为是容易学习的</li>
-<li>理由二：它被认为可以使代码更易复用</li>
-<li>理由三：是炒作</li>
-<li>理由四：它创造了一个新的软件产业</li>
-</ul>
-<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
-<p>这就是面向对象背后真正的驱动力量。</p>
-<blockquote>
-<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
-</blockquote>
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>面向对象</tag>
-        <tag>Erlang</tag>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
       </tags>
   </entry>
   <entry>
@@ -1072,6 +1010,68 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>译文 | 为什么面向对象很糟糕</title>
+    <url>/2017/02/09/why-oo-sucks/</url>
+    <content><![CDATA[<blockquote>
+<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
+</blockquote>
+<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
+<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
+<span id="more"></span>
+
+<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
+<blockquote>
+<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
+</blockquote>
+<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
+<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
+<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
+<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
+<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
+<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
+<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
+<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
+<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
+<p>这里没有与之相关联的那些方法。</p>
+<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
+<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
+<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
+<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
+<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
+<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
+<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
+<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
+<ul>
+<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
+<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
+<li>纯粹的声明式语言说：这里没有状态一说。</li>
+</ul>
+<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
+<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
+<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
+<li>理由一：它被认为是容易学习的</li>
+<li>理由二：它被认为可以使代码更易复用</li>
+<li>理由三：是炒作</li>
+<li>理由四：它创造了一个新的软件产业</li>
+</ul>
+<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
+<p>这就是面向对象背后真正的驱动力量。</p>
+<blockquote>
+<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+        <tag>Erlang</tag>
       </tags>
   </entry>
   <entry>
@@ -1228,7 +1228,7 @@ _Farewell and thanks to each for the company_
   <entry>
     <title>印象青岛</title>
     <url>/2017/03/14/qingdao/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241202ea.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6732410961d.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241122ee.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b67324124390.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b673241310f1.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b67324137461.jpg" /></div></div></div>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241202ea.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732410961d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241122ee.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324124390.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241310f1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324137461.jpg"></div></div></div>
 
 <span id="more"></span>
 
@@ -1243,6 +1243,25 @@ _Farewell and thanks to each for the company_
         <tag>Sony DSC-RX100</tag>
         <tag>城市</tag>
         <tag>风光</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>毕业一周年 | 山大印象</title>
+    <url>/2017/05/07/grad-anniversary/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d370941.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d33957c.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d363eec.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d371069.jpg"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>山东大学</tag>
       </tags>
   </entry>
   <entry>
@@ -1284,25 +1303,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>Node.js</tag>
         <tag>Koa</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>毕业一周年 | 山大印象</title>
-    <url>/2017/05/07/grad-anniversary/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>山东大学</tag>
       </tags>
   </entry>
   <entry>
@@ -1754,7 +1754,7 @@ _Farewell and thanks to each for the company_
   <entry>
     <title>东北的冬</title>
     <url>/2019/02/05/winter-of-north-east/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c598233d3831.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59830583ea1.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c59829a17feb.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2019/02/05/5c5983059de98.jpg" /></div></div></div>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c598233d3831.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59830583ea1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59829a17feb.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5983059de98.jpg"></div></div></div>
 
 <span id="more"></span>
 
@@ -2365,6 +2365,24 @@ _Farewell and thanks to each for the company_
         <tag>创作</tag>
         <tag>电影</tag>
         <tag>文化产业</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这一年多我都拍了些什么图</title>
+    <url>/2022/09/06/what-i-shoot-this-year/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo1.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo2.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo4.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo5.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo6.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo3.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo10.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo7.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo8.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo9.JPG"></div></div></div>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>富士 X-S10</tag>
+        <tag>DJI mini 2</tag>
+        <tag>FUJIFILM</tag>
+        <tag>千岛湖</tag>
+        <tag>泉州</tag>
+        <tag>苏州</tag>
+        <tag>乌镇</tag>
       </tags>
   </entry>
 </search>
