@@ -859,6 +859,43 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+<span id="more"></span>
+
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>程序员：请不要丢失你的敬畏心</title>
     <url>/2016/12/09/show-your-respect/</url>
     <content><![CDATA[<center>**暗**</center>
@@ -896,40 +933,65 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+    <title>译文 | 为什么面向对象很糟糕</title>
+    <url>/2017/02/09/why-oo-sucks/</url>
+    <content><![CDATA[<blockquote>
+<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
+</blockquote>
+<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
+<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
 <span id="more"></span>
 
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D<br>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
+<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
+<blockquote>
+<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
+</blockquote>
+<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
+<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
+<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
+<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
+<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
+<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
+<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
+<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
+<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
+<p>这里没有与之相关联的那些方法。</p>
+<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
+<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
+<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
+<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
+<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
+<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
+<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
+<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
+<ul>
+<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
+<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
+<li>纯粹的声明式语言说：这里没有状态一说。</li>
+</ul>
+<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
+<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
+<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
+<li>理由一：它被认为是容易学习的</li>
+<li>理由二：它被认为可以使代码更易复用</li>
+<li>理由三：是炒作</li>
+<li>理由四：它创造了一个新的软件产业</li>
+</ul>
+<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
+<p>这就是面向对象背后真正的驱动力量。</p>
+<blockquote>
+<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
+        <tag>面向对象</tag>
+        <tag>Erlang</tag>
       </tags>
   </entry>
   <entry>
@@ -1010,68 +1072,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <url>/2017/02/09/why-oo-sucks/</url>
-    <content><![CDATA[<blockquote>
-<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
-</blockquote>
-<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
-<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
-<span id="more"></span>
-
-<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
-<blockquote>
-<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
-</blockquote>
-<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
-<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
-<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
-<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
-<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
-<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
-<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
-<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
-<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
-<p>这里没有与之相关联的那些方法。</p>
-<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
-<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
-<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
-<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
-<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
-<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
-<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
-<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
-<ul>
-<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
-<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
-<li>纯粹的声明式语言说：这里没有状态一说。</li>
-</ul>
-<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
-<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
-<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
-<li>理由一：它被认为是容易学习的</li>
-<li>理由二：它被认为可以使代码更易复用</li>
-<li>理由三：是炒作</li>
-<li>理由四：它创造了一个新的软件产业</li>
-</ul>
-<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
-<p>这就是面向对象背后真正的驱动力量。</p>
-<blockquote>
-<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-        <tag>Erlang</tag>
       </tags>
   </entry>
   <entry>
@@ -1287,6 +1287,25 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>毕业一周年 | 山大印象</title>
+    <url>/2017/05/07/grad-anniversary/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>山东大学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>程序与人生</title>
     <url>/2017/05/24/programming-and-life/</url>
     <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
@@ -1309,25 +1328,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>程序员</tag>
         <tag>人生</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>毕业一周年 | 山大印象</title>
-    <url>/2017/05/07/grad-anniversary/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d370941.jpg" /></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d33957c.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d363eec.jpg" /></div><div class="group-picture-column"><img data-original="https://i.loli.net/2018/08/06/5b6730d371069.jpg" /></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13114728/">https://maples7.tuchong.com/13114728/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>山东大学</tag>
       </tags>
   </entry>
   <entry>
@@ -1512,6 +1512,28 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>今晚月色真美</title>
+    <url>/2017/12/21/love/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
+
+<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
+<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
+<span id="more"></span>
+
+<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
+<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
+<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
+<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
+<p>我，好像是你的。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>感情</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2017 年书单</title>
     <url>/2017/12/31/2017-booklist/</url>
     <content><![CDATA[<p>今年太「荒废」了。无论是工作还是生活，已经发生的事情之丰富复杂相比去年完全有过之而无不及，自己心态上的改变也是不少。这种内省式的变化会直接导致个人情绪的变化。用一个烂俗的比喻来说，如果去年的心情像一汪平静的湖水，那今年则可以用海啸来形容<del>（夸张到油腻了）</del>。</p>
@@ -1551,28 +1573,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>今晚月色真美</title>
-    <url>/2017/12/21/love/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
-
-<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
-<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
-<span id="more"></span>
-
-<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
-<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
-<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
-<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
-<p>我，好像是你的。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>感情</tag>
       </tags>
   </entry>
   <entry>
@@ -1656,6 +1656,62 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>基于 MySQL 的热数据与冷数据分离设计与实现</title>
+    <url>/2018/12/25/hot-cold-data-based-on-mysql/</url>
+    <content><![CDATA[<p>作为<a href="https://www.seniverse.com/">一家提供商业气象数据服务的创业公司</a>，我们一直都有一项「欠交的作业」没有完成，那就是合理的数据规划和数据治理规范。对于早期的初创公司而言，可能很难从一开始就能构想到需要对数据存储进行合理的规划并制定长期规范，大多都是简单使用单实例的数据库，直到随着业务增长数据量累积到一个不得不严肃考虑这个问题的地步。</p>
+<h2 id="数据库发展简介"><a href="#数据库发展简介" class="headerlink" title="数据库发展简介"></a>数据库发展简介</h2><p>数据量的增长其实一直是随着互联网的发展呈现爆发式增长的，因为各种各样的数据都在不断的被原样或者是经过少量的更改和增补后拷贝到互联网的各个角落。为了适应互联网数据的海量增长，在后端和架构意义上而言，数据库的发展也大致经历了「单库单表 -&gt; 主从读写分离 -&gt; 分表分库 -&gt; NoSQL -&gt; NewSQL」这样的过程。</p>
+<span id="more"></span>
+
+<p>一开始，我们把数据都堆在一个数据表里；后来为了提高性能、增加数据扩展的能力，采用了「主从读写分离」和「分表分库」的方式，前者只需要在主从实例之间做数据同步而不会对既有业务有较大的影响，后者则需要用一套切合业务逻辑的方式合理的制定分表分库的策略；再后来出现的 NoSQL，打破了传统关系型数据库固有的一些限制，它们有不同的类型，有的是为了解决高性能读写的需求，有的则是为了解决海量数据存储的需求，还有的需要数据结构本身具备可扩展性；NoSQL 的不同类型在不同的侧重点解决了不同的问题，而如今出现的 NewSQL 则倾向于把数据库看作是一个黑匣子服务，你还是可以遵照传统的数据库协议的使用方式（比如传统 MySQL 的使用方式）来使用它，但数据存储服务本身既可以同时具备较高的读写性能又可以轻易的实现横向扩展。NewSQL 并不是一个全新的东西，我们可以把它看作是之前积累的数据库技术结合分布式技术的集大成解决方案，它使得使用数据服务的人几乎不需要再考虑性能和扩展问题，而尽量在数据服务内部实现高可用、高性能、可扩展。</p>
+<h2 id="「热数据」和「冷数据」"><a href="#「热数据」和「冷数据」" class="headerlink" title="「热数据」和「冷数据」"></a>「热数据」和「冷数据」</h2><p>在简单了解了数据库发展历程之后，再介绍一下我们目前在数据存储上遇到的问题和一些业务背景。</p>
+<p>作为气象大数据服务商，随着我们积累的数据量和数据种类越来越多，我们发现我们已经迫切需要一个在全局层面统一的数据路径规划和规范。很多时候，我们从数据源获取到的数据，既需要马上分发给线上用户，也需要被内部项目使用，如果只是简单的按需实现，那数据流转会非常混乱。基于这种考虑，我们引入了「热数据」（「在线数据」）和「冷数据」（「离线数据」）的概念：</p>
+<ul>
+<li><p>「热数据」指的是需要即时对用户进行分发的数据，即从数据源抓取之后经过数据清洗，需要即时存储到可以快速分发的存储介质（如 Redis）供 API 或直接面向用户的系统使用。「热数据」线需要重点保障服务质量和稳定性，为了保证数据的时效性，在数据处理上也是优先级高的数据。「热数据」可能是临时或短期存储的，后来的数据可能会覆盖已有的数据。</p>
+</li>
+<li><p>「冷数据」指的是不需要即时分发给用户的数据，这些数据甚至可能永远都不会原样分发给用户的，但它们需要经过长期的积累，使我们可以从中得出基于此的更高 level 的分析。「冷数据」典型的使用场景是供内部数据评估系统做数据准确度的评估分析，同时也可以给算法团队建模使用。设立这个数据线的原则是不影响「热数据」的服务质量，尤其是时效性和稳定性，同时也满足一些非线上项目的数据使用需求。</p>
+</li>
+</ul>
+<p><img data-src="https://i.loli.net/2018/12/25/5c213783d5c3e.png" alt="热数据线和冷数据线设计"></p>
+<p>这其实也不是什么新鲜的概念，很多做数据服务的公司都有类似的设计，我们只是根据我们的业务特点借用了这样的概念，不过它们的含义可能与你在其他地方看到的类似概念的含义有所不同。</p>
+<p>结合我们具体的业务场景来说，「热数据」线其实已经一直在有效运转了，即我们从数据源获取到数据然后尽快存储到高性能存储介质中，再通过 HTTP 协议分发出去，这些数据都是即时更新的最新的数据。而其中有一些类型的数据，我们还需要在可视化项目中查看历史变化情况，并能进行简单的聚合和计算，这意味着数据需要积累一段时间，那我们也需要一些可以持久化存储的介质。</p>
+<p>拿天气实况来举例，我们在采集完数据之后，随即就存储最新的一份数据到 Redis，而出于数据积累的角度考虑，我们同时也把新数据写入 MySQL。这是之前我们的做法，然而随着数据量的极速扩大，问题很快就会出在 MySQL 上。对于「亿」级别行数往上的 MySQL 单表，操作会变得越来越困难，而大范围的抽数或者插入数据的操作都可能使得整个 MySQL 无法提供服务，这对于线上业务而言是不可接受的。</p>
+<h2 id="离线数据中心的实现"><a href="#离线数据中心的实现" class="headerlink" title="离线数据中心的实现"></a>离线数据中心的实现</h2><p>在提出了「冷数据」的概念之后，我们意识到那些久远的历史数据其实需要存放到「冷数据」的数据中心池子里，而线上 MySQL 只需要保留最近一段时间的数据即可。另外，为了不改变现有项目使用数据的方式，降低数据库使用者的门槛，不管是对于线上数据库还是「离线数据」的数据中心，我们都需要兼容 MySQL 单表的使用协议。</p>
+<p>很快我们就开始考虑 NewSQL 的方案，<a href="https://github.com/pingcap/tidb">TiDB</a> 很自然地进入了我们的视野，这是一个既可以兼容现有数据使用方式，又可以实现数据横向扩展的完美方案，但无奈搭建一个最小版本的 TiDB 数据集群的成本，相比于目前我们把它作为一个「离线数据」存储中心的角色而言，还是有一些偏高，而我们的存量服务也基本都是基于阿里云的，所以最终我们选择了阿里云推出不久的云数据库 <a href="https://www.aliyun.com/product/polardb">PolarDB</a>。其间我们还研究了很多其他数据库方案，比如 <a href="https://www.aliyun.com/product/drds">DRDS</a>、<a href="https://oceanbase.alipay.com/">OceanBase</a>、<a href="https://cloud.google.com/spanner/">Google Cloud Spanner</a>、<a href="https://aws.amazon.com/cn/rds/aurora/">Amazon Aurora</a> 等。</p>
+<h2 id="数据同步和数据过期"><a href="#数据同步和数据过期" class="headerlink" title="数据同步和数据过期"></a>数据同步和数据过期</h2><p>有了离线数据存储中心之后，我们开始考虑如何把「热数据」转化为「冷数据」，同时也使得线上数据库可以自动过期超出时间窗口的历史数据。另外，由于内部可视化项目也希望看到实时的实况数据，所以离线数据最好也能很快获得最新的实况数据。</p>
+<p>既然是两个 MySQL（集群）之间的实时数据转移，很自然的就想到了我们可以做类似主从节点之间通过 binlog 的数据同步机制，这个同步可以做到秒级延迟，在实时性上是完全可以接受的。不过这不能是简单的数据同步，因为离线数据是不能同步线上数据的过期操作的。更具体的，我们可以概括成：MySQL 从节点同步主节点所有数据增添和数据修改的操作，而对于数据的删除操作不做同步。</p>
+<p>在调研之后，我们发现 TiDB 提供的同步工具 <a href="https://pingcap.com/docs-cn/v3.0/reference/tools/syncer/">Syncer</a> 可以实现这一点，我们只需要在配置注明过滤掉 DELETE 的 DML 语句即可，示例如下：</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[[skip-dmls]]</span></span><br><span class="line"><span class="attr">db-name</span> = <span class="string">&quot;weather_data&quot;</span></span><br><span class="line"><span class="attr">tbl-name</span> = <span class="string">&quot;weather_now_history&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;delete&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>而数据过期方案则可以直接借助 MySQL 本身的 EVENT 和 PROCEDURE 机制完成。首先我们可以创建一个删除数据的 PROCEDURE：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DEFINER<span class="operator">=</span>`weather`@`<span class="operator">%</span>` <span class="keyword">PROCEDURE</span> `weather_data`.`del_old_data`(<span class="keyword">IN</span> `date_inter` <span class="type">int</span>)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">delete</span> <span class="keyword">from</span> weather_data.weather_now_history <span class="keyword">where</span> datetime <span class="operator">&lt;</span> date_sub(curdate(), <span class="type">interval</span> date_inter <span class="keyword">day</span>);</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p>这个 PROCEDURE 功能是删除 <code>weather_now_history</code> 表中 <code>date_inter</code> 天之前的数据。然后我们再创建一个 EVENT：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EVENT del_old_data</span><br><span class="line"><span class="keyword">ON</span> SCHEDULE <span class="keyword">EVERY</span> <span class="number">1</span> <span class="keyword">DAY</span></span><br><span class="line">STARTS <span class="string">&#x27;2018-12-25 10:08:35.000&#x27;</span></span><br><span class="line"><span class="keyword">ON</span> COMPLETION PRESERVE</span><br><span class="line">ENABLE</span><br><span class="line">DO <span class="keyword">call</span> del_old_data(<span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个 EVENT 则会每天调用一次名为 <code>del_old_data</code> 的 PROCEDURE，并同时把 <code>date_inter</code> 赋值为 <code>30</code>。这意味数据库每天会删一次数据，使得线上数据库一直只保留最近 30 天的数据，而全量的数据是在数据写入时就实时同步到了离线数据中心，可谓完美。</p>
+<h2 id="持续改进"><a href="#持续改进" class="headerlink" title="持续改进"></a>持续改进</h2><blockquote>
+<p>All problems in computer science can be solved by another level of indirection.<br>—— David Wheeler</p>
+</blockquote>
+<p>上述的具体业务场景更多的还是 case by case 的解决了「热数据」和「冷数据」的分离和转化问题，这意味着方案并不具有普适性，以后我们遇到其他的数据库或者不同的数据使用场景可能就不再适用。另外，很多时候，「热数据」和「冷数据」的划分并不是那么明晰的，对于「冷数据」的需求有可能转变为「热数据」需求，我们需要可以灵活切换的机制，做到数据源只抓取一次（「热数据」和「冷数据」不要分别抓取），而抓取到的数据可以任意自由的流淌到「热数据」或「冷数据」线使用，这意味着我们在数据抓取和数据存储之间应该再做一层隔离。</p>
+<p>要实现数据抓取和数据存储之间的隔离，我们可以采用「发布&#x2F;订阅模式」：简单说，数据抓取服务在获取数据之后将数据发布到消息队列，后面的存储服务任意订阅这个消息队列再做存储，这样数据源只需要抓取一次，我们可以把它作为热数据使用，也可以作为冷数据使用，甚至可以即作为热数据又作为冷数据使用，切换起来也十分简单。这是后续系统架构可以改进的一个地方。</p>
+<p>另外，离线数据中心仅仅使用 PolarDB 对于我们可能产生的数据量级而言也是远远不够的，我们还需要更低成本的数据存储方案来存储时间更久远、平时几乎不大会访问的一些需要被「归档」的数据，这个时候，一些基于列存储的 NoSQL 数据库可能可以派上用场。</p>
+<p>数据治理需要一个长期持续的过程，我们还在结合自身的业务场景不断的摸索当中。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/36112488">TiDB 在饿了么归档环境的应用</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>热数据</tag>
+        <tag>冷数据</tag>
+        <tag>在线数据</tag>
+        <tag>离线数据</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2018 年书单</title>
     <url>/2018/12/31/2018-booklist/</url>
     <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
@@ -1717,62 +1773,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>基于 MySQL 的热数据与冷数据分离设计与实现</title>
-    <url>/2018/12/25/hot-cold-data-based-on-mysql/</url>
-    <content><![CDATA[<p>作为<a href="https://www.seniverse.com/">一家提供商业气象数据服务的创业公司</a>，我们一直都有一项「欠交的作业」没有完成，那就是合理的数据规划和数据治理规范。对于早期的初创公司而言，可能很难从一开始就能构想到需要对数据存储进行合理的规划并制定长期规范，大多都是简单使用单实例的数据库，直到随着业务增长数据量累积到一个不得不严肃考虑这个问题的地步。</p>
-<h2 id="数据库发展简介"><a href="#数据库发展简介" class="headerlink" title="数据库发展简介"></a>数据库发展简介</h2><p>数据量的增长其实一直是随着互联网的发展呈现爆发式增长的，因为各种各样的数据都在不断的被原样或者是经过少量的更改和增补后拷贝到互联网的各个角落。为了适应互联网数据的海量增长，在后端和架构意义上而言，数据库的发展也大致经历了「单库单表 -&gt; 主从读写分离 -&gt; 分表分库 -&gt; NoSQL -&gt; NewSQL」这样的过程。</p>
-<span id="more"></span>
-
-<p>一开始，我们把数据都堆在一个数据表里；后来为了提高性能、增加数据扩展的能力，采用了「主从读写分离」和「分表分库」的方式，前者只需要在主从实例之间做数据同步而不会对既有业务有较大的影响，后者则需要用一套切合业务逻辑的方式合理的制定分表分库的策略；再后来出现的 NoSQL，打破了传统关系型数据库固有的一些限制，它们有不同的类型，有的是为了解决高性能读写的需求，有的则是为了解决海量数据存储的需求，还有的需要数据结构本身具备可扩展性；NoSQL 的不同类型在不同的侧重点解决了不同的问题，而如今出现的 NewSQL 则倾向于把数据库看作是一个黑匣子服务，你还是可以遵照传统的数据库协议的使用方式（比如传统 MySQL 的使用方式）来使用它，但数据存储服务本身既可以同时具备较高的读写性能又可以轻易的实现横向扩展。NewSQL 并不是一个全新的东西，我们可以把它看作是之前积累的数据库技术结合分布式技术的集大成解决方案，它使得使用数据服务的人几乎不需要再考虑性能和扩展问题，而尽量在数据服务内部实现高可用、高性能、可扩展。</p>
-<h2 id="「热数据」和「冷数据」"><a href="#「热数据」和「冷数据」" class="headerlink" title="「热数据」和「冷数据」"></a>「热数据」和「冷数据」</h2><p>在简单了解了数据库发展历程之后，再介绍一下我们目前在数据存储上遇到的问题和一些业务背景。</p>
-<p>作为气象大数据服务商，随着我们积累的数据量和数据种类越来越多，我们发现我们已经迫切需要一个在全局层面统一的数据路径规划和规范。很多时候，我们从数据源获取到的数据，既需要马上分发给线上用户，也需要被内部项目使用，如果只是简单的按需实现，那数据流转会非常混乱。基于这种考虑，我们引入了「热数据」（「在线数据」）和「冷数据」（「离线数据」）的概念：</p>
-<ul>
-<li><p>「热数据」指的是需要即时对用户进行分发的数据，即从数据源抓取之后经过数据清洗，需要即时存储到可以快速分发的存储介质（如 Redis）供 API 或直接面向用户的系统使用。「热数据」线需要重点保障服务质量和稳定性，为了保证数据的时效性，在数据处理上也是优先级高的数据。「热数据」可能是临时或短期存储的，后来的数据可能会覆盖已有的数据。</p>
-</li>
-<li><p>「冷数据」指的是不需要即时分发给用户的数据，这些数据甚至可能永远都不会原样分发给用户的，但它们需要经过长期的积累，使我们可以从中得出基于此的更高 level 的分析。「冷数据」典型的使用场景是供内部数据评估系统做数据准确度的评估分析，同时也可以给算法团队建模使用。设立这个数据线的原则是不影响「热数据」的服务质量，尤其是时效性和稳定性，同时也满足一些非线上项目的数据使用需求。</p>
-</li>
-</ul>
-<p><img data-src="https://i.loli.net/2018/12/25/5c213783d5c3e.png" alt="热数据线和冷数据线设计"></p>
-<p>这其实也不是什么新鲜的概念，很多做数据服务的公司都有类似的设计，我们只是根据我们的业务特点借用了这样的概念，不过它们的含义可能与你在其他地方看到的类似概念的含义有所不同。</p>
-<p>结合我们具体的业务场景来说，「热数据」线其实已经一直在有效运转了，即我们从数据源获取到数据然后尽快存储到高性能存储介质中，再通过 HTTP 协议分发出去，这些数据都是即时更新的最新的数据。而其中有一些类型的数据，我们还需要在可视化项目中查看历史变化情况，并能进行简单的聚合和计算，这意味着数据需要积累一段时间，那我们也需要一些可以持久化存储的介质。</p>
-<p>拿天气实况来举例，我们在采集完数据之后，随即就存储最新的一份数据到 Redis，而出于数据积累的角度考虑，我们同时也把新数据写入 MySQL。这是之前我们的做法，然而随着数据量的极速扩大，问题很快就会出在 MySQL 上。对于「亿」级别行数往上的 MySQL 单表，操作会变得越来越困难，而大范围的抽数或者插入数据的操作都可能使得整个 MySQL 无法提供服务，这对于线上业务而言是不可接受的。</p>
-<h2 id="离线数据中心的实现"><a href="#离线数据中心的实现" class="headerlink" title="离线数据中心的实现"></a>离线数据中心的实现</h2><p>在提出了「冷数据」的概念之后，我们意识到那些久远的历史数据其实需要存放到「冷数据」的数据中心池子里，而线上 MySQL 只需要保留最近一段时间的数据即可。另外，为了不改变现有项目使用数据的方式，降低数据库使用者的门槛，不管是对于线上数据库还是「离线数据」的数据中心，我们都需要兼容 MySQL 单表的使用协议。</p>
-<p>很快我们就开始考虑 NewSQL 的方案，<a href="https://github.com/pingcap/tidb">TiDB</a> 很自然地进入了我们的视野，这是一个既可以兼容现有数据使用方式，又可以实现数据横向扩展的完美方案，但无奈搭建一个最小版本的 TiDB 数据集群的成本，相比于目前我们把它作为一个「离线数据」存储中心的角色而言，还是有一些偏高，而我们的存量服务也基本都是基于阿里云的，所以最终我们选择了阿里云推出不久的云数据库 <a href="https://www.aliyun.com/product/polardb">PolarDB</a>。其间我们还研究了很多其他数据库方案，比如 <a href="https://www.aliyun.com/product/drds">DRDS</a>、<a href="https://oceanbase.alipay.com/">OceanBase</a>、<a href="https://cloud.google.com/spanner/">Google Cloud Spanner</a>、<a href="https://aws.amazon.com/cn/rds/aurora/">Amazon Aurora</a> 等。</p>
-<h2 id="数据同步和数据过期"><a href="#数据同步和数据过期" class="headerlink" title="数据同步和数据过期"></a>数据同步和数据过期</h2><p>有了离线数据存储中心之后，我们开始考虑如何把「热数据」转化为「冷数据」，同时也使得线上数据库可以自动过期超出时间窗口的历史数据。另外，由于内部可视化项目也希望看到实时的实况数据，所以离线数据最好也能很快获得最新的实况数据。</p>
-<p>既然是两个 MySQL（集群）之间的实时数据转移，很自然的就想到了我们可以做类似主从节点之间通过 binlog 的数据同步机制，这个同步可以做到秒级延迟，在实时性上是完全可以接受的。不过这不能是简单的数据同步，因为离线数据是不能同步线上数据的过期操作的。更具体的，我们可以概括成：MySQL 从节点同步主节点所有数据增添和数据修改的操作，而对于数据的删除操作不做同步。</p>
-<p>在调研之后，我们发现 TiDB 提供的同步工具 <a href="https://pingcap.com/docs-cn/v3.0/reference/tools/syncer/">Syncer</a> 可以实现这一点，我们只需要在配置注明过滤掉 DELETE 的 DML 语句即可，示例如下：</p>
-<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[[skip-dmls]]</span></span><br><span class="line"><span class="attr">db-name</span> = <span class="string">&quot;weather_data&quot;</span></span><br><span class="line"><span class="attr">tbl-name</span> = <span class="string">&quot;weather_now_history&quot;</span></span><br><span class="line"><span class="attr">type</span> = <span class="string">&quot;delete&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>而数据过期方案则可以直接借助 MySQL 本身的 EVENT 和 PROCEDURE 机制完成。首先我们可以创建一个删除数据的 PROCEDURE：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DEFINER<span class="operator">=</span>`weather`@`<span class="operator">%</span>` <span class="keyword">PROCEDURE</span> `weather_data`.`del_old_data`(<span class="keyword">IN</span> `date_inter` <span class="type">int</span>)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">delete</span> <span class="keyword">from</span> weather_data.weather_now_history <span class="keyword">where</span> datetime <span class="operator">&lt;</span> date_sub(curdate(), <span class="type">interval</span> date_inter <span class="keyword">day</span>);</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
-
-<p>这个 PROCEDURE 功能是删除 <code>weather_now_history</code> 表中 <code>date_inter</code> 天之前的数据。然后我们再创建一个 EVENT：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EVENT del_old_data</span><br><span class="line"><span class="keyword">ON</span> SCHEDULE <span class="keyword">EVERY</span> <span class="number">1</span> <span class="keyword">DAY</span></span><br><span class="line">STARTS <span class="string">&#x27;2018-12-25 10:08:35.000&#x27;</span></span><br><span class="line"><span class="keyword">ON</span> COMPLETION PRESERVE</span><br><span class="line">ENABLE</span><br><span class="line">DO <span class="keyword">call</span> del_old_data(<span class="number">30</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这个 EVENT 则会每天调用一次名为 <code>del_old_data</code> 的 PROCEDURE，并同时把 <code>date_inter</code> 赋值为 <code>30</code>。这意味数据库每天会删一次数据，使得线上数据库一直只保留最近 30 天的数据，而全量的数据是在数据写入时就实时同步到了离线数据中心，可谓完美。</p>
-<h2 id="持续改进"><a href="#持续改进" class="headerlink" title="持续改进"></a>持续改进</h2><blockquote>
-<p>All problems in computer science can be solved by another level of indirection.<br>—— David Wheeler</p>
-</blockquote>
-<p>上述的具体业务场景更多的还是 case by case 的解决了「热数据」和「冷数据」的分离和转化问题，这意味着方案并不具有普适性，以后我们遇到其他的数据库或者不同的数据使用场景可能就不再适用。另外，很多时候，「热数据」和「冷数据」的划分并不是那么明晰的，对于「冷数据」的需求有可能转变为「热数据」需求，我们需要可以灵活切换的机制，做到数据源只抓取一次（「热数据」和「冷数据」不要分别抓取），而抓取到的数据可以任意自由的流淌到「热数据」或「冷数据」线使用，这意味着我们在数据抓取和数据存储之间应该再做一层隔离。</p>
-<p>要实现数据抓取和数据存储之间的隔离，我们可以采用「发布&#x2F;订阅模式」：简单说，数据抓取服务在获取数据之后将数据发布到消息队列，后面的存储服务任意订阅这个消息队列再做存储，这样数据源只需要抓取一次，我们可以把它作为热数据使用，也可以作为冷数据使用，甚至可以即作为热数据又作为冷数据使用，切换起来也十分简单。这是后续系统架构可以改进的一个地方。</p>
-<p>另外，离线数据中心仅仅使用 PolarDB 对于我们可能产生的数据量级而言也是远远不够的，我们还需要更低成本的数据存储方案来存储时间更久远、平时几乎不大会访问的一些需要被「归档」的数据，这个时候，一些基于列存储的 NoSQL 数据库可能可以派上用场。</p>
-<p>数据治理需要一个长期持续的过程，我们还在结合自身的业务场景不断的摸索当中。</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="https://zhuanlan.zhihu.com/p/36112488">TiDB 在饿了么归档环境的应用</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>热数据</tag>
-        <tag>冷数据</tag>
-        <tag>在线数据</tag>
-        <tag>离线数据</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>心知天气数据 API 产品的高并发实践</title>
     <url>/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</url>
     <content><![CDATA[<p><a href="https://www.seniverse.com/">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a href="https://www.seniverse.com/">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p>
@@ -1809,6 +1809,60 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>高并发</tag>
         <tag>系统架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>把 Airflow 搬进 Kubernetes</title>
+    <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
+    <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
+<p>简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 <a href="https://airflow.apache.org/concepts.html#dags">DAG</a> 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 <a href="https://airflow.apache.org/howto/executor/use-celery.html">Celery Executor</a> 来把任务动态分布到多个 Worker 上执行。</p>
+<span id="more"></span>
+
+<p>如果数据处理任务长期不变，这样的系统已经可以满足我们的需求了。但实际上随着越来越多的数据任务被添加到整个系统，任务负载变得越来越重，很多时候固定数量的 Worker 已经不能及时的处理完被 scheduled 的任务，造成任务队列堆积，一段时间后如果一直不能改善负载情况甚至会拖垮整个系统。这种情况下，只能手动增加更多的 Worker 来分担任务处理工作。然后不同类型的数据处理越多，Worker 所需要安装的依赖也越多，每手工增加一个 Worker 的成本也越来越高。甚至对于气象数据的处理而言，有很多非常古老的数据处理工具（很多还是 Fortran 写的），经常出现依赖相互冲突的情况（版本冲突，编译通不过等等）。如何隔离各个任务之间的运行环境，以及如何根据负载需求动态的伸缩 Worker 的数量日益成为了这个系统的一个痛点。</p>
+<p>动态伸缩，环境隔离，自然让人联想到 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/zh/">Kubernetes</a> 这样的技术。好在 Airflow 1.10 版本引入了 <a href="https://airflow.apache.org/kubernetes.html">Kubernetes Executor 和 Kubernetes Operator</a> 允许为每一个任务创建新的 Pod 来处理，而执行完之后新创建的 Pod 会被清理掉，并且每一个任务都可以指定不同的 Docker image 来处理，这样看起来就可以完全解决我们前面的问题。</p>
+<p>目前这部分功能似乎还很不稳定，官方文档和讨论都还不多，这篇博客也是为了记录下我们的踩坑过程。</p>
+<h2 id="在-Kubernetes-上搭建-Airflow"><a href="#在-Kubernetes-上搭建-Airflow" class="headerlink" title="在 Kubernetes 上搭建 Airflow"></a>在 Kubernetes 上搭建 Airflow</h2><p>我们使用 <a href="https://helm.sh/">Helm</a> 来管理在 Kubernetes 上个各个应用以及它们的依赖，目前官方也已经给出了 <a href="https://github.com/helm/charts/tree/master/stable/airflow">stable&#x2F;airflow 的 Chart</a>，我们可以直接使用或部分参考。下面我们介绍一下从零开始的搭建过程。</p>
+<ol>
+<li><p>安装 Kubernetes</p>
+<p>本地安装的可以选择 <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a>，主要它解决了跨平台的问题。我在 macOS 上使用的是 <a href="https://hub.docker.com/editions/community/docker-ce-desktop-mac">Docker Desktop for Mac</a> 里<a href="https://www.docker.com/blog/docker-mac-kubernetes/">自带的 Kubernetes 集群</a>，如果你安装遇到了问题可以看看<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac">这里</a>是不是解决了你的问题，或者自行 Google 也可。</p>
+</li>
+<li><p>安装 Helm</p>
+<p>Helm 3 已经是正式的稳定版本，可惜我们线上还在使用 Helm 2，而 Helm 2 的版本不兼容是没法使用的。为了跟线上保持一致，我本地也是安装的 Helm 2，所以后面都是以 Helm 2 的操作来执行的，第一次进行的朋友可以直接用 Helm 3。当然安装过程也<a href="https://github.com/helm/helm/issues/4730">很可能出现问题</a>，可以自行 Google 解决。</p>
+</li>
+<li><p>在 Kubernetes 上用 Helm 安装 Airflow Chart</p>
+<p>直接根据<a href="https://github.com/helm/charts/tree/master/stable/airflow">官方的 Airflow Chart</a>步骤执行 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow</code> 即可在 Kubernetes 上安装一个标准的 Airflow 集群，之后可以查看各个 Pod 的状态是不是已经 ready（一切正常的情况下会在 <code>airflow</code> 的 Namespace 下安装 airflow-web、airflow-scheduler、airflow-postgresql、airflow-flower、airflow-redis）。还可以根据 NOTES 的提示在浏览器中查看 Airflow 的 UI 界面是不是也启动良好：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">NOTES:</span><br><span class="line">Congratulations. You have just deployed Apache Airflow</span><br><span class="line">   export POD_NAME=$(kubectl get pods --namespace airflow -l &quot;component=web,app=airflow&quot; -o jsonpath=&quot;&#123;.items[0].metadata.name&#125;&quot;)</span><br><span class="line">   echo http://127.0.0.1:8080</span><br><span class="line">   kubectl port-forward --namespace airflow $POD_NAME 8080:8080</span><br><span class="line"></span><br><span class="line"> Open Airflow in your web browser</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据自身业务情况自定义一些配置</p>
+<p>之后可以根据 Helm 的 官方 Airflow Chart 提供的配置方式进行一些自定义配置，比如把默认的 Airflow 镜像 <code>puckel/docker-airflow</code> 替换成自己根据自身业务需求构建的（比如已经安装了实现业务需求所有必要底层依赖的 Airflow 镜像，或者对于 Kubernetes Executor and operator 必需的 <code>apache-airflow[kubernetes]</code>，这样就不用每次部署更新都安装这些依赖了）、更改 <code>executor</code> 的类型（我们改为 <code>Kubernetes</code>）等等。官方的 Chart 目录下也提供了<a href="https://github.com/helm/charts/blob/master/stable/airflow/examples/minikube-values.yaml">一个例子</a>可供参考。</p>
+<p>值得额外注意的是我们如何做数据的持久化。这既包括 DAGs、日志 logs，也包括 Airflow 的运行态数据 —— 存储在 Postgres 或 MySQL 中的数据 —— 如何持久化。官方的 README 对此<a href="https://github.com/helm/charts/tree/master/stable/airflow#dags-deployment">已经有介绍</a>，同样如果有额外的自定义配置直接写到我们自己的 <code>values</code> YAML 文件中即可。<a href="https://github.com/apache/airflow/blob/1.10.6/airflow/config_templates/default_airflow.cfg"><code>airflow.cfg</code></a> 中 <code>[kubernetes]</code> 对应的每一项配置也应该过一遍并做相应的修改，尤其是关于 <code>namespace</code> 和 <code>dags_in_image</code> 的部分。对我司而言，我们自己的 Kubernetes 集群运行在阿里云上，直接使用一个外挂的 NAS 作为 DAGs 和 logs 的共享存储即可（通过 <code>extraVolumeMounts</code> 和 <code>extraVolumes</code> 挂载和声明，也要注意跟 <code>dags.path</code> 路径保持一致），以后我们自己开发的 DAGs 可以直接通过 CI&#x2F;CD 更新到 NAS 上相应的目录。数据库采用一个已经存在的外部 Postgres。</p>
+<p>假设我们将自定义的 <code>values</code> 配置写成 <code>minikube-values.yaml</code> 的本地 YAML 文件，就可以用 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow -f minikube-values.yaml</code> 启动一个经过自定义修改后的 Airflow 集群（可以先把之前启动的集群通过 <code>helm delete --purge &quot;airflow&quot;</code> 清除）。</p>
+</li>
+</ol>
+<p>因为业务需求和基础设施现状的不同，中间可能有不同的架构选择，但总体上经过这几步之后，一个采用 <code>KubernetesExecutor</code> 并运行在 Kubernetes 上的 Airflow 集群就基本搭建好了。</p>
+<h2 id="开发-DAGs"><a href="#开发-DAGs" class="headerlink" title="开发 DAGs"></a>开发 DAGs</h2><p>参考 Airflow 官方文档中 Kubernetes Operator 的例子可以开发适用于自身业务需求的 DAG。之后就可以访问 Airflow WebServer 来开启相应的 DAG 任务，并观察集群中 Task 的运行行为是否与预期的一致，并逐步迭代。</p>
+<h2 id="悄悄告诉你，真相其实是这样……"><a href="#悄悄告诉你，真相其实是这样……" class="headerlink" title="悄悄告诉你，真相其实是这样……"></a>悄悄告诉你，真相其实是这样……</h2><p>实际上，在经过我的一番折腾之后，最终我们线上使用的版本并没有使用官方的 Helm Chart，而是完全基于我们自己 build 的 Airflow 镜像，从头搭建了我们自己的 Helm Release Chart，这样整个系统拥有最高的可定制度（有些问题不在代码层面定制根本没法绕过去，下文有详述），同时也剔除了很多 Helm 官方 Chart 里有但我们不需要的东西。跟官方的 Chart 相比，我们主要做了这些更改：</p>
+<ul>
+<li><p>没有使用 Airflow 官方的 Kubernetes Executor，而是自己继承 <code>LocalExecutor</code> 类定制我们自己的 <code>KubeExecutor</code>，实际做的事情也很简单，就是实际在执行任务的时候不直接像 <code>LocalExecutor</code> 那样在本地执行命令，而用 <code>kubectl</code> 把任务指定在某一个 Worker Pod 或使用了 <code>KubernetesPodOperator</code> 启动的临时 Pod 里运行。这样做主要考虑的是官方的 <code>KubernetesPodOperator</code> 为了一些通用性功能从而进行了较为复杂的流程设计，我们团队自身完全可以结合在阿里云里 Kubernetes 集群的具体特点改造 <code>LocalExecutor</code>，这样不仅在运行时可以节省更多的机器资源，而且对于我们最核心的需求 —— 稳定的生产数据 —— 来说是更有利的，毕竟在运行时动态操作 Kubernetes 集群资源的流程变得简单了很多。</p>
+</li>
+<li><p>阿里云还有一个很大的坑是在它上面构建的官方 Kubernetes 集群产品不提供阿里云的 CA 根证书校验，而 <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/#directly-accessing-the-rest-api-1">Kubernetes 官方明确指明了需要校验 CA bundle</a>，导致我们无法通过 API 与 Kubernetes Server 进行交互，进而在使用 <code>KubernetesPodOperator</code> 时会因为证书校验失败而无法创建 Pod。而 <code>KubernetesPodOperator</code> 也并没有提供参数让我们将 <code>verify_ssl</code> 设置为 False。所以最终我们也没有直接用官方的 <code>KubernetesPodOperator</code>，而是自己改了一个类似的把 <code>verify_ssl</code> 设置为 False 的 Operator 的版本来使用。同时这里也呼吁一下阿里云能按照技术社区标准来提供自己的技术服务与产品（我们提了工单 argue 这个事情，最终客服给我提供了根证书并叮嘱不要扩散，并不清楚阿里云不能对外公开根证书是基于什么样的考量；在其他项目中我们使用了客服提供的根证书来进行校验是没有问题的）。</p>
+</li>
+<li><p>去掉了不必要的通用型适配的各种选择，完全按自身需求合理定制。</p>
+</li>
+</ul>
+<p>虽然我们做了定制，需要考虑的一些核心问题是没有变的，它们是：如何共享 DAG 的 Python 代码、如何做日志和数据库数据的持久化、是否使用 <a href="https://airflow.apache.org/docs/stable/concepts.html?highlight=xcom#xcoms">XComs</a> 来做 Task 之间的消息通信（同时在集群环境下如何实现这一点）、如何注入依赖（官方 Helm Chart 的 <code>requirements.txt</code> 方式）等等。由于这个尝试和定制的过程着实复杂和不那么让人愉快，甚至需要阅读一些 Airflow 的源码和各个云服务组件的接口参数设计，所以一篇博客无法一一详尽，我自己也不想写那些我们是如何绕过由于各方面的设计缺陷或开源产品不稳定导致的问题的技术细节，它们可能时刻会变，也没有技术深度，更多的是枯燥的云服务运维细节，所以不会在这里赘述太多而分散更大层面的宏观框架上的注意力。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在我们实际使用的过程中其实还遇到了很多 Airflow 的坑，作为一个 Apache 基金会的开源项目，它确实弥补了 ETL 场景下工具和框架的缺失，也提供了非常丰富的功能，不过尽管目前版本号已经到了 1.10.6，但还是有很多明显可感知的 BUG 存在，实际的使用感受是能用但总存在一些小问题，偶尔对任务的调度和管理还可能会失灵，不那么可靠，不算是一个高质量的开源项目，所以在使用时加上适当的重试机制是很有必要的。不过目前社区里在这部分并没有更好的替代品，Airflow 已经是我们考查过的最契合管理 ETL 流程的框架了。如果有新的开源项目能弥补这方面的空缺我们会很乐意去尝试，我们自己团队也在考虑是否在更长期的计划中开发一套自己的 ETL 流程框架。</p>
+<p>几周不断折腾尝试的搭建、使用和实际开发的过程下来，其实涉及了很多开发<a href="https://pivotal.io/cloud-native">云原生服务</a>常用的 DevOps 工具和组件，比如 Helm、Kubernetes 和 Docker，能得心应手的使用这些工具需要一段时间的学习实践来积累知识和经验。要想在 Kubernetes 环境下玩转 Airflow，了解这些周边支撑的工具也是不可或缺极其重要的一部分。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Cloud-Native</tag>
+        <tag>Kubernetes</tag>
+        <tag>Airflow</tag>
+        <tag>Helm</tag>
+        <tag>DevOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1884,60 +1938,6 @@ _Farewell and thanks to each for the company_
         <tag>Erlang</tag>
         <tag>性能调优</tag>
         <tag>Elixir</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>把 Airflow 搬进 Kubernetes</title>
-    <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
-    <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
-<p>简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 <a href="https://airflow.apache.org/concepts.html#dags">DAG</a> 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 <a href="https://airflow.apache.org/howto/executor/use-celery.html">Celery Executor</a> 来把任务动态分布到多个 Worker 上执行。</p>
-<span id="more"></span>
-
-<p>如果数据处理任务长期不变，这样的系统已经可以满足我们的需求了。但实际上随着越来越多的数据任务被添加到整个系统，任务负载变得越来越重，很多时候固定数量的 Worker 已经不能及时的处理完被 scheduled 的任务，造成任务队列堆积，一段时间后如果一直不能改善负载情况甚至会拖垮整个系统。这种情况下，只能手动增加更多的 Worker 来分担任务处理工作。然后不同类型的数据处理越多，Worker 所需要安装的依赖也越多，每手工增加一个 Worker 的成本也越来越高。甚至对于气象数据的处理而言，有很多非常古老的数据处理工具（很多还是 Fortran 写的），经常出现依赖相互冲突的情况（版本冲突，编译通不过等等）。如何隔离各个任务之间的运行环境，以及如何根据负载需求动态的伸缩 Worker 的数量日益成为了这个系统的一个痛点。</p>
-<p>动态伸缩，环境隔离，自然让人联想到 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/zh/">Kubernetes</a> 这样的技术。好在 Airflow 1.10 版本引入了 <a href="https://airflow.apache.org/kubernetes.html">Kubernetes Executor 和 Kubernetes Operator</a> 允许为每一个任务创建新的 Pod 来处理，而执行完之后新创建的 Pod 会被清理掉，并且每一个任务都可以指定不同的 Docker image 来处理，这样看起来就可以完全解决我们前面的问题。</p>
-<p>目前这部分功能似乎还很不稳定，官方文档和讨论都还不多，这篇博客也是为了记录下我们的踩坑过程。</p>
-<h2 id="在-Kubernetes-上搭建-Airflow"><a href="#在-Kubernetes-上搭建-Airflow" class="headerlink" title="在 Kubernetes 上搭建 Airflow"></a>在 Kubernetes 上搭建 Airflow</h2><p>我们使用 <a href="https://helm.sh/">Helm</a> 来管理在 Kubernetes 上个各个应用以及它们的依赖，目前官方也已经给出了 <a href="https://github.com/helm/charts/tree/master/stable/airflow">stable&#x2F;airflow 的 Chart</a>，我们可以直接使用或部分参考。下面我们介绍一下从零开始的搭建过程。</p>
-<ol>
-<li><p>安装 Kubernetes</p>
-<p>本地安装的可以选择 <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a>，主要它解决了跨平台的问题。我在 macOS 上使用的是 <a href="https://hub.docker.com/editions/community/docker-ce-desktop-mac">Docker Desktop for Mac</a> 里<a href="https://www.docker.com/blog/docker-mac-kubernetes/">自带的 Kubernetes 集群</a>，如果你安装遇到了问题可以看看<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac">这里</a>是不是解决了你的问题，或者自行 Google 也可。</p>
-</li>
-<li><p>安装 Helm</p>
-<p>Helm 3 已经是正式的稳定版本，可惜我们线上还在使用 Helm 2，而 Helm 2 的版本不兼容是没法使用的。为了跟线上保持一致，我本地也是安装的 Helm 2，所以后面都是以 Helm 2 的操作来执行的，第一次进行的朋友可以直接用 Helm 3。当然安装过程也<a href="https://github.com/helm/helm/issues/4730">很可能出现问题</a>，可以自行 Google 解决。</p>
-</li>
-<li><p>在 Kubernetes 上用 Helm 安装 Airflow Chart</p>
-<p>直接根据<a href="https://github.com/helm/charts/tree/master/stable/airflow">官方的 Airflow Chart</a>步骤执行 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow</code> 即可在 Kubernetes 上安装一个标准的 Airflow 集群，之后可以查看各个 Pod 的状态是不是已经 ready（一切正常的情况下会在 <code>airflow</code> 的 Namespace 下安装 airflow-web、airflow-scheduler、airflow-postgresql、airflow-flower、airflow-redis）。还可以根据 NOTES 的提示在浏览器中查看 Airflow 的 UI 界面是不是也启动良好：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">NOTES:</span><br><span class="line">Congratulations. You have just deployed Apache Airflow</span><br><span class="line">   export POD_NAME=$(kubectl get pods --namespace airflow -l &quot;component=web,app=airflow&quot; -o jsonpath=&quot;&#123;.items[0].metadata.name&#125;&quot;)</span><br><span class="line">   echo http://127.0.0.1:8080</span><br><span class="line">   kubectl port-forward --namespace airflow $POD_NAME 8080:8080</span><br><span class="line"></span><br><span class="line"> Open Airflow in your web browser</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>根据自身业务情况自定义一些配置</p>
-<p>之后可以根据 Helm 的 官方 Airflow Chart 提供的配置方式进行一些自定义配置，比如把默认的 Airflow 镜像 <code>puckel/docker-airflow</code> 替换成自己根据自身业务需求构建的（比如已经安装了实现业务需求所有必要底层依赖的 Airflow 镜像，或者对于 Kubernetes Executor and operator 必需的 <code>apache-airflow[kubernetes]</code>，这样就不用每次部署更新都安装这些依赖了）、更改 <code>executor</code> 的类型（我们改为 <code>Kubernetes</code>）等等。官方的 Chart 目录下也提供了<a href="https://github.com/helm/charts/blob/master/stable/airflow/examples/minikube-values.yaml">一个例子</a>可供参考。</p>
-<p>值得额外注意的是我们如何做数据的持久化。这既包括 DAGs、日志 logs，也包括 Airflow 的运行态数据 —— 存储在 Postgres 或 MySQL 中的数据 —— 如何持久化。官方的 README 对此<a href="https://github.com/helm/charts/tree/master/stable/airflow#dags-deployment">已经有介绍</a>，同样如果有额外的自定义配置直接写到我们自己的 <code>values</code> YAML 文件中即可。<a href="https://github.com/apache/airflow/blob/1.10.6/airflow/config_templates/default_airflow.cfg"><code>airflow.cfg</code></a> 中 <code>[kubernetes]</code> 对应的每一项配置也应该过一遍并做相应的修改，尤其是关于 <code>namespace</code> 和 <code>dags_in_image</code> 的部分。对我司而言，我们自己的 Kubernetes 集群运行在阿里云上，直接使用一个外挂的 NAS 作为 DAGs 和 logs 的共享存储即可（通过 <code>extraVolumeMounts</code> 和 <code>extraVolumes</code> 挂载和声明，也要注意跟 <code>dags.path</code> 路径保持一致），以后我们自己开发的 DAGs 可以直接通过 CI&#x2F;CD 更新到 NAS 上相应的目录。数据库采用一个已经存在的外部 Postgres。</p>
-<p>假设我们将自定义的 <code>values</code> 配置写成 <code>minikube-values.yaml</code> 的本地 YAML 文件，就可以用 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow -f minikube-values.yaml</code> 启动一个经过自定义修改后的 Airflow 集群（可以先把之前启动的集群通过 <code>helm delete --purge &quot;airflow&quot;</code> 清除）。</p>
-</li>
-</ol>
-<p>因为业务需求和基础设施现状的不同，中间可能有不同的架构选择，但总体上经过这几步之后，一个采用 <code>KubernetesExecutor</code> 并运行在 Kubernetes 上的 Airflow 集群就基本搭建好了。</p>
-<h2 id="开发-DAGs"><a href="#开发-DAGs" class="headerlink" title="开发 DAGs"></a>开发 DAGs</h2><p>参考 Airflow 官方文档中 Kubernetes Operator 的例子可以开发适用于自身业务需求的 DAG。之后就可以访问 Airflow WebServer 来开启相应的 DAG 任务，并观察集群中 Task 的运行行为是否与预期的一致，并逐步迭代。</p>
-<h2 id="悄悄告诉你，真相其实是这样……"><a href="#悄悄告诉你，真相其实是这样……" class="headerlink" title="悄悄告诉你，真相其实是这样……"></a>悄悄告诉你，真相其实是这样……</h2><p>实际上，在经过我的一番折腾之后，最终我们线上使用的版本并没有使用官方的 Helm Chart，而是完全基于我们自己 build 的 Airflow 镜像，从头搭建了我们自己的 Helm Release Chart，这样整个系统拥有最高的可定制度（有些问题不在代码层面定制根本没法绕过去，下文有详述），同时也剔除了很多 Helm 官方 Chart 里有但我们不需要的东西。跟官方的 Chart 相比，我们主要做了这些更改：</p>
-<ul>
-<li><p>没有使用 Airflow 官方的 Kubernetes Executor，而是自己继承 <code>LocalExecutor</code> 类定制我们自己的 <code>KubeExecutor</code>，实际做的事情也很简单，就是实际在执行任务的时候不直接像 <code>LocalExecutor</code> 那样在本地执行命令，而用 <code>kubectl</code> 把任务指定在某一个 Worker Pod 或使用了 <code>KubernetesPodOperator</code> 启动的临时 Pod 里运行。这样做主要考虑的是官方的 <code>KubernetesPodOperator</code> 为了一些通用性功能从而进行了较为复杂的流程设计，我们团队自身完全可以结合在阿里云里 Kubernetes 集群的具体特点改造 <code>LocalExecutor</code>，这样不仅在运行时可以节省更多的机器资源，而且对于我们最核心的需求 —— 稳定的生产数据 —— 来说是更有利的，毕竟在运行时动态操作 Kubernetes 集群资源的流程变得简单了很多。</p>
-</li>
-<li><p>阿里云还有一个很大的坑是在它上面构建的官方 Kubernetes 集群产品不提供阿里云的 CA 根证书校验，而 <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/#directly-accessing-the-rest-api-1">Kubernetes 官方明确指明了需要校验 CA bundle</a>，导致我们无法通过 API 与 Kubernetes Server 进行交互，进而在使用 <code>KubernetesPodOperator</code> 时会因为证书校验失败而无法创建 Pod。而 <code>KubernetesPodOperator</code> 也并没有提供参数让我们将 <code>verify_ssl</code> 设置为 False。所以最终我们也没有直接用官方的 <code>KubernetesPodOperator</code>，而是自己改了一个类似的把 <code>verify_ssl</code> 设置为 False 的 Operator 的版本来使用。同时这里也呼吁一下阿里云能按照技术社区标准来提供自己的技术服务与产品（我们提了工单 argue 这个事情，最终客服给我提供了根证书并叮嘱不要扩散，并不清楚阿里云不能对外公开根证书是基于什么样的考量；在其他项目中我们使用了客服提供的根证书来进行校验是没有问题的）。</p>
-</li>
-<li><p>去掉了不必要的通用型适配的各种选择，完全按自身需求合理定制。</p>
-</li>
-</ul>
-<p>虽然我们做了定制，需要考虑的一些核心问题是没有变的，它们是：如何共享 DAG 的 Python 代码、如何做日志和数据库数据的持久化、是否使用 <a href="https://airflow.apache.org/docs/stable/concepts.html?highlight=xcom#xcoms">XComs</a> 来做 Task 之间的消息通信（同时在集群环境下如何实现这一点）、如何注入依赖（官方 Helm Chart 的 <code>requirements.txt</code> 方式）等等。由于这个尝试和定制的过程着实复杂和不那么让人愉快，甚至需要阅读一些 Airflow 的源码和各个云服务组件的接口参数设计，所以一篇博客无法一一详尽，我自己也不想写那些我们是如何绕过由于各方面的设计缺陷或开源产品不稳定导致的问题的技术细节，它们可能时刻会变，也没有技术深度，更多的是枯燥的云服务运维细节，所以不会在这里赘述太多而分散更大层面的宏观框架上的注意力。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在我们实际使用的过程中其实还遇到了很多 Airflow 的坑，作为一个 Apache 基金会的开源项目，它确实弥补了 ETL 场景下工具和框架的缺失，也提供了非常丰富的功能，不过尽管目前版本号已经到了 1.10.6，但还是有很多明显可感知的 BUG 存在，实际的使用感受是能用但总存在一些小问题，偶尔对任务的调度和管理还可能会失灵，不那么可靠，不算是一个高质量的开源项目，所以在使用时加上适当的重试机制是很有必要的。不过目前社区里在这部分并没有更好的替代品，Airflow 已经是我们考查过的最契合管理 ETL 流程的框架了。如果有新的开源项目能弥补这方面的空缺我们会很乐意去尝试，我们自己团队也在考虑是否在更长期的计划中开发一套自己的 ETL 流程框架。</p>
-<p>几周不断折腾尝试的搭建、使用和实际开发的过程下来，其实涉及了很多开发<a href="https://pivotal.io/cloud-native">云原生服务</a>常用的 DevOps 工具和组件，比如 Helm、Kubernetes 和 Docker，能得心应手的使用这些工具需要一段时间的学习实践来积累知识和经验。要想在 Kubernetes 环境下玩转 Airflow，了解这些周边支撑的工具也是不可或缺极其重要的一部分。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Cloud-Native</tag>
-        <tag>Kubernetes</tag>
-        <tag>Airflow</tag>
-        <tag>Helm</tag>
-        <tag>DevOps</tag>
       </tags>
   </entry>
   <entry>
@@ -2242,30 +2242,54 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>尘埃落定，为什么我依然要力挺《二舅》</title>
-    <url>/2022/09/04/why-i-support-erjiu/</url>
-    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
-<p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
-<p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，恰恰相反，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
+    <title>如何开始稳健投资</title>
+    <url>/2022/03/13/how-to-start-investing-soundly/</url>
+    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
+<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
+<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
 <span id="more"></span>
 
-<p>有人指责《二舅》没有触及造成二舅人生悲剧的根本。如果你认真看了原视频，你可能只是故意忽视了一些什么，或者理解水平欠佳。任何中国人也都知道那条表达的红线是不是存在，你不去指责造成这个视频不能点名道姓触及根本的根本原因，反而来指责视频内容没有触及根本，你是不是也在这装外宾装大尾巴狼对房间里的大象视而不见呢？不是蠢就是坏，柿子不能专门捡软的捏吧。</p>
-<p>还有人指责《二舅》里对二舅本人的人生经历造假。首先根据无罪推论原则，你先提供造假的证据而不是你们众口铄金的臆断再继续往下的讨论。其次，是不是造假对于 B 站 UP 主的视频创作而言重要吗？《活着》《平凡的世界》是造假吗？J.K.罗琳看到了一个戴圆形眼镜的小朋友就写出的《哈利•波特》是造假吗？普通人是不配进行文学创作吗？再次回到视频本身，任何有基本电影鉴赏水平的人都知道原视频的 BGM 和叙述节奏是想让视频呈现出怎样的影视风格，你总不会觉得这是一部纪录片风格的中视频吗？是创作就一定是主观的，就一定带有创作者本人的价值输出和主观表达，我们应该尊重任何人表达自己价值观的自由，二舅只是一个为了表达而借用的具体途径而已。最后，我推断至少作者没有做完全颠倒黑白说东道西的内容表达，这已经是在创作的底线之上。<strong>在现在这样的社会环境下，敢表达、能表达就已经有其意义。</strong>有些人不仅自己喜欢站在道德制高点上纲上线，还要求能站上原告席的一定得是个没有任何道德瑕疵的完美人。</p>
-<p>也有人说《二舅》这种在农村很多啊，有什么稀奇的。有很多你也去拍啊，你要能创作成这样你也能火，我就不恶意揣测你纯纯的嫉妒心了。如果很多的话至于现在市场上这类的表达少之又少、越来越少吗？甚至都没有人敢讨论为什么这一类表达如此之少，我只能说，站着说话不腰疼，你行你上吧。站在一旁指手画脚确实是比弄脏自己的手要轻松得多。</p>
-<p>文化产业一定是一个需要开放包容的土壤才能繁荣起来的产业。最近正在上映的电影<a href="https://movie.douban.com/subject/35131346/">《隐入尘烟》</a>的导演李睿珺说了这样一段话：</p>
-<blockquote>
-<p>一个电影市场，它应该是各种各样的电影都有才是正常的，<strong>一个市场的健康最重要是多元</strong>，比如超市就是有多种物品，可以让不同的受众去选择。方便面，有一块的，有五块的，甚至你有钱可以买十块的。但是假如说这个超市只卖一种方便面了，这是专卖店，不是超市，那它就不是个市场，那个市场其实就萎缩、死亡了。</p>
-</blockquote>
-<p>我只想对希望能继续看到好作品的观众说，创作环境已经这么不容易了，少一点对创作动机的讨论，多把注意力关注在作品本身吧。对于能填补市场空白的创作和表达，我认为这个行为本身就已经有其值得被肯定的意义。</p>
+<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
+<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
+<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
+<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
+<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
+<ol>
+<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
+<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
+<li>投资不能降低自己的生活品质。</li>
+<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
+<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
+<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
+<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
+</ol>
+<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
+<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
+<p>选定了投资品种，我们如何开始买入卖出呢？</p>
+<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
+<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，<strong>充分考虑你的存量资金和未来稳定的现金流下</strong>（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就<strong>明确想好</strong>你未来所有会投入市场的<strong>资金总量</strong>。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
+<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。更具体一点，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如果市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
+<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
+<ol>
+<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
+<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
+</ol>
+<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
+<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
+<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。对于小白第一个的投资周期，在你还没有投入很多资金到资本市场的时候，没有亏损很重要，不过，能够在不同的市场阶段充分感受那个当下自己在心态、策略上的优势和不足，体会资本市场和世界运行的特点，不断沉淀出自己的经验和体会，可能会更重要。</p>
+<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
+<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
+<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
 ]]></content>
       <categories>
-        <category>浮生散记</category>
+        <category>滚雪球</category>
       </categories>
       <tags>
-        <tag>苦难</tag>
-        <tag>创作</tag>
-        <tag>电影</tag>
-        <tag>文化产业</tag>
+        <tag>投资</tag>
+        <tag>理财</tag>
+        <tag>基金</tag>
+        <tag>ETF</tag>
       </tags>
   </entry>
   <entry>
@@ -2317,54 +2341,30 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>如何开始稳健投资</title>
-    <url>/2022/03/13/how-to-start-investing-soundly/</url>
-    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
-<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
-<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
+    <title>尘埃落定，为什么我依然要力挺《二舅》</title>
+    <url>/2022/09/04/why-i-support-erjiu/</url>
+    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
+<p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
+<p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，与此同时，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
 <span id="more"></span>
 
-<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
-<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
-<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
-<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
-<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
-<ol>
-<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
-<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
-<li>投资不能降低自己的生活品质。</li>
-<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
-<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
-<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
-<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
-</ol>
-<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
-<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
-<p>选定了投资品种，我们如何开始买入卖出呢？</p>
-<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
-<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，<strong>充分考虑你的存量资金和未来稳定的现金流下</strong>（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就<strong>明确想好</strong>你未来所有会投入市场的<strong>资金总量</strong>。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
-<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。更具体一点，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如果市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
-<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
-<ol>
-<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
-<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
-</ol>
-<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
-<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
-<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。对于小白第一个的投资周期，在你还没有投入很多资金到资本市场的时候，没有亏损很重要，不过，能够在不同的市场阶段充分感受那个当下自己在心态、策略上的优势和不足，体会资本市场和世界运行的特点，不断沉淀出自己的经验和体会，可能会更重要。</p>
-<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
-<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
-<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
+<p>有人指责《二舅》没有触及造成二舅人生悲剧的根本。如果你认真看了原视频，你可能只是故意忽视了一些什么，或者理解水平欠佳。任何中国人也都知道那条表达的红线是不是存在，你不去指责造成这个视频不能点名道姓触及根本的根本原因，反而来指责视频内容没有触及根本，你是不是也在这装外宾装大尾巴狼对房间里的大象视而不见呢？不是蠢就是坏，柿子不能专门捡软的捏吧。</p>
+<p>还有人指责《二舅》里对二舅本人的人生经历造假。首先根据无罪推论原则，你先提供造假的证据而不是你们众口铄金的臆断再继续往下的讨论。其次，是不是造假对于 B 站 UP 主的视频创作而言重要吗？《活着》《平凡的世界》是造假吗？J.K.罗琳看到了一个戴圆形眼镜的小朋友就写出的《哈利•波特》是造假吗？普通人是不配进行文学创作吗？再次回到视频本身，任何有基本电影鉴赏水平的人都知道原视频的 BGM 和叙述节奏是想让视频呈现出怎样的影视风格，你总不会觉得这是一部纪录片风格的中视频吧？是创作就一定是主观的，就一定带有创作者本人的价值输出和主观表达，我们应该尊重任何人表达自己价值观的自由，二舅只是一个为了表达而借用的具体途径而已。最后，我推断至少作者没有做完全颠倒黑白说东道西的内容表达，这已经是在创作的底线之上。<strong>在现在这样的社会环境下，敢表达、能表达就已经有其意义。</strong>有些人不仅自己喜欢站在道德制高点上纲上线，还要求能站上原告席的一定得是个没有任何道德瑕疵的完美人。</p>
+<p>也有人说《二舅》这种在农村很多啊，有什么稀奇的。有很多你也去拍啊，你要能创作成这样你也能火，我就不恶意揣测你纯纯的嫉妒心了。如果很多的话至于现在市场上这类的表达少之又少、越来越少吗？甚至都没有人敢讨论为什么这一类表达如此之少，我只能说，站着说话不腰疼，你行你上吧。站在一旁指手画脚确实是比弄脏自己的手要轻松得多。</p>
+<p>文化产业一定是一个需要开放包容的土壤才能繁荣起来的产业。最近正在上映的电影<a href="https://movie.douban.com/subject/35131346/">《隐入尘烟》</a>的导演李睿珺说了这样一段话：</p>
+<blockquote>
+<p>一个电影市场，它应该是各种各样的电影都有才是正常的，<strong>一个市场的健康最重要是多元</strong>，比如超市就是有多种物品，可以让不同的受众去选择。方便面，有一块的，有五块的，甚至你有钱可以买十块的。但是假如说这个超市只卖一种方便面了，这是专卖店，不是超市，那它就不是个市场，那个市场其实就萎缩、死亡了。</p>
+</blockquote>
+<p>我只想对希望能继续看到好作品的观众说，创作环境已经这么不容易了，少一点对创作动机的讨论，多把注意力关注在作品本身吧。对于能填补市场空白的创作和表达，我认为这个行为本身就已经有其值得被肯定的意义。</p>
 ]]></content>
       <categories>
-        <category>滚雪球</category>
+        <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>投资</tag>
-        <tag>理财</tag>
-        <tag>基金</tag>
-        <tag>ETF</tag>
+        <tag>苦难</tag>
+        <tag>创作</tag>
+        <tag>电影</tag>
+        <tag>文化产业</tag>
       </tags>
   </entry>
 </search>
