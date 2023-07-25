@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2022-12-31T15:27:20.349Z</updated>
+  <updated>2023-07-25T12:11:00.211Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>热情、工作与理想主义｜为什么我要离开微软</title>
+    <link href="https://maples7.com/2023/07/25/why-i-leave-microsoft/"/>
+    <id>https://maples7.com/2023/07/25/why-i-leave-microsoft/</id>
+    <published>2023-07-25T09:24:43.000Z</published>
+    <updated>2023-07-25T12:11:00.211Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;没错，经过长时间反复的考量，我终于还是从微软主动离职了。&lt;/p&gt;
+&lt;p&gt;我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。&lt;/p&gt;
+&lt;h2 id=&quot;理想主义&quot;&gt;&lt;a href=&quot;#理想主义&quot; class=&quot;headerlink&quot; title=&quot;理想主义&quot;&gt;&lt;/a&gt;理想主义&lt;/h2&gt;&lt;p&gt;我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为&lt;a href=&quot;https://twitter.com/Maples67&quot;&gt;「坚定的理想主义者」&lt;/a&gt;。一句话概括的话，我认为「理想主义」就是&lt;strong&gt;任何事情都要首先从其本质或普世价值上思考并行动&lt;/strong&gt;。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
+    
+    
+    <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
+    
+    <category term="工作" scheme="https://maples7.com/tags/%E5%B7%A5%E4%BD%9C/"/>
+    
+    <category term="热情" scheme="https://maples7.com/tags/%E7%83%AD%E6%83%85/"/>
+    
+    <category term="微软" scheme="https://maples7.com/tags/%E5%BE%AE%E8%BD%AF/"/>
+    
+    <category term="离职" scheme="https://maples7.com/tags/%E7%A6%BB%E8%81%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>2022 年书单</title>
@@ -488,27 +517,6 @@
     <category term="「完全理解」系列" scheme="https://maples7.com/tags/%E3%80%8C%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3%E3%80%8D%E7%B3%BB%E5%88%97/"/>
     
     <category term="并发" scheme="https://maples7.com/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2017 年书单</title>
-    <link href="https://maples7.com/2017/12/31/2017-booklist/"/>
-    <id>https://maples7.com/2017/12/31/2017-booklist/</id>
-    <published>2017-12-31T10:42:34.000Z</published>
-    <updated>2021-11-19T18:04:02.926Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;今年太「荒废」了。无论是工作还是生活，已经发生的事情之丰富复杂相比去年完全有过之而无不及，自己心态上的改变也是不少。这种内省式的变化会直接导致个人情绪的变化。用一个烂俗的比喻来说，如果去年的心情像一汪平静的湖水，那今年则可以用海啸来形容&lt;del&gt;（夸张到油腻了）&lt;/del&gt;。&lt;/p&gt;
-&lt;p&gt;我不是一个喜欢制定目标的人，因为无论事情是否达到了你的目标，这个设定都会让你对于自己所做的事情产生反向的反馈：完成了会开始沾沾自喜、放松警惕，没完成则会开始怀疑人生、消极懈怠。当然，这可能只是一个现实的悲观主义者的惯性思维，不足以为参考。&lt;/p&gt;
-&lt;p&gt;即便如此，年初也制定了一些小目标，明确了一下「即将过去的这一年」的大致方向。写博客的目标是超额完成了，导致我后几个月的博客更新都放缓了（应证了我上一段的描述），可是看书的目标远远没有达到。这意味着今年是个「输出」大于「输入」的一年。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
     
   </entry>
   
