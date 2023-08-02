@@ -78,7 +78,7 @@
     <link href="https://maples7.com/2022/09/06/what-i-shoot-this-year/"/>
     <id>https://maples7.com/2022/09/06/what-i-shoot-this-year/</id>
     <published>2022-09-06T02:38:31.000Z</published>
-    <updated>2022-09-09T02:42:36.147Z</updated>
+    <updated>2023-08-02T07:56:27.099Z</updated>
     
     
       
@@ -357,7 +357,7 @@
     <link href="https://maples7.com/2019/12/03/develop-etl-via-airflow-on-k8s/"/>
     <id>https://maples7.com/2019/12/03/develop-etl-via-airflow-on-k8s/</id>
     <published>2019-12-02T16:35:32.000Z</published>
-    <updated>2021-11-19T18:04:03.050Z</updated>
+    <updated>2023-08-02T08:00:39.621Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h2&gt;&lt;p&gt;稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;专注于气象数据研究的我司&lt;/a&gt;而言，做数据分析和 &lt;a href=&quot;https://zh.wikipedia.org/wiki/ETL&quot;&gt;ETL&lt;/a&gt; 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 &lt;a href=&quot;https://airflow.apache.org/&quot;&gt;Airflow&lt;/a&gt; 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 &lt;a href=&quot;https://zh.wikipedia.org/wiki/Apache_Incubator&quot;&gt;Apache Incubator&lt;/a&gt;，目前已经顺利毕业了。&lt;/p&gt;
@@ -368,15 +368,15 @@
     <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
     
     
-    <category term="Cloud-Native" scheme="https://maples7.com/tags/Cloud-Native/"/>
+    <category term="Airflow" scheme="https://maples7.com/tags/Airflow/"/>
     
     <category term="Kubernetes" scheme="https://maples7.com/tags/Kubernetes/"/>
-    
-    <category term="Airflow" scheme="https://maples7.com/tags/Airflow/"/>
     
     <category term="Helm" scheme="https://maples7.com/tags/Helm/"/>
     
     <category term="DevOps" scheme="https://maples7.com/tags/DevOps/"/>
+    
+    <category term="Cloud-Native" scheme="https://maples7.com/tags/Cloud-Native/"/>
     
   </entry>
   
@@ -385,10 +385,10 @@
     <link href="https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/"/>
     <id>https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</id>
     <published>2019-05-09T04:57:40.000Z</published>
-    <updated>2021-11-22T16:52:28.686Z</updated>
+    <updated>2023-08-02T08:02:47.470Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;心知天气&lt;/a&gt;作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;官网首页&lt;/a&gt;一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。&lt;/p&gt;
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;心知天气&lt;/a&gt;作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;官网首页&lt;/a&gt;一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。&lt;/p&gt;
 &lt;img src=&quot;/uploads/seniverse-index.gif&quot; class=&quot;&quot; title=&quot;心知天气 API 服务实时访问量&quot; alt=&quot;图片显示错误&quot;&gt;</summary>
     
     
@@ -407,7 +407,7 @@
     <link href="https://maples7.com/2019/02/05/winter-of-north-east/"/>
     <id>https://maples7.com/2019/02/05/winter-of-north-east/</id>
     <published>2019-02-05T12:36:21.000Z</published>
-    <updated>2022-09-06T02:59:07.011Z</updated>
+    <updated>2023-08-02T08:01:42.100Z</updated>
     
     
     <summary type="html">&lt;div class=&quot;group-picture&quot;&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5981f5ee873.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c598233d3831.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c59825ebeeef.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5982bbbc951.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c59830583ea1.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c59829a17feb.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5983059de98.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</summary>
@@ -432,7 +432,7 @@
     <link href="https://maples7.com/2018/12/31/2018-booklist/"/>
     <id>https://maples7.com/2018/12/31/2018-booklist/</id>
     <published>2018-12-31T14:51:30.000Z</published>
-    <updated>2021-11-19T18:04:02.999Z</updated>
+    <updated>2023-08-02T07:54:30.865Z</updated>
     
     
     <summary type="html">&lt;p&gt;今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。&lt;/p&gt;
