@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2024-01-12T08:07:40.985Z</updated>
+  <updated>2024-11-07T16:08:15.420Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Maples7 个人开源计划（1）</title>
+    <link href="https://maples7.com/2024/11/08/open-source-maples7-1/"/>
+    <id>https://maples7.com/2024/11/08/open-source-maples7-1/</id>
+    <published>2024-11-07T16:05:32.000Z</published>
+    <updated>2024-11-07T16:08:15.420Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;📑-前序&quot;&gt;&lt;a href=&quot;#📑-前序&quot; class=&quot;headerlink&quot; title=&quot;📑 前序&quot;&gt;&lt;/a&gt;📑 前序&lt;/h2&gt;&lt;p&gt;从微软离职以来已经有一年多了（原因和感受详见：&lt;a href=&quot;https://maples7.com/2023/07/25/why-i-leave-microsoft/&quot;&gt;热情、工作与理想主义｜为什么我要离开微软&lt;/a&gt;），离职后的前半年基本在休养生息，顺便学习了一些 Apple 开发相关的东西，后半年开始写我几年来一直想写的一个财务类的工具 App，算是正式开始了我的全职独立开发之路。&lt;/p&gt;
+&lt;p&gt;不用上班之后我感受到了前所未有的自由，一种大学期间时常沸腾全身的创造力似乎正在回归。不上班不意味着不工作，上班经常是消磨热情和创造力的，而工作却可以是由热情和创造力来自我驱动的。可预见的未来一段时间，我感觉我都会非常享受现在的这种状态。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
+    
+    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
+    
+    <category term="独立开发" scheme="https://maples7.com/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
     <title>2023 年书单</title>
     <link href="https://maples7.com/2023/12/31/2023-booklist/"/>
     <id>https://maples7.com/2023/12/31/2023-booklist/</id>
     <published>2023-12-31T15:03:52.000Z</published>
-    <updated>2024-01-12T08:07:40.985Z</updated>
+    <updated>2024-05-16T08:19:08.963Z</updated>
     
     
     <summary type="html">&lt;p&gt;一转眼又是一年过去了，2023 年算是个人生活变化比较大的一年。长达三年的疫情生活终于过去，个人生活逐渐回归正常，也开始继续遵循本心勇敢做自己、追寻自己真正热爱的事情。从书单就可以看出这种变化。&lt;/p&gt;
@@ -507,29 +531,6 @@
     <category term="在线数据" scheme="https://maples7.com/tags/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE/"/>
     
     <category term="离线数据" scheme="https://maples7.com/tags/%E7%A6%BB%E7%BA%BF%E6%95%B0%E6%8D%AE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>长按是好的交互方式吗？</title>
-    <link href="https://maples7.com/2018/12/19/long-press-sucks/"/>
-    <id>https://maples7.com/2018/12/19/long-press-sucks/</id>
-    <published>2018-12-18T16:42:27.000Z</published>
-    <updated>2021-11-19T18:04:02.977Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;长按是好的交互方式吗？&lt;/p&gt;
-&lt;p&gt;这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？&lt;/p&gt;
-&lt;p&gt;智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-    <category term="交互设计" scheme="https://maples7.com/tags/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1/"/>
-    
-    <category term="产品" scheme="https://maples7.com/tags/%E4%BA%A7%E5%93%81/"/>
     
   </entry>
   
