@@ -112,6 +112,53 @@
       </tags>
   </entry>
   <entry>
+    <title>非关系型数据库中的「关系」实现</title>
+    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
+    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
+<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
+<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+<span id="more"></span>
+
+<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
+<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
+<p>方法如下：</p>
+<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
+<p>举例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
+<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
+<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
+<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
+<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
+<p>引用方法又可分为两种：</p>
+<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
+<p>方法简单，不再举例赘述。</p>
+<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
+<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
+<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
+<p>样例如下：</p>
+<p>在 user.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 msgboard.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
+<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
+<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
+<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
+<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
+<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的密码管理策略</title>
     <url>/2016/04/06/my-strategy-about-passwords-management/</url>
     <content><![CDATA[<p>[ 本文来自于<a href="https://www.zhihu.com/question/19695004/answer/93985563">我的知乎回答</a>，现整理修改后记于博客。]</p>
@@ -182,53 +229,6 @@
       <tags>
         <tag>密码管理</tag>
         <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>非关系型数据库中的「关系」实现</title>
-    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
-    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
-<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
-<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
-<span id="more"></span>
-
-<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
-<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
-<p>方法如下：</p>
-<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
-<p>举例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
-<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
-<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
-<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
-<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
-<p>引用方法又可分为两种：</p>
-<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
-<p>方法简单，不再举例赘述。</p>
-<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
-<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
-<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
-<p>样例如下：</p>
-<p>在 user.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在 msgboard.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
-<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
-<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
-<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
-<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
-<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
       </tags>
   </entry>
   <entry>
@@ -522,32 +522,6 @@
         <tag>Swagger</tag>
         <tag>Express</tag>
         <tag>API</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -856,6 +830,32 @@ _Farewell and thanks to each for the company_
         <tag>编程</tag>
         <tag>程序员</tag>
         <tag>教育</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -1424,37 +1424,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>被分化的树叶</title>
-    <url>/2017/07/15/diversified-leaves/</url>
-    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
-<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
-<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
-<span id="more"></span>
-
-<p>树叶们早已经被分化了。</p>
-<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
-<p>太阳越升越高，雾也开始渐渐散去。</p>
-<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
-<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
-<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
-<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
-<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
-<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
-<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
-<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
-<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
-<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
-<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>意识流</tag>
-        <tag>散文</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>独立书店的生存困境</title>
     <url>/2017/08/23/arduous-independent-bookstores/</url>
     <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
@@ -1477,28 +1446,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>独立书店</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>今晚月色真美</title>
-    <url>/2017/12/21/love/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
-
-<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
-<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
-<span id="more"></span>
-
-<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
-<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
-<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
-<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
-<p>我，好像是你的。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>感情</tag>
       </tags>
   </entry>
   <entry>
@@ -1531,6 +1478,59 @@ _Farewell and thanks to each for the company_
         <tag>「完全理解」系列</tag>
         <tag>回调函数</tag>
         <tag>控制反转</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>今晚月色真美</title>
+    <url>/2017/12/21/love/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
+
+<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
+<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
+<span id="more"></span>
+
+<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
+<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
+<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
+<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
+<p>我，好像是你的。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>感情</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>被分化的树叶</title>
+    <url>/2017/07/15/diversified-leaves/</url>
+    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
+<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
+<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
+<span id="more"></span>
+
+<p>树叶们早已经被分化了。</p>
+<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
+<p>太阳越升越高，雾也开始渐渐散去。</p>
+<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
+<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
+<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
+<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
+<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
+<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
+<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
+<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
+<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
+<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
+<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>意识流</tag>
+        <tag>散文</tag>
       </tags>
   </entry>
   <entry>
@@ -1573,6 +1573,57 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>完全理解并发</title>
+    <url>/2018/10/21/understand-concurrency/</url>
+    <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
+<p>本来不想把这篇文章加入到<a href="http://maples7.com/tags/%E3%80%8C%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3%E3%80%8D%E7%B3%BB%E5%88%97/">「完全理解」系列</a>，因为觉得「并发」涉及到的东西实在是很多，而我想凭借一篇博客企图「完全理解」那是不现实的。但虽然不能做到「完全理解」，但我还是会尝试尽力提纲挈领的把「并发」相关的话题都理清楚，把脉络勾勒出来，让它尽可能对得起「完全」吧。<del>毕竟，如果以后我有了一些更深的理解，我还可以继续迭代这篇文章。</del></p>
+<span id="more"></span>
+
+<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>在开始正式的话题之前，我们先来厘清两个概念——「并发」与「并行」。</p>
+<p>Erlang 之父 Joe Armstrong 曾经用一张非常简单易懂的图解释了「并发」与「并行」的区别：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b67309e4d019.jpg" alt="Joe Armstrong 解释「并发」与「并行」"></p>
+<p>「并发」是同学们排成两队，然而却只有一个咖啡机在工作，所以两个队列排在前面的同学交替使用咖啡机；「并行」则是两台咖啡机分别服务两个独立的同学队列，它们同时进行，互不干扰。</p>
+<p>这样的例子简单易懂，但依然还需要更进一步说明的是，「并发」与「并行」其实并不是同一个维度上非黑即白的两个对立的概念。「并发」更多的强调的是有没有这样的能力或特征，它是从事物的性质和对外表现上来说的，它不在乎你内部是如何实现「并发」的，相对而言是在更高层次上的概括，而「并行」则规定了它们在物理上一定是同时进行的，相对而言更严格。</p>
+<p>具体从编程的角度来说，「并行」甚至可以是实现「并发」的一种手段，比如用下文所要讲的「多线程」或「多进程」的方式来赋能某一段程序的「并发」能力：为了使程序具备「并发」的能力，采用「多线程」或「多进程」在应用层面上可以「并行」运行的具体实现手段来为其赋能。</p>
+<h2 id="计算机操作系统发展史"><a href="#计算机操作系统发展史" class="headerlink" title="计算机操作系统发展史"></a>计算机操作系统发展史</h2><p>要追根溯源的来理解「并发」，我们首先应该了解一下计算机操作系统的发展历史。因为回顾整个计算机操作系统的发展历史，我们就会发现，几乎所有的关键历史节点，都是因为它使得计算机系统拥有了更强的并发处理能力而变得重要的。</p>
+<p>在计算机诞生之初，是没有操作系统这种东西存在的，当时人们只能先把打孔纸带通过输入机将程序传入计算机，再启动运行。在程序执行完毕之后，打印机把计算结果输出，在现场监督程序执行的程序员再取走纸带。在这个时期，同一个计算机系统在同一时间只能处理唯一确定的一件事情。</p>
+<p>后来人们发明了批处理系统。批处理系统相当于计算机上的一个任务监督程序，在它的控制和调度下，计算机能够自动的、成批的处理一个或多个用户的任务。在批处理系统的帮助下，各个任务之间可以自动衔接，减少了需要人工建立任务和手工操作的时间，提高了计算机的利用效率。</p>
+<p>再后来，随着 CPU 性能的不断提升，出现了分时系统和实时系统。分时系统是把 CPU 的运行时间分成很短的时间片，按时间片轮流把 CPU 分配给各联机任务使用。若某个任务在分配给它的时间片内不能完成其计算，则该任务暂时中断，把 CPU 让给另一任务使用，等待下一轮调度时再继续其运行。由于计算机速度很快，各个任务之间轮转得也很快，给每个用户的感觉是他独占了一台计算机。而每个用户可以通过自己的终端向系统发出各种操作控制命令，在充分的人机交互情况下，完成作业的运行。为了解决分时系统不能及时响应用户指令的情况，又出现了能够在严格的时间范围内完成事件处理、及时响应随机外部事件的实时系统。</p>
+<p>IBM 于 1964 年伴随着大型机 System&#x2F;360 推出了通用操作系统 OS&#x2F;360，这个通用的操作系统使得不同型号的计算机设备也可以在同样的操作系统控制下使用同样的外部设备（如打印机）和更上层的软件，并且这些设备之间可以相互连接，共同工作。通用操作系统使得不同型号的计算机设备之间能够真正组成网络来处理复杂的任务。<del>软件工程领域的著作<a href="https://book.douban.com/subject/2230248/">《人月神话》</a>也是诞生于 IBM 的这个项目。</del></p>
+<p>再往后就是我们相对更加熟悉的 Unix&#x2F;Linux&#x2F;Windows&#x2F;OS X 这些现代操作系统诞生、迭代、版本更替的历史，目前这些操作系统的并发能力已经远远超出了当时的 OS&#x2F;360，而现代计算机网络的加持更是使得理论上的计算机并发处理能力几乎已经没有了上限。</p>
+<p>从整个计算机操作系统的历史我们可以清晰的看到历史上的计算机科学家们是如何一步一步来提升计算机处理任务的效率的。从一开始需要手工的开启、监督、结束单一任务，到使用批处理系统来自动化的监督任务流水线，再到使用分时系统来让 CPU 在多个任务之间不停的轮转，然后用后文要详述的多 CPU 使用多进程和多线程的方式来进一步提升多任务的执行效率，最后我们使用通用计算机系统来组成庞大的计算集群来处理复杂的各种各样需要随机响应的任务，并发能力一次比一次有了质的提升。</p>
+<p>如果说<a href="https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B">「摩尔定律」</a>使得 CPU 的性能可以指数级的增长来从单机速度上提升任务完成的效率，那么不断的提升并发能力则是更高屋建瓴的考虑如何不间断不浪费的来「压榨」CPU 的高性能，这种思考问题的维度比一门心思的考虑提升单 CPU 的速度更具有现实意义，对于解决现有问题来说是更加高明的选择。尤其是在「摩尔定律」行将失效的今天，采用分布式的方式提高整个系统的并发处理能力几乎成了唯一的选择。</p>
+<h2 id="多进程与多线程"><a href="#多进程与多线程" class="headerlink" title="多进程与多线程"></a>多进程与多线程</h2><p>让我们先回到单机时代，来了解目前主流的并发模型——多进程与多线程。现代操作系统早已进入多 CPU 时代，自然会支持多进程和多线程。「进程」就是操作系统中一个具有独立功能的程序，操作系统管理所有进程的执行并且以进程为单位分配存储空间。一个进程还可以拥有多个并发的执行流程，这些并发的执行流程是可以获得 CPU 调度和分派的基本执行单元，也就是线程。</p>
+<p>进程是计算机资源的拥有者，创建、切换和销毁都有较大的时空开销，而一个进程内的所有线程共享这个进程的资源，更轻量级，对其的相关操作也开销更小。需要注意的是，对于单核 CPU 系统而言，并行其实是不存在的，任何时刻 CPU 其实只能被一个线程所获取，线程之间共享了 CPU 的执行时间。由于切换的速度很快，对外表现为并发执行的样子。</p>
+<p>多进程和多线程是如今高级编程语言中实现并发的常规模型，比如 C++、Java、Python。同时为了解决程序中多个进程和线程对资源的抢占问题，还引入了「锁」的概念。在这个并发模型中，需要开发人员利用「锁」来处理资源抢占的问题，也就是不让某一个资源同时被多于一个进程（线程）所处理而带来不可预期的后果。</p>
+<p>既然有多进程和多线程，那么「锁」自然也有「进程锁」和「线程锁」。我们知道两个进程其实是相互独立的，各自拥有操作系统分配的独立资源，而「进程锁」是为了防止两个进程对他们所占用的资源以外的共享资源同时访问，一般可以使用操作系统级别的信号量来实现。相对应的，「线程锁」则是保证同一段代码在同一时间只有一个线程在执行，一般各语言本身或类库会提供实现方式。</p>
+<h2 id="分布式并发锁"><a href="#分布式并发锁" class="headerlink" title="分布式并发锁"></a>分布式并发锁</h2><p>「分布式锁」跟「进程锁」和「线程锁」很像，不过它更多的是使用在计算集群的场景中。在本质上，进程锁、线程锁和分布式锁的作用都是一样的，只是作用的颗粒度不一样。线程锁作用于单一进程的范围，进程锁作用于单一操作系统的范围，而分布式锁则可以作用于网络结构中。在分布式集群当中，我们使用分布式锁来保证不同线程对代码和资源是独占的。</p>
+<p>如何实现一个完美的分布式锁呢？我们先来分析一下实现一个好的分布式锁应该满足什么需求：首先这个加锁操作应该是原子性的，否则这个锁是有可能被「击穿」的；其次锁一般还需要有过期时间，使得某一次执行异常没有移除锁的情况下也能自然过期然后重试。</p>
+<p>以大多数人都熟悉的 Redis 为例，我们可以使用 Redis 的 set 指令，把 key 作为锁的标志。尤其注意的是，这个操作原子性包含了查看锁存不存在、加锁和设置过期时间三步操作，它们合在一起应该具有原子性（至少前两步）。也就是说，如果我们需要先使用 get 指令查看锁存不存在再决定是否加锁，这个锁已经不是一把好「锁」了。好在 <a href="https://redis.io/commands/set">Redis 2.6.12 以上的 set 指令</a> 支持了同时加参数设置过期时间和判断 key 是否存在，比如使用 <code>SET lock_key lock EX 5000 NX</code>，NX 保证了锁不存在时才上锁，而 Redis 指令本身具有原子性，这样就实现了一把看起来还不错的锁。在任务执行完毕后我们还需要用 del 指令主动把锁删掉以释放资源。</p>
+<p>上述例子只是一个简单的场景，这个锁其实还并不是完美的。思考这样的问题：如果某一次操作线程 A 执行的特别慢，超过了过期时间，这个时候锁已经自动过期失效了，这样就有可能两个线程同时在执行了。如何避免这样的问题这里不再详述，感兴趣的同学可以参考末尾 References 里面的内容。总之，实现一把完美的分布式锁可能并没有想象中那么简单。</p>
+<h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p>对于高级编程语言而言，多进程和多线程的并发模型更多的还是与操作系统底层对于并发的实现是保持一致的。也就是说，在它们的抽象层级上，实现并发的方式基本只是复刻了操作系统底层的并发模型。而 JavaScript 却不一样。</p>
+<p>JavaScript 在诞生时就被定位为在网页前端执行的脚本，为了保证线程安全，而且主线程也不会被 I&#x2F;O 等待所阻塞而失去响应，JavaScript 在设计阶段就采用了「异步事件模型」。这个模型并不是 JavaScript 独有的，它只是借用了这个古老的模型来解决它自身的问题。</p>
+<p>在实际情况中，异步事件模型也是采用多线程的方式来实施的。但是对于开发人员而言，你永远只需要跟主线程打交道，而所有的这些交互都是所谓「异步」的，也就是说，你调用的任何一个 API 都在执行成功后主动告知你执行结果，这样你就可以不必被任何 I&#x2F;O 所堵塞（详细的关于异步、同步、阻塞和非阻塞的辨析可以看这里：<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">《完全理解同步&#x2F;异步与阻塞&#x2F;非阻塞》</a>）。既然不会被阻塞，那么你可以以很快的速度调用很多个你需要调用的 I&#x2F;O，这些 API 在自己执行完毕后会主动返回结果，你可以拿着结果来继续做后续的事情，而其他时刻你完全是「自由」的。</p>
+<p>在这个并发模型中，你不再需要处理各种「锁」的问题，因为真正和你交互的只有主线程。可是作为开发者，你可能需要考虑如何处理代码中的各种异步流程。因为在异步的世界里，代码不再是简单的按照书写顺序来顺序执行的，如何在工程中清晰合理的组织这些流程是在这个并发模型下需要考虑的问题。</p>
+<h2 id="各种各样的并发模型"><a href="#各种各样的并发模型" class="headerlink" title="各种各样的并发模型"></a>各种各样的并发模型</h2><p>这个世界上除了多进程&#x2F;多线程的并发模型和异步事件并发模型，还有很多其他的并发模型，比如 Erlang 的 Actor 并发模型和 Golang 的 CSP 并发模型。在 Erlang 的并发世界里，有很多比内核线程还要轻量级的对象，它们之间通过各种 Message 来进行数据共享。这些对象非常轻，可以同时成千上万的被创建出来实现并发，而对象之间都通过发消息来进行数据交换，根本不需要「锁」。</p>
+<p>在一个没有「锁」的世界里，并发的效率是可以大大的提升的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每一个并发模型都有其存在的意义和价值，不过在具体的业务场景下，采用不同的并发模型的好坏却是客观的。</p>
+<p>真理是存在的，可以被不断逼近却永远无法被任何事物所完美诠释。在技术的领域里，没有永恒的真理，但是真理永远值得被追求。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a></li>
+<li><a href="https://github.com/jackfrued/Python-100-Days">Python-100-Days</a></li>
+<li><a href="https://www.itcodemonkey.com/article/3934.html">漫画：什么是分布式锁？</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>「完全理解」系列</tag>
+        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -1658,57 +1709,6 @@ _Farewell and thanks to each for the company_
         <tag>冷数据</tag>
         <tag>在线数据</tag>
         <tag>离线数据</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>完全理解并发</title>
-    <url>/2018/10/21/understand-concurrency/</url>
-    <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
-<p>本来不想把这篇文章加入到<a href="http://maples7.com/tags/%E3%80%8C%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3%E3%80%8D%E7%B3%BB%E5%88%97/">「完全理解」系列</a>，因为觉得「并发」涉及到的东西实在是很多，而我想凭借一篇博客企图「完全理解」那是不现实的。但虽然不能做到「完全理解」，但我还是会尝试尽力提纲挈领的把「并发」相关的话题都理清楚，把脉络勾勒出来，让它尽可能对得起「完全」吧。<del>毕竟，如果以后我有了一些更深的理解，我还可以继续迭代这篇文章。</del></p>
-<span id="more"></span>
-
-<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>在开始正式的话题之前，我们先来厘清两个概念——「并发」与「并行」。</p>
-<p>Erlang 之父 Joe Armstrong 曾经用一张非常简单易懂的图解释了「并发」与「并行」的区别：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b67309e4d019.jpg" alt="Joe Armstrong 解释「并发」与「并行」"></p>
-<p>「并发」是同学们排成两队，然而却只有一个咖啡机在工作，所以两个队列排在前面的同学交替使用咖啡机；「并行」则是两台咖啡机分别服务两个独立的同学队列，它们同时进行，互不干扰。</p>
-<p>这样的例子简单易懂，但依然还需要更进一步说明的是，「并发」与「并行」其实并不是同一个维度上非黑即白的两个对立的概念。「并发」更多的强调的是有没有这样的能力或特征，它是从事物的性质和对外表现上来说的，它不在乎你内部是如何实现「并发」的，相对而言是在更高层次上的概括，而「并行」则规定了它们在物理上一定是同时进行的，相对而言更严格。</p>
-<p>具体从编程的角度来说，「并行」甚至可以是实现「并发」的一种手段，比如用下文所要讲的「多线程」或「多进程」的方式来赋能某一段程序的「并发」能力：为了使程序具备「并发」的能力，采用「多线程」或「多进程」在应用层面上可以「并行」运行的具体实现手段来为其赋能。</p>
-<h2 id="计算机操作系统发展史"><a href="#计算机操作系统发展史" class="headerlink" title="计算机操作系统发展史"></a>计算机操作系统发展史</h2><p>要追根溯源的来理解「并发」，我们首先应该了解一下计算机操作系统的发展历史。因为回顾整个计算机操作系统的发展历史，我们就会发现，几乎所有的关键历史节点，都是因为它使得计算机系统拥有了更强的并发处理能力而变得重要的。</p>
-<p>在计算机诞生之初，是没有操作系统这种东西存在的，当时人们只能先把打孔纸带通过输入机将程序传入计算机，再启动运行。在程序执行完毕之后，打印机把计算结果输出，在现场监督程序执行的程序员再取走纸带。在这个时期，同一个计算机系统在同一时间只能处理唯一确定的一件事情。</p>
-<p>后来人们发明了批处理系统。批处理系统相当于计算机上的一个任务监督程序，在它的控制和调度下，计算机能够自动的、成批的处理一个或多个用户的任务。在批处理系统的帮助下，各个任务之间可以自动衔接，减少了需要人工建立任务和手工操作的时间，提高了计算机的利用效率。</p>
-<p>再后来，随着 CPU 性能的不断提升，出现了分时系统和实时系统。分时系统是把 CPU 的运行时间分成很短的时间片，按时间片轮流把 CPU 分配给各联机任务使用。若某个任务在分配给它的时间片内不能完成其计算，则该任务暂时中断，把 CPU 让给另一任务使用，等待下一轮调度时再继续其运行。由于计算机速度很快，各个任务之间轮转得也很快，给每个用户的感觉是他独占了一台计算机。而每个用户可以通过自己的终端向系统发出各种操作控制命令，在充分的人机交互情况下，完成作业的运行。为了解决分时系统不能及时响应用户指令的情况，又出现了能够在严格的时间范围内完成事件处理、及时响应随机外部事件的实时系统。</p>
-<p>IBM 于 1964 年伴随着大型机 System&#x2F;360 推出了通用操作系统 OS&#x2F;360，这个通用的操作系统使得不同型号的计算机设备也可以在同样的操作系统控制下使用同样的外部设备（如打印机）和更上层的软件，并且这些设备之间可以相互连接，共同工作。通用操作系统使得不同型号的计算机设备之间能够真正组成网络来处理复杂的任务。<del>软件工程领域的著作<a href="https://book.douban.com/subject/2230248/">《人月神话》</a>也是诞生于 IBM 的这个项目。</del></p>
-<p>再往后就是我们相对更加熟悉的 Unix&#x2F;Linux&#x2F;Windows&#x2F;OS X 这些现代操作系统诞生、迭代、版本更替的历史，目前这些操作系统的并发能力已经远远超出了当时的 OS&#x2F;360，而现代计算机网络的加持更是使得理论上的计算机并发处理能力几乎已经没有了上限。</p>
-<p>从整个计算机操作系统的历史我们可以清晰的看到历史上的计算机科学家们是如何一步一步来提升计算机处理任务的效率的。从一开始需要手工的开启、监督、结束单一任务，到使用批处理系统来自动化的监督任务流水线，再到使用分时系统来让 CPU 在多个任务之间不停的轮转，然后用后文要详述的多 CPU 使用多进程和多线程的方式来进一步提升多任务的执行效率，最后我们使用通用计算机系统来组成庞大的计算集群来处理复杂的各种各样需要随机响应的任务，并发能力一次比一次有了质的提升。</p>
-<p>如果说<a href="https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B">「摩尔定律」</a>使得 CPU 的性能可以指数级的增长来从单机速度上提升任务完成的效率，那么不断的提升并发能力则是更高屋建瓴的考虑如何不间断不浪费的来「压榨」CPU 的高性能，这种思考问题的维度比一门心思的考虑提升单 CPU 的速度更具有现实意义，对于解决现有问题来说是更加高明的选择。尤其是在「摩尔定律」行将失效的今天，采用分布式的方式提高整个系统的并发处理能力几乎成了唯一的选择。</p>
-<h2 id="多进程与多线程"><a href="#多进程与多线程" class="headerlink" title="多进程与多线程"></a>多进程与多线程</h2><p>让我们先回到单机时代，来了解目前主流的并发模型——多进程与多线程。现代操作系统早已进入多 CPU 时代，自然会支持多进程和多线程。「进程」就是操作系统中一个具有独立功能的程序，操作系统管理所有进程的执行并且以进程为单位分配存储空间。一个进程还可以拥有多个并发的执行流程，这些并发的执行流程是可以获得 CPU 调度和分派的基本执行单元，也就是线程。</p>
-<p>进程是计算机资源的拥有者，创建、切换和销毁都有较大的时空开销，而一个进程内的所有线程共享这个进程的资源，更轻量级，对其的相关操作也开销更小。需要注意的是，对于单核 CPU 系统而言，并行其实是不存在的，任何时刻 CPU 其实只能被一个线程所获取，线程之间共享了 CPU 的执行时间。由于切换的速度很快，对外表现为并发执行的样子。</p>
-<p>多进程和多线程是如今高级编程语言中实现并发的常规模型，比如 C++、Java、Python。同时为了解决程序中多个进程和线程对资源的抢占问题，还引入了「锁」的概念。在这个并发模型中，需要开发人员利用「锁」来处理资源抢占的问题，也就是不让某一个资源同时被多于一个进程（线程）所处理而带来不可预期的后果。</p>
-<p>既然有多进程和多线程，那么「锁」自然也有「进程锁」和「线程锁」。我们知道两个进程其实是相互独立的，各自拥有操作系统分配的独立资源，而「进程锁」是为了防止两个进程对他们所占用的资源以外的共享资源同时访问，一般可以使用操作系统级别的信号量来实现。相对应的，「线程锁」则是保证同一段代码在同一时间只有一个线程在执行，一般各语言本身或类库会提供实现方式。</p>
-<h2 id="分布式并发锁"><a href="#分布式并发锁" class="headerlink" title="分布式并发锁"></a>分布式并发锁</h2><p>「分布式锁」跟「进程锁」和「线程锁」很像，不过它更多的是使用在计算集群的场景中。在本质上，进程锁、线程锁和分布式锁的作用都是一样的，只是作用的颗粒度不一样。线程锁作用于单一进程的范围，进程锁作用于单一操作系统的范围，而分布式锁则可以作用于网络结构中。在分布式集群当中，我们使用分布式锁来保证不同线程对代码和资源是独占的。</p>
-<p>如何实现一个完美的分布式锁呢？我们先来分析一下实现一个好的分布式锁应该满足什么需求：首先这个加锁操作应该是原子性的，否则这个锁是有可能被「击穿」的；其次锁一般还需要有过期时间，使得某一次执行异常没有移除锁的情况下也能自然过期然后重试。</p>
-<p>以大多数人都熟悉的 Redis 为例，我们可以使用 Redis 的 set 指令，把 key 作为锁的标志。尤其注意的是，这个操作原子性包含了查看锁存不存在、加锁和设置过期时间三步操作，它们合在一起应该具有原子性（至少前两步）。也就是说，如果我们需要先使用 get 指令查看锁存不存在再决定是否加锁，这个锁已经不是一把好「锁」了。好在 <a href="https://redis.io/commands/set">Redis 2.6.12 以上的 set 指令</a> 支持了同时加参数设置过期时间和判断 key 是否存在，比如使用 <code>SET lock_key lock EX 5000 NX</code>，NX 保证了锁不存在时才上锁，而 Redis 指令本身具有原子性，这样就实现了一把看起来还不错的锁。在任务执行完毕后我们还需要用 del 指令主动把锁删掉以释放资源。</p>
-<p>上述例子只是一个简单的场景，这个锁其实还并不是完美的。思考这样的问题：如果某一次操作线程 A 执行的特别慢，超过了过期时间，这个时候锁已经自动过期失效了，这样就有可能两个线程同时在执行了。如何避免这样的问题这里不再详述，感兴趣的同学可以参考末尾 References 里面的内容。总之，实现一把完美的分布式锁可能并没有想象中那么简单。</p>
-<h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p>对于高级编程语言而言，多进程和多线程的并发模型更多的还是与操作系统底层对于并发的实现是保持一致的。也就是说，在它们的抽象层级上，实现并发的方式基本只是复刻了操作系统底层的并发模型。而 JavaScript 却不一样。</p>
-<p>JavaScript 在诞生时就被定位为在网页前端执行的脚本，为了保证线程安全，而且主线程也不会被 I&#x2F;O 等待所阻塞而失去响应，JavaScript 在设计阶段就采用了「异步事件模型」。这个模型并不是 JavaScript 独有的，它只是借用了这个古老的模型来解决它自身的问题。</p>
-<p>在实际情况中，异步事件模型也是采用多线程的方式来实施的。但是对于开发人员而言，你永远只需要跟主线程打交道，而所有的这些交互都是所谓「异步」的，也就是说，你调用的任何一个 API 都在执行成功后主动告知你执行结果，这样你就可以不必被任何 I&#x2F;O 所堵塞（详细的关于异步、同步、阻塞和非阻塞的辨析可以看这里：<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">《完全理解同步&#x2F;异步与阻塞&#x2F;非阻塞》</a>）。既然不会被阻塞，那么你可以以很快的速度调用很多个你需要调用的 I&#x2F;O，这些 API 在自己执行完毕后会主动返回结果，你可以拿着结果来继续做后续的事情，而其他时刻你完全是「自由」的。</p>
-<p>在这个并发模型中，你不再需要处理各种「锁」的问题，因为真正和你交互的只有主线程。可是作为开发者，你可能需要考虑如何处理代码中的各种异步流程。因为在异步的世界里，代码不再是简单的按照书写顺序来顺序执行的，如何在工程中清晰合理的组织这些流程是在这个并发模型下需要考虑的问题。</p>
-<h2 id="各种各样的并发模型"><a href="#各种各样的并发模型" class="headerlink" title="各种各样的并发模型"></a>各种各样的并发模型</h2><p>这个世界上除了多进程&#x2F;多线程的并发模型和异步事件并发模型，还有很多其他的并发模型，比如 Erlang 的 Actor 并发模型和 Golang 的 CSP 并发模型。在 Erlang 的并发世界里，有很多比内核线程还要轻量级的对象，它们之间通过各种 Message 来进行数据共享。这些对象非常轻，可以同时成千上万的被创建出来实现并发，而对象之间都通过发消息来进行数据交换，根本不需要「锁」。</p>
-<p>在一个没有「锁」的世界里，并发的效率是可以大大的提升的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每一个并发模型都有其存在的意义和价值，不过在具体的业务场景下，采用不同的并发模型的好坏却是客观的。</p>
-<p>真理是存在的，可以被不断逼近却永远无法被任何事物所完美诠释。在技术的领域里，没有永恒的真理，但是真理永远值得被追求。</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a></li>
-<li><a href="https://github.com/jackfrued/Python-100-Days">Python-100-Days</a></li>
-<li><a href="https://www.itcodemonkey.com/article/3934.html">漫画：什么是分布式锁？</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>「完全理解」系列</tag>
-        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -2109,51 +2109,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>创业的准则</title>
-    <url>/2021/11/19/principles-4-startups/</url>
-    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
-<span id="more"></span>
-
-<ol>
-<li><p>找最优秀的人一起工作。</p>
-<p> 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。</p>
-<p> 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</p>
-</li>
-<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
-<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
-<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
-<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
-</li>
-<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
-<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
-<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI&#x2F;UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
-</li>
-<li><p>用产品和技术而不是营销手段说服用户。</p>
-<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
-</li>
-<li><p>建立制度，然后让更多的人自己做决定。</p>
-<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
-<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
-<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
-</li>
-<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
-<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
-</li>
-<li><p>流程优化永远比赶进度更重要。</p>
-<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
-</li>
-</ol>
-<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>产品</tag>
-        <tag>创业</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在望京，没有方向</title>
     <url>/2021/12/08/no-direction-in-wangjing/</url>
     <content><![CDATA[<p>北京的初雪天很冷，却总能给人一种充满希望的感觉。雪一下，北京成了北平，茫茫的白色也成了一系列盛大节日的暗示。会来事儿的商家会早早在店面上添上一抹红，本来素朴的街道氛围一下就上来了。不管你白天因为工作上的什么事情而烦恼，在天刚黑的下班路上，都是一段最佳的放空自己的时间。宽阔的街道上一如继往的车水马龙，迎面的车道闪过一道道晃眼的白光，正向车道的红尾灯连成一片红色光带。是很堵，但人们都失去了一些平凡日子里的暴躁。当然，这很可能是前面路口交警的功劳。</p>
@@ -2239,6 +2194,51 @@ _Farewell and thanks to each for the company_
         <tag>人生</tag>
         <tag>投资</tag>
         <tag>摄影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>创业的准则</title>
+    <url>/2021/11/19/principles-4-startups/</url>
+    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
+<span id="more"></span>
+
+<ol>
+<li><p>找最优秀的人一起工作。</p>
+<p> 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。</p>
+<p> 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</p>
+</li>
+<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
+<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
+<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
+<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
+</li>
+<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
+<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
+<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI&#x2F;UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
+</li>
+<li><p>用产品和技术而不是营销手段说服用户。</p>
+<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
+</li>
+<li><p>建立制度，然后让更多的人自己做决定。</p>
+<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
+<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
+<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
+</li>
+<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
+<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
+</li>
+<li><p>流程优化永远比赶进度更重要。</p>
+<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
+</li>
+</ol>
+<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>产品</tag>
+        <tag>创业</tag>
       </tags>
   </entry>
   <entry>
@@ -2341,6 +2341,23 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>这一年多我都拍了些什么图</title>
+    <url>/2022/09/06/what-i-shoot-this-year/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo1.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo2.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo4.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo5.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo6.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo3.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo10.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo7.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo8.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo9.JPG"></div></div></div>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>FUJIFILM X-S10</tag>
+        <tag>DJI mini 2</tag>
+        <tag>千岛湖</tag>
+        <tag>泉州</tag>
+        <tag>苏州</tag>
+        <tag>乌镇</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>尘埃落定，为什么我依然要力挺《二舅》</title>
     <url>/2022/09/04/why-i-support-erjiu/</url>
     <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
@@ -2365,23 +2382,6 @@ _Farewell and thanks to each for the company_
         <tag>创作</tag>
         <tag>电影</tag>
         <tag>文化产业</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>这一年多我都拍了些什么图</title>
-    <url>/2022/09/06/what-i-shoot-this-year/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo1.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo2.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo4.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo5.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo6.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo3.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo10.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo7.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo8.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo9.JPG"></div></div></div>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>FUJIFILM X-S10</tag>
-        <tag>DJI mini 2</tag>
-        <tag>千岛湖</tag>
-        <tag>泉州</tag>
-        <tag>苏州</tag>
-        <tag>乌镇</tag>
       </tags>
   </entry>
   <entry>
@@ -2542,9 +2542,9 @@ _Farewell and thanks to each for the company_
     <url>/2024/11/08/open-source-maples7-1/</url>
     <content><![CDATA[<h2 id="📑-前序"><a href="#📑-前序" class="headerlink" title="📑 前序"></a>📑 前序</h2><p>从微软离职以来已经有一年多了（原因和感受详见：<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">热情、工作与理想主义｜为什么我要离开微软</a>），离职后的前半年基本在休养生息，顺便学习了一些 Apple 开发相关的东西，后半年开始写我几年来一直想写的一个财务类的工具 App，算是正式开始了我的全职独立开发之路。</p>
 <p>不用上班之后我感受到了前所未有的自由，一种大学期间时常沸腾全身的创造力似乎正在回归。不上班不意味着不工作，上班经常是消磨热情和创造力的，而工作却可以是由热情和创造力来自我驱动的。可预见的未来一段时间，我感觉我都会非常享受现在的这种状态。</p>
+<p>正是因为我开始有大把的时间能真正投入到自己的兴趣和热情所在，独立开发的过程基本也开始变得常态化，我决定开启一个全新的个人企划 —— 《Maples7 个人开源计划》。在这个计划里，我会尽可能定期地（周 or 月，取决于可分享的内容的多少）分享最近一段时间在工作（独立开发为主）、生活和投资领域的个人进展、所见所闻和个人感悟，并持续记录自己的资产动态变化。既为备忘自己未来独立开发一路的历程，也作为一个跟外界交流沟通的窗口（未来如果有谁好奇我最近一段时间又在鼓捣些什么玩意儿，我可以直接甩个链接了哈哈 &gt;_&lt;）。随着个人的变化和发展，也会动态变化记录的内容。总之，在这个纷乱的时代里，主打一个机动灵活。另外，人是复杂的有机系统，任何一个侧面都不足以概括一个个体的丰富性，但我力求能在这里涉及到所有我所关注的个人领域。</p>
 <span id="more"></span>
 
-<p>正是因为我开始有大把的时间能真正投入到自己的兴趣和热情所在，独立开发的过程基本也开始变得常态化，我决定开启一个全新的个人企划 —— 《Maples7 个人开源计划》。在这个计划里，我会尽可能定期地（周 or 月，取决于可分享的内容的多少）分享最近一段时间在工作（独立开发为主）、生活和投资领域的个人进展、所见所闻和个人感悟，并持续记录自己的资产动态变化。既为备忘自己未来独立开发一路的历程，也作为一个跟外界交流沟通的窗口（未来如果有谁好奇我最近一段时间又在鼓捣些什么玩意儿，我可以直接甩个链接了哈哈 &gt;_&lt;）。随着个人的变化和发展，也会动态变化记录的内容。总之，在这个纷乱的时代里，主打一个机动灵活。另外，人是复杂的有机系统，任何一个侧面都不足以概括一个个体的丰富性，但我力求能在这里涉及到所有我所关注的个人领域。</p>
 <p>以下是第一期的《Maples7 个人开源计划》的内容。</p>
 <h2 id="🧑‍💻-工作"><a href="#🧑‍💻-工作" class="headerlink" title="🧑‍💻 工作"></a>🧑‍💻 工作</h2><ul>
 <li><p>正在写的<strong>财务类工具 App</strong> 第一版功能基本接近尾声，正在添加一些跟会员体系有关的功能，已经注册订阅了 Apple Developer Program，也准备研究一下是否需要注册一个一人公司来作为 App 的上架实体，相关的也会看看苹果 App Store 具体的上架流程。接下来准备继续完善功能，然后开始注册商标、软件著作权注册、备案等工作，之后就会开始进行内测、准备上架。</p>
@@ -2555,12 +2555,12 @@ _Farewell and thanks to each for the company_
 </li>
 </ul>
 <h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新资产配置比例的桑吉图：</p>
-<p><img data-src="https://fastly.jsdelivr.net/gh/bucketio/img7@main/2024/11/07/1730986135381-dff5e776-047c-46c5-a2be-890777947c22.jpeg" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"></p>
+<p><img data-src="https://s2.loli.net/2024/11/08/CQgmSMzv24aHBVo.jpg" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"></p>
 <center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center>
 
 <p>基于隐私的原因，我只会分享我的具体资产配置的各部分比例，以及在两次分享期间的资产增减值，而不会给出具体的总额绝对值（但根据两次的 delta 量其实已经可以大致推算出来了）。</p>
 <p>神奇的是，虽然已经离职了一年多没有收入，我的总资产却还是增长的，这应该要归功于最近二级市场的不错表现了。</p>
-<p>关于我的投资和资产配置体系，推荐阅读我曾写过的关于投资的滚雪球的两篇博客：</p>
+<p>关于我的投资和资产配置体系，推荐阅读我曾写过的关于投资的<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」分类</a>下的两篇博客：</p>
 <ul>
 <li><a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a></li>
 <li><a href="https://maples7.com/2022/08/20/a-specific-investment-strategy/">《一套大概率可行的具体投资策略》</a></li>
@@ -2570,7 +2570,7 @@ _Farewell and thanks to each for the company_
 <li>最近在家做饭多了起来（homemade 小炒黄牛肉大成功！），虽然我还是不觉得在家做饭是一项「收益大于支出」的活动，但确实能提供不少家庭生活的情绪价值。</li>
 <li>最近开始每天早上在太湖边慢跑快走半小时，可以保持一天的身心舒畅。</li>
 <li>最近分别去了北京环球影城（第二次）、乌镇戏剧节（乌镇第三次，戏剧节头一回）玩，体验都很不错，尤其是跟家人朋友们一起出游，很棒！</li>
-<li>推荐正在追的芒果 TV 综艺《再见爱人4》，目前看来每一期都大呼精彩！对婚姻关系和人性的解剖，算是少有的国内情感内综艺的精品之作。一起来做爱人文学家！😶‍🌫️</li>
+<li>推荐正在追的芒果 TV 综艺《再见爱人4》，目前看来每一期都大呼精彩！对婚姻关系和人性的解剖，算是少有的国内情感类综艺的精品之作。一起来做爱人文学家！😶‍🌫️</li>
 <li>打算有空随意再看看《哈利·波特》的原著和电影，虽然作为多年哈迷已经对情节熟悉得不行了，但直到现在依然会对罗琳原著里的精彩描述吸引。</li>
 <li>花最多时间在看的书是《货币战争》全集，虽然这本书一直争议很大，但是书中的论点却对当今世界政治经济的格局分析和走向预测很有参考价值。另外还在看一本网文《我在废土世界捡垃圾》，剧情也很精彩，确实是网文中以女性视角展开的精品。</li>
 <li>虽然气温逐渐变冷对身体健康不是很好，但是很喜欢秋冬季节这种逐渐弥漫的节日氛围，总是能带来一种想要回顾传统和经典、与家人朋友一起慢慢度过的温暖的感觉。词穷了，很难准确形容这种感觉。</li>
