@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2024-11-15T19:24:10.034Z</updated>
+  <updated>2024-11-15T19:29:05.123Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://maples7.com/2024/11/16/open-source-maples7-2/"/>
     <id>https://maples7.com/2024/11/16/open-source-maples7-2/</id>
     <published>2024-11-15T19:14:00.000Z</published>
-    <updated>2024-11-15T19:24:10.034Z</updated>
+    <updated>2024-11-15T19:29:05.123Z</updated>
     
     
     <summary type="html">&lt;p&gt;因为公众号发的上一篇&lt;a href=&quot;https://maples7.com/2023/07/25/why-i-leave-microsoft/&quot;&gt;《热情、工作与理想主义｜为什么我要离开微软》&lt;/a&gt;引发了一些讨论，所以这一期想聊的话题有点多。为了不让某一期的内容太长，所以尽管距离&lt;a href=&quot;https://maples7.com/2024/11/08/open-source-maples7-1/&quot;&gt;上一篇《开源计划》&lt;/a&gt;才一周时间，工作量并不多，但也还是更新一期吧。&lt;/p&gt;
 &lt;p&gt;与前几篇文章相关的更多话题讨论在本文最后两部分，最后部分有回答网友的一些提问。&lt;/p&gt;
-&lt;h1 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h1&gt;&lt;ul&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;完成了 Apple Developer Program 的订阅注册，个人经验是：&lt;ol&gt;
 &lt;li&gt;要耐心按照提示和邮件内容完成每一步的操作，该认证的认证，该实名的实名，遇到不明确的问题及时联系客服解决。&lt;/li&gt;
 &lt;li&gt;付费后账户不是立马就能用订阅后才能使用的开发者相关的功能，我是等了几个小时后收到邮件才开通成功。&lt;/li&gt;
@@ -445,9 +445,9 @@
     <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
     
     
-    <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
-    
     <category term="性能调优" scheme="https://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+    <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
     
     <category term="Elixir" scheme="https://maples7.com/tags/Elixir/"/>
     
