@@ -112,6 +112,53 @@
       </tags>
   </entry>
   <entry>
+    <title>非关系型数据库中的「关系」实现</title>
+    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
+    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
+<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
+<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+<span id="more"></span>
+
+<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
+<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
+<p>方法如下：</p>
+<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
+<p>举例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
+<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
+<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
+<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
+<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
+<p>引用方法又可分为两种：</p>
+<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
+<p>方法简单，不再举例赘述。</p>
+<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
+<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
+<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
+<p>样例如下：</p>
+<p>在 user.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 msgboard.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
+<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
+<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
+<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
+<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
+<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的密码管理策略</title>
     <url>/2016/04/06/my-strategy-about-passwords-management/</url>
     <content><![CDATA[<p>[ 本文来自于<a href="https://www.zhihu.com/question/19695004/answer/93985563">我的知乎回答</a>，现整理修改后记于博客。]</p>
@@ -202,53 +249,6 @@
         <tag>Sony DSC-RX100</tag>
         <tag>城市</tag>
         <tag>光影</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>非关系型数据库中的「关系」实现</title>
-    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
-    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
-<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
-<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
-<span id="more"></span>
-
-<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
-<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
-<p>方法如下：</p>
-<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
-<p>举例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
-<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
-<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
-<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
-<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
-<p>引用方法又可分为两种：</p>
-<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
-<p>方法简单，不再举例赘述。</p>
-<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
-<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
-<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
-<p>样例如下：</p>
-<p>在 user.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在 msgboard.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
-<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
-<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
-<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
-<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
-<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
       </tags>
   </entry>
   <entry>
@@ -450,6 +450,81 @@
       </tags>
   </entry>
   <entry>
+    <title>使用 Swagger 构建 Express API Server 的文档系统</title>
+    <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
+    <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
+<img data-src="https://i.loli.net/2018/08/06/5b672f1a563d0.png" class="" title="Swagger——The Most Popular Framework for APIs of The World" alt="图片显示错误">
+
+<span id="more"></span>
+
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>文档生成的「源」（或者说「依据」）与代码不分离，即直接用<code>jsdoc</code>注释生成文档；</li>
+<li>可以用同样的「源」同时实现对接口输入输出参数的验证，最大化保证文档与后端具体实现之间的一致性；</li>
+<li>文档在线可用性测试，并且可以完美解决跨域请求的问题；</li>
+<li>在后端接口还未完成时，可以 Mock 返回数据；</li>
+<li>最好能自动生成一些测试数据甚至自动进行测试；</li>
+</ul>
+<h2 id="从-JSDoc-到可视化文档"><a href="#从-JSDoc-到可视化文档" class="headerlink" title="从 JSDoc 到可视化文档"></a>从 JSDoc 到可视化文档</h2><h3 id="Step-1：定义接口模型"><a href="#Step-1：定义接口模型" class="headerlink" title="Step 1：定义接口模型"></a>Step 1：定义接口模型</h3><p>在 Controller 层每一条路由的函数注释上（具体来说，Routes 目录下或 Controller 目录下均可，只要配置好<code>Step 2</code>中的<code>swagger-jsdoc</code>，明确「源」所在的目录即可）按<code>Swagger YAML</code>语法定义接口模型，示例如下:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * definition:</span></span><br><span class="line"><span class="comment"> *   Puppy:</span></span><br><span class="line"><span class="comment"> *     properties:</span></span><br><span class="line"><span class="comment"> *       name:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       breed:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       age:</span></span><br><span class="line"><span class="comment"> *         type: integer</span></span><br><span class="line"><span class="comment"> *       sex:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   get:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Returns all puppies</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: An array of puppies</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">getAllPuppies</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   post:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Creates a new puppy</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     parameters:</span></span><br><span class="line"><span class="comment"> *       - name: puppy</span></span><br><span class="line"><span class="comment"> *         description: Puppy object</span></span><br><span class="line"><span class="comment"> *         in: body</span></span><br><span class="line"><span class="comment"> *         required: true</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: Successfully created</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">createPuppy</span>);</span><br></pre></td></tr></table></figure>
+
+<p>一些抽象出来的<code>definition</code>直接在前面的<code>/** */</code>注释中定义即可。</p>
+<p>在生成的完整配置中，同一个路径下的配置（比如上述示例中<code>/api/puppies</code>下的<code>get</code>与<code>post</code>）会合并在这同一个路径之下，所以同一个路径下的全局配置只用写一遍就行了（比如下文<code>Mock返回数据</code>小节中使用<code>Swagger Router</code>中间件需要的<code>x-swagger-router-controller</code>配置）。</p>
+<h3 id="Step-2：生成-Swagger-接口定义"><a href="#Step-2：生成-Swagger-接口定义" class="headerlink" title="Step 2：生成 Swagger 接口定义"></a>Step 2：生成 Swagger 接口定义</h3><p>用 <a href="https://github.com/Surnet/swagger-jsdoc">swagger-jsdoc</a> 生成 JSON 格式的 Swagger 接口定义。<br>Demo：<a href="https://github.com/mjhea0/node-swagger-api">mjhea0&#x2F;node-swagger-api</a>。</p>
+<p>这里不用把生成的 JSON 保存在本地磁盘上，直接用一个变量引用即可。</p>
+<h3 id="Step-3：用-Swagger-UI-生成可视化文档"><a href="#Step-3：用-Swagger-UI-生成可视化文档" class="headerlink" title="Step 3：用 Swagger UI 生成可视化文档"></a>Step 3：用 Swagger UI 生成可视化文档</h3><p>在线查看：打开<a href="http://petstore.swagger.io/">http://petstore.swagger.io/</a>，在顶部的 URL 栏输入可以获取<code>Step 2</code>中生成的 JSON 格式的 Swagger 文档定义的 URL，<del>一般来说可以是<a href="http://localhost:3000/swagger.json">http://localhost:3000/swagger.json</a> （需要自己手动在代码中书写路由和请求的返回）</del> 在使用了后文要说明的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>之后按照默认配置是 <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）。这种方式需要解决跨域请求的问题，详见后文。</p>
+<p>本地离线查看：<del>直接在本项目 public（静态文件目录）下放置离线版<code>Swagger UI</code>，直接打开即可查看。详见<code>Step 2</code>中的 Demo 及作者的博文说明。</del>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>，如果你直接使用默认配置：</p>
+<ul>
+<li><a href="http://localhost:3000/docs/">http://localhost:3000/docs/</a> 可以看到完整的可视化文档；</li>
+<li><a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）可以看到自己在<code>Step 2</code>中自动生成的 Swagger 接口定义。</li>
+</ul>
+<p>这个中间件可以让你在开发时再也无需操心可视化文档的前端实现和如何查看自动生成 Swagger 接口定义（以便确定是否符合规范和自己的需求）的问题。</p>
+<h2 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h2><h3 id="解决跨域请求的问题"><a href="#解决跨域请求的问题" class="headerlink" title="解决跨域请求的问题"></a>解决跨域请求的问题</h3><p>官方说明见：<a href="https://github.com/swagger-api/swagger-ui#cors-support">https://github.com/swagger-api/swagger-ui#cors-support</a>。<br>在<code>app.use(&#39;/&#39;, routes);</code>之前加一个如下的中间件设置一些 cors 相关的头可以解决问题:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://petstore.swagger.io&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;GET, POST, DELETE, PUT, PATCH, OPTIONS&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type, api_key, Authorization&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  <span class="title function_">next</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口参数验证"><a href="#接口参数验证" class="headerlink" title="接口参数验证"></a>接口参数验证</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-metadata">Swagger Metadata</a>和<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-validator">Swagger Validator</a>中间件：</p>
+<ul>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools Quick Start</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/tree/master/examples/2.0">Demo</a>；</li>
+</ul>
+<p>其中 Swagger Metadata 中间件做了匹配请求路由与 Swagger 定义路由以及解析参数的工作，Swagger Validator 中间件做了验证参数类型和其他已定义的参数限制的工作。</p>
+<h3 id="Mock-返回数据"><a href="#Mock-返回数据" class="headerlink" title="Mock 返回数据"></a>Mock 返回数据</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-router">Swagger Router 中间件</a>即可实现。</p>
+<p>正常情况下，根据你的 Swagger 定义会返回<code>Response Code</code>为<code>200</code>（当 Swagger 定义中已定义<code>200</code>的返回时）的类似这样的数据：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;breed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;age&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sex&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自动生成测试代码"><a href="#自动生成测试代码" class="headerlink" title="自动生成测试代码"></a>自动生成测试代码</h3><p>使用<a href="https://github.com/apigee-127/swagger-test-templates">apigee-127&#x2F;swagger-test-templates</a>可以根据你的 Swagger 定义自动生成对所有接口功能测试的脚手架代码（基本可以自动确定的地方都自动生成了），在你把自动生成的代码写入磁盘文件后，只需修改极少量的地方（一般是提供一些需要测试的参数）就可以使用测试。</p>
+<p>自动生成的代码长成这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> chai = <span class="built_in">require</span>(<span class="string">&#x27;chai&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">ZSchema</span> = <span class="built_in">require</span>(<span class="string">&#x27;z-schema&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> validator = <span class="keyword">new</span> <span class="title class_">ZSchema</span>(&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> supertest = <span class="built_in">require</span>(<span class="string">&#x27;supertest&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> api = <span class="title function_">supertest</span>(<span class="string">&#x27;http://localhost:3000&#x27;</span>); <span class="comment">// supertest init;</span></span><br><span class="line"></span><br><span class="line">chai.<span class="title function_">should</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;get&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 An array of puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      <span class="comment">/*eslint-disable*/</span></span><br><span class="line">      <span class="keyword">var</span> schema = &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="attr">items</span>: &#123;</span><br><span class="line">          <span class="attr">$ref</span>: <span class="string">&#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*eslint-enable*/</span></span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          validator.<span class="title function_">validate</span>(res.<span class="property">body</span>, schema).<span class="property">should</span>.<span class="property">be</span>.<span class="property">true</span>;</span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;post&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 Successfully created&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">send</span>(&#123;</span><br><span class="line">          <span class="attr">puppy</span>: <span class="string">&#x27;DATA GOES HERE&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          res.<span class="property">body</span>.<span class="property">should</span>.<span class="title function_">equal</span>(<span class="literal">null</span>); <span class="comment">// non-json response or no schema</span></span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>之后可以考虑用 gulp 把测试串联起来进行自动化测试。npm 上已经有<a href="https://www.npmjs.com/package/gulp-swagger-test-templates">这样的包</a>，不过我还没有试过。</p>
+<p>目前这个包对于<code>Swagger 2.0</code>的支持还不是很完全，尤其是对<code>$ref</code>不能自动解析，这样的话需要手动改动的测试代码多一些，不过他们正在着力解决这个问题，估计下一个版本（1.3.0）就会加入对<code>$ref</code>的解析，详细的讨论可以<a href="https://github.com/apigee-127/swagger-test-templates/issues/104">看这个 issue</a>。同时，他们还在考虑添加通过 JSON-Schema 自动批量生成测试数据的功能，目测<a href="https://github.com/apigee-127/swagger-test-templates/pull/107">也将在下一个版本中推出</a>，值得期待。</p>
+<h3 id="Mock-或-Swagger-UI-失效"><a href="#Mock-或-Swagger-UI-失效" class="headerlink" title="Mock 或 Swagger UI 失效"></a>Mock 或 Swagger UI 失效</h3><p>由于异步的问题，如果你把<code>app.lieten</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数外面，那很可能在你的应用已经启动时，<code>swagger-tools</code>的中间件并没有加载完毕，导致中间件失效（不会报错）。</p>
+<p>鉴于此，应该尽量把<code>swaggerTools.initializeMiddleware</code>写在中间件链的后面部分，然后把位于其后的<code>app.use</code>（比如<code>app.use(&#39;/&#39;, routes);</code>）和<code>app.listen</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数内部。所以，<code>Express 4</code>中提倡的用<code>./bin/www</code>来启动应用的要求在这里可能无法被遵循了。</p>
+<p>更详细的讨论<a href="https://github.com/apigee-127/swagger-tools/issues/328">看这个 issue</a>。</p>
+<p>另外，Mock 失效还有可能是你已经提供了对应 Controller 来 Handle 对应的 Route 请求。并不是将 Swagger Router 中间件中的<code>useStubs</code>设为<code>true</code>就一定会启动 Mock，官方对此说明是：</p>
+<blockquote>
+<p>Stubs only work for requests where the controller and&#x2F;or controller method is missing. Since you have a working controller method, enabling stub mode doesn’t do anything. It’s working as designed.</p>
+</blockquote>
+<p>更详细的讨论可以<a href="https://github.com/apigee-127/swagger-tools/issues/48">看这个 issue</a>。</p>
+<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>使用<code>DEBUG=swagger-tools* node app</code>启动项目，控制台会输出更多详细的信息。</p>
+<h2 id="完整的-Demo"><a href="#完整的-Demo" class="headerlink" title="完整的 Demo"></a>完整的 Demo</h2><p><a href="https://github.com/Maples7/swagger-express-demo">Maples7&#x2F;swagger-express-demo</a>： 将前面所讲的内容整合进了一个小示例中，以供参考。</p>
+<h2 id="上手必读"><a href="#上手必读" class="headerlink" title="上手必读"></a>上手必读</h2><ol>
+<li><a href="http://swagger.io/specification/">swagger-spec</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools&#x2F;docs&#x2F;QuickStart.md</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md">swagger-tools&#x2F;docs&#x2F;Middleware.md</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/API.md">swagger-tools&#x2F;docs&#x2F;API.md</a>；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Swagger</tag>
+        <tag>Express</tag>
+        <tag>API</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>构建合格的 RESTful API Server</title>
     <url>/2016/09/05/build-qualified-restful-api-server/</url>
     <content><![CDATA[<p>这一篇我要把 References 写在前面：</p>
@@ -525,110 +600,9 @@
       </categories>
       <tags>
         <tag>Node.js</tag>
+        <tag>Express</tag>
+        <tag>API</tag>
         <tag>RESTful</tag>
-        <tag>API</tag>
-        <tag>Express</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用 Swagger 构建 Express API Server 的文档系统</title>
-    <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
-    <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
-<img data-src="https://i.loli.net/2018/08/06/5b672f1a563d0.png" class="" title="Swagger——The Most Popular Framework for APIs of The World" alt="图片显示错误">
-
-<span id="more"></span>
-
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>文档生成的「源」（或者说「依据」）与代码不分离，即直接用<code>jsdoc</code>注释生成文档；</li>
-<li>可以用同样的「源」同时实现对接口输入输出参数的验证，最大化保证文档与后端具体实现之间的一致性；</li>
-<li>文档在线可用性测试，并且可以完美解决跨域请求的问题；</li>
-<li>在后端接口还未完成时，可以 Mock 返回数据；</li>
-<li>最好能自动生成一些测试数据甚至自动进行测试；</li>
-</ul>
-<h2 id="从-JSDoc-到可视化文档"><a href="#从-JSDoc-到可视化文档" class="headerlink" title="从 JSDoc 到可视化文档"></a>从 JSDoc 到可视化文档</h2><h3 id="Step-1：定义接口模型"><a href="#Step-1：定义接口模型" class="headerlink" title="Step 1：定义接口模型"></a>Step 1：定义接口模型</h3><p>在 Controller 层每一条路由的函数注释上（具体来说，Routes 目录下或 Controller 目录下均可，只要配置好<code>Step 2</code>中的<code>swagger-jsdoc</code>，明确「源」所在的目录即可）按<code>Swagger YAML</code>语法定义接口模型，示例如下:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * definition:</span></span><br><span class="line"><span class="comment"> *   Puppy:</span></span><br><span class="line"><span class="comment"> *     properties:</span></span><br><span class="line"><span class="comment"> *       name:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       breed:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       age:</span></span><br><span class="line"><span class="comment"> *         type: integer</span></span><br><span class="line"><span class="comment"> *       sex:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   get:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Returns all puppies</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: An array of puppies</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">getAllPuppies</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   post:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Creates a new puppy</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     parameters:</span></span><br><span class="line"><span class="comment"> *       - name: puppy</span></span><br><span class="line"><span class="comment"> *         description: Puppy object</span></span><br><span class="line"><span class="comment"> *         in: body</span></span><br><span class="line"><span class="comment"> *         required: true</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: Successfully created</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">createPuppy</span>);</span><br></pre></td></tr></table></figure>
-
-<p>一些抽象出来的<code>definition</code>直接在前面的<code>/** */</code>注释中定义即可。</p>
-<p>在生成的完整配置中，同一个路径下的配置（比如上述示例中<code>/api/puppies</code>下的<code>get</code>与<code>post</code>）会合并在这同一个路径之下，所以同一个路径下的全局配置只用写一遍就行了（比如下文<code>Mock返回数据</code>小节中使用<code>Swagger Router</code>中间件需要的<code>x-swagger-router-controller</code>配置）。</p>
-<h3 id="Step-2：生成-Swagger-接口定义"><a href="#Step-2：生成-Swagger-接口定义" class="headerlink" title="Step 2：生成 Swagger 接口定义"></a>Step 2：生成 Swagger 接口定义</h3><p>用 <a href="https://github.com/Surnet/swagger-jsdoc">swagger-jsdoc</a> 生成 JSON 格式的 Swagger 接口定义。<br>Demo：<a href="https://github.com/mjhea0/node-swagger-api">mjhea0&#x2F;node-swagger-api</a>。</p>
-<p>这里不用把生成的 JSON 保存在本地磁盘上，直接用一个变量引用即可。</p>
-<h3 id="Step-3：用-Swagger-UI-生成可视化文档"><a href="#Step-3：用-Swagger-UI-生成可视化文档" class="headerlink" title="Step 3：用 Swagger UI 生成可视化文档"></a>Step 3：用 Swagger UI 生成可视化文档</h3><p>在线查看：打开<a href="http://petstore.swagger.io/">http://petstore.swagger.io/</a>，在顶部的 URL 栏输入可以获取<code>Step 2</code>中生成的 JSON 格式的 Swagger 文档定义的 URL，<del>一般来说可以是<a href="http://localhost:3000/swagger.json">http://localhost:3000/swagger.json</a> （需要自己手动在代码中书写路由和请求的返回）</del> 在使用了后文要说明的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>之后按照默认配置是 <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）。这种方式需要解决跨域请求的问题，详见后文。</p>
-<p>本地离线查看：<del>直接在本项目 public（静态文件目录）下放置离线版<code>Swagger UI</code>，直接打开即可查看。详见<code>Step 2</code>中的 Demo 及作者的博文说明。</del>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>，如果你直接使用默认配置：</p>
-<ul>
-<li><a href="http://localhost:3000/docs/">http://localhost:3000/docs/</a> 可以看到完整的可视化文档；</li>
-<li><a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）可以看到自己在<code>Step 2</code>中自动生成的 Swagger 接口定义。</li>
-</ul>
-<p>这个中间件可以让你在开发时再也无需操心可视化文档的前端实现和如何查看自动生成 Swagger 接口定义（以便确定是否符合规范和自己的需求）的问题。</p>
-<h2 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h2><h3 id="解决跨域请求的问题"><a href="#解决跨域请求的问题" class="headerlink" title="解决跨域请求的问题"></a>解决跨域请求的问题</h3><p>官方说明见：<a href="https://github.com/swagger-api/swagger-ui#cors-support">https://github.com/swagger-api/swagger-ui#cors-support</a>。<br>在<code>app.use(&#39;/&#39;, routes);</code>之前加一个如下的中间件设置一些 cors 相关的头可以解决问题:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://petstore.swagger.io&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;GET, POST, DELETE, PUT, PATCH, OPTIONS&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type, api_key, Authorization&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  <span class="title function_">next</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="接口参数验证"><a href="#接口参数验证" class="headerlink" title="接口参数验证"></a>接口参数验证</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-metadata">Swagger Metadata</a>和<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-validator">Swagger Validator</a>中间件：</p>
-<ul>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools Quick Start</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/tree/master/examples/2.0">Demo</a>；</li>
-</ul>
-<p>其中 Swagger Metadata 中间件做了匹配请求路由与 Swagger 定义路由以及解析参数的工作，Swagger Validator 中间件做了验证参数类型和其他已定义的参数限制的工作。</p>
-<h3 id="Mock-返回数据"><a href="#Mock-返回数据" class="headerlink" title="Mock 返回数据"></a>Mock 返回数据</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-router">Swagger Router 中间件</a>即可实现。</p>
-<p>正常情况下，根据你的 Swagger 定义会返回<code>Response Code</code>为<code>200</code>（当 Swagger 定义中已定义<code>200</code>的返回时）的类似这样的数据：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;breed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;age&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sex&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="自动生成测试代码"><a href="#自动生成测试代码" class="headerlink" title="自动生成测试代码"></a>自动生成测试代码</h3><p>使用<a href="https://github.com/apigee-127/swagger-test-templates">apigee-127&#x2F;swagger-test-templates</a>可以根据你的 Swagger 定义自动生成对所有接口功能测试的脚手架代码（基本可以自动确定的地方都自动生成了），在你把自动生成的代码写入磁盘文件后，只需修改极少量的地方（一般是提供一些需要测试的参数）就可以使用测试。</p>
-<p>自动生成的代码长成这样：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> chai = <span class="built_in">require</span>(<span class="string">&#x27;chai&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">ZSchema</span> = <span class="built_in">require</span>(<span class="string">&#x27;z-schema&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> validator = <span class="keyword">new</span> <span class="title class_">ZSchema</span>(&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> supertest = <span class="built_in">require</span>(<span class="string">&#x27;supertest&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> api = <span class="title function_">supertest</span>(<span class="string">&#x27;http://localhost:3000&#x27;</span>); <span class="comment">// supertest init;</span></span><br><span class="line"></span><br><span class="line">chai.<span class="title function_">should</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;get&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 An array of puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      <span class="comment">/*eslint-disable*/</span></span><br><span class="line">      <span class="keyword">var</span> schema = &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="attr">items</span>: &#123;</span><br><span class="line">          <span class="attr">$ref</span>: <span class="string">&#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*eslint-enable*/</span></span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          validator.<span class="title function_">validate</span>(res.<span class="property">body</span>, schema).<span class="property">should</span>.<span class="property">be</span>.<span class="property">true</span>;</span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;post&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 Successfully created&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">send</span>(&#123;</span><br><span class="line">          <span class="attr">puppy</span>: <span class="string">&#x27;DATA GOES HERE&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          res.<span class="property">body</span>.<span class="property">should</span>.<span class="title function_">equal</span>(<span class="literal">null</span>); <span class="comment">// non-json response or no schema</span></span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>之后可以考虑用 gulp 把测试串联起来进行自动化测试。npm 上已经有<a href="https://www.npmjs.com/package/gulp-swagger-test-templates">这样的包</a>，不过我还没有试过。</p>
-<p>目前这个包对于<code>Swagger 2.0</code>的支持还不是很完全，尤其是对<code>$ref</code>不能自动解析，这样的话需要手动改动的测试代码多一些，不过他们正在着力解决这个问题，估计下一个版本（1.3.0）就会加入对<code>$ref</code>的解析，详细的讨论可以<a href="https://github.com/apigee-127/swagger-test-templates/issues/104">看这个 issue</a>。同时，他们还在考虑添加通过 JSON-Schema 自动批量生成测试数据的功能，目测<a href="https://github.com/apigee-127/swagger-test-templates/pull/107">也将在下一个版本中推出</a>，值得期待。</p>
-<h3 id="Mock-或-Swagger-UI-失效"><a href="#Mock-或-Swagger-UI-失效" class="headerlink" title="Mock 或 Swagger UI 失效"></a>Mock 或 Swagger UI 失效</h3><p>由于异步的问题，如果你把<code>app.lieten</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数外面，那很可能在你的应用已经启动时，<code>swagger-tools</code>的中间件并没有加载完毕，导致中间件失效（不会报错）。</p>
-<p>鉴于此，应该尽量把<code>swaggerTools.initializeMiddleware</code>写在中间件链的后面部分，然后把位于其后的<code>app.use</code>（比如<code>app.use(&#39;/&#39;, routes);</code>）和<code>app.listen</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数内部。所以，<code>Express 4</code>中提倡的用<code>./bin/www</code>来启动应用的要求在这里可能无法被遵循了。</p>
-<p>更详细的讨论<a href="https://github.com/apigee-127/swagger-tools/issues/328">看这个 issue</a>。</p>
-<p>另外，Mock 失效还有可能是你已经提供了对应 Controller 来 Handle 对应的 Route 请求。并不是将 Swagger Router 中间件中的<code>useStubs</code>设为<code>true</code>就一定会启动 Mock，官方对此说明是：</p>
-<blockquote>
-<p>Stubs only work for requests where the controller and&#x2F;or controller method is missing. Since you have a working controller method, enabling stub mode doesn’t do anything. It’s working as designed.</p>
-</blockquote>
-<p>更详细的讨论可以<a href="https://github.com/apigee-127/swagger-tools/issues/48">看这个 issue</a>。</p>
-<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>使用<code>DEBUG=swagger-tools* node app</code>启动项目，控制台会输出更多详细的信息。</p>
-<h2 id="完整的-Demo"><a href="#完整的-Demo" class="headerlink" title="完整的 Demo"></a>完整的 Demo</h2><p><a href="https://github.com/Maples7/swagger-express-demo">Maples7&#x2F;swagger-express-demo</a>： 将前面所讲的内容整合进了一个小示例中，以供参考。</p>
-<h2 id="上手必读"><a href="#上手必读" class="headerlink" title="上手必读"></a>上手必读</h2><ol>
-<li><a href="http://swagger.io/specification/">swagger-spec</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools&#x2F;docs&#x2F;QuickStart.md</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md">swagger-tools&#x2F;docs&#x2F;Middleware.md</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/API.md">swagger-tools&#x2F;docs&#x2F;API.md</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>API</tag>
-        <tag>Express</tag>
-        <tag>Swagger</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -671,6 +645,32 @@ _Farewell and thanks to each for the company_
         <tag>编程</tag>
         <tag>程序员</tag>
         <tag>《人月神话》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -788,6 +788,43 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>程序员：请不要丢失你的敬畏心</title>
+    <url>/2016/12/09/show-your-respect/</url>
+    <content><![CDATA[<center><b>暗</b></center>
+
+<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
+<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
+<span id="more"></span>
+
+<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
+<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
+<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
+<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
+<center><b>明</b></center>
+
+<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
+<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
+<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
+<p>就像读书的三境界一样，关于认知也有四重境界：</p>
+<ol>
+<li>You don’t know that you don’t know</li>
+<li>You know that you don’t know</li>
+<li>You know that you know</li>
+<li>You don’t know that you know</li>
+</ol>
+<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
+<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
+<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>敬畏之心</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>从个人经历漫谈传统教育与编程</title>
     <url>/2016/11/27/traditional-edu-and-programming/</url>
     <content><![CDATA[<center><b>1</b></center>
@@ -856,43 +893,6 @@ _Farewell and thanks to each for the company_
         <tag>编程</tag>
         <tag>程序员</tag>
         <tag>教育</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序员：请不要丢失你的敬畏心</title>
-    <url>/2016/12/09/show-your-respect/</url>
-    <content><![CDATA[<center><b>暗</b></center>
-
-<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
-<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
-<span id="more"></span>
-
-<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
-<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
-<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
-<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
-<center><b>明</b></center>
-
-<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
-<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
-<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
-<p>就像读书的三境界一样，关于认知也有四重境界：</p>
-<ol>
-<li>You don’t know that you don’t know</li>
-<li>You know that you don’t know</li>
-<li>You know that you know</li>
-<li>You don’t know that you know</li>
-</ol>
-<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
-<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
-<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>敬畏之心</tag>
       </tags>
   </entry>
   <entry>
@@ -1126,55 +1126,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>译文 | 入门概念：CSS 选择器是如何工作的</title>
-    <url>/2017/03/13/how-css-selectors-work/</url>
-    <content><![CDATA[<blockquote>
-<p>作者：<a href="https://twitter.com/chriscoyier">Chris Coyier</a><br>参考原文地址：<a href="https://css-tricks.com/how-css-selectors-work/">Beginner Concepts: How CSS Selectors Work</a>。</p>
-</blockquote>
-<p>你刚接触 CSS 吗？这篇文章就是为你准备的！也许理解 CSS 最关键的就是理解「选择器」。选择器可以让你定位到具体的 HTML 元素并且把样式应用于它们之上。不过现在让我们暂时忘掉「样式」，而只是专注于「选择」。</p>
-<p>在接下来的例子中，CSS 将会存在于一个被命名为 <code>style.css</code> 的文件中，并且被叫做 <code>index.html</code> 的 HTML 文档所引用。HTML 与 CSS 是分离的，这样能将「设计」与「内容」分离，这也是 CSS 出彩的地方。</p>
-<span id="more"></span>
-
-<p>HTML 文件看起来会像是这样：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>We&#x27;re learning selectors!<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;yay&quot;</span>&gt;</span>Yay<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>CSS 文件则只会包含选择器的代码区块，就像你接下来会看到的一样。</p>
-<h2 id="ID-选择器（ID-Selector）"><a href="#ID-选择器（ID-Selector）" class="headerlink" title="ID 选择器（ID Selector）"></a>ID 选择器（ID Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#happy-cake</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;sad-cake&quot;</span>&gt;</span>Wrong ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span>That&#x27;s not an ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>根据 <a href="https://css-tricks.com/specifics-on-css-specificity/">CSS 选择器优先级（CSS specificity）</a>，ID 选择器是优先级最高的选择器类型。这意味着它「打败」了其他的选择器类型和「以胜者姿态」而定义的样式。听起来很棒，但是那也是<a href="https://css-tricks.com/a-line-in-the-sand/">被诟病的地方</a>，因为在我们需要的时候，使用那些低优先级的选择器会更容易重载值。</p>
-<h2 id="类选择器（Class-Selector）"><a href="#类选择器（Class-Selector）" class="headerlink" title="类选择器（Class Selector）"></a>类选择器（Class Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;module&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&quot;country module iceland&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;.module&quot;</span>&gt;</span>The dot is for CSS, not HTML<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bigmodule&quot;</span>&gt;</span>Wrong class<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>类选择器是你的朋友。它们很可能是这里最有用和最全能的选择器。其一，是因为它们在所有浏览器中都得到了很好的支持；其二，你还可以在 HTML 元素中添加多个「类」（class）（只需要用一个空格分开）；其三，你可以用 JavaScript 来明确地的操作类。</p>
-<h2 id="元素选择器（Tag-Selector）"><a href="#元素选择器（Tag-Selector）" class="headerlink" title="元素选择器（Tag Selector）"></a>元素选择器（Tag Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">h2</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hi, Mom<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Anywhere<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;h2&quot;</span>&gt;</span>Wrong tag, can&#x27;t trick it<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line">&lt;h2class=&quot;yolo&quot;&gt;Make sure that tag has a space after it!<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>当改变某个独一无二的 HTML 元素的属性时，元素选择器是最有用的，比如在 <code>&lt;ul&gt;</code> 上设置 <code>list-style</code> 或是在 <code>&lt;pre&gt;</code> 上设置 <code>tab-size</code>。同理，在<a href="https://css-tricks.com/poll-results-what-css-reset-do-you-use/">重新设定</a>某个元素的浏览器默认样式时也很有用。</p>
-<p>但不要太过于依赖它们。通常来说，写一个类来定义样式可以作用于任何 HTML 元素，这会更有用。</p>
-<h2 id="属性选择器（Attribute-Selector）"><a href="#属性选择器（Attribute-Selector）" class="headerlink" title="属性选择器（Attribute Selector）"></a>属性选择器（Attribute Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-attr">[data-modal=<span class="string">&quot;open&quot;</span>]</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;open&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&#x27;closed&#x27;</span> <span class="attr">data-modal</span>=<span class="string">&#x27;open&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;false&quot;</span>&gt;</span>Wrong value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>&gt;</span>No value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal-open</span>&gt;</span>Wrong attribute<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>你可能会争论说<a href="https://css-tricks.com/attribute-selectors/">属性选择器</a>比类选择器更有用，因为它们有一样的优先级但是前者却可以是任何属性（不仅仅是 <code>class</code>），这个属性的值你还可以进行选择。</p>
-<p>你说得没错，但是属性选择器 IE6 不支持。</p>
-<h2 id="位置选择器（Positional-Selectors）"><a href="#位置选择器（Positional-Selectors）" class="headerlink" title="位置选择器（Positional Selectors）"></a>位置选择器（Positional Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>yep, I&#x27;m #2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>除了 <a href="https://css-tricks.com/how-nth-child-works/"><code>:nth-child</code></a>，还有几种不同的位置选择器。使用简单的表达式（比如 <code>3n</code>&#x3D;”every third”），你可以基于它们在 HTML 中的位置来选择元素。你可以<a href="https://css-tricks.com/examples/nth-child-tester/">在这里测试你的想法</a>或者<a href="https://css-tricks.com/useful-nth-child-recipies/">在这里了解更多的实例</a>。</p>
-<h2 id="其他的伪选择器（Pseudo-Selectors）"><a href="#其他的伪选择器（Pseudo-Selectors）" class="headerlink" title="其他的伪选择器（Pseudo Selectors）"></a>其他的伪选择器（Pseudo Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:empty</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">data-blah</span>&gt;</span><span class="comment">&lt;!-- nothin&#x27; --&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><code>:empty</code> 是<a href="https://css-tricks.com/pseudo-class-selectors/">众多伪选择器</a>中的一个，你可以凭借冒号 <code>:</code> 来识别它们。它们通常代表着你不能仅仅通过元素和属性就能定位到的东西。</p>
-<p>请注意，它们与用双冒号（<code>::</code>）来识别的<a href="http://css-tricks.com/pseudo-element-roundup/">伪元素（pseudo elements）</a>有一点不同。伪元素负责借助它们选择的内容来往页面添加东西。</p>
-<h2 id="更多提升内容"><a href="#更多提升内容" class="headerlink" title="更多提升内容"></a>更多提升内容</h2><p>选择器可以被组合到一起使用。比如：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span><span class="selector-class">.news</span> &#123;  </span><br><span class="line">  <span class="comment">/* Selects elements with BOTH of those classes */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#site-footer</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">  <span class="comment">/* Adds content after an element with that ID */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">section</span><span class="selector-attr">[data-open]</span> &#123;</span><br><span class="line">  <span class="comment">/* Selects only section elements if they have this attribute */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>也有像 <code>~</code>、<code>+</code> 和 <code>&gt;</code> 这样的<a href="https://css-tricks.com/child-and-sibling-selectors/">选择器组合运算子（selector combinators）</a>可以用来对选择器造成影响，就像这样：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &gt; <span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="comment">/* Select h2 elements that are direct children of an element with that class */</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="selector-tag">h2</span> + <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="comment">/* Select p elements that are directly following an h2 element */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">li</span> ~ <span class="selector-tag">li</span> &#123;</span><br><span class="line">  <span class="comment">/* Select li elements that are siblings (and following) another li element. */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在 CSS-Tricks，这里有<a href="https://css-tricks.com/almanac/">一个完整的索引</a>，覆盖了 CSS 中的所有的选择器及其属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL 慢查询优化</title>
     <url>/2017/03/08/mysql-run-faster/</url>
     <content><![CDATA[<p>在前一篇博客<a href="http://maples7.com/2017/03/03/express-run-faster/">《Express 性能调优》</a>中，我讲述了 Express 项目应该如何进行性能优化，但那些基本都只是官方文档上就已经明确指出的东西，也是对一个 Express 项目<strong>在性能上的基本要求</strong>。如果你已经足够仔细的阅读过文档，那么上一篇文章对你的收益几乎是 0。</p>
@@ -1225,23 +1176,52 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>印象青岛</title>
-    <url>/2017/03/14/qingdao/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241202ea.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732410961d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241122ee.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324124390.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241310f1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324137461.jpg"></div></div></div>
-
+    <title>译文 | 入门概念：CSS 选择器是如何工作的</title>
+    <url>/2017/03/13/how-css-selectors-work/</url>
+    <content><![CDATA[<blockquote>
+<p>作者：<a href="https://twitter.com/chriscoyier">Chris Coyier</a><br>参考原文地址：<a href="https://css-tricks.com/how-css-selectors-work/">Beginner Concepts: How CSS Selectors Work</a>。</p>
+</blockquote>
+<p>你刚接触 CSS 吗？这篇文章就是为你准备的！也许理解 CSS 最关键的就是理解「选择器」。选择器可以让你定位到具体的 HTML 元素并且把样式应用于它们之上。不过现在让我们暂时忘掉「样式」，而只是专注于「选择」。</p>
+<p>在接下来的例子中，CSS 将会存在于一个被命名为 <code>style.css</code> 的文件中，并且被叫做 <code>index.html</code> 的 HTML 文档所引用。HTML 与 CSS 是分离的，这样能将「设计」与「内容」分离，这也是 CSS 出彩的地方。</p>
 <span id="more"></span>
 
-<br />
+<p>HTML 文件看起来会像是这样：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>We&#x27;re learning selectors!<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">&quot;yay&quot;</span>&gt;</span>Yay<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12595727/">https://maples7.tuchong.com/12595727/</a></p>
+<p>CSS 文件则只会包含选择器的代码区块，就像你接下来会看到的一样。</p>
+<h2 id="ID-选择器（ID-Selector）"><a href="#ID-选择器（ID-Selector）" class="headerlink" title="ID 选择器（ID Selector）"></a>ID 选择器（ID Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#happy-cake</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">id</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;sad-cake&quot;</span>&gt;</span>Wrong ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;happy-cake&quot;</span>&gt;</span>That&#x27;s not an ID!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>根据 <a href="https://css-tricks.com/specifics-on-css-specificity/">CSS 选择器优先级（CSS specificity）</a>，ID 选择器是优先级最高的选择器类型。这意味着它「打败」了其他的选择器类型和「以胜者姿态」而定义的样式。听起来很棒，但是那也是<a href="https://css-tricks.com/a-line-in-the-sand/">被诟病的地方</a>，因为在我们需要的时候，使用那些低优先级的选择器会更容易重载值。</p>
+<h2 id="类选择器（Class-Selector）"><a href="#类选择器（Class-Selector）" class="headerlink" title="类选择器（Class Selector）"></a>类选择器（Class Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;module&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&quot;country module iceland&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;.module&quot;</span>&gt;</span>The dot is for CSS, not HTML<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bigmodule&quot;</span>&gt;</span>Wrong class<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>类选择器是你的朋友。它们很可能是这里最有用和最全能的选择器。其一，是因为它们在所有浏览器中都得到了很好的支持；其二，你还可以在 HTML 元素中添加多个「类」（class）（只需要用一个空格分开）；其三，你可以用 JavaScript 来明确地的操作类。</p>
+<h2 id="元素选择器（Tag-Selector）"><a href="#元素选择器（Tag-Selector）" class="headerlink" title="元素选择器（Tag Selector）"></a>元素选择器（Tag Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">h2</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hi, Mom<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">     <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Anywhere<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;h2&quot;</span>&gt;</span>Wrong tag, can&#x27;t trick it<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line">&lt;h2class=&quot;yolo&quot;&gt;Make sure that tag has a space after it!<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当改变某个独一无二的 HTML 元素的属性时，元素选择器是最有用的，比如在 <code>&lt;ul&gt;</code> 上设置 <code>list-style</code> 或是在 <code>&lt;pre&gt;</code> 上设置 <code>tab-size</code>。同理，在<a href="https://css-tricks.com/poll-results-what-css-reset-do-you-use/">重新设定</a>某个元素的浏览器默认样式时也很有用。</p>
+<p>但不要太过于依赖它们。通常来说，写一个类来定义样式可以作用于任何 HTML 元素，这会更有用。</p>
+<h2 id="属性选择器（Attribute-Selector）"><a href="#属性选择器（Attribute-Selector）" class="headerlink" title="属性选择器（Attribute Selector）"></a>属性选择器（Attribute Selector）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-attr">[data-modal=<span class="string">&quot;open&quot;</span>]</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;open&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">class</span>=<span class="string">&#x27;closed&#x27;</span> <span class="attr">data-modal</span>=<span class="string">&#x27;open&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>=<span class="string">&quot;false&quot;</span>&gt;</span>Wrong value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal</span>&gt;</span>No value<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-modal-open</span>&gt;</span>Wrong attribute<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>你可能会争论说<a href="https://css-tricks.com/attribute-selectors/">属性选择器</a>比类选择器更有用，因为它们有一样的优先级但是前者却可以是任何属性（不仅仅是 <code>class</code>），这个属性的值你还可以进行选择。</p>
+<p>你说得没错，但是属性选择器 IE6 不支持。</p>
+<h2 id="位置选择器（Positional-Selectors）"><a href="#位置选择器（Positional-Selectors）" class="headerlink" title="位置选择器（Positional Selectors）"></a>位置选择器（Positional Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>yep, I&#x27;m #2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>nope<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>除了 <a href="https://css-tricks.com/how-nth-child-works/"><code>:nth-child</code></a>，还有几种不同的位置选择器。使用简单的表达式（比如 <code>3n</code>&#x3D;”every third”），你可以基于它们在 HTML 中的位置来选择元素。你可以<a href="https://css-tricks.com/examples/nth-child-tester/">在这里测试你的想法</a>或者<a href="https://css-tricks.com/useful-nth-child-recipies/">在这里了解更多的实例</a>。</p>
+<h2 id="其他的伪选择器（Pseudo-Selectors）"><a href="#其他的伪选择器（Pseudo-Selectors）" class="headerlink" title="其他的伪选择器（Pseudo Selectors）"></a>其他的伪选择器（Pseudo Selectors）</h2><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-pseudo">:empty</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- WILL match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aside</span> <span class="attr">data-blah</span>&gt;</span><span class="comment">&lt;!-- nothin&#x27; --&gt;</span><span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Will NOT match --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>:empty</code> 是<a href="https://css-tricks.com/pseudo-class-selectors/">众多伪选择器</a>中的一个，你可以凭借冒号 <code>:</code> 来识别它们。它们通常代表着你不能仅仅通过元素和属性就能定位到的东西。</p>
+<p>请注意，它们与用双冒号（<code>::</code>）来识别的<a href="http://css-tricks.com/pseudo-element-roundup/">伪元素（pseudo elements）</a>有一点不同。伪元素负责借助它们选择的内容来往页面添加东西。</p>
+<h2 id="更多提升内容"><a href="#更多提升内容" class="headerlink" title="更多提升内容"></a>更多提升内容</h2><p>选择器可以被组合到一起使用。比如：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span><span class="selector-class">.news</span> &#123;  </span><br><span class="line">  <span class="comment">/* Selects elements with BOTH of those classes */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#site-footer</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">  <span class="comment">/* Adds content after an element with that ID */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">section</span><span class="selector-attr">[data-open]</span> &#123;</span><br><span class="line">  <span class="comment">/* Selects only section elements if they have this attribute */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也有像 <code>~</code>、<code>+</code> 和 <code>&gt;</code> 这样的<a href="https://css-tricks.com/child-and-sibling-selectors/">选择器组合运算子（selector combinators）</a>可以用来对选择器造成影响，就像这样：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.module</span> &gt; <span class="selector-tag">h2</span> &#123;</span><br><span class="line">  <span class="comment">/* Select h2 elements that are direct children of an element with that class */</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="selector-tag">h2</span> + <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="comment">/* Select p elements that are directly following an h2 element */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">li</span> ~ <span class="selector-tag">li</span> &#123;</span><br><span class="line">  <span class="comment">/* Select li elements that are siblings (and following) another li element. */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 CSS-Tricks，这里有<a href="https://css-tricks.com/almanac/">一个完整的索引</a>，覆盖了 CSS 中的所有的选择器及其属性。</p>
 ]]></content>
       <categories>
-        <category>视觉动物</category>
+        <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>风光</tag>
+        <tag>CSS</tag>
       </tags>
   </entry>
   <entry>
@@ -1283,6 +1263,26 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>Node.js</tag>
         <tag>Koa</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>印象青岛</title>
+    <url>/2017/03/14/qingdao/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241202ea.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732410961d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241122ee.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324124390.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241310f1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324137461.jpg"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12595727/">https://maples7.tuchong.com/12595727/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>风光</tag>
       </tags>
   </entry>
   <entry>
@@ -1865,81 +1865,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>Elixir 代码性能优化指北</title>
-    <url>/2019/12/05/elixir-code-performance-optimization/</url>
-    <content><![CDATA[<p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
-<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
-<span id="more"></span>
-
-<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
-<ul>
-<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
-</li>
-<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = <span class="title class_">Map</span>.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
-</li>
-<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
-</li>
-<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
-</li>
-<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
-</li>
-<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="title class_">Enum</span>.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
-</li>
-</ul>
-<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Erlang</tag>
-        <tag>性能调优</tag>
-        <tag>Elixir</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2019 年书单</title>
     <url>/2019/12/31/2019-booklist/</url>
     <content><![CDATA[<p>2019 年对很多人来说似乎是艰难的一年，在这个世界愈发趋于动荡和不信任的大背景下，越来越多的疑惑、迷茫和不确定性从上至下笼罩在每一个人可以感知到的日常生活中。或许只是一种周期，或许就是一种趋势，各种事物的分化与混乱变得越来越明显。如果从热力学第二定律的角度来看，维持事物不走向无序是需要额外付出很多努力的，那说明人类社会目前做的共同有效努力还不够；如果从唯物论的发展观来看，事物总是螺旋式向上发展的，周期中同时也蕴含着一些不可逆的改变。把 2019 年放在历史的长河中，我不知道它处在世界发展周期的哪个部分，但很可能不是在「好」（大部分人认为的世俗意义上的「好」）的那一半。这可能是前些年某些事件的发生导致了现在的局面，同时也可能是未来很长一段时间不同局面的开始。</p>
@@ -2016,6 +1941,81 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>Elixir 代码性能优化指北</title>
+    <url>/2019/12/05/elixir-code-performance-optimization/</url>
+    <content><![CDATA[<p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
+<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
+<span id="more"></span>
+
+<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
+<ul>
+<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
+</li>
+<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = <span class="title class_">Map</span>.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
+</li>
+<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
+</li>
+<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
+</li>
+<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
+</li>
+<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="title class_">Enum</span>.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
+</li>
+</ul>
+<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Erlang</tag>
+        <tag>性能调优</tag>
+        <tag>Elixir</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「必然」有多必然？</title>
     <url>/2020/05/19/how-certain-is-certain/</url>
     <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
@@ -2039,6 +2039,51 @@ _Farewell and thanks to each for the company_
         <tag>必然</tag>
         <tag>哲学</tag>
         <tag>复杂系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>创业的准则</title>
+    <url>/2021/11/19/principles-4-startups/</url>
+    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
+<span id="more"></span>
+
+<ol>
+<li><p>找最优秀的人一起工作。</p>
+<p> 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。</p>
+<p> 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</p>
+</li>
+<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
+<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
+<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
+<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
+</li>
+<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
+<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
+<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI&#x2F;UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
+</li>
+<li><p>用产品和技术而不是营销手段说服用户。</p>
+<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
+</li>
+<li><p>建立制度，然后让更多的人自己做决定。</p>
+<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
+<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
+<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
+</li>
+<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
+<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
+</li>
+<li><p>流程优化永远比赶进度更重要。</p>
+<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
+</li>
+</ol>
+<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>产品</tag>
+        <tag>创业</tag>
       </tags>
   </entry>
   <entry>
@@ -2130,51 +2175,6 @@ _Farewell and thanks to each for the company_
         <tag>创业</tag>
         <tag>北京</tag>
         <tag>望京</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>创业的准则</title>
-    <url>/2021/11/19/principles-4-startups/</url>
-    <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
-<span id="more"></span>
-
-<ol>
-<li><p>找最优秀的人一起工作。</p>
-<p> 这里的「优秀」不一定得是具体业务上已经最厉害的人，但一定是有潜力成为最厉害的人的人。优秀的人能给公司带来的长期价值是难以用一朝一夕来衡量的。除了完全能胜任本职工作的基本能力以外，优秀的人不仅能对整个团队的建设产生积极的影响，更重要的是，他们往往能跳出传统的思维和各种条条框框的限制来看待具体的问题，提出创造性的解决方案，给整个团队创作难以估量的价值，而这些价值很可能成为决定创业公司走向和存亡的关键核心优势。</p>
-<p> 当然，有潜力的人是需要时间和空间来培养的，而创业公司相比于中大型公司往往更容易营造这样肥沃的土壤。优秀的人能持续学习，跟随公司一起成长，互相成就，达成共赢。创业公司在人才方面存在越多这样的良性循环，就越能走得更长远。</p>
-</li>
-<li><p>宁可不做，做就要用对的方法做对的事情，不要用错误的方法做事。</p>
-<p> 明星技术创业公司 TiDB 的 CTO 黄东旭有一个观点我很赞同：Make it right before making it fast。朝着正确的方向做事永远是所有具体决策的大前提。创业公司本身所拥有资源是很有限的，只能用有限的资源发挥更大的效能才能跑赢更大型的公司。这一点其实对创业公司的领导者提出了很高的要求，这要求他们能够有足够的预见性和前瞻性，能够充分吸收外部市场上各种各样的信息做出正确的决策。</p>
-<p> 有的人可能会认为「快」比「正确」更重要，我并不这样认为，或者说，这中间需要一个平衡和取舍。有一种常见的说法是创业公司能够快速试错从而能比大公司更灵活的「转身」。这一点在已经做出错误决策的情况下是正确的，所以正确表述应该是「创业公司能够比大公司更快速的扭转错误的方向」。可是我们为什么不追求从一开始就尽量不做出错误的决策呢？用俗话说就是，不要用战术上的勤奋掩盖战略上的懒惰。创业公司领导者需要花更多的时间思考公司的战略和方向而不是整天呆在公司扣一些细枝末节（当然，并不是细枝末节不重要，而是战略方向要更重要得多）。一定要记住一个大前提，创业公司所拥有的资源是非常有限的，所以试错的机会成本其实比大公司要高得多。大公司完全可以拆出数十倍于创业公司的资源来试错不同的决策方向和选择，而创业公司失败一次就足以让团队元气大伤。优秀的团队成员可能可以给公司的效率带来很大的提升，但错误的决策方向落地执行下去不仅是对客观资源的一种浪费，也是对人才的一种伤害。</p>
-<p> 所以「正确」比「快」更重要，宁可不做，做就要做对的事情，并且用对的方法来做这件事。</p>
-</li>
-<li><p>在没有划时代的技术优势时，产品的成功是所有细小正确决定优势的累积。</p>
-<p> <a href="https://www.thoughtworks.com/radar">Thoughtworks 有一个广为流传的技术雷达的观点</a>，但真正能划时代的技术其实是极其稀少的，而每一个关键技术的突破，都可以带来一波技术红利的浪潮，持续数年。现如今，上一波移动互联网的浪潮早已远去，下一个能来带技术爆炸的计算平台到底是啥还未可知，可能是实现完全无人驾驶技术的新能源汽车，也可能是 Facebook 刚提出的所谓「元宇宙」虚拟网络空间，总之还没有确定性的答案，而过早涉足这些技术的创业公司大概率也会成为时代的炮灰。然而在已经成熟的技术领域里挣扎似乎又早已没有可以创新的空间。</p>
-<p> 我上一段在创业公司的工作经历所做的产品就是在很传统的领域，很难打破传统行业的桎梏做出颠覆式的创新。所以产品想要在公开市场上取得成功几乎只能取决于所有细小正确决定优势的累积。就好比你在 2021 年的今天做一个手机 App，你已经很难找到无人想到的新的创意来填补市场上的空白，存量竞争的时代只能靠产品上累积的细节和局部的优势来来取得竞争优势。这些优势可能是更少的 bug、更好看好用的 UI&#x2F;UX、更人性化的布局和设计、抑或是能支撑产品决策的更成熟深刻的理论基础。关注细节、关注每一个微小的决定，在这种技术周期的浪潮下是重要的。</p>
-</li>
-<li><p>用产品和技术而不是营销手段说服用户。</p>
-<p> 在产品没有打磨好之前，不要使用任何刻意的营销手段。这样做只会提前消耗掉未来可能成为优质长期用户的市场耐心。真正的好产品，靠自然流量和口碑传播也终能被市场认可，但在市场快速变化的今天，在产品打磨好之后，使用营销手段可以加速从 1 到 N 的过程，快速占领市场份额，建立自己在这方面的护城河。</p>
-</li>
-<li><p>建立制度，然后让更多的人自己做决定。</p>
-<p> 有团队的地方就需要有制度，制度是团队文化的具体化，文化通常可能带有创始人强烈的个人色彩。但不管怎样，因为人的差异性，制度是需要的，而在制度建立之后，具体的与每个团队成员相关的决定让成员们自己做选择（尤其是小团队的时候，吸纳优秀的人进团队，再充分信任每一个团队成员）。只有这样，才能真正在团队范围内做到文化与行为的一致性。比如，现在很多互联网公司都会实行弹性工作制，如果这真的是创始人所认同的工作制，那么我们可以建立弹性工作的制度，同时要求每天基础的工作时长，那么具体每天的工作时间段则交给团队成员自由选择；如果创始人并不真的认同这样的制度，即便口头上声明你们是弹性工作制，长期下来的言行不统一也会让团队成员逐渐丧失对这个团队的信任，相互之间变得不再坦诚；而如果创始人认为就应该是白天固定时间段的工作制更符合团队工作效率的要求，那么制度就是固定工作时间制，而不要声明的与实际的有出入。修补制度上的漏洞，直到让大多数人尤其是创始人达到一个舒服的状态，而把具体事项的决定权交给充分被信任的每个人。</p>
-<p> 本质上，这其实是约束与放任的平衡哲学，建立制度就是建立约束，而让每个人做与自己相关的决定就是给予成员选择的自由。这样充分打磨下来的团队才能稳定持续走得长久。</p>
-<p> 文化上尽量开放包容，奖惩的原则要事先声明并遵照执行，合作靠透明的制度而不是依赖于默契（短暂的依赖于具体个体之间的默契不是可以长远依靠的事情）。</p>
-</li>
-<li><p>不放过任何一个细小的直觉上能感知到的问题。</p>
-<p> 在一片迷雾中行走，很多时候都是依靠直觉的。而创始人往往拥有对团队、对产品方向最敏锐的直觉。当有某方面敏锐的感知时，不要犹豫，不要怀疑，立马去验证自己的直觉。这种直觉的感知往往是有所苗头的，而越早行动越能避免更多更大的问题的产生。</p>
-</li>
-<li><p>流程优化永远比赶进度更重要。</p>
-<p> 对流程上的优化<strong>永远</strong>（记住是「永远」）比赶进度更重要。只要发现了流程上影响效率的地方，立马启动优化。对于 to B 类型的项目，存在这样一种情况，客户要求的时间很紧，项目进度很赶，而流程上也有很多亟待优化的地方，那么就引入更多的人力资源来优化流程上需要改进的地方，不管是从外部招更多的人还是从内部调其他的人来处理。效率是创业团队的生命线，失去了效率也就基本失去与大公司竞争的很大一方面的优势，所以永远要优化流程，当一个低效的流程反复被执行，浪费的不仅是这个流程上所有人的时间，更是对这个流程线上人的主观能动性的脱敏式折磨（这类似于中大型企业虽然有很多常年低效的流程制度，但因为早已形成惯性无人进行优化，员工们也逐渐就不再觉得那是可以被改变或优化的地方，慢慢的越来越多的人开始人浮于事，用打工人的心态各扫门前雪，这往往就是中大型企业开始体制僵化走向衰败的开始）。</p>
-</li>
-</ol>
-<p>差不多暂时能想到的点就这些，如果以后有新的想法可以总结成文也会写一些新的东西。创业是一个十分艰难的过程，三年在创业公司的经历见证了一个小团队的起起伏伏，对于方向和未来的迷茫，感受到真实世界里创业的艰辛和残酷。不禁让人想起十年前左右「大众创新」所引发的在校大学生的创业热潮，大部分都是极其幼稚的（当然不可否认当时成功的创业项目也很多，那个时代有那个时代的红利）。当面对真实的现金流压力的时候，你的所有产品决策和公司走向还能不忘初心吗？无论成败与否，所有的创业者都会需要想明白这个现实的问题，并找到自己的答案。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>产品</tag>
-        <tag>创业</tag>
       </tags>
   </entry>
   <entry>
@@ -2292,33 +2292,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>尘埃落定，为什么我依然要力挺《二舅》</title>
-    <url>/2022/09/04/why-i-support-erjiu/</url>
-    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
-<p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
-<p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，与此同时，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
-<span id="more"></span>
-
-<p>有人指责《二舅》没有触及造成二舅人生悲剧的根本。如果你认真看了原视频，你可能只是故意忽视了一些什么，或者理解水平欠佳。任何中国人也都知道那条表达的红线是不是存在，你不去指责造成这个视频不能点名道姓触及根本的根本原因，反而来指责视频内容没有触及根本，你是不是也在这装外宾装大尾巴狼对房间里的大象视而不见呢？不是蠢就是坏，柿子不能专门捡软的捏吧。</p>
-<p>还有人指责《二舅》里对二舅本人的人生经历造假。首先根据无罪推论原则，你先提供造假的证据而不是你们众口铄金的臆断再继续往下的讨论。其次，是不是造假对于 B 站 UP 主的视频创作而言重要吗？《活着》《平凡的世界》是造假吗？J.K.罗琳看到了一个戴圆形眼镜的小朋友就写出的《哈利•波特》是造假吗？普通人是不配进行文学创作吗？再次回到视频本身，任何有基本电影鉴赏水平的人都知道原视频的 BGM 和叙述节奏是想让视频呈现出怎样的影视风格，你总不会觉得这是一部纪录片风格的中视频吧？是创作就一定是主观的，就一定带有创作者本人的价值输出和主观表达，我们应该尊重任何人表达自己价值观的自由，二舅只是一个为了表达而借用的具体途径而已。最后，我推断至少作者没有做完全颠倒黑白说东道西的内容表达，这已经是在创作的底线之上。<strong>在现在这样的社会环境下，敢表达、能表达就已经有其意义。</strong>有些人不仅自己喜欢站在道德制高点上纲上线，还要求能站上原告席的一定得是个没有任何道德瑕疵的完美人。</p>
-<p>也有人说《二舅》这种在农村很多啊，有什么稀奇的。有很多你也去拍啊，你要能创作成这样你也能火，我就不恶意揣测你纯纯的嫉妒心了。如果很多的话至于现在市场上这类的表达少之又少、越来越少吗？甚至都没有人敢讨论为什么这一类表达如此之少，我只能说，站着说话不腰疼，你行你上吧。站在一旁指手画脚确实是比弄脏自己的手要轻松得多。</p>
-<p>文化产业一定是一个需要开放包容的土壤才能繁荣起来的产业。最近正在上映的电影<a href="https://movie.douban.com/subject/35131346/">《隐入尘烟》</a>的导演李睿珺说了这样一段话：</p>
-<blockquote>
-<p>一个电影市场，它应该是各种各样的电影都有才是正常的，<strong>一个市场的健康最重要是多元</strong>，比如超市就是有多种物品，可以让不同的受众去选择。方便面，有一块的，有五块的，甚至你有钱可以买十块的。但是假如说这个超市只卖一种方便面了，这是专卖店，不是超市，那它就不是个市场，那个市场其实就萎缩、死亡了。</p>
-</blockquote>
-<p>我只想对希望能继续看到好作品的观众说，创作环境已经这么不容易了，少一点对创作动机的讨论，多把注意力关注在作品本身吧。对于能填补市场空白的创作和表达，我认为这个行为本身就已经有其值得被肯定的意义。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>苦难</tag>
-        <tag>创作</tag>
-        <tag>电影</tag>
-        <tag>文化产业</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>一套大概率可行的具体投资策略</title>
     <url>/2022/08/20/a-specific-investment-strategy/</url>
     <content><![CDATA[<p>这一篇是接着上一篇<a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a>的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对<a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些<del>，毕竟谁没有幻想过自己突然哪一天突然失忆了呢</del>。</p>
@@ -2364,6 +2337,33 @@ _Farewell and thanks to each for the company_
         <tag>投资</tag>
         <tag>指数基金</tag>
         <tag>资产配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>尘埃落定，为什么我依然要力挺《二舅》</title>
+    <url>/2022/09/04/why-i-support-erjiu/</url>
+    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
+<p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
+<p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，与此同时，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
+<span id="more"></span>
+
+<p>有人指责《二舅》没有触及造成二舅人生悲剧的根本。如果你认真看了原视频，你可能只是故意忽视了一些什么，或者理解水平欠佳。任何中国人也都知道那条表达的红线是不是存在，你不去指责造成这个视频不能点名道姓触及根本的根本原因，反而来指责视频内容没有触及根本，你是不是也在这装外宾装大尾巴狼对房间里的大象视而不见呢？不是蠢就是坏，柿子不能专门捡软的捏吧。</p>
+<p>还有人指责《二舅》里对二舅本人的人生经历造假。首先根据无罪推论原则，你先提供造假的证据而不是你们众口铄金的臆断再继续往下的讨论。其次，是不是造假对于 B 站 UP 主的视频创作而言重要吗？《活着》《平凡的世界》是造假吗？J.K.罗琳看到了一个戴圆形眼镜的小朋友就写出的《哈利•波特》是造假吗？普通人是不配进行文学创作吗？再次回到视频本身，任何有基本电影鉴赏水平的人都知道原视频的 BGM 和叙述节奏是想让视频呈现出怎样的影视风格，你总不会觉得这是一部纪录片风格的中视频吧？是创作就一定是主观的，就一定带有创作者本人的价值输出和主观表达，我们应该尊重任何人表达自己价值观的自由，二舅只是一个为了表达而借用的具体途径而已。最后，我推断至少作者没有做完全颠倒黑白说东道西的内容表达，这已经是在创作的底线之上。<strong>在现在这样的社会环境下，敢表达、能表达就已经有其意义。</strong>有些人不仅自己喜欢站在道德制高点上纲上线，还要求能站上原告席的一定得是个没有任何道德瑕疵的完美人。</p>
+<p>也有人说《二舅》这种在农村很多啊，有什么稀奇的。有很多你也去拍啊，你要能创作成这样你也能火，我就不恶意揣测你纯纯的嫉妒心了。如果很多的话至于现在市场上这类的表达少之又少、越来越少吗？甚至都没有人敢讨论为什么这一类表达如此之少，我只能说，站着说话不腰疼，你行你上吧。站在一旁指手画脚确实是比弄脏自己的手要轻松得多。</p>
+<p>文化产业一定是一个需要开放包容的土壤才能繁荣起来的产业。最近正在上映的电影<a href="https://movie.douban.com/subject/35131346/">《隐入尘烟》</a>的导演李睿珺说了这样一段话：</p>
+<blockquote>
+<p>一个电影市场，它应该是各种各样的电影都有才是正常的，<strong>一个市场的健康最重要是多元</strong>，比如超市就是有多种物品，可以让不同的受众去选择。方便面，有一块的，有五块的，甚至你有钱可以买十块的。但是假如说这个超市只卖一种方便面了，这是专卖店，不是超市，那它就不是个市场，那个市场其实就萎缩、死亡了。</p>
+</blockquote>
+<p>我只想对希望能继续看到好作品的观众说，创作环境已经这么不容易了，少一点对创作动机的讨论，多把注意力关注在作品本身吧。对于能填补市场空白的创作和表达，我认为这个行为本身就已经有其值得被肯定的意义。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>苦难</tag>
+        <tag>创作</tag>
+        <tag>电影</tag>
+        <tag>文化产业</tag>
       </tags>
   </entry>
   <entry>
@@ -2589,16 +2589,18 @@ _Farewell and thanks to each for the company_
     <content><![CDATA[<p>因为公众号发的上一篇<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>引发了一些讨论，所以这一期想聊的话题有点多。为了不让某一期的内容太长，所以尽管距离<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">上一篇《开源计划》</a>才一周时间，工作量并不多，但也还是更新一期吧。</p>
 <p>与前几篇文章相关的更多话题讨论在本文最后两部分，最后部分有回答网友的一些提问。</p>
 <h1 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h1><ul>
-<li><p>完成了 Apple Developer Program 的订阅注册，个人经验是：</p>
-<ol>
+<li>完成了 Apple Developer Program 的订阅注册，个人经验是：<ol>
 <li>要耐心按照提示和邮件内容完成每一步的操作，该认证的认证，该实名的实名，遇到不明确的问题及时联系客服解决。</li>
 <li>付费后账户不是立马就能用订阅后才能使用的开发者相关的功能，我是等了几个小时后收到邮件才开通成功。</li>
 <li>可以使用 App Store 的余额进行开发者账号的订阅，而每年夏天腾讯基本都有 App Store 充值 900 送 100 的福利活动，相当于变相让订阅年费优惠一些。</li>
 <li>订阅后可以<strong>马上申请注册 App Store Small Business Program</strong>，注册成功后以后靠 App 盈利可以少被 Apple 分走一部分「过路费」。🤧</li>
 </ol>
 </li>
-<li><p>财务类工具 App 的新进展：</p>
+</ul>
+<span id="more"></span>
+
 <ul>
+<li>财务类工具 App 的新进展：<ul>
 <li>得益于 Apple Developer Program 的成功订阅，加入了 iCloud 数据同步功能。是的，要实现这个功能必须通过订阅账户添加 iCloud capability 来实现。</li>
 <li>相应的调整了一些 SwiftData 相关的代码以兼容 iCloud data syncing。不得不说，SwiftData 框架目前还相当不成熟，鲁棒性不强，有很多莫名其妙的问题，支持的功能也比较少，更缺乏一套官方推荐的标准工程化实践和开发模式，简直继承了 Xcode 的垃圾。只能希望 Apple 官方团队尽量多投入资源大力优化一下开发体验，工具链太差积重难返还不如推倒重来。</li>
 </ul>
