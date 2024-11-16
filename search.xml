@@ -112,6 +112,53 @@
       </tags>
   </entry>
   <entry>
+    <title>非关系型数据库中的「关系」实现</title>
+    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
+    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
+<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
+<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+<span id="more"></span>
+
+<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
+<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
+<p>方法如下：</p>
+<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
+<p>举例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
+<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
+<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
+<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
+<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
+<p>引用方法又可分为两种：</p>
+<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
+<p>方法简单，不再举例赘述。</p>
+<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
+<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
+<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
+<p>样例如下：</p>
+<p>在 user.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 msgboard.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
+<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
+<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
+<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
+<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
+<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的密码管理策略</title>
     <url>/2016/04/06/my-strategy-about-passwords-management/</url>
     <content><![CDATA[<p>[ 本文来自于<a href="https://www.zhihu.com/question/19695004/answer/93985563">我的知乎回答</a>，现整理修改后记于博客。]</p>
@@ -182,53 +229,6 @@
       <tags>
         <tag>密码管理</tag>
         <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>非关系型数据库中的「关系」实现</title>
-    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
-    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
-<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
-<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
-<span id="more"></span>
-
-<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
-<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
-<p>方法如下：</p>
-<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
-<p>举例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
-<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
-<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
-<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
-<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
-<p>引用方法又可分为两种：</p>
-<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
-<p>方法简单，不再举例赘述。</p>
-<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
-<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
-<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
-<p>样例如下：</p>
-<p>在 user.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在 msgboard.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
-<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
-<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
-<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
-<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
-<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
       </tags>
   </entry>
   <entry>
@@ -896,104 +896,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
-<span id="more"></span>
-
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <url>/2017/02/09/why-oo-sucks/</url>
-    <content><![CDATA[<blockquote>
-<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
-</blockquote>
-<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
-<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
-<span id="more"></span>
-
-<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
-<blockquote>
-<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
-</blockquote>
-<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
-<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
-<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
-<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
-<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
-<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
-<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
-<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
-<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
-<p>这里没有与之相关联的那些方法。</p>
-<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
-<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
-<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
-<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
-<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
-<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
-<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
-<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
-<ul>
-<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
-<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
-<li>纯粹的声明式语言说：这里没有状态一说。</li>
-</ul>
-<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
-<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
-<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
-<li>理由一：它被认为是容易学习的</li>
-<li>理由二：它被认为可以使代码更易复用</li>
-<li>理由三：是炒作</li>
-<li>理由四：它创造了一个新的软件产业</li>
-</ul>
-<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
-<p>这就是面向对象背后真正的驱动力量。</p>
-<blockquote>
-<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-        <tag>Erlang</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2016 年书单</title>
     <url>/2016/12/31/2016-booklist/</url>
     <content><![CDATA[<p>从今年开始，打算每年年终的时候总结这一年读过的书的书单，看看我能坚持多少年。不求看书数量上的多少，只求在每本看过的书中都能找到一些能内化成自己所能掌握的东西。这样做也是希望即便已经没有校园里大把的闲散时间读「野书」，也能不放弃这样的习惯。</p>
@@ -1071,6 +973,68 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>译文 | 为什么面向对象很糟糕</title>
+    <url>/2017/02/09/why-oo-sucks/</url>
+    <content><![CDATA[<blockquote>
+<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
+</blockquote>
+<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
+<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
+<span id="more"></span>
+
+<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
+<blockquote>
+<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
+</blockquote>
+<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
+<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
+<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
+<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
+<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
+<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
+<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
+<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
+<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
+<p>这里没有与之相关联的那些方法。</p>
+<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
+<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
+<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
+<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
+<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
+<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
+<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
+<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
+<ul>
+<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
+<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
+<li>纯粹的声明式语言说：这里没有状态一说。</li>
+</ul>
+<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
+<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
+<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
+<li>理由一：它被认为是容易学习的</li>
+<li>理由二：它被认为可以使代码更易复用</li>
+<li>理由三：是炒作</li>
+<li>理由四：它创造了一个新的软件产业</li>
+</ul>
+<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
+<p>这就是面向对象背后真正的驱动力量。</p>
+<blockquote>
+<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+        <tag>Erlang</tag>
       </tags>
   </entry>
   <entry>
@@ -1173,6 +1137,42 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>性能调优</tag>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+<span id="more"></span>
+
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
       </tags>
   </entry>
   <entry>
@@ -2241,54 +2241,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>一套大概率可行的具体投资策略</title>
-    <url>/2022/08/20/a-specific-investment-strategy/</url>
-    <content><![CDATA[<p>这一篇是接着上一篇<a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a>的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对<a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些<del>，毕竟谁没有幻想过自己突然哪一天突然失忆了呢</del>。</p>
-<p>既然是「具体投资策略」，一定要有必要的细节。但事先声明，这些细节只是我正在实践的细节，并不代表任何人拿去就可以直接套用，比如其中的资金配比、仓位配比等等，都不一定得是我接下来要说的那个比例，因为有一些比例只是根据市场历史得出的实践经验，并没有很 solid 的理论支撑。如果你也要跟着这一套策略实践，请根据自身的实际情况进行相应的调整，只要大致的方向和思路没问题就行。投资，很多时候<a href="http://www.globalhha.com/doclib/index.php?m=Home&c=article&a=viewarticle&id=16">要追求一种「模糊的正确」，而不要「精确的错误」</a>。</p>
-<span id="more"></span>
-
-<p>另外，再次设置一个合理的预期，这套策略预计只能做到比 GDP 增长速度高两个点的平均年化水平，或者说跑赢通胀的水平，如果运气好赚到了更多，那纯属运气好。快速暴富的投资策略，也有很多，出门右转即可。</p>
-<p>先做一个假设：假设你有一千万的可投资金。这里先需要一点注解：</p>
-<ol>
-<li>在上一篇讲过「本金从哪里来」，如果你的本金太少，进行二级市场投资对个人的资产增值整体来说意义不大，当然我并不是说你得攒够一千万才能开始，这里只是举个例子，方便后面进行对应比例的计算。实际操作中，按照你的具体可投资金按比例折算即可。</li>
-<li>什么是「可投资金」？指的是你可以<strong>随时</strong>（姑且按一周内算）拿出来进行投资的资金，不包括你买的银行定期等任何其他不能马上变现的资产。而且这些钱在可预见的三到五年内都没有需要用到其他地方的计划和打算，比如买房、买车等。所以，也不要把你应急用的备用资金（没有收入的情况下至少一两年的开销）、买保险的资金、可能的用于医疗保健的资金等算在内。</li>
-</ol>
-<p>回到这一千万的可投资金，我会把它们先分成两部分：</p>
-<ul>
-<li>第一部分，两百万（20%）购买货币基金、稳健的国债或者合适的信托基金（取决于实际资金量），重点是同样需要保证这两百万的流动性，也就是能随时拿出来用。但是，你对这两百万的心理预期应该是 <strong>99.99%</strong> 的情况下不会真的拿来用。这部分相当于你的可投资金的压舱石，所以你几乎永远都不会处在满仓的状态下。剩下可能会用到这两百万的 0.01% 的情况是：往差了想是你对未来的资金规划考虑不足，在投资以外出现了必须要用钱的场景，那没办法，只能先挪用这部分钱；往好了想是市场真的出现了五年、十年甚至二十年一次的机会，我不会允许自己错过这样的机会，在之后要说的更具体的体系之外，我很可能会用这两百万的一部分进行额外的仓位补充，比如今年（2022 年）上半年出现的中概股从历史最高下跌到几乎 20% 的位置这样的情况，我预计这可能是五年难得一遇的机会，会拿出少部分这两百万进行额外的补仓。同时，这里 callback 到了为什么我们需要买指数基金，因为它们几乎不会死，但是个股在这方面的风险就会高很多，即便是公司的市场竞争力减弱，都很可能造成股价的一蹶不振，从此一路下跌，直至退市，甚至公司倒闭。</li>
-<li>第二部分，八百万（80%）用来进行真正的日常指数基金投资。接下来的部分重点针对这八百万如何操作。</li>
-</ul>
-<p>首先先介绍策略的理念，然后介绍具体买哪些品种，同样资金需要按比例分配到各个不同的子策略和品种上。</p>
-<p>我会按 2:3:5 的比例来分配这剩下的八百万资金，也就是 160 万、240 万和 400 万，分别用于短期、中期和长期的投资策略。为什么要这样分？因为这应该是一个全天候的策略。市场的走势是没法预测的，不同的走势需要不同的策略要应对，具体来说短期策略用于市场在中底部不断横盘震荡的时期、中期策略用于有较大周期性波动特点的市场或品种、长期策略则是用真正价值投资的核心理念来收割大周期或宏观经济上涨的红利。其次，一个针对人性弱点的考量：为了让你在经历各种市场风浪手痒时不至于经常操作长期策略，可以用短期和中期策略来获得对市场的参与感。这三种子策略的理念分别是这样的：</p>
-<p>短期策略 —— 完全按<strong>场内基金</strong>的<strong>网格</strong>策略来交易操作，这里我必须得直接贴上 E 大写过的系列文章，已经非常详细的把这个子策略如何操作的写得清清楚楚了，而且根据具体的实践这个子策略还在不断完善和进化中，我不必再赘述了（另外，文中提到的「留利润」的操作并不适合我，所以我并没有这样做，我自己会严格区分短期、中期、长期各个策略的界限，不期望用分配给短期的资金来赚取长期的利润，否则会让我自己的心态受到影响从而容易做出不理智的操作）：</p>
-<ol>
-<li><a href="https://mp.weixin.qq.com/s/uxktt5ZpNo03FpQQX-aG7g">波段策略.网格之一：写在前面、体系以及策略</a></li>
-<li><a href="https://mp.weixin.qq.com/s/-czfqGvxkDcay_tSI1jv5g">波段策略.网格之二：网格策略基础&#x2F;1.0版</a></li>
-<li><a href="https://mp.weixin.qq.com/s/8pRKsjiQSZzrmH-uWCkRLQ">波段策略.网格之三：网格策略进阶&#x2F;2.0版</a></li>
-</ol>
-<p>中期策略和长期策略 —— 这两个子策略都用<strong>场外基金</strong>操作即可，因为它们都不会需要频繁的进行交易。中期策略和长期策略不同的是，中期策略会根据当时当下的市场状态和各个品种的估值分位进行买入卖出，对于各个品种的相互占比没有那么严格，目的是为了赚取雷达内的品种半年以上波动的利润；而长期策略则会严格考虑各个品种的配比，是按至少三年以上为一个完整的买入卖出周期的预期来衡量的，目的是赚取市场真正价值上涨的利润。</p>
-<p>接下来讨论买哪些品种，注意，上述的三个子策略对于品种的选择方式都是一致的，只是长期策略需要更多的考虑品种的相对配比。可以这样来理解，长期策略占用了我们最多的用来投资的资金，作为压舱石，我们期望它是足够稳健和健康的，不会因为偏重于单一品种而使得这个策略有很大的波动和回撤。但是不同的品种在某一时期可能会处在各自不同的走势阶段，作为一个全天候策略，中期策略和短期策略此时就可以因地制宜灵活的对这一部分的需求进行补足。</p>
-<p>要买的品种大致包含两大部分 —— 宽基指数和行业指数。先说一个有用的结论：买相关性低的品种能降低整个策略的风险，平滑整体收益曲线的波动。所以后面说的品种都是指的相关性低的大类，不会到具体的某个基金。另外，任何一个不可再分的大类品种仓位比例都不要超过 20%，同样是为了降低整个策略的风险 —— 即便投错也不至于错得太离谱。话不多说，结合前面所有的内容，直接上一个按比例配置的思维导图：</p>
-<img data-src="/uploads/investment-strategy.png" class="" title="投资品种比例思维导图" alt="图片显示错误">
-
-<p>必须再一次说明的是，图片中的比例和上文中的所有比例都不是一层不变的，需要根据个体情况和当前市场情况进行调整，但大的相对比例关系和基本的原则是不会轻易改变的。其次，图片中的某个品种的仓位比例是指<strong>仓位上限</strong>，不是每时每刻都要买满的，而且很多大类品种在不同的时期可能有更多的选择，比如 A 股的行业部分、海外成熟市场、商品等，都不局限于图上列出的那几种。另外如前所述，投资部分 80% 的资金会按 2:3:5 的大致比例分配到短期、中期和长期的子策略上。</p>
-<p>最后还需要解决一个大问题：什么时候买、什么时候卖。这是最难的部分，我也还在不断的摸索之中，但你最好也能在真金白银买入之前就想好自己的具体买入卖出策略。</p>
-<p>总体上还是按估值的原则来决定什么时候开始买，当某个品种开始进入低估区域的时候短期、中期和长期策略都可以开始买。<strong>假设</strong>一个品种从历史最高点跌了 50% 进入低估区域，跌到 20% 分位是可能的大底，那你的买入区域就应该分布在从最高点往下跌 50% ~ 80% 的区域。你可以提前把所有需要买入这个品种的资金分成很多份，从跌 50% 开始买第一份，到跌 80% 的时候可以把所有提前分配的资金份数买满，包括短期、中期和长期策略中的资金。至于如何判断一个品种是否开始低估，可以<strong>参考</strong>各种投资机构和市场大 V 出的市场温度表，或者自己计算。另外必须强调的一点是，<strong>一定要控制买入的节奏</strong>，如果一个品种到了低估区域，<strong>一般</strong>也要控制自己的中期和长期策略一个月最多买一到两份资金（网格买入取决于波动情况）。</p>
-<p>如何卖出？短期（网格）策略一份资金的买入已经决定了这份资金的卖出条件，无需赘述。中期策略的卖出介于短期策略和长期策略之间，算是一个比较大的波段策略，当某份资金买入过了半年以上，收益率在 15% 以上且结合一些趋势分析判断可以考虑进行卖出。长期策略则卖出操作要少很多，你可以选择牛市不来坚决不卖，或者某份资金买入经过了三年且在趋势或基本面真正发生变化之际选择卖出这一份资金。如何卖出比如何买入更难，你需要根据每个子策略的基本原则和特点提前约定好你自己的具体卖出策略。这可以是综合价值投资、趋势投资和技术投资思想的综合分析。</p>
-<p>最后，这套策略应当是在具体实践中根据经验不断完善改进的。注意的是，需要改进的是策略，而不是把某一次操作十分主观的归入某种例外。不断修正体系用来应对任何的市场情况，才会是一套可以复制和长期运行的全天候市场策略。</p>
-<p>下一篇<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」</a>我大概率会讲讲个人如何记账，因为记账是投资入门的首要前提，这样才能在投资过程中随时了解自己的资金情况和分配于各个投资策略之间的资金比例关系。</p>
-<p>P.S. 我本人不看好近两年世界宏观经济形势，股市有风险，入市需谨慎。</p>
-]]></content>
-      <categories>
-        <category>滚雪球</category>
-      </categories>
-      <tags>
-        <tag>投资</tag>
-        <tag>指数基金</tag>
-        <tag>资产配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何开始稳健投资</title>
     <url>/2022/03/13/how-to-start-investing-soundly/</url>
     <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
@@ -2364,6 +2316,54 @@ _Farewell and thanks to each for the company_
         <tag>创作</tag>
         <tag>电影</tag>
         <tag>文化产业</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一套大概率可行的具体投资策略</title>
+    <url>/2022/08/20/a-specific-investment-strategy/</url>
+    <content><![CDATA[<p>这一篇是接着上一篇<a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a>的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对<a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些<del>，毕竟谁没有幻想过自己突然哪一天突然失忆了呢</del>。</p>
+<p>既然是「具体投资策略」，一定要有必要的细节。但事先声明，这些细节只是我正在实践的细节，并不代表任何人拿去就可以直接套用，比如其中的资金配比、仓位配比等等，都不一定得是我接下来要说的那个比例，因为有一些比例只是根据市场历史得出的实践经验，并没有很 solid 的理论支撑。如果你也要跟着这一套策略实践，请根据自身的实际情况进行相应的调整，只要大致的方向和思路没问题就行。投资，很多时候<a href="http://www.globalhha.com/doclib/index.php?m=Home&c=article&a=viewarticle&id=16">要追求一种「模糊的正确」，而不要「精确的错误」</a>。</p>
+<span id="more"></span>
+
+<p>另外，再次设置一个合理的预期，这套策略预计只能做到比 GDP 增长速度高两个点的平均年化水平，或者说跑赢通胀的水平，如果运气好赚到了更多，那纯属运气好。快速暴富的投资策略，也有很多，出门右转即可。</p>
+<p>先做一个假设：假设你有一千万的可投资金。这里先需要一点注解：</p>
+<ol>
+<li>在上一篇讲过「本金从哪里来」，如果你的本金太少，进行二级市场投资对个人的资产增值整体来说意义不大，当然我并不是说你得攒够一千万才能开始，这里只是举个例子，方便后面进行对应比例的计算。实际操作中，按照你的具体可投资金按比例折算即可。</li>
+<li>什么是「可投资金」？指的是你可以<strong>随时</strong>（姑且按一周内算）拿出来进行投资的资金，不包括你买的银行定期等任何其他不能马上变现的资产。而且这些钱在可预见的三到五年内都没有需要用到其他地方的计划和打算，比如买房、买车等。所以，也不要把你应急用的备用资金（没有收入的情况下至少一两年的开销）、买保险的资金、可能的用于医疗保健的资金等算在内。</li>
+</ol>
+<p>回到这一千万的可投资金，我会把它们先分成两部分：</p>
+<ul>
+<li>第一部分，两百万（20%）购买货币基金、稳健的国债或者合适的信托基金（取决于实际资金量），重点是同样需要保证这两百万的流动性，也就是能随时拿出来用。但是，你对这两百万的心理预期应该是 <strong>99.99%</strong> 的情况下不会真的拿来用。这部分相当于你的可投资金的压舱石，所以你几乎永远都不会处在满仓的状态下。剩下可能会用到这两百万的 0.01% 的情况是：往差了想是你对未来的资金规划考虑不足，在投资以外出现了必须要用钱的场景，那没办法，只能先挪用这部分钱；往好了想是市场真的出现了五年、十年甚至二十年一次的机会，我不会允许自己错过这样的机会，在之后要说的更具体的体系之外，我很可能会用这两百万的一部分进行额外的仓位补充，比如今年（2022 年）上半年出现的中概股从历史最高下跌到几乎 20% 的位置这样的情况，我预计这可能是五年难得一遇的机会，会拿出少部分这两百万进行额外的补仓。同时，这里 callback 到了为什么我们需要买指数基金，因为它们几乎不会死，但是个股在这方面的风险就会高很多，即便是公司的市场竞争力减弱，都很可能造成股价的一蹶不振，从此一路下跌，直至退市，甚至公司倒闭。</li>
+<li>第二部分，八百万（80%）用来进行真正的日常指数基金投资。接下来的部分重点针对这八百万如何操作。</li>
+</ul>
+<p>首先先介绍策略的理念，然后介绍具体买哪些品种，同样资金需要按比例分配到各个不同的子策略和品种上。</p>
+<p>我会按 2:3:5 的比例来分配这剩下的八百万资金，也就是 160 万、240 万和 400 万，分别用于短期、中期和长期的投资策略。为什么要这样分？因为这应该是一个全天候的策略。市场的走势是没法预测的，不同的走势需要不同的策略要应对，具体来说短期策略用于市场在中底部不断横盘震荡的时期、中期策略用于有较大周期性波动特点的市场或品种、长期策略则是用真正价值投资的核心理念来收割大周期或宏观经济上涨的红利。其次，一个针对人性弱点的考量：为了让你在经历各种市场风浪手痒时不至于经常操作长期策略，可以用短期和中期策略来获得对市场的参与感。这三种子策略的理念分别是这样的：</p>
+<p>短期策略 —— 完全按<strong>场内基金</strong>的<strong>网格</strong>策略来交易操作，这里我必须得直接贴上 E 大写过的系列文章，已经非常详细的把这个子策略如何操作的写得清清楚楚了，而且根据具体的实践这个子策略还在不断完善和进化中，我不必再赘述了（另外，文中提到的「留利润」的操作并不适合我，所以我并没有这样做，我自己会严格区分短期、中期、长期各个策略的界限，不期望用分配给短期的资金来赚取长期的利润，否则会让我自己的心态受到影响从而容易做出不理智的操作）：</p>
+<ol>
+<li><a href="https://mp.weixin.qq.com/s/uxktt5ZpNo03FpQQX-aG7g">波段策略.网格之一：写在前面、体系以及策略</a></li>
+<li><a href="https://mp.weixin.qq.com/s/-czfqGvxkDcay_tSI1jv5g">波段策略.网格之二：网格策略基础&#x2F;1.0版</a></li>
+<li><a href="https://mp.weixin.qq.com/s/8pRKsjiQSZzrmH-uWCkRLQ">波段策略.网格之三：网格策略进阶&#x2F;2.0版</a></li>
+</ol>
+<p>中期策略和长期策略 —— 这两个子策略都用<strong>场外基金</strong>操作即可，因为它们都不会需要频繁的进行交易。中期策略和长期策略不同的是，中期策略会根据当时当下的市场状态和各个品种的估值分位进行买入卖出，对于各个品种的相互占比没有那么严格，目的是为了赚取雷达内的品种半年以上波动的利润；而长期策略则会严格考虑各个品种的配比，是按至少三年以上为一个完整的买入卖出周期的预期来衡量的，目的是赚取市场真正价值上涨的利润。</p>
+<p>接下来讨论买哪些品种，注意，上述的三个子策略对于品种的选择方式都是一致的，只是长期策略需要更多的考虑品种的相对配比。可以这样来理解，长期策略占用了我们最多的用来投资的资金，作为压舱石，我们期望它是足够稳健和健康的，不会因为偏重于单一品种而使得这个策略有很大的波动和回撤。但是不同的品种在某一时期可能会处在各自不同的走势阶段，作为一个全天候策略，中期策略和短期策略此时就可以因地制宜灵活的对这一部分的需求进行补足。</p>
+<p>要买的品种大致包含两大部分 —— 宽基指数和行业指数。先说一个有用的结论：买相关性低的品种能降低整个策略的风险，平滑整体收益曲线的波动。所以后面说的品种都是指的相关性低的大类，不会到具体的某个基金。另外，任何一个不可再分的大类品种仓位比例都不要超过 20%，同样是为了降低整个策略的风险 —— 即便投错也不至于错得太离谱。话不多说，结合前面所有的内容，直接上一个按比例配置的思维导图：</p>
+<img data-src="/uploads/investment-strategy.png" class="" title="投资品种比例思维导图" alt="图片显示错误">
+
+<p>必须再一次说明的是，图片中的比例和上文中的所有比例都不是一层不变的，需要根据个体情况和当前市场情况进行调整，但大的相对比例关系和基本的原则是不会轻易改变的。其次，图片中的某个品种的仓位比例是指<strong>仓位上限</strong>，不是每时每刻都要买满的，而且很多大类品种在不同的时期可能有更多的选择，比如 A 股的行业部分、海外成熟市场、商品等，都不局限于图上列出的那几种。另外如前所述，投资部分 80% 的资金会按 2:3:5 的大致比例分配到短期、中期和长期的子策略上。</p>
+<p>最后还需要解决一个大问题：什么时候买、什么时候卖。这是最难的部分，我也还在不断的摸索之中，但你最好也能在真金白银买入之前就想好自己的具体买入卖出策略。</p>
+<p>总体上还是按估值的原则来决定什么时候开始买，当某个品种开始进入低估区域的时候短期、中期和长期策略都可以开始买。<strong>假设</strong>一个品种从历史最高点跌了 50% 进入低估区域，跌到 20% 分位是可能的大底，那你的买入区域就应该分布在从最高点往下跌 50% ~ 80% 的区域。你可以提前把所有需要买入这个品种的资金分成很多份，从跌 50% 开始买第一份，到跌 80% 的时候可以把所有提前分配的资金份数买满，包括短期、中期和长期策略中的资金。至于如何判断一个品种是否开始低估，可以<strong>参考</strong>各种投资机构和市场大 V 出的市场温度表，或者自己计算。另外必须强调的一点是，<strong>一定要控制买入的节奏</strong>，如果一个品种到了低估区域，<strong>一般</strong>也要控制自己的中期和长期策略一个月最多买一到两份资金（网格买入取决于波动情况）。</p>
+<p>如何卖出？短期（网格）策略一份资金的买入已经决定了这份资金的卖出条件，无需赘述。中期策略的卖出介于短期策略和长期策略之间，算是一个比较大的波段策略，当某份资金买入过了半年以上，收益率在 15% 以上且结合一些趋势分析判断可以考虑进行卖出。长期策略则卖出操作要少很多，你可以选择牛市不来坚决不卖，或者某份资金买入经过了三年且在趋势或基本面真正发生变化之际选择卖出这一份资金。如何卖出比如何买入更难，你需要根据每个子策略的基本原则和特点提前约定好你自己的具体卖出策略。这可以是综合价值投资、趋势投资和技术投资思想的综合分析。</p>
+<p>最后，这套策略应当是在具体实践中根据经验不断完善改进的。注意的是，需要改进的是策略，而不是把某一次操作十分主观的归入某种例外。不断修正体系用来应对任何的市场情况，才会是一套可以复制和长期运行的全天候市场策略。</p>
+<p>下一篇<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」</a>我大概率会讲讲个人如何记账，因为记账是投资入门的首要前提，这样才能在投资过程中随时了解自己的资金情况和分配于各个投资策略之间的资金比例关系。</p>
+<p>P.S. 我本人不看好近两年世界宏观经济形势，股市有风险，入市需谨慎。</p>
+]]></content>
+      <categories>
+        <category>滚雪球</category>
+      </categories>
+      <tags>
+        <tag>投资</tag>
+        <tag>指数基金</tag>
+        <tag>资产配置</tag>
       </tags>
   </entry>
   <entry>
@@ -2629,7 +2629,7 @@ _Farewell and thanks to each for the company_
 <p>其实真实的历史远比历史教材中高度凝练概括毫无人性的冷漠句子更有趣，至少我觉得从马伯庸的一些基于史实的历史小说入手，大部分人应该都能发现真实历史的乐趣。另外，畅销多年的<a href="https://book.douban.com/subject/3674537/">《明朝那些事儿》</a>也很推荐，搭配<a href="https://movie.douban.com/subject/2210001/">电视剧《大明王朝1566》</a>服用效果更佳。</p>
 <h3 id="热情、工作、价值创造"><a href="#热情、工作、价值创造" class="headerlink" title="热情、工作、价值创造"></a>热情、工作、价值创造</h3><p>最近也在<a href="https://book.douban.com/subject/27111654/">《货币战争》</a>里看到作者在序言里写的这样的话：</p>
 <blockquote>
-<p>当一个人在从事自己最有天赋的事情时，不吃不喝不睡也不会觉得痛苦，因为他正在努力为c社会创造性地贡献价值。事实上，世界上的每一个人都与生俱来地拥有某种天赋，一个人最大的幸福就是能够尽早地发现自己的天赋。而大多数人的悲哀就在于不知道，或者放弃了自己的天赋。在我看来，教育、读书、工作和生活的全部目的，就在于找到自己的天赋，它是与生俱来的，它是不可改变的，探索并发现它将是一生的重任。</p>
+<p>当一个人在从事自己最有天赋的事情时，不吃不喝不睡也不会觉得痛苦，因为他正在努力为社会创造性地贡献价值。事实上，世界上的每一个人都与生俱来地拥有某种天赋，一个人最大的幸福就是能够尽早地发现自己的天赋。而大多数人的悲哀就在于不知道，或者放弃了自己的天赋。在我看来，教育、读书、工作和生活的全部目的，就在于找到自己的天赋，它是与生俱来的，它是不可改变的，探索并发现它将是一生的重任。</p>
 </blockquote>
 <blockquote>
 <p>我一直有一种信念：一个人的价值，不体现在与别人相同的东西上，而体现在与别人不同的东西上。</p>
