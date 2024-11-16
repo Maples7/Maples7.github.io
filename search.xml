@@ -159,6 +159,26 @@
       </tags>
   </entry>
   <entry>
+    <title>巴山蜀水毓灵秀</title>
+    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>光影</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的密码管理策略</title>
     <url>/2016/04/06/my-strategy-about-passwords-management/</url>
     <content><![CDATA[<p>[ 本文来自于<a href="https://www.zhihu.com/question/19695004/answer/93985563">我的知乎回答</a>，现整理修改后记于博客。]</p>
@@ -232,26 +252,6 @@
       </tags>
   </entry>
   <entry>
-    <title>巴山蜀水毓灵秀</title>
-    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>光影</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Node.js 中的模块循环依赖及其解决</title>
     <url>/2016/08/17/cyclic-dependencies-in-node-and-its-solution/</url>
     <content><![CDATA[<p>Node.js 开发一般不容易遇到真正的模块循环依赖的情况，可是当你的项目开始达到一定的复杂度之后，你很有可能在你的 Node.js 编码生涯中遇到几次。而且如果你之前没有关于这方面的意识，Debug 可能会花费不少的时间。</p>
@@ -318,59 +318,6 @@
         <tag>Node.js</tag>
         <tag>循环依赖</tag>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>完全理解同步/异步与阻塞/非阻塞</title>
-    <url>/2016/08/24/understand-sync-async-and-blocking-non-blocking/</url>
-    <content><![CDATA[<p>随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。</p>
-<p>可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。</p>
-<p>本文力求以简明的语言来解释清楚这几个概念并加以区分，但不涉及到 Node.js 底层的具体实现。</p>
-<span id="more"></span>
-
-<h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
-<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
-<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
-<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
-<p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
-<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
-<p>对于同步型的调用，应用层需要自己去向系统内核问询，如果数据还未读取完毕，那此时读取文件的任务还未完成，应用层根据其阻塞和非阻塞的划分，或挂起或去做其他事情（所以同步和异步并不决定其等待数据返回时的状态）；如果数据已经读取完毕，那此时系统内核将数据返回给应用层，应用层即可以用取得的数据做其他相关的事情。</p>
-<p>而对于异步型的调用，应用层无需主动向系统内核问询，在系统内核读取完文件数据之后，会主动通知应用层数据已经读取完毕，此时应用层即可以接收系统内核返回过来的数据，再做其他事情。</p>
-<p>这便是（脱离阻塞和非阻塞来说之后）同步和异步的区别。也就是说，是否是同步还是异步，关注的是任务完成时消息通知的方式。由调用方盲目主动问询的方式是同步调用，由被调用方主动通知调用方任务已完成的方式是异步调用。</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b672dabecc59.png" alt="同步和异步调用模型"></p>
-<h3 id="Node-js-的异步非阻塞模型"><a href="#Node-js-的异步非阻塞模型" class="headerlink" title="Node.js 的异步非阻塞模型"></a>Node.js 的异步非阻塞模型</h3><p>完整来说，一个最高效且理想的文件读取异步非阻塞模型应该是这样的：应用层发起调用后系统内核立即返回（还没有文件内容数据），应用层继续做其他无关的事情，在系统内核从磁盘读取完数据之后主动通知应用层任务已完成，应用层此时接收系统内核返回的数据，然后继续做其他相关或不相关的事情。</p>
-<p>可以看到，在这个模型中，没有无谓的挂起、休眠与等待，也没有盲目无知的问询与检查，应用层做到不等候片刻的最大化利用自身的资源，系统内核也十分「善解人意」的在完成任务后主动通知应用层来接收任务成果。</p>
-<p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
-<p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
-<p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
-<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
-<p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
-<h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
-<p>假设小明需要在网上下载一个软件：</p>
-<ul>
-<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，这是同步阻塞；</li>
-<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，但是软件下载完成其实是会「叮」的一声通知的（但小明依然那样干等着），这是异步阻塞；（不常见）</li>
-<li>如果小明点击下载按钮之后，就去做其他事情了，不过他总需要时不时瞄一眼屏幕看软件是不是下载完成了，这是同步非阻塞；</li>
-<li>如果小明点击下载按钮之后，就去做其他事情了，软件下载完之后「叮」的一声通知小明，小明再回来继续处理下载完的软件，这是异步非阻塞。</li>
-</ul>
-<p>相信看完以上这个案例之后，这几个概念已经能够分辨得很清楚了。</p>
-<p>总的来说，同步和异步关注的是<strong>任务完成消息通知的机制</strong>，而阻塞和非阻塞关注的是<strong>等待任务完成时请求者的状态</strong>。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第三章；</li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5OTA1MDUyMA==&mid=2655435714&idx=2&sn=dd23e9d357c3adce3bc1b78956d10105&scene=1&srcid=0423LaJvwtyeAr3OMFwcJeAg#wechat_redirect">聊聊同步、异步、阻塞与非阻塞</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>同步</tag>
-        <tag>异步</tag>
-        <tag>阻塞</tag>
-        <tag>非阻塞</tag>
-        <tag>「完全理解」系列</tag>
       </tags>
   </entry>
   <entry>
@@ -531,6 +478,32 @@
       </tags>
   </entry>
   <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用 Swagger 构建 Express API Server 的文档系统</title>
     <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
     <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
@@ -606,29 +579,56 @@
       </tags>
   </entry>
   <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
+    <title>完全理解同步/异步与阻塞/非阻塞</title>
+    <url>/2016/08/24/understand-sync-async-and-blocking-non-blocking/</url>
+    <content><![CDATA[<p>随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。</p>
+<p>可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。</p>
+<p>本文力求以简明的语言来解释清楚这几个概念并加以区分，但不涉及到 Node.js 底层的具体实现。</p>
+<span id="more"></span>
 
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+<h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
+<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
+<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
+<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
+<p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
+<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
+<p>对于同步型的调用，应用层需要自己去向系统内核问询，如果数据还未读取完毕，那此时读取文件的任务还未完成，应用层根据其阻塞和非阻塞的划分，或挂起或去做其他事情（所以同步和异步并不决定其等待数据返回时的状态）；如果数据已经读取完毕，那此时系统内核将数据返回给应用层，应用层即可以用取得的数据做其他相关的事情。</p>
+<p>而对于异步型的调用，应用层无需主动向系统内核问询，在系统内核读取完文件数据之后，会主动通知应用层数据已经读取完毕，此时应用层即可以接收系统内核返回过来的数据，再做其他事情。</p>
+<p>这便是（脱离阻塞和非阻塞来说之后）同步和异步的区别。也就是说，是否是同步还是异步，关注的是任务完成时消息通知的方式。由调用方盲目主动问询的方式是同步调用，由被调用方主动通知调用方任务已完成的方式是异步调用。</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b672dabecc59.png" alt="同步和异步调用模型"></p>
+<h3 id="Node-js-的异步非阻塞模型"><a href="#Node-js-的异步非阻塞模型" class="headerlink" title="Node.js 的异步非阻塞模型"></a>Node.js 的异步非阻塞模型</h3><p>完整来说，一个最高效且理想的文件读取异步非阻塞模型应该是这样的：应用层发起调用后系统内核立即返回（还没有文件内容数据），应用层继续做其他无关的事情，在系统内核从磁盘读取完数据之后主动通知应用层任务已完成，应用层此时接收系统内核返回的数据，然后继续做其他相关或不相关的事情。</p>
+<p>可以看到，在这个模型中，没有无谓的挂起、休眠与等待，也没有盲目无知的问询与检查，应用层做到不等候片刻的最大化利用自身的资源，系统内核也十分「善解人意」的在完成任务后主动通知应用层来接收任务成果。</p>
+<p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
+<p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
+<p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
+<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
+<p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
+<h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
+<p>假设小明需要在网上下载一个软件：</p>
+<ul>
+<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，这是同步阻塞；</li>
+<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，但是软件下载完成其实是会「叮」的一声通知的（但小明依然那样干等着），这是异步阻塞；（不常见）</li>
+<li>如果小明点击下载按钮之后，就去做其他事情了，不过他总需要时不时瞄一眼屏幕看软件是不是下载完成了，这是同步非阻塞；</li>
+<li>如果小明点击下载按钮之后，就去做其他事情了，软件下载完之后「叮」的一声通知小明，小明再回来继续处理下载完的软件，这是异步非阻塞。</li>
+</ul>
+<p>相信看完以上这个案例之后，这几个概念已经能够分辨得很清楚了。</p>
+<p>总的来说，同步和异步关注的是<strong>任务完成消息通知的机制</strong>，而阻塞和非阻塞关注的是<strong>等待任务完成时请求者的状态</strong>。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第三章；</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5OTA1MDUyMA==&mid=2655435714&idx=2&sn=dd23e9d357c3adce3bc1b78956d10105&scene=1&srcid=0423LaJvwtyeAr3OMFwcJeAg#wechat_redirect">聊聊同步、异步、阻塞与非阻塞</a>；</li>
+</ol>
 ]]></content>
       <categories>
-        <category>浮生散记</category>
+        <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
+        <tag>Node.js</tag>
+        <tag>同步</tag>
+        <tag>异步</tag>
+        <tag>阻塞</tag>
+        <tag>非阻塞</tag>
+        <tag>「完全理解」系列</tag>
       </tags>
   </entry>
   <entry>
@@ -896,6 +896,206 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+<span id="more"></span>
+
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Express 性能调优</title>
+    <url>/2017/03/03/express-run-faster/</url>
+    <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
+<h2 id="NODE-ENV-production"><a href="#NODE-ENV-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
+<span id="more"></span>
+
+<blockquote>
+<p>NODE_ENV 环境变量指定运行应用程序的环境（通常是开发或者生产环境）。为了改进性能，最简单的方法是将 NODE_ENV 设置为“production”。     </p>
+<p>将 NODE_ENV 设置为“production”会使 Express：</p>
+<ul>
+<li>高速缓存视图模板。</li>
+<li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
+<li>生成简短的错误消息。</li>
+</ul>
+<p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
+</blockquote>
+<p>遂顿悟！</p>
+<p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
+<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
+<p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
+<p>测试结果如下：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [#/sec] (mean)</span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [#/sec] (mean)</span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
+
+<p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
+<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
+<h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
+<ul>
+<li><strong>使用 gzip 压缩响应</strong>：用 <a href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
+<li><strong>代码中不使用同步函数</strong>：项目启动时可以一次性使用同步函数进行一些有时序性的操作（比如加载路由），但在之后的长期运行过程中，具体对外的接口执行流程中不应该存在同步函数；</li>
+<li><strong>正确进行日志记录</strong>：不要简单的用 <code>console</code>（都是同步函数）或自己写文件操作，直接用成熟的日志包（如 Winston、Bunyan、log4js 等），必要的情况下可能还需要使用消息队列；</li>
+<li><strong>使用进程管理器</strong>：除了提高应用的可用性之外，还可以根据 CPU 核心数生成相应的应用实例，充分利用 Node.js 的优势压榨 CPU 的资源，常用的有 StrongLoop Process Manager、PM2、Forever；</li>
+<li><strong>使用反向代理</strong>：直接用 Nginx 做反向代理吧，一方面可以做 CDN 缓存静态资源，另一方面还能够利用它做简单的负载均衡。不过需要注意的几点是：<ul>
+<li>多实例下「粘性会话」需要把状态存储在第三方高速介质中，一般用 Redis 就好；或者，采用 JWT 鉴权方案实现接口无状态（更推荐，同时为了安全站点一定要强制使用 HTTPS）；</li>
+<li>Nginx 做反向代理时不应该将其与应用放在同一台主机上，原因可以看这里：<a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">生产环境最佳实践：性能和可靠性 - Express 官方文档</a></li>
+<li><a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Express</tag>
+        <tag>性能调优</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>译文 | 为什么面向对象很糟糕</title>
+    <url>/2017/02/09/why-oo-sucks/</url>
+    <content><![CDATA[<blockquote>
+<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
+</blockquote>
+<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
+<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
+<span id="more"></span>
+
+<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
+<blockquote>
+<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
+</blockquote>
+<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
+<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
+<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
+<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
+<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
+<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
+<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
+<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
+<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
+<p>这里没有与之相关联的那些方法。</p>
+<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
+<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
+<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
+<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
+<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
+<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
+<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
+<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
+<ul>
+<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
+<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
+<li>纯粹的声明式语言说：这里没有状态一说。</li>
+</ul>
+<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
+<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
+<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
+<li>理由一：它被认为是容易学习的</li>
+<li>理由二：它被认为可以使代码更易复用</li>
+<li>理由三：是炒作</li>
+<li>理由四：它创造了一个新的软件产业</li>
+</ul>
+<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
+<p>这就是面向对象背后真正的驱动力量。</p>
+<blockquote>
+<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+        <tag>Erlang</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL 慢查询优化</title>
+    <url>/2017/03/08/mysql-run-faster/</url>
+    <content><![CDATA[<p>在前一篇博客<a href="http://maples7.com/2017/03/03/express-run-faster/">《Express 性能调优》</a>中，我讲述了 Express 项目应该如何进行性能优化，但那些基本都只是官方文档上就已经明确指出的东西，也是对一个 Express 项目<strong>在性能上的基本要求</strong>。如果你已经足够仔细的阅读过文档，那么上一篇文章对你的收益几乎是 0。</p>
+<p>除了规范所指出的基本要求，要优化一个 Web 项目的方法还有很多，比如合理的在后端给返回数据加缓存、充分利用浏览器的前端缓存、CDN，实在不行甚至需要「劳师动众」的部署多台机器做集群和负载均衡等等。这一篇博客的重点将放在数据库慢查询的优化上，这个话题对于 Web 项目而言更具有普适的意义。一方面它不局限于任何一种技术栈（当然这一篇以使用最普遍的 MySQL 为例），另一方面它更是直接在业务逻辑层面从代码本质上来优化你的项目性能，这往往也是单实例服务下性能的瓶颈所在。</p>
+<span id="more"></span>
+
+<p>实际上，这也是上一篇博客所讲的的同一个实践项目性能优化的深入。本来那个项目已经基本按文档规范进行了部署（<code>NODE_ENV</code> 的问题只是为了新版展示的临时修改），在那些方面能够对其进行优化的空间已经有限了，所以这个话题才是长期的项目维护实践中更有意义的部分。</p>
+<h2 id="开启-MySQL-慢查询日志"><a href="#开启-MySQL-慢查询日志" class="headerlink" title="开启 MySQL 慢查询日志"></a>开启 MySQL 慢查询日志</h2><p>一个起步就不简单的原因是，我们如何才能定位到那些真正形成瓶颈的慢查询。一个普通项目中的 SQL 可能就有大几十甚至上百个，而「凶手们」就藏匿其中。</p>
+<p>一个朴素的想法是在项目中每一个 SQL 执行前后打上时间戳来估计执行时间，暂且不论由于各种因素的影响这种估算可能不准确，更让人不可接受的是这对原始代码造成的极大的侵入。</p>
+<p>好在 MySQL 提供了慢查询日志。这个日志会记录所有执行时间超过 <code>long_query_time</code>（默认是 10s）的 SQL 及相关的信息。</p>
+<p>在 MySQL 的 Console 中：  </p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mysql&gt; show variables like <span class="string">&#x27;long_query_time&#x27;</span>;</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| Variable_name   | Value     |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| long_query_time | 10.000000 |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like <span class="string">&#x27;slow_query%&#x27;</span>;</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| Variable_name       | Value                                |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| slow_query_log      | OFF                                  |</span><br><span class="line">| slow_query_log_file | /var/log/mysql/log-slow-queries.log  |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里，<code>slow_query_log</code> 指的是慢查询日志是否开启，<code>slow_query_log_file</code> 指明了日志所在的位置。</p>
+<p>在 MySQL 的配置文件 my.cnf 的 <code>[mysqld]</code> 项下可以配置慢查询日志开启，一般来讲如下配置即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">slow_query_log=1</span><br><span class="line">slow_query_log_file=/var/log/mysql/log-slow-queries.log</span><br><span class="line">long_query_time=2</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，应该赋予 <code>slow_query_log_file</code> 指向的目录 mysql 用户的写入权限：<code>chown mysql.mysql -R /var/log/mysql</code>，一般用默认的目录就好。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html">6.4.5 The Slow Query Log</a>。</p>
+<p>之后需重载 MySQL 配置生效：<code>/etc/init.d/mysql reload</code>。</p>
+<h2 id="分析慢查询日志"><a href="#分析慢查询日志" class="headerlink" title="分析慢查询日志"></a>分析慢查询日志</h2><p>在开启了 MySQL 慢查询日志一段时间之后，日志中就会把所有超过 <code>long_query_time</code> 的 SQL 记录下来。另一个有用的相关 MySQL 命令是 <code>mysqldumpslow</code>：由于慢查询日志可能很大或者很难分析，使用它可以获得 MySQL 对慢查询日志的一个总结报告，直接获得我们想要的统计分析后的结果。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldumpslow.html">5.6.8 mysqldumpslow — Summarize Slow Query Log Files</a>。</p>
+<p>当然，你也可以打开日志文件自己来查询、分析。</p>
+<h2 id="优化-SQL"><a href="#优化-SQL" class="headerlink" title="优化 SQL"></a>优化 SQL</h2><p>在得知哪些 SQL 是慢查询之后，我们就可以定位到具体的业务接口并针对性的进行优化了。</p>
+<p>首先，你要看是否能在不改变现有业务逻辑的前提下改进查询的速度。一个典型的场景是，你需要查询数据库中是否存在符合某个条件的记录，返回一个布尔值来表示有或者没有，一般用于通知提醒。如果程序员在撰写接口时没把性能放在心上，那么他就有可能写出 <code>SELECT count(*) FROM tbl_xxx WHERE XXXX</code> 这样的查询，当数据量一大时（而且索引不恰当或没有索引）这个查询会相当之慢，但如果改成 <code>SELECT id FROM tbl_xxx WHERE XXXX LIMIT 1</code> 这样来查询，对速度的提升则是巨大的。这个例子并不是我凭空捏造的，最近在实际项目中我就看到了跟这个例子一模一样的场景。</p>
+<p>能够找到上述的通过改变查询方式而又不改变业务逻辑的慢查询是幸运的，因为这些场景往往意味着只需重写 SQL 语句就能带来显著的性能提升，而且稍有经验的程序员在一开始就不会写出能够明显改良的查询语句。在绝大多数情况下，SQL 足够复杂而且难以做任何有价值的改动，这时就需要通过优化索引来提升效率了。</p>
+<p>如何更好的创建数据库索引绝对是一门技术活，我也并不觉得简简单单就能厘得很清楚，很多时候还是得具体 SQL 具体分析，甚至多条 SQL 一起来分析。可以先读一读这篇美团点评技术团队的文章：<a href="http://tech.meituan.com/mysql-index.html">MySQL索引原理及慢查询优化</a>，更深入的了解则可以阅读<a href="https://book.douban.com/subject/23008813/">《高性能MySQL》</a>一书。引用一下美团点评技术团队文章中提到的几个原则：</p>
+<blockquote>
+<ol>
+<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整；</li>
+<li>&#x3D;和in可以乱序，比如a &#x3D; 1 and b &#x3D; 2 and c &#x3D; 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式；</li>
+<li>尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)&#x2F;count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录；</li>
+<li>索引列不能参与计算，保持列“干净”，比如from_unixtime(create_time) &#x3D; ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time &#x3D; unix_timestamp(’2014-05-29’);</li>
+<li>尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</li>
+</ol>
+</blockquote>
+<p>常用的套路是在定位到慢查询语句之后，使用 <code>EXPLAIN</code> + <code>SQL</code> 来了解 MySQL 在执行这条数据时的一些细节，比如是否进行了优化、是否使用了索引等等。基于 <code>Explain</code> 的返回结果我们就可以根据 MySQL 的执行细节进一步分析是否应该优化搜索、怎样优化索引。</p>
+<p>就在这几天，美团技术团队开源了一款用于分析如何优化 SQL 的工具——<a href="https://github.com/Meituan-Dianping/SQLAdvisor">SQLAdvisor</a>，有兴趣可以试试。</p>
+<p>优化索引也并不是万能的，这种情况下只能考虑通过其他方式来缓和性能上的瓶颈了。</p>
+<blockquote>
+<p>查询容易，优化不易，且写且珍惜！</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>性能调优</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2016 年书单</title>
     <url>/2016/12/31/2016-booklist/</url>
     <content><![CDATA[<p>从今年开始，打算每年年终的时候总结这一年读过的书的书单，看看我能坚持多少年。不求看书数量上的多少，只求在每本看过的书中都能找到一些能内化成自己所能掌握的东西。这样做也是希望即便已经没有校园里大把的闲散时间读「野书」，也能不放弃这样的习惯。</p>
@@ -973,206 +1173,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <url>/2017/02/09/why-oo-sucks/</url>
-    <content><![CDATA[<blockquote>
-<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
-</blockquote>
-<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
-<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
-<span id="more"></span>
-
-<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
-<blockquote>
-<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
-</blockquote>
-<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
-<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
-<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
-<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
-<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
-<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
-<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
-<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
-<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
-<p>这里没有与之相关联的那些方法。</p>
-<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
-<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
-<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
-<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
-<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
-<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
-<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
-<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
-<ul>
-<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
-<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
-<li>纯粹的声明式语言说：这里没有状态一说。</li>
-</ul>
-<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
-<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
-<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
-<li>理由一：它被认为是容易学习的</li>
-<li>理由二：它被认为可以使代码更易复用</li>
-<li>理由三：是炒作</li>
-<li>理由四：它创造了一个新的软件产业</li>
-</ul>
-<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
-<p>这就是面向对象背后真正的驱动力量。</p>
-<blockquote>
-<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-        <tag>Erlang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Express 性能调优</title>
-    <url>/2017/03/03/express-run-faster/</url>
-    <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
-<h2 id="NODE-ENV-production"><a href="#NODE-ENV-production" class="headerlink" title="NODE_ENV&#x3D;production"></a>NODE_ENV&#x3D;production</h2><p>在查找了一番资料之后，我在 <a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">Express 官网上</a>发现了这样一段以前一直没有特别留意过的一段话：     </p>
-<span id="more"></span>
-
-<blockquote>
-<p>NODE_ENV 环境变量指定运行应用程序的环境（通常是开发或者生产环境）。为了改进性能，最简单的方法是将 NODE_ENV 设置为“production”。     </p>
-<p>将 NODE_ENV 设置为“production”会使 Express：</p>
-<ul>
-<li>高速缓存视图模板。</li>
-<li>高速缓存从 CSS 扩展生成的 CSS 文件。</li>
-<li>生成简短的错误消息。</li>
-</ul>
-<p>测试表明仅仅这样做就可以使应用程序性能提高 3 倍多！         </p>
-</blockquote>
-<p>遂顿悟！</p>
-<p>事情是这样的，之前我们项目的 RC 版本都是使用的 production 作为环境变量，而且与正式发布的版本使用的是同样量级的数据大小，但最近我们项目有一个相对较大的版本更新，于是我为了配置一些特殊的变量供需求方能方便的检查效果和进一步评估改动，所以把 RC 版本所在服务器的 NODE_ENV 变量改成了其他值（为了适配另外的一套配置）。而测试环境下由于数据量非常小，所以根本察觉不到这个问题。</p>
-<p>为了验证这个有文档说明来佐证的原因，我使用 ab（<a href="https://en.wikipedia.org/wiki/ApacheBench">ApacheBench</a>，一般用来做压力测试）进行了 A&#x2F;B 测试（<a href="https://en.wikipedia.org/wiki/A/B_testing">A&#x2F;B testing</a>，与前文的 ApacheBench 不是同一个概念）。</p>
-<p>需要提前说明的是，为了尽可能排除网络环境的干扰，我是在内网环境下测试的，两次测试完全只有环境变量不同（也就是说里面的配置、所用的数据库、是否有缓存等都完全是一样的）。而且测试的是项目的一个主要接口，这个接口提供了页面的大部分数据，内部的业务逻辑也比较复杂，做的事情比较多。</p>
-<p>测试结果如下：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=development</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.002 seconds</span><br><span class="line">Complete requests:      124</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      5467136 bytes</span><br><span class="line">HTML transferred:       5437056 bytes</span><br><span class="line">Requests per second:    41.31 [#/sec] (mean)</span><br><span class="line">Time per request:       242.097 [ms] (mean)</span><br><span class="line">Time per request:       24.210 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          1778.48 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   191  231  20.2    230     300</span><br><span class="line">Waiting:      191  230  20.0    229     296</span><br><span class="line">Total:        191  232  20.2    230     300</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    230</span><br><span class="line">  66%    234</span><br><span class="line">  75%    235</span><br><span class="line">  80%    238</span><br><span class="line">  90%    246</span><br><span class="line">  95%    285</span><br><span class="line">  98%    294</span><br><span class="line">  99%    298</span><br><span class="line"> 100%    300 (longest request)</span><br><span class="line">Finished 124 requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line"><span class="comment"># NODE_ENV=production</span></span><br><span class="line"><span class="comment"># ======================================================</span></span><br><span class="line">$ &gt;&gt; ab -c 10 -t 3 http://localhost:3000/XXXXX                                                     </span><br><span class="line"></span><br><span class="line">This is ApacheBench, Version 2.3 &lt;<span class="variable">$Revision</span>: 1706008 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            3000</span><br><span class="line"></span><br><span class="line">Document Path:          XXXXX</span><br><span class="line">Document Length:        42477 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      10</span><br><span class="line">Time taken <span class="keyword">for</span> tests:   3.006 seconds</span><br><span class="line">Complete requests:      209</span><br><span class="line">Failed requests:        0</span><br><span class="line">Total transferred:      8926808 bytes</span><br><span class="line">HTML transferred:       8877693 bytes</span><br><span class="line">Requests per second:    69.53 [#/sec] (mean)</span><br><span class="line">Time per request:       143.828 [ms] (mean)</span><br><span class="line">Time per request:       14.383 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          2900.06 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.3      0       1</span><br><span class="line">Processing:   113  142  17.5    137     189</span><br><span class="line">Waiting:      112  141  17.5    137     188</span><br><span class="line">Total:        114  142  17.5    137     189</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line">  50%    137</span><br><span class="line">  66%    143</span><br><span class="line">  75%    156</span><br><span class="line">  80%    160</span><br><span class="line">  90%    168</span><br><span class="line">  95%    179</span><br><span class="line">  98%    183</span><br><span class="line">  99%    185</span><br><span class="line"> 100%    189 (longest request)</span><br><span class="line">Finished 209 requests</span><br></pre></td></tr></table></figure>
-
-<p>可以看见，对比 QPS（或 RPS，Requests per second），<code>development:production = 41.31:69.53 [#/sec] (mean)</code>；对比平均用户请求等待时间（Time per request），<code>development:production = 242.097:143.828 [ms] (mean)</code>。基本上单个请求快了 100 ms 左右。</p>
-<p>虽然没有官网上说的「3 倍」那么夸张，不过按文档上说还会「高速缓存视图模板」和「高速缓存从 CSS 扩展生成的 CSS 文件」，而我测试的是一个纯 API 接口，只返回 JSON 数据，所以理论上 HTML 页面打开的速度的对比应该会更加明显（之后也测试了这种情况，速度要快 1&#x2F;3 左右）。</p>
-<h2 id="其他-Express-性能调优技巧"><a href="#其他-Express-性能调优技巧" class="headerlink" title="其他 Express 性能调优技巧"></a>其他 Express 性能调优技巧</h2><p>总结一下官网上所说的关于性能调优的基本还有以下几条：</p>
-<ul>
-<li><strong>使用 gzip 压缩响应</strong>：用 <a href="https://www.npmjs.com/package/compression">compression</a> 中间件；</li>
-<li><strong>代码中不使用同步函数</strong>：项目启动时可以一次性使用同步函数进行一些有时序性的操作（比如加载路由），但在之后的长期运行过程中，具体对外的接口执行流程中不应该存在同步函数；</li>
-<li><strong>正确进行日志记录</strong>：不要简单的用 <code>console</code>（都是同步函数）或自己写文件操作，直接用成熟的日志包（如 Winston、Bunyan、log4js 等），必要的情况下可能还需要使用消息队列；</li>
-<li><strong>使用进程管理器</strong>：除了提高应用的可用性之外，还可以根据 CPU 核心数生成相应的应用实例，充分利用 Node.js 的优势压榨 CPU 的资源，常用的有 StrongLoop Process Manager、PM2、Forever；</li>
-<li><strong>使用反向代理</strong>：直接用 Nginx 做反向代理吧，一方面可以做 CDN 缓存静态资源，另一方面还能够利用它做简单的负载均衡。不过需要注意的几点是：<ul>
-<li>多实例下「粘性会话」需要把状态存储在第三方高速介质中，一般用 Redis 就好；或者，采用 JWT 鉴权方案实现接口无状态（更推荐，同时为了安全站点一定要强制使用 HTTPS）；</li>
-<li>Nginx 做反向代理时不应该将其与应用放在同一台主机上，原因可以看这里：<a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://expressjs.com/zh-cn/advanced/best-practice-performance.html">生产环境最佳实践：性能和可靠性 - Express 官方文档</a></li>
-<li><a href="https://www.zhihu.com/question/19761434">Nginx 反向代理为什么可以提高网站性能？</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Express</tag>
-        <tag>性能调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL 慢查询优化</title>
-    <url>/2017/03/08/mysql-run-faster/</url>
-    <content><![CDATA[<p>在前一篇博客<a href="http://maples7.com/2017/03/03/express-run-faster/">《Express 性能调优》</a>中，我讲述了 Express 项目应该如何进行性能优化，但那些基本都只是官方文档上就已经明确指出的东西，也是对一个 Express 项目<strong>在性能上的基本要求</strong>。如果你已经足够仔细的阅读过文档，那么上一篇文章对你的收益几乎是 0。</p>
-<p>除了规范所指出的基本要求，要优化一个 Web 项目的方法还有很多，比如合理的在后端给返回数据加缓存、充分利用浏览器的前端缓存、CDN，实在不行甚至需要「劳师动众」的部署多台机器做集群和负载均衡等等。这一篇博客的重点将放在数据库慢查询的优化上，这个话题对于 Web 项目而言更具有普适的意义。一方面它不局限于任何一种技术栈（当然这一篇以使用最普遍的 MySQL 为例），另一方面它更是直接在业务逻辑层面从代码本质上来优化你的项目性能，这往往也是单实例服务下性能的瓶颈所在。</p>
-<span id="more"></span>
-
-<p>实际上，这也是上一篇博客所讲的的同一个实践项目性能优化的深入。本来那个项目已经基本按文档规范进行了部署（<code>NODE_ENV</code> 的问题只是为了新版展示的临时修改），在那些方面能够对其进行优化的空间已经有限了，所以这个话题才是长期的项目维护实践中更有意义的部分。</p>
-<h2 id="开启-MySQL-慢查询日志"><a href="#开启-MySQL-慢查询日志" class="headerlink" title="开启 MySQL 慢查询日志"></a>开启 MySQL 慢查询日志</h2><p>一个起步就不简单的原因是，我们如何才能定位到那些真正形成瓶颈的慢查询。一个普通项目中的 SQL 可能就有大几十甚至上百个，而「凶手们」就藏匿其中。</p>
-<p>一个朴素的想法是在项目中每一个 SQL 执行前后打上时间戳来估计执行时间，暂且不论由于各种因素的影响这种估算可能不准确，更让人不可接受的是这对原始代码造成的极大的侵入。</p>
-<p>好在 MySQL 提供了慢查询日志。这个日志会记录所有执行时间超过 <code>long_query_time</code>（默认是 10s）的 SQL 及相关的信息。</p>
-<p>在 MySQL 的 Console 中：  </p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mysql&gt; show variables like <span class="string">&#x27;long_query_time&#x27;</span>;</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| Variable_name   | Value     |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| long_query_time | 10.000000 |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like <span class="string">&#x27;slow_query%&#x27;</span>;</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| Variable_name       | Value                                |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">| slow_query_log      | OFF                                  |</span><br><span class="line">| slow_query_log_file | /var/log/mysql/log-slow-queries.log  |</span><br><span class="line">+---------------------+--------------------------------------+</span><br><span class="line">2 rows <span class="keyword">in</span> <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
-
-<p>在这里，<code>slow_query_log</code> 指的是慢查询日志是否开启，<code>slow_query_log_file</code> 指明了日志所在的位置。</p>
-<p>在 MySQL 的配置文件 my.cnf 的 <code>[mysqld]</code> 项下可以配置慢查询日志开启，一般来讲如下配置即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">slow_query_log=1</span><br><span class="line">slow_query_log_file=/var/log/mysql/log-slow-queries.log</span><br><span class="line">long_query_time=2</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，应该赋予 <code>slow_query_log_file</code> 指向的目录 mysql 用户的写入权限：<code>chown mysql.mysql -R /var/log/mysql</code>，一般用默认的目录就好。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html">6.4.5 The Slow Query Log</a>。</p>
-<p>之后需重载 MySQL 配置生效：<code>/etc/init.d/mysql reload</code>。</p>
-<h2 id="分析慢查询日志"><a href="#分析慢查询日志" class="headerlink" title="分析慢查询日志"></a>分析慢查询日志</h2><p>在开启了 MySQL 慢查询日志一段时间之后，日志中就会把所有超过 <code>long_query_time</code> 的 SQL 记录下来。另一个有用的相关 MySQL 命令是 <code>mysqldumpslow</code>：由于慢查询日志可能很大或者很难分析，使用它可以获得 MySQL 对慢查询日志的一个总结报告，直接获得我们想要的统计分析后的结果。详细的文档可以看这里：<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldumpslow.html">5.6.8 mysqldumpslow — Summarize Slow Query Log Files</a>。</p>
-<p>当然，你也可以打开日志文件自己来查询、分析。</p>
-<h2 id="优化-SQL"><a href="#优化-SQL" class="headerlink" title="优化 SQL"></a>优化 SQL</h2><p>在得知哪些 SQL 是慢查询之后，我们就可以定位到具体的业务接口并针对性的进行优化了。</p>
-<p>首先，你要看是否能在不改变现有业务逻辑的前提下改进查询的速度。一个典型的场景是，你需要查询数据库中是否存在符合某个条件的记录，返回一个布尔值来表示有或者没有，一般用于通知提醒。如果程序员在撰写接口时没把性能放在心上，那么他就有可能写出 <code>SELECT count(*) FROM tbl_xxx WHERE XXXX</code> 这样的查询，当数据量一大时（而且索引不恰当或没有索引）这个查询会相当之慢，但如果改成 <code>SELECT id FROM tbl_xxx WHERE XXXX LIMIT 1</code> 这样来查询，对速度的提升则是巨大的。这个例子并不是我凭空捏造的，最近在实际项目中我就看到了跟这个例子一模一样的场景。</p>
-<p>能够找到上述的通过改变查询方式而又不改变业务逻辑的慢查询是幸运的，因为这些场景往往意味着只需重写 SQL 语句就能带来显著的性能提升，而且稍有经验的程序员在一开始就不会写出能够明显改良的查询语句。在绝大多数情况下，SQL 足够复杂而且难以做任何有价值的改动，这时就需要通过优化索引来提升效率了。</p>
-<p>如何更好的创建数据库索引绝对是一门技术活，我也并不觉得简简单单就能厘得很清楚，很多时候还是得具体 SQL 具体分析，甚至多条 SQL 一起来分析。可以先读一读这篇美团点评技术团队的文章：<a href="http://tech.meituan.com/mysql-index.html">MySQL索引原理及慢查询优化</a>，更深入的了解则可以阅读<a href="https://book.douban.com/subject/23008813/">《高性能MySQL》</a>一书。引用一下美团点评技术团队文章中提到的几个原则：</p>
-<blockquote>
-<ol>
-<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整；</li>
-<li>&#x3D;和in可以乱序，比如a &#x3D; 1 and b &#x3D; 2 and c &#x3D; 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式；</li>
-<li>尽量选择区分度高的列作为索引,区分度的公式是count(distinct col)&#x2F;count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录；</li>
-<li>索引列不能参与计算，保持列“干净”，比如from_unixtime(create_time) &#x3D; ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time &#x3D; unix_timestamp(’2014-05-29’);</li>
-<li>尽量的扩展索引，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</li>
-</ol>
-</blockquote>
-<p>常用的套路是在定位到慢查询语句之后，使用 <code>EXPLAIN</code> + <code>SQL</code> 来了解 MySQL 在执行这条数据时的一些细节，比如是否进行了优化、是否使用了索引等等。基于 <code>Explain</code> 的返回结果我们就可以根据 MySQL 的执行细节进一步分析是否应该优化搜索、怎样优化索引。</p>
-<p>就在这几天，美团技术团队开源了一款用于分析如何优化 SQL 的工具——<a href="https://github.com/Meituan-Dianping/SQLAdvisor">SQLAdvisor</a>，有兴趣可以试试。</p>
-<p>优化索引也并不是万能的，这种情况下只能考虑通过其他方式来缓和性能上的瓶颈了。</p>
-<blockquote>
-<p>查询容易，优化不易，且写且珍惜！</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>性能调优</tag>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
-<span id="more"></span>
-
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
       </tags>
   </entry>
   <entry>
@@ -1305,31 +1305,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>程序与人生</title>
-    <url>/2017/05/24/programming-and-life/</url>
-    <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
-<p>越来越发现，前人总结的一些众所周知并经过时间验证过的关于写代码的道理，只要我们换个角度来类比和思考，同样可以适用于我们人生历程的一些方面。这篇文章就是我想到的一些例子，小标题都是写代码时所谓的一些「金科玉律」，而我会试图通过这些相通的「规律」，衍生出个人对人生某个方面的思考，可能小到微不足道的个人习惯，大到能够决定人生方向的人生观。</p>
-<span id="more"></span>
-
-<h2 id="做好垃圾回收"><a href="#做好垃圾回收" class="headerlink" title="做好垃圾回收"></a>做好垃圾回收</h2><p>任何使用 C&#x2F;C++ 写代码的程序员都会在编码时尤其注意一个问题，那就是及时进行垃圾回收。具体来说，由于 C&#x2F;C++ 本身不具有自动垃圾回收的机制，所以但凡程序向操作系统「借用」了一块内存来存放新生成的对象，都必须在对应对象的生命期结束之后的某个时刻主动的进行内存释放，即手动进行垃圾回收。如果没有进行合适的垃圾回收，则系统会陷入了我们常说的「内存泄漏」的问题——由于无用的内存得不到及时的释放，导致程序占用的内存越来越多，最后导致内存不足而整个系统无法正常运行。</p>
-<p>一个合格的 C&#x2F;C++ 程序员会把主动进行垃圾回收的习惯带到生活中，小到随手关灯、随手关门、把用过的会议室恢复原样，中到把借来的东西物归原主，甚至大到整个人类对发展过程中对生态环境破坏的及时弥补，其内在其实都是自然的「垃圾回收」原则。</p>
-<h2 id="永远不忘把错误默默吞掉"><a href="#永远不忘把错误默默吞掉" class="headerlink" title="永远不忘把错误默默吞掉"></a>永远不忘把错误默默吞掉</h2><p><em>“Errors should never pass silently”</em> 是<a href="https://en.wikipedia.org/wiki/Zen_of_Python">《The Zen of Python》</a>中重要的一条，它告诉我们永远不要忽视代码中的「异常」（Exception）。无论你是像目前大多数语言或框架所设计的把「异常」向上「抛」到一个足够高的层次然后统一记录日志并做处理然后程序继续运行，还是像 Erlang 那样崇尚 <em>let it crash</em> 的思想把所有被「异常」所「感染」到的轻量级 Process 全部挂掉，其相同的基点都是不能把异常默默的忽视掉。</p>
-<p>其内在的逻辑在于，我们绝不能忽视系统中的任何一个错误，把问题暴露出来总是比隐藏问题要更好。任何一个不加处理和纠正的错误，对于有状态的系统而言，可能导致系统处于一个完全失常的状态，其行为得不到有效的控制；对于无状态的系统而言，则可能使得任何触发了这个错误的用户请求都产生错误的结果和返回，即便不直接把 Process 挂掉，也至少把错误捕捉到且记录日志并视问题严重程度适当进行告警，否则问题将永远得不到解决。</p>
-<p>生活中其实也是如此。当我们遇到问题时，人的本能反应都是逃避的，但逃避永远解决不了我们遇到的问题。选择直面问题和困难是强者和自信者的逻辑和选择，人生也只有在不断的打怪升级中进阶成为更好的自己。具体来说，学习时遇到难点要想办法去弄懂原理，人际交往中遇到误会要及时沟通，工作时遇到阻碍要直面解决等等。</p>
-<h2 id="分工明确，关注点分离"><a href="#分工明确，关注点分离" class="headerlink" title="分工明确，关注点分离"></a>分工明确，关注点分离</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a>是面向对象程序设计的核心概念之一，它强调把业务逻辑的代码与解决特定领域问题的代码分离，这样才能使得代码具有「高内聚，低耦合，分层明确」的特点，也就是使得日后由于需求变动带来的维护修改能够以尽可能小的影响面来进行。其实 Erlang 的 actor 并发模型设计对此也有所体现，整个系统任务被拆分成一个个不同的小任务，被大量的轻量级 Work Process 来执行，而 Process 之间唯一的交互方式是通过 messages（这就是好比各个子系统通过 API 来进行黑盒交互），这样的并发模型就完全避免了传统的共享内存式并发的 data race、死锁等固有问题。</p>
-<p>人类社会整个就是一个分工明确的动态系统，不同人一定会有不同的专长和兴趣，在走向社会之后也一定会或主动或被动的走到合适自己的岗位上去。而整个人类社会系统是不断动态发展的，正是由于明确的分工机制，客观世界的某个具体的变化不必需要人类全体都进行调整来适应，这样人类社会总体上才得以能够勉力跟上客观世界变化的速度。其实道理很简单，就拿最近影响面极广的 WannaCry 勒索病毒事件来说，即便微软早在两三月前就已经推送了补丁修复漏洞，但由于需要调整的用户数量太大（即便假设所有用户对系统更新都持开放态度），所以肯定还是会有大量来不及进行调整的用户中招。更明确的说，个体数量越多，则所有个体都从当前状态调整到另一个确定状态所遇到的阻力就越大。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实如果有心，还可以发现很多沉淀下来的技术「准则」都可以有更哲学更生活化的解读和理解，也欢迎留言提供你的「新发现」。</p>
-<p>程序与人生，不仅仅是写程序的人生，更是透着程序思想哲思的人生。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>人生</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>了不起的 Erlang</title>
     <url>/2017/06/10/awesome-erlang/</url>
     <content><![CDATA[<blockquote class="blockquote-center">
@@ -1373,6 +1348,31 @@ _Farewell and thanks to each for the company_
         <tag>Erlang</tag>
         <tag>函数式编程</tag>
         <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序与人生</title>
+    <url>/2017/05/24/programming-and-life/</url>
+    <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
+<p>越来越发现，前人总结的一些众所周知并经过时间验证过的关于写代码的道理，只要我们换个角度来类比和思考，同样可以适用于我们人生历程的一些方面。这篇文章就是我想到的一些例子，小标题都是写代码时所谓的一些「金科玉律」，而我会试图通过这些相通的「规律」，衍生出个人对人生某个方面的思考，可能小到微不足道的个人习惯，大到能够决定人生方向的人生观。</p>
+<span id="more"></span>
+
+<h2 id="做好垃圾回收"><a href="#做好垃圾回收" class="headerlink" title="做好垃圾回收"></a>做好垃圾回收</h2><p>任何使用 C&#x2F;C++ 写代码的程序员都会在编码时尤其注意一个问题，那就是及时进行垃圾回收。具体来说，由于 C&#x2F;C++ 本身不具有自动垃圾回收的机制，所以但凡程序向操作系统「借用」了一块内存来存放新生成的对象，都必须在对应对象的生命期结束之后的某个时刻主动的进行内存释放，即手动进行垃圾回收。如果没有进行合适的垃圾回收，则系统会陷入了我们常说的「内存泄漏」的问题——由于无用的内存得不到及时的释放，导致程序占用的内存越来越多，最后导致内存不足而整个系统无法正常运行。</p>
+<p>一个合格的 C&#x2F;C++ 程序员会把主动进行垃圾回收的习惯带到生活中，小到随手关灯、随手关门、把用过的会议室恢复原样，中到把借来的东西物归原主，甚至大到整个人类对发展过程中对生态环境破坏的及时弥补，其内在其实都是自然的「垃圾回收」原则。</p>
+<h2 id="永远不忘把错误默默吞掉"><a href="#永远不忘把错误默默吞掉" class="headerlink" title="永远不忘把错误默默吞掉"></a>永远不忘把错误默默吞掉</h2><p><em>“Errors should never pass silently”</em> 是<a href="https://en.wikipedia.org/wiki/Zen_of_Python">《The Zen of Python》</a>中重要的一条，它告诉我们永远不要忽视代码中的「异常」（Exception）。无论你是像目前大多数语言或框架所设计的把「异常」向上「抛」到一个足够高的层次然后统一记录日志并做处理然后程序继续运行，还是像 Erlang 那样崇尚 <em>let it crash</em> 的思想把所有被「异常」所「感染」到的轻量级 Process 全部挂掉，其相同的基点都是不能把异常默默的忽视掉。</p>
+<p>其内在的逻辑在于，我们绝不能忽视系统中的任何一个错误，把问题暴露出来总是比隐藏问题要更好。任何一个不加处理和纠正的错误，对于有状态的系统而言，可能导致系统处于一个完全失常的状态，其行为得不到有效的控制；对于无状态的系统而言，则可能使得任何触发了这个错误的用户请求都产生错误的结果和返回，即便不直接把 Process 挂掉，也至少把错误捕捉到且记录日志并视问题严重程度适当进行告警，否则问题将永远得不到解决。</p>
+<p>生活中其实也是如此。当我们遇到问题时，人的本能反应都是逃避的，但逃避永远解决不了我们遇到的问题。选择直面问题和困难是强者和自信者的逻辑和选择，人生也只有在不断的打怪升级中进阶成为更好的自己。具体来说，学习时遇到难点要想办法去弄懂原理，人际交往中遇到误会要及时沟通，工作时遇到阻碍要直面解决等等。</p>
+<h2 id="分工明确，关注点分离"><a href="#分工明确，关注点分离" class="headerlink" title="分工明确，关注点分离"></a>分工明确，关注点分离</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a>是面向对象程序设计的核心概念之一，它强调把业务逻辑的代码与解决特定领域问题的代码分离，这样才能使得代码具有「高内聚，低耦合，分层明确」的特点，也就是使得日后由于需求变动带来的维护修改能够以尽可能小的影响面来进行。其实 Erlang 的 actor 并发模型设计对此也有所体现，整个系统任务被拆分成一个个不同的小任务，被大量的轻量级 Work Process 来执行，而 Process 之间唯一的交互方式是通过 messages（这就是好比各个子系统通过 API 来进行黑盒交互），这样的并发模型就完全避免了传统的共享内存式并发的 data race、死锁等固有问题。</p>
+<p>人类社会整个就是一个分工明确的动态系统，不同人一定会有不同的专长和兴趣，在走向社会之后也一定会或主动或被动的走到合适自己的岗位上去。而整个人类社会系统是不断动态发展的，正是由于明确的分工机制，客观世界的某个具体的变化不必需要人类全体都进行调整来适应，这样人类社会总体上才得以能够勉力跟上客观世界变化的速度。其实道理很简单，就拿最近影响面极广的 WannaCry 勒索病毒事件来说，即便微软早在两三月前就已经推送了补丁修复漏洞，但由于需要调整的用户数量太大（即便假设所有用户对系统更新都持开放态度），所以肯定还是会有大量来不及进行调整的用户中招。更明确的说，个体数量越多，则所有个体都从当前状态调整到另一个确定状态所遇到的阻力就越大。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实如果有心，还可以发现很多沉淀下来的技术「准则」都可以有更哲学更生活化的解读和理解，也欢迎留言提供你的「新发现」。</p>
+<p>程序与人生，不仅仅是写程序的人生，更是透着程序思想哲思的人生。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>人生</tag>
       </tags>
   </entry>
   <entry>
@@ -1479,6 +1479,28 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>今晚月色真美</title>
+    <url>/2017/12/21/love/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
+
+<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
+<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
+<span id="more"></span>
+
+<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
+<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
+<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
+<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
+<p>我，好像是你的。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>感情</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>完全理解回调函数</title>
     <url>/2017/10/17/understand-callback/</url>
     <content><![CDATA[<p>什么是回调函数？</p>
@@ -1508,28 +1530,6 @@ _Farewell and thanks to each for the company_
         <tag>「完全理解」系列</tag>
         <tag>回调函数</tag>
         <tag>控制反转</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>今晚月色真美</title>
-    <url>/2017/12/21/love/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
-
-<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
-<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
-<span id="more"></span>
-
-<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
-<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
-<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
-<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
-<p>我，好像是你的。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>感情</tag>
       </tags>
   </entry>
   <entry>
@@ -1572,57 +1572,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>完全理解并发</title>
-    <url>/2018/10/21/understand-concurrency/</url>
-    <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
-<p>本来不想把这篇文章加入到<a href="http://maples7.com/tags/%E3%80%8C%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3%E3%80%8D%E7%B3%BB%E5%88%97/">「完全理解」系列</a>，因为觉得「并发」涉及到的东西实在是很多，而我想凭借一篇博客企图「完全理解」那是不现实的。但虽然不能做到「完全理解」，但我还是会尝试尽力提纲挈领的把「并发」相关的话题都理清楚，把脉络勾勒出来，让它尽可能对得起「完全」吧。<del>毕竟，如果以后我有了一些更深的理解，我还可以继续迭代这篇文章。</del></p>
-<span id="more"></span>
-
-<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>在开始正式的话题之前，我们先来厘清两个概念——「并发」与「并行」。</p>
-<p>Erlang 之父 Joe Armstrong 曾经用一张非常简单易懂的图解释了「并发」与「并行」的区别：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b67309e4d019.jpg" alt="Joe Armstrong 解释「并发」与「并行」"></p>
-<p>「并发」是同学们排成两队，然而却只有一个咖啡机在工作，所以两个队列排在前面的同学交替使用咖啡机；「并行」则是两台咖啡机分别服务两个独立的同学队列，它们同时进行，互不干扰。</p>
-<p>这样的例子简单易懂，但依然还需要更进一步说明的是，「并发」与「并行」其实并不是同一个维度上非黑即白的两个对立的概念。「并发」更多的强调的是有没有这样的能力或特征，它是从事物的性质和对外表现上来说的，它不在乎你内部是如何实现「并发」的，相对而言是在更高层次上的概括，而「并行」则规定了它们在物理上一定是同时进行的，相对而言更严格。</p>
-<p>具体从编程的角度来说，「并行」甚至可以是实现「并发」的一种手段，比如用下文所要讲的「多线程」或「多进程」的方式来赋能某一段程序的「并发」能力：为了使程序具备「并发」的能力，采用「多线程」或「多进程」在应用层面上可以「并行」运行的具体实现手段来为其赋能。</p>
-<h2 id="计算机操作系统发展史"><a href="#计算机操作系统发展史" class="headerlink" title="计算机操作系统发展史"></a>计算机操作系统发展史</h2><p>要追根溯源的来理解「并发」，我们首先应该了解一下计算机操作系统的发展历史。因为回顾整个计算机操作系统的发展历史，我们就会发现，几乎所有的关键历史节点，都是因为它使得计算机系统拥有了更强的并发处理能力而变得重要的。</p>
-<p>在计算机诞生之初，是没有操作系统这种东西存在的，当时人们只能先把打孔纸带通过输入机将程序传入计算机，再启动运行。在程序执行完毕之后，打印机把计算结果输出，在现场监督程序执行的程序员再取走纸带。在这个时期，同一个计算机系统在同一时间只能处理唯一确定的一件事情。</p>
-<p>后来人们发明了批处理系统。批处理系统相当于计算机上的一个任务监督程序，在它的控制和调度下，计算机能够自动的、成批的处理一个或多个用户的任务。在批处理系统的帮助下，各个任务之间可以自动衔接，减少了需要人工建立任务和手工操作的时间，提高了计算机的利用效率。</p>
-<p>再后来，随着 CPU 性能的不断提升，出现了分时系统和实时系统。分时系统是把 CPU 的运行时间分成很短的时间片，按时间片轮流把 CPU 分配给各联机任务使用。若某个任务在分配给它的时间片内不能完成其计算，则该任务暂时中断，把 CPU 让给另一任务使用，等待下一轮调度时再继续其运行。由于计算机速度很快，各个任务之间轮转得也很快，给每个用户的感觉是他独占了一台计算机。而每个用户可以通过自己的终端向系统发出各种操作控制命令，在充分的人机交互情况下，完成作业的运行。为了解决分时系统不能及时响应用户指令的情况，又出现了能够在严格的时间范围内完成事件处理、及时响应随机外部事件的实时系统。</p>
-<p>IBM 于 1964 年伴随着大型机 System&#x2F;360 推出了通用操作系统 OS&#x2F;360，这个通用的操作系统使得不同型号的计算机设备也可以在同样的操作系统控制下使用同样的外部设备（如打印机）和更上层的软件，并且这些设备之间可以相互连接，共同工作。通用操作系统使得不同型号的计算机设备之间能够真正组成网络来处理复杂的任务。<del>软件工程领域的著作<a href="https://book.douban.com/subject/2230248/">《人月神话》</a>也是诞生于 IBM 的这个项目。</del></p>
-<p>再往后就是我们相对更加熟悉的 Unix&#x2F;Linux&#x2F;Windows&#x2F;OS X 这些现代操作系统诞生、迭代、版本更替的历史，目前这些操作系统的并发能力已经远远超出了当时的 OS&#x2F;360，而现代计算机网络的加持更是使得理论上的计算机并发处理能力几乎已经没有了上限。</p>
-<p>从整个计算机操作系统的历史我们可以清晰的看到历史上的计算机科学家们是如何一步一步来提升计算机处理任务的效率的。从一开始需要手工的开启、监督、结束单一任务，到使用批处理系统来自动化的监督任务流水线，再到使用分时系统来让 CPU 在多个任务之间不停的轮转，然后用后文要详述的多 CPU 使用多进程和多线程的方式来进一步提升多任务的执行效率，最后我们使用通用计算机系统来组成庞大的计算集群来处理复杂的各种各样需要随机响应的任务，并发能力一次比一次有了质的提升。</p>
-<p>如果说<a href="https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B">「摩尔定律」</a>使得 CPU 的性能可以指数级的增长来从单机速度上提升任务完成的效率，那么不断的提升并发能力则是更高屋建瓴的考虑如何不间断不浪费的来「压榨」CPU 的高性能，这种思考问题的维度比一门心思的考虑提升单 CPU 的速度更具有现实意义，对于解决现有问题来说是更加高明的选择。尤其是在「摩尔定律」行将失效的今天，采用分布式的方式提高整个系统的并发处理能力几乎成了唯一的选择。</p>
-<h2 id="多进程与多线程"><a href="#多进程与多线程" class="headerlink" title="多进程与多线程"></a>多进程与多线程</h2><p>让我们先回到单机时代，来了解目前主流的并发模型——多进程与多线程。现代操作系统早已进入多 CPU 时代，自然会支持多进程和多线程。「进程」就是操作系统中一个具有独立功能的程序，操作系统管理所有进程的执行并且以进程为单位分配存储空间。一个进程还可以拥有多个并发的执行流程，这些并发的执行流程是可以获得 CPU 调度和分派的基本执行单元，也就是线程。</p>
-<p>进程是计算机资源的拥有者，创建、切换和销毁都有较大的时空开销，而一个进程内的所有线程共享这个进程的资源，更轻量级，对其的相关操作也开销更小。需要注意的是，对于单核 CPU 系统而言，并行其实是不存在的，任何时刻 CPU 其实只能被一个线程所获取，线程之间共享了 CPU 的执行时间。由于切换的速度很快，对外表现为并发执行的样子。</p>
-<p>多进程和多线程是如今高级编程语言中实现并发的常规模型，比如 C++、Java、Python。同时为了解决程序中多个进程和线程对资源的抢占问题，还引入了「锁」的概念。在这个并发模型中，需要开发人员利用「锁」来处理资源抢占的问题，也就是不让某一个资源同时被多于一个进程（线程）所处理而带来不可预期的后果。</p>
-<p>既然有多进程和多线程，那么「锁」自然也有「进程锁」和「线程锁」。我们知道两个进程其实是相互独立的，各自拥有操作系统分配的独立资源，而「进程锁」是为了防止两个进程对他们所占用的资源以外的共享资源同时访问，一般可以使用操作系统级别的信号量来实现。相对应的，「线程锁」则是保证同一段代码在同一时间只有一个线程在执行，一般各语言本身或类库会提供实现方式。</p>
-<h2 id="分布式并发锁"><a href="#分布式并发锁" class="headerlink" title="分布式并发锁"></a>分布式并发锁</h2><p>「分布式锁」跟「进程锁」和「线程锁」很像，不过它更多的是使用在计算集群的场景中。在本质上，进程锁、线程锁和分布式锁的作用都是一样的，只是作用的颗粒度不一样。线程锁作用于单一进程的范围，进程锁作用于单一操作系统的范围，而分布式锁则可以作用于网络结构中。在分布式集群当中，我们使用分布式锁来保证不同线程对代码和资源是独占的。</p>
-<p>如何实现一个完美的分布式锁呢？我们先来分析一下实现一个好的分布式锁应该满足什么需求：首先这个加锁操作应该是原子性的，否则这个锁是有可能被「击穿」的；其次锁一般还需要有过期时间，使得某一次执行异常没有移除锁的情况下也能自然过期然后重试。</p>
-<p>以大多数人都熟悉的 Redis 为例，我们可以使用 Redis 的 set 指令，把 key 作为锁的标志。尤其注意的是，这个操作原子性包含了查看锁存不存在、加锁和设置过期时间三步操作，它们合在一起应该具有原子性（至少前两步）。也就是说，如果我们需要先使用 get 指令查看锁存不存在再决定是否加锁，这个锁已经不是一把好「锁」了。好在 <a href="https://redis.io/commands/set">Redis 2.6.12 以上的 set 指令</a> 支持了同时加参数设置过期时间和判断 key 是否存在，比如使用 <code>SET lock_key lock EX 5000 NX</code>，NX 保证了锁不存在时才上锁，而 Redis 指令本身具有原子性，这样就实现了一把看起来还不错的锁。在任务执行完毕后我们还需要用 del 指令主动把锁删掉以释放资源。</p>
-<p>上述例子只是一个简单的场景，这个锁其实还并不是完美的。思考这样的问题：如果某一次操作线程 A 执行的特别慢，超过了过期时间，这个时候锁已经自动过期失效了，这样就有可能两个线程同时在执行了。如何避免这样的问题这里不再详述，感兴趣的同学可以参考末尾 References 里面的内容。总之，实现一把完美的分布式锁可能并没有想象中那么简单。</p>
-<h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p>对于高级编程语言而言，多进程和多线程的并发模型更多的还是与操作系统底层对于并发的实现是保持一致的。也就是说，在它们的抽象层级上，实现并发的方式基本只是复刻了操作系统底层的并发模型。而 JavaScript 却不一样。</p>
-<p>JavaScript 在诞生时就被定位为在网页前端执行的脚本，为了保证线程安全，而且主线程也不会被 I&#x2F;O 等待所阻塞而失去响应，JavaScript 在设计阶段就采用了「异步事件模型」。这个模型并不是 JavaScript 独有的，它只是借用了这个古老的模型来解决它自身的问题。</p>
-<p>在实际情况中，异步事件模型也是采用多线程的方式来实施的。但是对于开发人员而言，你永远只需要跟主线程打交道，而所有的这些交互都是所谓「异步」的，也就是说，你调用的任何一个 API 都在执行成功后主动告知你执行结果，这样你就可以不必被任何 I&#x2F;O 所堵塞（详细的关于异步、同步、阻塞和非阻塞的辨析可以看这里：<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">《完全理解同步&#x2F;异步与阻塞&#x2F;非阻塞》</a>）。既然不会被阻塞，那么你可以以很快的速度调用很多个你需要调用的 I&#x2F;O，这些 API 在自己执行完毕后会主动返回结果，你可以拿着结果来继续做后续的事情，而其他时刻你完全是「自由」的。</p>
-<p>在这个并发模型中，你不再需要处理各种「锁」的问题，因为真正和你交互的只有主线程。可是作为开发者，你可能需要考虑如何处理代码中的各种异步流程。因为在异步的世界里，代码不再是简单的按照书写顺序来顺序执行的，如何在工程中清晰合理的组织这些流程是在这个并发模型下需要考虑的问题。</p>
-<h2 id="各种各样的并发模型"><a href="#各种各样的并发模型" class="headerlink" title="各种各样的并发模型"></a>各种各样的并发模型</h2><p>这个世界上除了多进程&#x2F;多线程的并发模型和异步事件并发模型，还有很多其他的并发模型，比如 Erlang 的 Actor 并发模型和 Golang 的 CSP 并发模型。在 Erlang 的并发世界里，有很多比内核线程还要轻量级的对象，它们之间通过各种 Message 来进行数据共享。这些对象非常轻，可以同时成千上万的被创建出来实现并发，而对象之间都通过发消息来进行数据交换，根本不需要「锁」。</p>
-<p>在一个没有「锁」的世界里，并发的效率是可以大大的提升的。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每一个并发模型都有其存在的意义和价值，不过在具体的业务场景下，采用不同的并发模型的好坏却是客观的。</p>
-<p>真理是存在的，可以被不断逼近却永远无法被任何事物所完美诠释。在技术的领域里，没有永恒的真理，但是真理永远值得被追求。</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a></li>
-<li><a href="https://github.com/jackfrued/Python-100-Days">Python-100-Days</a></li>
-<li><a href="https://www.itcodemonkey.com/article/3934.html">漫画：什么是分布式锁？</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>「完全理解」系列</tag>
-        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -1751,24 +1700,54 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>东北的冬</title>
-    <url>/2019/02/05/winter-of-north-east/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c598233d3831.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59830583ea1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59829a17feb.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5983059de98.jpg"></div></div></div>
-
+    <title>完全理解并发</title>
+    <url>/2018/10/21/understand-concurrency/</url>
+    <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
+<p>本来不想把这篇文章加入到<a href="http://maples7.com/tags/%E3%80%8C%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3%E3%80%8D%E7%B3%BB%E5%88%97/">「完全理解」系列</a>，因为觉得「并发」涉及到的东西实在是很多，而我想凭借一篇博客企图「完全理解」那是不现实的。但虽然不能做到「完全理解」，但我还是会尝试尽力提纲挈领的把「并发」相关的话题都理清楚，把脉络勾勒出来，让它尽可能对得起「完全」吧。<del>毕竟，如果以后我有了一些更深的理解，我还可以继续迭代这篇文章。</del></p>
 <span id="more"></span>
 
-<br />
-
-<p>图片已经过裁剪与压缩。</p>
+<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>在开始正式的话题之前，我们先来厘清两个概念——「并发」与「并行」。</p>
+<p>Erlang 之父 Joe Armstrong 曾经用一张非常简单易懂的图解释了「并发」与「并行」的区别：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b67309e4d019.jpg" alt="Joe Armstrong 解释「并发」与「并行」"></p>
+<p>「并发」是同学们排成两队，然而却只有一个咖啡机在工作，所以两个队列排在前面的同学交替使用咖啡机；「并行」则是两台咖啡机分别服务两个独立的同学队列，它们同时进行，互不干扰。</p>
+<p>这样的例子简单易懂，但依然还需要更进一步说明的是，「并发」与「并行」其实并不是同一个维度上非黑即白的两个对立的概念。「并发」更多的强调的是有没有这样的能力或特征，它是从事物的性质和对外表现上来说的，它不在乎你内部是如何实现「并发」的，相对而言是在更高层次上的概括，而「并行」则规定了它们在物理上一定是同时进行的，相对而言更严格。</p>
+<p>具体从编程的角度来说，「并行」甚至可以是实现「并发」的一种手段，比如用下文所要讲的「多线程」或「多进程」的方式来赋能某一段程序的「并发」能力：为了使程序具备「并发」的能力，采用「多线程」或「多进程」在应用层面上可以「并行」运行的具体实现手段来为其赋能。</p>
+<h2 id="计算机操作系统发展史"><a href="#计算机操作系统发展史" class="headerlink" title="计算机操作系统发展史"></a>计算机操作系统发展史</h2><p>要追根溯源的来理解「并发」，我们首先应该了解一下计算机操作系统的发展历史。因为回顾整个计算机操作系统的发展历史，我们就会发现，几乎所有的关键历史节点，都是因为它使得计算机系统拥有了更强的并发处理能力而变得重要的。</p>
+<p>在计算机诞生之初，是没有操作系统这种东西存在的，当时人们只能先把打孔纸带通过输入机将程序传入计算机，再启动运行。在程序执行完毕之后，打印机把计算结果输出，在现场监督程序执行的程序员再取走纸带。在这个时期，同一个计算机系统在同一时间只能处理唯一确定的一件事情。</p>
+<p>后来人们发明了批处理系统。批处理系统相当于计算机上的一个任务监督程序，在它的控制和调度下，计算机能够自动的、成批的处理一个或多个用户的任务。在批处理系统的帮助下，各个任务之间可以自动衔接，减少了需要人工建立任务和手工操作的时间，提高了计算机的利用效率。</p>
+<p>再后来，随着 CPU 性能的不断提升，出现了分时系统和实时系统。分时系统是把 CPU 的运行时间分成很短的时间片，按时间片轮流把 CPU 分配给各联机任务使用。若某个任务在分配给它的时间片内不能完成其计算，则该任务暂时中断，把 CPU 让给另一任务使用，等待下一轮调度时再继续其运行。由于计算机速度很快，各个任务之间轮转得也很快，给每个用户的感觉是他独占了一台计算机。而每个用户可以通过自己的终端向系统发出各种操作控制命令，在充分的人机交互情况下，完成作业的运行。为了解决分时系统不能及时响应用户指令的情况，又出现了能够在严格的时间范围内完成事件处理、及时响应随机外部事件的实时系统。</p>
+<p>IBM 于 1964 年伴随着大型机 System&#x2F;360 推出了通用操作系统 OS&#x2F;360，这个通用的操作系统使得不同型号的计算机设备也可以在同样的操作系统控制下使用同样的外部设备（如打印机）和更上层的软件，并且这些设备之间可以相互连接，共同工作。通用操作系统使得不同型号的计算机设备之间能够真正组成网络来处理复杂的任务。<del>软件工程领域的著作<a href="https://book.douban.com/subject/2230248/">《人月神话》</a>也是诞生于 IBM 的这个项目。</del></p>
+<p>再往后就是我们相对更加熟悉的 Unix&#x2F;Linux&#x2F;Windows&#x2F;OS X 这些现代操作系统诞生、迭代、版本更替的历史，目前这些操作系统的并发能力已经远远超出了当时的 OS&#x2F;360，而现代计算机网络的加持更是使得理论上的计算机并发处理能力几乎已经没有了上限。</p>
+<p>从整个计算机操作系统的历史我们可以清晰的看到历史上的计算机科学家们是如何一步一步来提升计算机处理任务的效率的。从一开始需要手工的开启、监督、结束单一任务，到使用批处理系统来自动化的监督任务流水线，再到使用分时系统来让 CPU 在多个任务之间不停的轮转，然后用后文要详述的多 CPU 使用多进程和多线程的方式来进一步提升多任务的执行效率，最后我们使用通用计算机系统来组成庞大的计算集群来处理复杂的各种各样需要随机响应的任务，并发能力一次比一次有了质的提升。</p>
+<p>如果说<a href="https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B">「摩尔定律」</a>使得 CPU 的性能可以指数级的增长来从单机速度上提升任务完成的效率，那么不断的提升并发能力则是更高屋建瓴的考虑如何不间断不浪费的来「压榨」CPU 的高性能，这种思考问题的维度比一门心思的考虑提升单 CPU 的速度更具有现实意义，对于解决现有问题来说是更加高明的选择。尤其是在「摩尔定律」行将失效的今天，采用分布式的方式提高整个系统的并发处理能力几乎成了唯一的选择。</p>
+<h2 id="多进程与多线程"><a href="#多进程与多线程" class="headerlink" title="多进程与多线程"></a>多进程与多线程</h2><p>让我们先回到单机时代，来了解目前主流的并发模型——多进程与多线程。现代操作系统早已进入多 CPU 时代，自然会支持多进程和多线程。「进程」就是操作系统中一个具有独立功能的程序，操作系统管理所有进程的执行并且以进程为单位分配存储空间。一个进程还可以拥有多个并发的执行流程，这些并发的执行流程是可以获得 CPU 调度和分派的基本执行单元，也就是线程。</p>
+<p>进程是计算机资源的拥有者，创建、切换和销毁都有较大的时空开销，而一个进程内的所有线程共享这个进程的资源，更轻量级，对其的相关操作也开销更小。需要注意的是，对于单核 CPU 系统而言，并行其实是不存在的，任何时刻 CPU 其实只能被一个线程所获取，线程之间共享了 CPU 的执行时间。由于切换的速度很快，对外表现为并发执行的样子。</p>
+<p>多进程和多线程是如今高级编程语言中实现并发的常规模型，比如 C++、Java、Python。同时为了解决程序中多个进程和线程对资源的抢占问题，还引入了「锁」的概念。在这个并发模型中，需要开发人员利用「锁」来处理资源抢占的问题，也就是不让某一个资源同时被多于一个进程（线程）所处理而带来不可预期的后果。</p>
+<p>既然有多进程和多线程，那么「锁」自然也有「进程锁」和「线程锁」。我们知道两个进程其实是相互独立的，各自拥有操作系统分配的独立资源，而「进程锁」是为了防止两个进程对他们所占用的资源以外的共享资源同时访问，一般可以使用操作系统级别的信号量来实现。相对应的，「线程锁」则是保证同一段代码在同一时间只有一个线程在执行，一般各语言本身或类库会提供实现方式。</p>
+<h2 id="分布式并发锁"><a href="#分布式并发锁" class="headerlink" title="分布式并发锁"></a>分布式并发锁</h2><p>「分布式锁」跟「进程锁」和「线程锁」很像，不过它更多的是使用在计算集群的场景中。在本质上，进程锁、线程锁和分布式锁的作用都是一样的，只是作用的颗粒度不一样。线程锁作用于单一进程的范围，进程锁作用于单一操作系统的范围，而分布式锁则可以作用于网络结构中。在分布式集群当中，我们使用分布式锁来保证不同线程对代码和资源是独占的。</p>
+<p>如何实现一个完美的分布式锁呢？我们先来分析一下实现一个好的分布式锁应该满足什么需求：首先这个加锁操作应该是原子性的，否则这个锁是有可能被「击穿」的；其次锁一般还需要有过期时间，使得某一次执行异常没有移除锁的情况下也能自然过期然后重试。</p>
+<p>以大多数人都熟悉的 Redis 为例，我们可以使用 Redis 的 set 指令，把 key 作为锁的标志。尤其注意的是，这个操作原子性包含了查看锁存不存在、加锁和设置过期时间三步操作，它们合在一起应该具有原子性（至少前两步）。也就是说，如果我们需要先使用 get 指令查看锁存不存在再决定是否加锁，这个锁已经不是一把好「锁」了。好在 <a href="https://redis.io/commands/set">Redis 2.6.12 以上的 set 指令</a> 支持了同时加参数设置过期时间和判断 key 是否存在，比如使用 <code>SET lock_key lock EX 5000 NX</code>，NX 保证了锁不存在时才上锁，而 Redis 指令本身具有原子性，这样就实现了一把看起来还不错的锁。在任务执行完毕后我们还需要用 del 指令主动把锁删掉以释放资源。</p>
+<p>上述例子只是一个简单的场景，这个锁其实还并不是完美的。思考这样的问题：如果某一次操作线程 A 执行的特别慢，超过了过期时间，这个时候锁已经自动过期失效了，这样就有可能两个线程同时在执行了。如何避免这样的问题这里不再详述，感兴趣的同学可以参考末尾 References 里面的内容。总之，实现一把完美的分布式锁可能并没有想象中那么简单。</p>
+<h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p>对于高级编程语言而言，多进程和多线程的并发模型更多的还是与操作系统底层对于并发的实现是保持一致的。也就是说，在它们的抽象层级上，实现并发的方式基本只是复刻了操作系统底层的并发模型。而 JavaScript 却不一样。</p>
+<p>JavaScript 在诞生时就被定位为在网页前端执行的脚本，为了保证线程安全，而且主线程也不会被 I&#x2F;O 等待所阻塞而失去响应，JavaScript 在设计阶段就采用了「异步事件模型」。这个模型并不是 JavaScript 独有的，它只是借用了这个古老的模型来解决它自身的问题。</p>
+<p>在实际情况中，异步事件模型也是采用多线程的方式来实施的。但是对于开发人员而言，你永远只需要跟主线程打交道，而所有的这些交互都是所谓「异步」的，也就是说，你调用的任何一个 API 都在执行成功后主动告知你执行结果，这样你就可以不必被任何 I&#x2F;O 所堵塞（详细的关于异步、同步、阻塞和非阻塞的辨析可以看这里：<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">《完全理解同步&#x2F;异步与阻塞&#x2F;非阻塞》</a>）。既然不会被阻塞，那么你可以以很快的速度调用很多个你需要调用的 I&#x2F;O，这些 API 在自己执行完毕后会主动返回结果，你可以拿着结果来继续做后续的事情，而其他时刻你完全是「自由」的。</p>
+<p>在这个并发模型中，你不再需要处理各种「锁」的问题，因为真正和你交互的只有主线程。可是作为开发者，你可能需要考虑如何处理代码中的各种异步流程。因为在异步的世界里，代码不再是简单的按照书写顺序来顺序执行的，如何在工程中清晰合理的组织这些流程是在这个并发模型下需要考虑的问题。</p>
+<h2 id="各种各样的并发模型"><a href="#各种各样的并发模型" class="headerlink" title="各种各样的并发模型"></a>各种各样的并发模型</h2><p>这个世界上除了多进程&#x2F;多线程的并发模型和异步事件并发模型，还有很多其他的并发模型，比如 Erlang 的 Actor 并发模型和 Golang 的 CSP 并发模型。在 Erlang 的并发世界里，有很多比内核线程还要轻量级的对象，它们之间通过各种 Message 来进行数据共享。这些对象非常轻，可以同时成千上万的被创建出来实现并发，而对象之间都通过发消息来进行数据交换，根本不需要「锁」。</p>
+<p>在一个没有「锁」的世界里，并发的效率是可以大大的提升的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每一个并发模型都有其存在的意义和价值，不过在具体的业务场景下，采用不同的并发模型的好坏却是客观的。</p>
+<p>真理是存在的，可以被不断逼近却永远无法被任何事物所完美诠释。在技术的领域里，没有永恒的真理，但是真理永远值得被追求。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a></li>
+<li><a href="https://github.com/jackfrued/Python-100-Days">Python-100-Days</a></li>
+<li><a href="https://www.itcodemonkey.com/article/3934.html">漫画：什么是分布式锁？</a></li>
+</ul>
 ]]></content>
       <categories>
-        <category>视觉动物</category>
+        <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>东北</tag>
-        <tag>雪</tag>
-        <tag>林海</tag>
+        <tag>「完全理解」系列</tag>
+        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -1934,9 +1913,56 @@ _Farewell and thanks to each for the company_
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Erlang</tag>
         <tag>性能调优</tag>
+        <tag>Erlang</tag>
         <tag>Elixir</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>东北的冬</title>
+    <url>/2019/02/05/winter-of-north-east/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c598233d3831.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59830583ea1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59829a17feb.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5983059de98.jpg"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩。</p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>东北</tag>
+        <tag>雪</tag>
+        <tag>林海</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「必然」有多必然？</title>
+    <url>/2020/05/19/how-certain-is-certain/</url>
+    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
+<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
+<span id="more"></span>
+
+<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
+<p>所以已经发生的「必然」到底多必然？</p>
+<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
+<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
+<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
+<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
+<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
+<p>我想我是得看一些关于复杂系统理论的书了。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>人生</tag>
+        <tag>必然</tag>
+        <tag>哲学</tag>
+        <tag>复杂系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2013,32 +2039,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「必然」有多必然？</title>
-    <url>/2020/05/19/how-certain-is-certain/</url>
-    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
-<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
-<span id="more"></span>
-
-<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
-<p>所以已经发生的「必然」到底多必然？</p>
-<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
-<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
-<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
-<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
-<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
-<p>我想我是得看一些关于复杂系统理论的书了。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>人生</tag>
-        <tag>必然</tag>
-        <tag>哲学</tag>
-        <tag>复杂系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2241,57 +2241,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>如何开始稳健投资</title>
-    <url>/2022/03/13/how-to-start-investing-soundly/</url>
-    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
-<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
-<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
-<span id="more"></span>
-
-<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
-<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
-<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
-<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
-<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
-<ol>
-<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
-<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
-<li>投资不能降低自己的生活品质。</li>
-<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
-<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
-<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
-<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
-</ol>
-<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
-<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
-<p>选定了投资品种，我们如何开始买入卖出呢？</p>
-<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
-<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，<strong>充分考虑你的存量资金和未来稳定的现金流下</strong>（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就<strong>明确想好</strong>你未来所有会投入市场的<strong>资金总量</strong>。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
-<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。更具体一点，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如果市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
-<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
-<ol>
-<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
-<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
-</ol>
-<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
-<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
-<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。对于小白第一个的投资周期，在你还没有投入很多资金到资本市场的时候，没有亏损很重要，不过，能够在不同的市场阶段充分感受那个当下自己在心态、策略上的优势和不足，体会资本市场和世界运行的特点，不断沉淀出自己的经验和体会，可能会更重要。</p>
-<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
-<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
-<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
-]]></content>
-      <categories>
-        <category>滚雪球</category>
-      </categories>
-      <tags>
-        <tag>投资</tag>
-        <tag>理财</tag>
-        <tag>基金</tag>
-        <tag>ETF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>尘埃落定，为什么我依然要力挺《二舅》</title>
     <url>/2022/09/04/why-i-support-erjiu/</url>
     <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
@@ -2384,103 +2333,54 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>2022 年书单</title>
-    <url>/2022/12/31/2022-booklist/</url>
-    <content><![CDATA[<p>Time flies，时间不等人，简直是一眨眼 2022 年又过去了。今年太难了，远比疫情刚开始的 2020 年还要难。</p>
-<p>2022 是如何拥有一个「梦幻」一般的开头的：</p>
-<ul>
-<li><p>我记得我刚在老家过完农历新年回苏州才几天，苏州疫情正式爆发，等苏州疫情差不多控制住没几天，上海疫情开始爆发且远比之前苏州的情况更严重。作为上海的毗邻地区，苏州的管控变得比之前更加严格，我还记得整个 2、3 月我出小区的天数加起来应该都不超过 7 天。倒并不是我不能出门，而是我从来都尽量不愿意将自己置于可能的风险之中，或许天生如此，又或许是这几年投资的经历愈发培养了自己这方面的思维习惯。</p>
-</li>
-<li><p>除了与每一个个体息息相关的疫情，北京冬奥会之后的俄乌战争更是给全世界上空笼罩了一层庞大的乌云。我从来不认为战争离我们每一个人有多遥不可及，二战以来建立的国际秩序可能只是世界大战之后相对于漫长的人类历史而言的短暂的和平期，并没有我们想象的那么牢不可破。虽如此，这一次的事件也给了我们每一个人对于可能到来的世界战争更真实的体感，甚至可能是又一个普通的人类动乱年代阶段的开始。更让我感到担忧的是，一旦有一个国家开始打破国与国之间这种岌岌可危的互相牵制的平衡，后面大家都会不断突破这种下限。典型的国际局势的破窗效应，这种可能出现的危机成了萦绕在每一个地球人头上的达摩克利斯之剑。我对此比较悲观，虽然我不希望看到这种局面，但我觉得后面还会有比今年更大规模的战争发生，时间早晚问题，我们每一个个体应该对此早做思想准备和心理建设，或者其他可能的减少这种风险危害的措施。蝴蝶已经煽动了翅膀，世界已经已经进入到了一个高度不确定的时代，正如所谓的「百年前所未有之大变局」。</p>
-</li>
-</ul>
+    <title>如何开始稳健投资</title>
+    <url>/2022/03/13/how-to-start-investing-soundly/</url>
+    <content><![CDATA[<p>如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA">二级市场</a>摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。</p>
+<h2 id="「投资」"><a href="#「投资」" class="headerlink" title="「投资」"></a>「投资」</h2><h3 id="正确的金钱观"><a href="#正确的金钱观" class="headerlink" title="正确的金钱观"></a>正确的金钱观</h3><p>首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看<a href="https://book.douban.com/subject/35295592/">《小狗钱钱》</a>和<a href="https://book.douban.com/subject/25816940/">《富爸爸·穷爸爸》</a>来解决这方面的认知问题。</p>
+<p>另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。</p>
 <span id="more"></span>
 
-<ul>
-<li><p>然后就是 3 月份的股市大跌，尤其是中概和恒生的板块，已经跌到了一个十年左右一次的底部区域。如果你了解我的投资理念，我当然会认为这是又一次十年一遇的难得的投资机会，并为此感到兴奋，而且也确实真金白银的抄了底。但当危机真正来临，市场信心不足时，每个人都难免会心生担忧，尤其是放到当时疫情、战争、世界经济复苏乏力、国际冲突、政策导向、油价高企、通货膨胀等各种各样看起来都对市场非常不利的因素之下。人类永远都会高估眼前的事情所带来的影响，即便你知道这一点，你也很难完全做到对正在发生的这一切心如止水。而且，世界真的会变好吗？不见得。一个更差的世界会让市场从此一蹶不振吗？很难说。当然，我已经用真金白银投出了我所认为的答案，但你没法拉动时间的进度条，这种对于未知的恐惧感，对于这一切危机如何消弭、持续多久的不确定性，没人能给出安慰和答案。</p>
-</li>
-<li><p>另外还有 3.21 东航 MU5735 空难事件，完全打破了大多数中国人过去一二十年的生活经验。在此之前，很难想象一个如此惨痛的空难真切的发生在大陆，而飞机在普遍认知里一直被认为是最安全的交通方式，尤其是在今年 2 月 19 日，中国民航运输航空持续安全飞行时间刚突破 1 亿小时、137 个月，创造了中国民航历史上最好的安全业绩，也创造了世界民航历史上最好的持续安全飞行纪录。一个月后，我们国家就发生了这种特大空难事件，太让人悲伤了。虽然，完全客观理性地说，小概率事件概率再小也终有会发生的那一刻，但感情上你还是很难相信这种事情就这么突如其来的真实发生了，同理心强的人很难不产生或多或少的替代性心理创伤。为所有遇难同胞默哀。而且，这件事的发生客观上无疑给在疫情下已经步履维艰的航空业又一记沉重的打击，可以说是「屋漏偏逢连夜雨」。</p>
-</li>
-</ul>
-<p>2022 上半年发生的很多事情都已经仿若隔世，而后大半年同样充满了无奈、遗憾和巨大的不确定性：动荡的国际局势、难以控制的疫情而又越来越严格的防疫措施，让人们对未来没有任何稳定的预期，大家的心理底线被一个个离奇又魔幻的公众事件不断突破。不过，我个人觉得就年末的这些众所周知的变化来看，2023 年已经能够看到曙光，或者至少能够看到更后面的明确的希望。但是，能让世界变得更差的危险因素同样存在：主要的就是世界范围内各个阶层明显高涨的民族主义情绪，一不小心就有可能点燃一个巨大的「火盆」，致使人类踏入一个产生质变的更坏的大范围战争时期；其次就是可能出现的更致命的病毒毒株变异，或者全新的高致病传染性疫情，虽然短期内概率不大。当然也还有其他能够影响普通人日常生活的一些风险因素，但不适合在这里展开了。</p>
-<p>还是照常给出今年的书单：</p>
+<h3 id="本金从哪里来"><a href="#本金从哪里来" class="headerlink" title="本金从哪里来"></a>本金从哪里来</h3><p>投资首先需要有本金。本金从哪里来？这个问题对于开启投资行为而言可太关键了，本金是一切活水的源头。</p>
+<p>资本增值首先得有资本。我所知道的很多相对年轻或有名或无名的实现财务自由的人生故事里，他们大多早早通过创业、自媒体、家庭资助等方式获得了值得用来投资的第一桶金，再通过这样的本金在资本市场实现巨幅财富增值。不管是通过什么样的方式，如果你很幸运有比较快速的方式积累到你的第一桶金，那你已经超越了绝大多数投资者了，因为第一桶金往往是难度最大且最费时间精力的。这就像滚雪球，不同的人通过不同的方式获得的初始雪球的大小不一，雪球越大在固定时间内能沾起来的雪花越多，而且是呈指数级增长。</p>
+<p>当然，对于我们大多数普通「打工人」而言，只有每个月或每年固定的薪水用来投资。我一直认为拿去投资的钱不能影响正常的生活，不能降低原有的生活品质，所以如果你的工资扣除你的开销已经所剩无几，那也先暂时不必考虑投资了，收藏本文，努力提高自己的基础固定收入，等每月结余足够可观之后再开始吧。这不仅仅是赚多赚少的问题，如果你的现金流不够充裕，你就会很容易在资本投资行为中作出不理智的决策，那时候股市不仅不是你用来实现财富增值的手段，反而会成为你好不容易积攒的本金的坟墓。当然，每个人的具体情况不同，开销的绝对量和占收入的比重（相对量）差别很大，很难给出定量的标准。</p>
+<p>总结来说，拥有足够量的本金对于开始投资非常重要，不管你是有足够的存量资金，还是可预期的稳定持续的未来的现金流。如果达不到条件，不开始比开始更好。</p>
+<h2 id="「稳健」"><a href="#「稳健」" class="headerlink" title="「稳健」"></a>「稳健」</h2><p>什么是稳健？其实我上面的段落已经稍微体现出了我对于稳健投资的基本准则，我觉得开始投资前首先要给自己定以下几个绝对不能打破的「红线」原则：</p>
 <ol>
-<li><p><a href="https://book.douban.com/subject/25899841/">The Swift Programming Language</a>：★★★★★</p>
-<p> 作为 Stanford CS193p 的 Reading Assignment 一起看完的，课和书的质量都极其高。这种体验跟读 The Python Tutorial 的体验类似，都是官方出品的对编程语言方方面面准确、简洁、结构合理的入门读物。</p>
-<p> Swift 结合基于 MVVM 模型的 SwiftUI，采用 Protocol-Oriented 的编程方式可以写出极富表现力的简洁的代码，这自然是很适合作为表现 UI 界面的语言的。当语言的表现力足够强时，对开发者绝对是最大的利好，是真正可以让开发者专注于问题的逻辑本身，减少在具体实现上耗费的时间。如果 Apple 官方能在 Swift 开源社区多下点功夫，将 Swift 带到更多的开发领域（比如后端，虽然已经有不少 Swift 的后端框架但非常小众），对苹果和开发者将会是双赢的事情。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27608239/">原则</a>：★★★☆</p>
-<p> 第一章关于作者的个人经历的半个人传记式的讲述很有意思，也对我很有启发。相对而言后面两章的内容就略显枯燥了，更像是那种看完就忘的正确的废话，而且很多原则已经被无意识的运用在了生活和投资之中，不过有这样系统的理论总结也还行吧。也准备看看《原则2》。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/10767124/">乡村教师</a>：★★★★</p>
-<p> 依旧是有大刘强烈个人风格的作品，虽然很早期但是已经可以看出一些《三体》中某些概念的影子。这些作品总是以极度理性冷峻的视角，来述说极具人文关怀的关于生命和文明的未来史诗，也处处透露着大刘个性化的对地球文明的思考和反思。无所谓科幻的「软」和「硬」，都是理科生的极致浪漫。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/6798611/">史蒂夫·乔布斯传</a>：★★★★☆</p>
-<p> 我很庆幸我没有在前十年这本书火热的时候跟风看，才得以在这样一个人类社会迷茫又即将迈入新的历史低潮期的时候从前一代变革者身上看到一些鼓舞人心的特质和行为，就类似我每次看电影《社交网络》的感觉一样，又能重新找回一点点初心和热血，同时也更坚定和印证了我最近在琢磨的一些想法。</p>
-<p> 抛开乔布斯本人的生平来说，这本书写得是真不错，读起来有读小说的快感，而且草蛇灰线，甚至在人物传记的内容上也有不错的伏笔和反转。当然，乔布斯本人独特的性格和传奇的一生给了作者很好的创作素材。</p>
-<p> 另外，不得不捎带提一嘴，这本书前半部分的笔记评论区的三观太不正了，几乎是乌合之众的典型，书里客观的记录了这样一个独特的人的各种性格缺点甚至是道德缺陷，这些潜意识里慕强的人却开始找各种理由从缺点中都要看出「伟人」的「鸡汤」，习惯性神化杰出人物，如果被乔布斯本人看到，绝对要骂这些人是一堆从众没有想法与创新绝缘的狗屎。这些人就像是那一群看意林长大的人。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26418524/">万历十五年</a>：★★★☆</p>
-<p> 再一次从历史中看到了非常多与现实的联系和相似之处。历史不会简单重复，但可能会押韵。如今社会的种种问题和现象，本质上又并不新鲜。官僚体制和官员队伍的风格深刻的影响着一个民族和国家的命运和前途，确需有好的与时俱进的体制保证其活力和执政水平。任何一个时代，都需要海瑞这样的理想主义者坚守信念和底线，什么时候人们实事求是的不再以海瑞为奇，那就是真正的天下大同之日。当然，其因循守旧、过分偏执、脱离实际的个人特质也自有其历史局限性。</p>
-<p> 本书作者在书中有一些超越历史局限的主观评述，有过分上帝视角而缺少实据之嫌。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/36021722/">带上她的眼睛</a>：★★★★</p>
-<p> 这几个短篇都带有强烈的大刘个人风格，而且都很有人文色彩，从这种角度来说，刘慈欣和乔布斯一样，也站在了科幻世界里技术和人文的十字路口。</p>
-</li>
+<li>「不会死」永远是最重要的、永远值得首先考虑。这不是指你生命的消逝（当然身体健康比投资要更重要、重要、重要得多！），而是说任何时候你都要保证你的本金在 99.9999% 的情况下不会变成 0。风险是客观存在的，但很多方式可以让你的本金不会浮亏到 0 甚至是负数（想想 2020 年的原油宝事件），这首先意味着你永远不要<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E9%87%91%E6%A7%93%E6%A1%BF">上杠杆</a>或者进行<a href="https://zh.wikipedia.org/wiki/%E6%9C%9F%E8%B4%A7">期货</a>投资（更不用说投资币圈、P2P、各种没有资质的伪装成投资的诈骗盘了）。</li>
+<li>在不能完全依靠投资自给自足的阶段，投资不能影响自己的主业。也就是不能太占用自己的时间和精力。</li>
+<li>投资不能降低自己的生活品质。</li>
+<li>即便损失掉所有用于投资的本金也不会使自己的资产大幅缩水难以翻身。当然，不同的人在不同的人生阶段能承受的风险水平不同，相对而言，越年轻的时候可以适当承担更高一点的风险。比如刚毕业一两年的年轻人，本身拥有的资金量很有限，即便损失掉所有的存款也相对可控（因为处在工资能快速增长的阶段，两三年后可能工资就能翻倍，损失的绝对量相对小），所以即便把 70% - 80% 左右的存款用于投资都是可以考虑的。这实际上是个人资产配置的范畴，投资策略与资产配置策略息息相关。</li>
+<li>投资的品种在 99.99% 的情况下不会跌到 0。</li>
+<li>得用至少三到五年肯定用不到的闲钱用来长线投资。这是为了保证在整个投资阶段的任何时候不会因为市场以外的个人原因做出赎回（卖出）的操作。</li>
+<li>投资行为要让自己感到舒服。如果做一件事不会让你感到舒服，你不可能长久的进行下去。如果在投资行为过程中的任何时刻让你觉得不舒服了（仓位低了或者高了、被深套了、存量资金不足了等等），都意味着你的策略或者心态出现了问题，都会导致你做出不理智的操作，这时候需要反思你的投资策略问题出在哪，并对它进行不断的改进（而不仅仅是针对少数几次操作的调整）。</li>
 </ol>
-<p>今年看完的书依然很少，明年我能看完的书肯定能更多。在一个混乱的时代背景下，你的注意力被一个个切实影响个人生活的事件所割裂，相信今年会让所有人更切实的感受到一个稳定可预期的社会环境对每个人正常可持续的生产生活的重要性。在社会生活里，我今年最切实的感受和呼吁就是，每个成年人都应该为自己所期待的理想世界和理想社会发挥自己力所能及的作用，不同的人生经历和经验让每个人的思想和观念都与众不同，不管你抱有怎样的社会理想和期许，你都应该积极的表达自己的观点，让世界往自己认为更美好的方向发展，尤其是那些本身受到了良好的教育、能辩证理智的看待问题、崇尚科学、实事求是、求真务实的人来说，你更应该尽自己所能，这个世界需要你的力量来朝更好的方向前进，社会生活需要你的声音来左右它的趋势。虽然真实的社会永远不会达到某个个体所期待的完美状态（历史经验表明，这种社会状态也挺可怕的，它很可能是让大多数人感到噩梦般的存在），愿人文精神和科学精神在这个世界上永存。</p>
-<p>今年的糟糕是全民性的，我在<a href="https://maples7.com/2021/12/31/2021-booklist/">去年的书单</a>总结里说 “prepare for the worst”，一语成谶。不过，无论是我的主观愿望还是理性分析，最坏的时刻很可能已经过去，不管是短期的回光返照还是新的向上趋势的开始，2023 年都值得期待！</p>
+<h2 id="「如何」"><a href="#「如何」" class="headerlink" title="「如何」"></a>「如何」</h2><p>这一部分将讨论在以上原则的指导下，<strong>以 A 股市场特点为基础</strong>，对于投资小白而言的更具体的<strong>长期</strong>投资策略。</p>
+<p>首先，<strong>假设</strong>我们先选一个单一的品种进行投资，在第 1 条和第 5 条原则的指导下，个股对于小白而言基本就先不考虑了，因为任何一个个股都有可能跌没。那我们得从基金中选，基金分为<a href="https://baike.baidu.com/item/%E4%B8%BB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125882">主动基金</a>和<a href="https://baike.baidu.com/item/%E8%A2%AB%E5%8A%A8%E5%9E%8B%E5%9F%BA%E9%87%91/9125945">被动基金</a>，这其中的选择对于小白而言就各有优劣了，感兴趣的话可以自行去了解。如果你想有一个自己掌控度比较高的策略，那就应该会选择被动基金（指数基金）。指数又可以分为<a href="https://zhuanlan.zhihu.com/p/77980205">宽基指数和行业指数</a>，其中宽基指数基金相对风险更低。对于 A 股而言，以下我们以最典型的追踪<a href="https://zh.wikipedia.org/wiki/%E6%B2%AA%E6%B7%B1300">沪深 300</a> 指数的基金为例来讨论具体的策略。因为这个品种基本只要中国股市不关门，它都会一直存在并且不会死。</p>
+<p>选定了投资品种，我们如何开始买入卖出呢？</p>
+<p>首先，在开始真正操作之前，你得想好自己的具体策略，考虑到各种各样的可能情况下自己如何应对。这样做是因为市场作为一个复杂混沌系统在现有的技术条件下基本是不可预测的，我们的策略不应该建立在对市场走势预测的基础上，而应该建立在对各种可能情况到来的应对之上。而且「预测市场」是个伪命题，任何对市场本身的预测反过来都会影响未来市场的走势。</p>
+<p>其次，基于第 3、4、6 条原则，尤其是第 6 条原则，<strong>充分考虑你的存量资金和未来稳定的现金流下</strong>（注意，稳定的现金流可能短时间看起来「稳定」，但人生无常，不代表这样的资金流不会消失，要充分给自己留足安全垫），一开始就<strong>明确想好</strong>你未来所有会投入市场的<strong>资金总量</strong>。比如你打算投入一百万，之后你甚至可以假想把你的整个资金分为一百份，每份资金一万。这样做是让你在未来进行买入、卖出的操作时对你的可投入资金和单次操作的资金量有一个非常直观和定量的衡量概念。</p>
+<p>接下来，在你也许踌躇满志兴致勃勃的准备开始「入坑」的时候，我得泼一盆冷水。因为在大多数 A 股市场起起伏伏普普通通平平凡凡的日子，你都不需要做任何操作，这不仅是长期策略本身的要求，也符合第 2 条指导原则。耐心在资本市场永远是美德。那么什么时候值得操作呢？我不打算在这篇针对投资小白的策略讨论里做任何数学计算，或者引入各种<a href="https://zh.wikipedia.org/wiki/%E8%B5%84%E4%BA%A7%E4%BC%B0%E5%80%BC">资产估值</a>指标的概念。一个可能的非常简单的策略是，如果你发现 A 股因为疯狂连续大幅下跌上了微博热搜、各种微信群里出现各种关于「绿色」的投资段子、很多你的好友开始吐槽自己投资的股票基金的大幅回撤，你就可以考虑买入了。买多少呢？总的原则来说，跌得越重应该买的份数越多。A 股大盘大概跌到了什么位置其实关注股票的人都是可以大概感受到了，大底是不可预测的但是底部区域相对是可以觉察到的。大概给出一个量化的标准是，在 2018 年沪指（<a href="http://quote.eastmoney.com/zs000001.html">上证指数</a>）处于 2500 左右这样的位置的时候（我这里用沪指作为一个小白都更熟悉点位的指标来说明，实际上你更应该看你的投资标的的市场位置，在这个例子里是沪深 300 指数的市场位置），你基本已经可以投入 70% - 80% 的资金量了，也就是你的 100 份资金的 70 - 80 份资金。当然，这样回头看市场再给出操作标准是非常不负责任的，因为你不能期望未来的沪指大底也在 2500 点左右（市场不可预测）。但你永远可以看你的投资标的的历史走势，如果能结合你关注的各种财经博主、公众号对于现在市场的位置综合判断会更好。更具体一点，就当下的市场位置而言，沪指在 3300 点左右，上周 A 股因为连续大跌上了微博热搜，我会开始考虑进行买入，结合一些市场声音对 A 股位置的判断，A 股基本跌到了一个合适的黄金坑的入口位置，你基本可以把你的仓位控制在 50% 左右（即从零开始已买入 50 份资金，仅举例）。这样做是因为，如果 A 股继续下跌，甚至跌到四年前的 2500 点（这个点位我应该会控制仓位在 70% - 80%），你依然有充足的资金用来补仓抄底；如果 A 股从此止跌开始回升，我觉得 50% 的仓位也会让自己心里比较舒服不会让自己觉得仓位太低。记住，市场永远是经不起预测的，你只能应对。另一个侧面的标准是，你几乎不会让自己处于满仓（100% 仓位）的状态下，或者这样的时候会很短暂（个人而言，我不能允许满仓超过一个月）。在满仓的情况下如果市场还在不断下跌，你的心态会非常不稳定，违背了第 7 条原则，你会很容易产生<a href="https://baike.baidu.com/item/%E6%AD%A2%E6%8D%9F/1683">「割肉止损」</a>的想法。所以宁愿错过一些利润也不要让自己处于一种危险的境地，这也符合原则 1 的要求。当然，如果你真的因为节奏控制不利，早早投完了 100 份资金，那就坚定的控制自己不会有更多的投入，任凭市场风云变化，都坚定地等待市场雨过天晴的那一天。总结来说，对于买入操作，在大部分时候你不需要做任何操作，在真正值得买入的位点，慢慢按个位份数积累仓位，控制仓位比例与市场位置相关，不要让自己轻易满仓，如果不小心满仓了即便继续下跌也停止买入操作。</p>
+<p>何时买入的问题基本解决之后，如何卖出呢？对于长期价值投资策略而言，卖出操作往往比买入操作的次数更少、也更难。股民中有一句俗话是「会卖的才是师父」，确实是这样的。针对当下的 A 股特点，这样的卖出策略你或许可以考虑：</p>
+<ol>
+<li>牛市不来永远不卖，如果牛市来了，当所有人都陷入疯狂的时候（你公司的扫地阿姨都开始谈论股票想要买入的时候），果断清仓；</li>
+<li>与买入策略对应，根据当前的市场位置控制仓位对应比例的卖出，比如沪指在下跌过程中 3500 点的时候你的仓位在 30%（举例而已，实际上我觉得 3500 点也许不值得 30% 的仓位），那你可以在沪指经过一轮下跌再上涨到 3500 点的时候把你的仓位卖出到剩 30% - 40% 左右。不过，跟几乎永远不要满仓对应，你也应该留一部分仓位（比如 20% - 30%）作为压舱石，用 1 的策略来卖出，否则你永远赚不到股市疯狂上涨阶段的涨幅。</li>
+</ol>
+<p>如果你深入思考，你会发现 1 的策略更适合超长期的价值投资，真正意义上的赚取大盘长期上涨的利润，但却丢失了市场反复波动阶段的利润，也付出了时间成本；而 2 的策略则融入了波段的思想，更适合反复波动的市场阶段，但在市场的疯狂上涨阶段，你的仓位已经不是很多了。另外，有一个说法是 A 股已经再也不会有短期牛市疯狂的表现了，所以你应该根据不同时期的不同特点来改进你的策略。为了实现对市场各种不同阶段的利润的收割，一个好的投资<strong>体系</strong>应该是针对短期、中期和长期都<strong>分别</strong>有不同的资金比例和策略应对的，在这篇里不再详述了。当然，以上示例策略只是我写这篇博客时候的拍脑袋的想法，没有经过市场的检验，目的仅仅是为了体现我前面提到的投资原则，你更应该有自己的经过深思熟虑之后的投资策略。</p>
+<p>另外，这个示例策略还只是讨论了对单一品种的投资，下一个值得进阶的点是，你应该考虑对<strong>相关性比较低</strong>的多个品种进行投资（包括<a href="https://book.douban.com/subject/26752026/">《聪明的投资者》</a>在内的很多投资大师的著作有类似的观点），并且分配不同的仓位比例，不要让单一品种的仓位占比过高（比如当你的可投品种多了之后，控制每个品种仓位不会超过 20%）。这样做的理由是，相关性低的不同品种可以在市场的各个不同阶段降低你的总仓位的波动和<a href="https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%9B%9E%E6%92%A4%E7%8E%87/3645063">最大回撤率</a>。不要小看这个指标，当浮亏过大时，你的投资心态会受到极大的影响，从而违背了第 7 条原则。而且，这些品种各自会有不同的周期和阶段，你可以更灵活的将某个上涨的品种资金回收用于其他处于低估值阶段的品种（但要注意控制单一品种的仓位比例），或者回收到现金池进行更大范围的资产配置，甚至可以达到一种「东方不亮西方亮」的效果，这是很符合第 7 条原则的。</p>
+<h2 id="「开始」"><a href="#「开始」" class="headerlink" title="「开始」"></a>「开始」</h2><p>我为什么在这时候想写这篇博客，很大程度上是因为这个时间点可能会是一个比较好的开始投资的时间点。不像很多投资大 V 所吹嘘的，我从来不认为无脑定投是一个好的投资策略，完全的定投很难在可以接受的时间跨度内实现满意的收益率，而时间成本其实对一个人短暂的一生而言远远比我们以为的要重要很多。所以投入的时机其实很重要，当下的股市状态也许是一个不错的开始的时机，处于下降趋势中但应该还没有完全见底，估值不算特别便宜但是某些品种到了一个可以开始买入的点位，这是开始实践一个完整的投资周期的比较好的时间点。对于小白第一个的投资周期，在你还没有投入很多资金到资本市场的时候，没有亏损很重要，不过，能够在不同的市场阶段充分感受那个当下自己在心态、策略上的优势和不足，体会资本市场和世界运行的特点，不断沉淀出自己的经验和体会，可能会更重要。</p>
+<p>我自己是从 2018 年左右正式开始实践股票市场投资的，在一个非常偶然的机会了解到了 <a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>的<a href="https://www.zhihu.com/question/65793376">「长赢指数投资计划」</a>和<a href="https://qieman.com/">且慢</a>，我自己的投资理念、策略方法、心得体会大部分都来自于此，我觉得这至少是一个非常值得参考的策略（利益声明：本人跟 E 大和且慢没有任何除开跟投外的私下利益关系）。巧合的是，2018 年 A 股在我开始投资不久就经历了阶段大底，现在回头看，我觉得我是碰巧在一个比较好的时间点开始了我的投资之旅，那个时间点我感觉跟现在的阶段很类似（很多投资大师之所以能长期实现稳定的收益率，一个可能的原因就是他们不会把幸运归因为是自己的实力，从而能避免因为单次的侥幸而不思改进，很多看似成功的投资个例，其实都仅仅只是幸运而已，运气因素在成功投资中的占比可能比我们认为的要高一些）。当然，即便是做简单跟投，我觉得任何参与资本市场投资的人都应该有自己的独立思考和认知，至少应该要认同你用真金白银做的投资操作和策略，做到知行合一，你才不会在股市的动荡旅程中被中途甩下车。<a href="https://sspai.com/post/62828">「投资是认知的变现」</a>，我是深以为然的。</p>
+<p>此外，养成记账的习惯，时刻把握自己的资产配置状态，是开始投资的首要前提。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后，如果你真的想开始投资或者已经在投资，我觉得任何时刻都需要怀有「敬畏市场」的心，这不是一个有简单线性因果关系或简单相关性的领域，不要试图以你自己道听途说的消息、简单线性的对复杂世界的肤浅理解来进行任何脱离策略和原则的想当然的操作，永远要有「价值、概率、长期和非线性」的投资思维（我在<a href="https://maples7.com/2019/12/31/2019-booklist/">《2019 年书单》</a>最后部分对这四个词有详细阐述），要有怀疑和独立思考的精神。</p>
+<p>有时候我觉得投资过程跟探索人生很相似，充满了混沌、未知和不确定，又永远有不期而遇的惊喜，你再强大也只是市场的学徒、浩渺宇宙中的沧海一栗。</p>
 ]]></content>
       <categories>
-        <category>浮生散记</category>
+        <category>滚雪球</category>
       </categories>
       <tags>
-        <tag>书单</tag>
-        <tag>社会生活</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>热情、工作与理想主义｜为什么我要离开微软</title>
-    <url>/2023/07/25/why-i-leave-microsoft/</url>
-    <content><![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
-<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
-<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>
-<span id="more"></span>
-
-<h2 id="热情"><a href="#热情" class="headerlink" title="热情"></a>热情</h2><p>什么是对一件事情有热情？</p>
-<p>能让你有热情去做的事情，常常是能让你茶不思饭不想、睡不着觉脑子里都要想着去做的事情，而且从结果看，你往往能把这种能充分发挥主观能动性去做的事情做得超越一般水平。比如：写这篇博客，我就充满了热情，以至于我深夜睡不着觉到三四点也在构思我应该怎样清晰、准确、简练地表达出我真实的所思所想，并且都不会感到困倦。这也类似于我一直所追求的<a href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%B5%81%E7%90%86%E8%AB%96">「心流」状态</a>。</p>
-<p>目前可以让我产生原始热情的兴趣包括但不限于：写高质量的代码、做纯粹的 C 端产品、投资、摄影。</p>
-<ul>
-<li>「写高质量的代码」自不必多说，从高中开始编程以来我就觉得这个事情充满了魔力。</li>
-<li>「做纯粹的 C 端产品」是我工作以来才意识到的能让我充满热情的事情，可能是大学时期曾经有过一段纯粹且不用考虑盈利地做互联网产品的经历，使得工作后的我格外怀念那个时期自由、纯粹、充满激情实现自己各种天马行空的想法的感觉。当然，这样的人生阶段可遇不可求，也与所处的环境有关，所以我也不会强求。</li>
-<li>「投资」是这几年才开始的事情，投资固然是一个能够赚钱<del>（或者亏钱）</del>的事情，但我从这件事情上得到的纯粹的乐趣远比资产增值得到的乐趣更多，这有点类似于玩模拟经营类游戏的乐趣，而且是用自己的真金白银去玩。</li>
-<li>「摄影」作为纯粹的业余爱好，是取悦自己的一种方式。取景器、快门声、构图、光线，来捕捉自己喜欢的画面，是一个能让自我愉悦的修行方式。目前我还只能把这件事作为纯粹的爱好去做，我猜想如果摄影变成了职业也许就没那么有趣了。</li>
-</ul>
-<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>每次我听到别人有「工作嘛，赚钱就行了，其他不重要」、「职业化的去工作」、「不要指望能在工作中去做自我提升」这类论断时，我其实都想在心里回一句：Bullshit! 当然这些论断都有其各自的合理性，这个时代百花齐放也各有各的活法，但却不是我认为的我应该找到的那份理想工作。</p>
-<p>从上文就可知，以赚钱为首要目的的工作已经违背了我「理想主义」的本心，可是<strong>为什么「职业化」的工作也不行</strong>？这里的「不要职业化」当然不是说不要遵守各种职业原则和公司规范，而是当你过分的强调「职业化」的去做这件事情的时候，你的「工作」可能就沦为了一种看似非常专业的处理各种事情但其实并不真正用心的「上班」的事情。我承认，其实很多人（尤其是有多年工作经验的职场「老油条」们）追求的就是这种「职业化」的状态，但这是我想在我自己身上极力避免的。而关于要不要在工作中进行纯粹的无关商业的自我提升的部分，我认为这是理想工作所应该提供给职业者的一个最基本的条件，而不是一个可有可无的条件。理想的工作应该是个人和公司相互匹配、互相成就的，每个工作者都应该有从工作中提升自我、获得认同的权利，如果你的工作不能保证这样的机会和时间，那么这就不是一个理想的能与你双向匹配的工作。</p>
-<p>让每一个人都能有热情的做有意义、有价值的事情，依然是我想不断追寻或创造的职业理想。有些公司的某些阶段是可以达到这种状态的，但想长期保持并让每一个员工都能时刻认同这一点非常困难，甚至有可能是达不到的。</p>
-<h2 id="为什么从微软离职"><a href="#为什么从微软离职" class="headerlink" title="为什么从微软离职"></a>为什么从微软离职</h2><p>说了这么多形而上的「虚头巴脑」的东西，回到大家可能更关心的本文的主题，为什么我要从微软离职？如果用一句话来回答，那可以归结为我不愿意再浪费时间和生命在一个二十年的代码屎山上绣花。</p>
-<p>首先还要做一个免责声明，微软是一个庞大的跨国公司，不同国家、不同部门、不同团队、不同产品、不同项目、不同人都可能产生截然不同甚至相反的体验和感受，所以我这里说的只能代表我个人，并不代表微软的普遍情况。但以我所了解的信息来看，我这样类似的感受也并不是个例，甚至很有代表性。</p>
-<p>微软有其适合的员工类型，我前面所说的「职业化」的工作者在这样的大公司里应该会很适应并如鱼得水，但依我看微软不适合任何有创业心态的创造者。微软的大部分成熟项目和绝大多数岗位都非常适合职业化的工作者，最好还是不挑活儿的那种。如果你致力于用职业化的工作心态在微软干到退休，这将会是一个非常友好的平台。而于我而言，恰恰不能忍受的就是这个所谓的「职业化」。能够无差别的处理各种各样的任务和难题，这当然是一项非常厉害且被各种企业所追捧的职业打工人的能力，然而却是很难让像我这样的人学会的，我觉得这是因为我已经养成了时常需要质疑每个任务和工作的意义和价值的习惯。如果这个工作在我看来对产品很有价值（这个价值可能也并不是短期内商业上的价值），我会非常有热情的把它做得尽量完美，反之对于意义不大我打心底不认同的工作则会难以说服自己投入时间和精力去做到足够好。</p>
-<p>另外，作为微软的一线开发，话语权是相当有限的，尤其是微软中国相对于美国总部的话语权。这也无可厚非，毕竟微软从根源上还是一家美国公司。在微软中国这边，一线项目开发的很多想法其实是没有机会去实践的，尽管我们有各种 hackathon week、FHL (fix, hack, learn) week，但大多数项目都是为了 hackathon 而 hackathon，有时候你明知道自己的主项目里有更本质更重要的问题亟待解决，但因为各种非本质的困难（往往是因为所涉团队甚广而无人可以协调），这些问题成为了房间里的大象，大家都选择性的视而不见或无人跟进处理。因为各种各样团队利益、个人利益的原因，人们都会愿意首先解决那些看似容易却很可能不本质的问题，而不去解决那些看似难却很可能更本质的问题。这并不是微软独有的问题，而很可能是大公司的通病。在这样的大公司，很多创意是无法面世的，一线员工可能是最了解某项业务的人，但他们所产生的想法需要层层往上 review，而任何一个 no 都有可能让这样的想法没法被支持，久而久之，大家都已经默契的知道哪些存在已久的问题是不用再提出来的了，因为他们都知道这样的问题提出来也暂时无人能去解决，除非有一个级别足够高、话语权足够重的人重新提出这样的问题，而这样的人往往也脱离一线开发太久，难以体会真实项目中遇到的痛点和难点。这种一线开发对自身项目和产品的失控感和无力感是让人感到很沮丧的。这也是我觉得微软这样的大公司不适合任何有创业者心态的人的原因。作为一个 Geek，通常需要烦恼的是经常性的创意不足，而在微软这样一个大公司里，最好不要有太离经叛道的创意，用最稳妥的方式拧好你的那一颗螺丝，这可能是公司或者更准确说是中间层领导对每个员工最真实的期待。这当然已经违背了我前面所说的「理想主义」原则。</p>
-<p>最近正好在看<a href="https://book.douban.com/subject/26929955/">《腾讯传》</a>，我标记了这样一段话，我感觉放到微软这样的大公司身上同样合适：</p>
-<blockquote>
-<p>在马化腾看来，比自己对公司的控制力的丧失更可怕的，是公司自我生长、自我创新能力的丧失。用成熟的流程来管控公司，似乎避免了内部的冲突和纷争，但企业运行机制的官僚化日益明显，产品、研发按部就班，员工与部门有可能只对流程负责，而不对结果负责。这样的话，企业的创新能力必定下滑，自发的、原生态的创新能力将日渐萎缩。</p>
-</blockquote>
-<p>这也是为什么这个世界上总是不断在发生创业公司在某个领域打败垄断大公司的原因之一。</p>
-<p>但不可否认，微软近些年在商业上堪称成功，从我粗浅的观察来看，我愿意将其归因于 CEO Satya 所领导的管理团队对科技发展趋势的准确把握，很多关键选择上押对了赛道、投资了关键的公司，使其在一波又一波的科技浪潮中始终保持着领先的地位。但依然，这并不代表微软就是一个理想的工作平台，尤其是对于那些有创业者心态的人来说。</p>
-<h2 id="未来的打算"><a href="#未来的打算" class="headerlink" title="未来的打算"></a>未来的打算</h2><p>未来一段时间，我打算先去尝试做一些我一直想做但没有时间和机会去做的东西，学一些一直想学但没有时间系统学习的技术的和非技术的知识，跟技术社区建立更紧密的联系并做一些输入与输出。<strong>不破不立，跟随本心。</strong>所以我暂时也不会着急去找一份全职工作，但也不排除突然发现有很合适的工作机会并参与的可能。</p>
-<p>我自认为我有比大多数同龄人更强的能去广泛接纳各种信息、认清形势和趋势并果断下注的能力，这也是我这些年从投资上认识和体会到的。在这个时代背景下，要做成一件事情，我一直认为<strong>选择的重要性已经越来越大于努力的重要性</strong>，好在我还比较擅长于接纳新鲜事物并做出限制条件下相对更优的选择。这并不是说要投机取巧，而是要清晰客观的认知自我、认知环境，做出最佳选择。当然，必要的努力同样重要，但正如我前面所试图论证的，找到真正有热情从事的工作，努力是自然而然的事情。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>理想主义</tag>
-        <tag>工作</tag>
-        <tag>热情</tag>
-        <tag>微软</tag>
-        <tag>离职</tag>
+        <tag>投资</tag>
+        <tag>理财</tag>
+        <tag>基金</tag>
+        <tag>ETF</tag>
       </tags>
   </entry>
   <entry>
@@ -2537,6 +2437,62 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>2022 年书单</title>
+    <url>/2022/12/31/2022-booklist/</url>
+    <content><![CDATA[<p>Time flies，时间不等人，简直是一眨眼 2022 年又过去了。今年太难了，远比疫情刚开始的 2020 年还要难。</p>
+<p>2022 是如何拥有一个「梦幻」一般的开头的：</p>
+<ul>
+<li><p>我记得我刚在老家过完农历新年回苏州才几天，苏州疫情正式爆发，等苏州疫情差不多控制住没几天，上海疫情开始爆发且远比之前苏州的情况更严重。作为上海的毗邻地区，苏州的管控变得比之前更加严格，我还记得整个 2、3 月我出小区的天数加起来应该都不超过 7 天。倒并不是我不能出门，而是我从来都尽量不愿意将自己置于可能的风险之中，或许天生如此，又或许是这几年投资的经历愈发培养了自己这方面的思维习惯。</p>
+</li>
+<li><p>除了与每一个个体息息相关的疫情，北京冬奥会之后的俄乌战争更是给全世界上空笼罩了一层庞大的乌云。我从来不认为战争离我们每一个人有多遥不可及，二战以来建立的国际秩序可能只是世界大战之后相对于漫长的人类历史而言的短暂的和平期，并没有我们想象的那么牢不可破。虽如此，这一次的事件也给了我们每一个人对于可能到来的世界战争更真实的体感，甚至可能是又一个普通的人类动乱年代阶段的开始。更让我感到担忧的是，一旦有一个国家开始打破国与国之间这种岌岌可危的互相牵制的平衡，后面大家都会不断突破这种下限。典型的国际局势的破窗效应，这种可能出现的危机成了萦绕在每一个地球人头上的达摩克利斯之剑。我对此比较悲观，虽然我不希望看到这种局面，但我觉得后面还会有比今年更大规模的战争发生，时间早晚问题，我们每一个个体应该对此早做思想准备和心理建设，或者其他可能的减少这种风险危害的措施。蝴蝶已经煽动了翅膀，世界已经已经进入到了一个高度不确定的时代，正如所谓的「百年前所未有之大变局」。</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li><p>然后就是 3 月份的股市大跌，尤其是中概和恒生的板块，已经跌到了一个十年左右一次的底部区域。如果你了解我的投资理念，我当然会认为这是又一次十年一遇的难得的投资机会，并为此感到兴奋，而且也确实真金白银的抄了底。但当危机真正来临，市场信心不足时，每个人都难免会心生担忧，尤其是放到当时疫情、战争、世界经济复苏乏力、国际冲突、政策导向、油价高企、通货膨胀等各种各样看起来都对市场非常不利的因素之下。人类永远都会高估眼前的事情所带来的影响，即便你知道这一点，你也很难完全做到对正在发生的这一切心如止水。而且，世界真的会变好吗？不见得。一个更差的世界会让市场从此一蹶不振吗？很难说。当然，我已经用真金白银投出了我所认为的答案，但你没法拉动时间的进度条，这种对于未知的恐惧感，对于这一切危机如何消弭、持续多久的不确定性，没人能给出安慰和答案。</p>
+</li>
+<li><p>另外还有 3.21 东航 MU5735 空难事件，完全打破了大多数中国人过去一二十年的生活经验。在此之前，很难想象一个如此惨痛的空难真切的发生在大陆，而飞机在普遍认知里一直被认为是最安全的交通方式，尤其是在今年 2 月 19 日，中国民航运输航空持续安全飞行时间刚突破 1 亿小时、137 个月，创造了中国民航历史上最好的安全业绩，也创造了世界民航历史上最好的持续安全飞行纪录。一个月后，我们国家就发生了这种特大空难事件，太让人悲伤了。虽然，完全客观理性地说，小概率事件概率再小也终有会发生的那一刻，但感情上你还是很难相信这种事情就这么突如其来的真实发生了，同理心强的人很难不产生或多或少的替代性心理创伤。为所有遇难同胞默哀。而且，这件事的发生客观上无疑给在疫情下已经步履维艰的航空业又一记沉重的打击，可以说是「屋漏偏逢连夜雨」。</p>
+</li>
+</ul>
+<p>2022 上半年发生的很多事情都已经仿若隔世，而后大半年同样充满了无奈、遗憾和巨大的不确定性：动荡的国际局势、难以控制的疫情而又越来越严格的防疫措施，让人们对未来没有任何稳定的预期，大家的心理底线被一个个离奇又魔幻的公众事件不断突破。不过，我个人觉得就年末的这些众所周知的变化来看，2023 年已经能够看到曙光，或者至少能够看到更后面的明确的希望。但是，能让世界变得更差的危险因素同样存在：主要的就是世界范围内各个阶层明显高涨的民族主义情绪，一不小心就有可能点燃一个巨大的「火盆」，致使人类踏入一个产生质变的更坏的大范围战争时期；其次就是可能出现的更致命的病毒毒株变异，或者全新的高致病传染性疫情，虽然短期内概率不大。当然也还有其他能够影响普通人日常生活的一些风险因素，但不适合在这里展开了。</p>
+<p>还是照常给出今年的书单：</p>
+<ol>
+<li><p><a href="https://book.douban.com/subject/25899841/">The Swift Programming Language</a>：★★★★★</p>
+<p> 作为 Stanford CS193p 的 Reading Assignment 一起看完的，课和书的质量都极其高。这种体验跟读 The Python Tutorial 的体验类似，都是官方出品的对编程语言方方面面准确、简洁、结构合理的入门读物。</p>
+<p> Swift 结合基于 MVVM 模型的 SwiftUI，采用 Protocol-Oriented 的编程方式可以写出极富表现力的简洁的代码，这自然是很适合作为表现 UI 界面的语言的。当语言的表现力足够强时，对开发者绝对是最大的利好，是真正可以让开发者专注于问题的逻辑本身，减少在具体实现上耗费的时间。如果 Apple 官方能在 Swift 开源社区多下点功夫，将 Swift 带到更多的开发领域（比如后端，虽然已经有不少 Swift 的后端框架但非常小众），对苹果和开发者将会是双赢的事情。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27608239/">原则</a>：★★★☆</p>
+<p> 第一章关于作者的个人经历的半个人传记式的讲述很有意思，也对我很有启发。相对而言后面两章的内容就略显枯燥了，更像是那种看完就忘的正确的废话，而且很多原则已经被无意识的运用在了生活和投资之中，不过有这样系统的理论总结也还行吧。也准备看看《原则2》。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/10767124/">乡村教师</a>：★★★★</p>
+<p> 依旧是有大刘强烈个人风格的作品，虽然很早期但是已经可以看出一些《三体》中某些概念的影子。这些作品总是以极度理性冷峻的视角，来述说极具人文关怀的关于生命和文明的未来史诗，也处处透露着大刘个性化的对地球文明的思考和反思。无所谓科幻的「软」和「硬」，都是理科生的极致浪漫。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/6798611/">史蒂夫·乔布斯传</a>：★★★★☆</p>
+<p> 我很庆幸我没有在前十年这本书火热的时候跟风看，才得以在这样一个人类社会迷茫又即将迈入新的历史低潮期的时候从前一代变革者身上看到一些鼓舞人心的特质和行为，就类似我每次看电影《社交网络》的感觉一样，又能重新找回一点点初心和热血，同时也更坚定和印证了我最近在琢磨的一些想法。</p>
+<p> 抛开乔布斯本人的生平来说，这本书写得是真不错，读起来有读小说的快感，而且草蛇灰线，甚至在人物传记的内容上也有不错的伏笔和反转。当然，乔布斯本人独特的性格和传奇的一生给了作者很好的创作素材。</p>
+<p> 另外，不得不捎带提一嘴，这本书前半部分的笔记评论区的三观太不正了，几乎是乌合之众的典型，书里客观的记录了这样一个独特的人的各种性格缺点甚至是道德缺陷，这些潜意识里慕强的人却开始找各种理由从缺点中都要看出「伟人」的「鸡汤」，习惯性神化杰出人物，如果被乔布斯本人看到，绝对要骂这些人是一堆从众没有想法与创新绝缘的狗屎。这些人就像是那一群看意林长大的人。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26418524/">万历十五年</a>：★★★☆</p>
+<p> 再一次从历史中看到了非常多与现实的联系和相似之处。历史不会简单重复，但可能会押韵。如今社会的种种问题和现象，本质上又并不新鲜。官僚体制和官员队伍的风格深刻的影响着一个民族和国家的命运和前途，确需有好的与时俱进的体制保证其活力和执政水平。任何一个时代，都需要海瑞这样的理想主义者坚守信念和底线，什么时候人们实事求是的不再以海瑞为奇，那就是真正的天下大同之日。当然，其因循守旧、过分偏执、脱离实际的个人特质也自有其历史局限性。</p>
+<p> 本书作者在书中有一些超越历史局限的主观评述，有过分上帝视角而缺少实据之嫌。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/36021722/">带上她的眼睛</a>：★★★★</p>
+<p> 这几个短篇都带有强烈的大刘个人风格，而且都很有人文色彩，从这种角度来说，刘慈欣和乔布斯一样，也站在了科幻世界里技术和人文的十字路口。</p>
+</li>
+</ol>
+<p>今年看完的书依然很少，明年我能看完的书肯定能更多。在一个混乱的时代背景下，你的注意力被一个个切实影响个人生活的事件所割裂，相信今年会让所有人更切实的感受到一个稳定可预期的社会环境对每个人正常可持续的生产生活的重要性。在社会生活里，我今年最切实的感受和呼吁就是，每个成年人都应该为自己所期待的理想世界和理想社会发挥自己力所能及的作用，不同的人生经历和经验让每个人的思想和观念都与众不同，不管你抱有怎样的社会理想和期许，你都应该积极的表达自己的观点，让世界往自己认为更美好的方向发展，尤其是那些本身受到了良好的教育、能辩证理智的看待问题、崇尚科学、实事求是、求真务实的人来说，你更应该尽自己所能，这个世界需要你的力量来朝更好的方向前进，社会生活需要你的声音来左右它的趋势。虽然真实的社会永远不会达到某个个体所期待的完美状态（历史经验表明，这种社会状态也挺可怕的，它很可能是让大多数人感到噩梦般的存在），愿人文精神和科学精神在这个世界上永存。</p>
+<p>今年的糟糕是全民性的，我在<a href="https://maples7.com/2021/12/31/2021-booklist/">去年的书单</a>总结里说 “prepare for the worst”，一语成谶。不过，无论是我的主观愿望还是理性分析，最坏的时刻很可能已经过去，不管是短期的回光返照还是新的向上趋势的开始，2023 年都值得期待！</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+        <tag>社会生活</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Maples7 个人开源计划（1）</title>
     <url>/2024/11/08/open-source-maples7-1/</url>
     <content><![CDATA[<h2 id="📑-前序"><a href="#📑-前序" class="headerlink" title="📑 前序"></a>📑 前序</h2><p>从微软离职以来已经有一年多了（原因和感受详见：<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">热情、工作与理想主义｜为什么我要离开微软</a>），离职后的前半年基本在休养生息，顺便学习了一些 Apple 开发相关的东西，后半年开始写我几年来一直想写的一个财务类的工具 App，算是正式开始了我的全职独立开发之路。</p>
@@ -2581,6 +2537,50 @@ _Farewell and thanks to each for the company_
         <tag>资产配置</tag>
         <tag>Maples7 个人开源计划</tag>
         <tag>独立开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>热情、工作与理想主义｜为什么我要离开微软</title>
+    <url>/2023/07/25/why-i-leave-microsoft/</url>
+    <content><![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
+<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
+<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>
+<span id="more"></span>
+
+<h2 id="热情"><a href="#热情" class="headerlink" title="热情"></a>热情</h2><p>什么是对一件事情有热情？</p>
+<p>能让你有热情去做的事情，常常是能让你茶不思饭不想、睡不着觉脑子里都要想着去做的事情，而且从结果看，你往往能把这种能充分发挥主观能动性去做的事情做得超越一般水平。比如：写这篇博客，我就充满了热情，以至于我深夜睡不着觉到三四点也在构思我应该怎样清晰、准确、简练地表达出我真实的所思所想，并且都不会感到困倦。这也类似于我一直所追求的<a href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%B5%81%E7%90%86%E8%AB%96">「心流」状态</a>。</p>
+<p>目前可以让我产生原始热情的兴趣包括但不限于：写高质量的代码、做纯粹的 C 端产品、投资、摄影。</p>
+<ul>
+<li>「写高质量的代码」自不必多说，从高中开始编程以来我就觉得这个事情充满了魔力。</li>
+<li>「做纯粹的 C 端产品」是我工作以来才意识到的能让我充满热情的事情，可能是大学时期曾经有过一段纯粹且不用考虑盈利地做互联网产品的经历，使得工作后的我格外怀念那个时期自由、纯粹、充满激情实现自己各种天马行空的想法的感觉。当然，这样的人生阶段可遇不可求，也与所处的环境有关，所以我也不会强求。</li>
+<li>「投资」是这几年才开始的事情，投资固然是一个能够赚钱<del>（或者亏钱）</del>的事情，但我从这件事情上得到的纯粹的乐趣远比资产增值得到的乐趣更多，这有点类似于玩模拟经营类游戏的乐趣，而且是用自己的真金白银去玩。</li>
+<li>「摄影」作为纯粹的业余爱好，是取悦自己的一种方式。取景器、快门声、构图、光线，来捕捉自己喜欢的画面，是一个能让自我愉悦的修行方式。目前我还只能把这件事作为纯粹的爱好去做，我猜想如果摄影变成了职业也许就没那么有趣了。</li>
+</ul>
+<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>每次我听到别人有「工作嘛，赚钱就行了，其他不重要」、「职业化的去工作」、「不要指望能在工作中去做自我提升」这类论断时，我其实都想在心里回一句：Bullshit! 当然这些论断都有其各自的合理性，这个时代百花齐放也各有各的活法，但却不是我认为的我应该找到的那份理想工作。</p>
+<p>从上文就可知，以赚钱为首要目的的工作已经违背了我「理想主义」的本心，可是<strong>为什么「职业化」的工作也不行</strong>？这里的「不要职业化」当然不是说不要遵守各种职业原则和公司规范，而是当你过分的强调「职业化」的去做这件事情的时候，你的「工作」可能就沦为了一种看似非常专业的处理各种事情但其实并不真正用心的「上班」的事情。我承认，其实很多人（尤其是有多年工作经验的职场「老油条」们）追求的就是这种「职业化」的状态，但这是我想在我自己身上极力避免的。而关于要不要在工作中进行纯粹的无关商业的自我提升的部分，我认为这是理想工作所应该提供给职业者的一个最基本的条件，而不是一个可有可无的条件。理想的工作应该是个人和公司相互匹配、互相成就的，每个工作者都应该有从工作中提升自我、获得认同的权利，如果你的工作不能保证这样的机会和时间，那么这就不是一个理想的能与你双向匹配的工作。</p>
+<p>让每一个人都能有热情的做有意义、有价值的事情，依然是我想不断追寻或创造的职业理想。有些公司的某些阶段是可以达到这种状态的，但想长期保持并让每一个员工都能时刻认同这一点非常困难，甚至有可能是达不到的。</p>
+<h2 id="为什么从微软离职"><a href="#为什么从微软离职" class="headerlink" title="为什么从微软离职"></a>为什么从微软离职</h2><p>说了这么多形而上的「虚头巴脑」的东西，回到大家可能更关心的本文的主题，为什么我要从微软离职？如果用一句话来回答，那可以归结为我不愿意再浪费时间和生命在一个二十年的代码屎山上绣花。</p>
+<p>首先还要做一个免责声明，微软是一个庞大的跨国公司，不同国家、不同部门、不同团队、不同产品、不同项目、不同人都可能产生截然不同甚至相反的体验和感受，所以我这里说的只能代表我个人，并不代表微软的普遍情况。但以我所了解的信息来看，我这样类似的感受也并不是个例，甚至很有代表性。</p>
+<p>微软有其适合的员工类型，我前面所说的「职业化」的工作者在这样的大公司里应该会很适应并如鱼得水，但依我看微软不适合任何有创业心态的创造者。微软的大部分成熟项目和绝大多数岗位都非常适合职业化的工作者，最好还是不挑活儿的那种。如果你致力于用职业化的工作心态在微软干到退休，这将会是一个非常友好的平台。而于我而言，恰恰不能忍受的就是这个所谓的「职业化」。能够无差别的处理各种各样的任务和难题，这当然是一项非常厉害且被各种企业所追捧的职业打工人的能力，然而却是很难让像我这样的人学会的，我觉得这是因为我已经养成了时常需要质疑每个任务和工作的意义和价值的习惯。如果这个工作在我看来对产品很有价值（这个价值可能也并不是短期内商业上的价值），我会非常有热情的把它做得尽量完美，反之对于意义不大我打心底不认同的工作则会难以说服自己投入时间和精力去做到足够好。</p>
+<p>另外，作为微软的一线开发，话语权是相当有限的，尤其是微软中国相对于美国总部的话语权。这也无可厚非，毕竟微软从根源上还是一家美国公司。在微软中国这边，一线项目开发的很多想法其实是没有机会去实践的，尽管我们有各种 hackathon week、FHL (fix, hack, learn) week，但大多数项目都是为了 hackathon 而 hackathon，有时候你明知道自己的主项目里有更本质更重要的问题亟待解决，但因为各种非本质的困难（往往是因为所涉团队甚广而无人可以协调），这些问题成为了房间里的大象，大家都选择性的视而不见或无人跟进处理。因为各种各样团队利益、个人利益的原因，人们都会愿意首先解决那些看似容易却很可能不本质的问题，而不去解决那些看似难却很可能更本质的问题。这并不是微软独有的问题，而很可能是大公司的通病。在这样的大公司，很多创意是无法面世的，一线员工可能是最了解某项业务的人，但他们所产生的想法需要层层往上 review，而任何一个 no 都有可能让这样的想法没法被支持，久而久之，大家都已经默契的知道哪些存在已久的问题是不用再提出来的了，因为他们都知道这样的问题提出来也暂时无人能去解决，除非有一个级别足够高、话语权足够重的人重新提出这样的问题，而这样的人往往也脱离一线开发太久，难以体会真实项目中遇到的痛点和难点。这种一线开发对自身项目和产品的失控感和无力感是让人感到很沮丧的。这也是我觉得微软这样的大公司不适合任何有创业者心态的人的原因。作为一个 Geek，通常需要烦恼的是经常性的创意不足，而在微软这样一个大公司里，最好不要有太离经叛道的创意，用最稳妥的方式拧好你的那一颗螺丝，这可能是公司或者更准确说是中间层领导对每个员工最真实的期待。这当然已经违背了我前面所说的「理想主义」原则。</p>
+<p>最近正好在看<a href="https://book.douban.com/subject/26929955/">《腾讯传》</a>，我标记了这样一段话，我感觉放到微软这样的大公司身上同样合适：</p>
+<blockquote>
+<p>在马化腾看来，比自己对公司的控制力的丧失更可怕的，是公司自我生长、自我创新能力的丧失。用成熟的流程来管控公司，似乎避免了内部的冲突和纷争，但企业运行机制的官僚化日益明显，产品、研发按部就班，员工与部门有可能只对流程负责，而不对结果负责。这样的话，企业的创新能力必定下滑，自发的、原生态的创新能力将日渐萎缩。</p>
+</blockquote>
+<p>这也是为什么这个世界上总是不断在发生创业公司在某个领域打败垄断大公司的原因之一。</p>
+<p>但不可否认，微软近些年在商业上堪称成功，从我粗浅的观察来看，我愿意将其归因于 CEO Satya 所领导的管理团队对科技发展趋势的准确把握，很多关键选择上押对了赛道、投资了关键的公司，使其在一波又一波的科技浪潮中始终保持着领先的地位。但依然，这并不代表微软就是一个理想的工作平台，尤其是对于那些有创业者心态的人来说。</p>
+<h2 id="未来的打算"><a href="#未来的打算" class="headerlink" title="未来的打算"></a>未来的打算</h2><p>未来一段时间，我打算先去尝试做一些我一直想做但没有时间和机会去做的东西，学一些一直想学但没有时间系统学习的技术的和非技术的知识，跟技术社区建立更紧密的联系并做一些输入与输出。<strong>不破不立，跟随本心。</strong>所以我暂时也不会着急去找一份全职工作，但也不排除突然发现有很合适的工作机会并参与的可能。</p>
+<p>我自认为我有比大多数同龄人更强的能去广泛接纳各种信息、认清形势和趋势并果断下注的能力，这也是我这些年从投资上认识和体会到的。在这个时代背景下，要做成一件事情，我一直认为<strong>选择的重要性已经越来越大于努力的重要性</strong>，好在我还比较擅长于接纳新鲜事物并做出限制条件下相对更优的选择。这并不是说要投机取巧，而是要清晰客观的认知自我、认知环境，做出最佳选择。当然，必要的努力同样重要，但正如我前面所试图论证的，找到真正有热情从事的工作，努力是自然而然的事情。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>理想主义</tag>
+        <tag>工作</tag>
+        <tag>热情</tag>
+        <tag>微软</tag>
+        <tag>离职</tag>
       </tags>
   </entry>
   <entry>
@@ -2662,8 +2662,8 @@ _Farewell and thanks to each for the company_
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>理想主义</tag>
         <tag>Maples7 个人开源计划</tag>
+        <tag>理想主义</tag>
         <tag>知行合一</tag>
         <tag>财务自由</tag>
         <tag>Apple Developer Program</tag>
