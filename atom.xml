@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2024-11-16T05:39:37.770Z</updated>
+  <updated>2024-12-01T08:39:07.952Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,43 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Maples7 个人开源计划（3）</title>
+    <link href="https://maples7.com/2024/12/01/open-source-maples7-3/"/>
+    <id>https://maples7.com/2024/12/01/open-source-maples7-3/</id>
+    <published>2024-12-01T08:33:53.000Z</published>
+    <updated>2024-12-01T08:39:07.952Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在 12 月的第一天，更新一下进展。&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;财务类 App 的新进展：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;增加了搜索的功能，让用户可以搜索自己添加的数据。&lt;/li&gt;
+&lt;li&gt;增加了用户可以自行控制是否使用 iCloud 进行数据同步的支持。&lt;/li&gt;
+&lt;li&gt;数据多设备异步云同步开启了一个黑洞，这是一个极易出现错误的功能，之前的数据逻辑都是基于本地单一数据库实现的，在加入这个功能后重新修正了不少兼容数据同步的逻辑。&lt;/li&gt;
+&lt;li&gt;本来想基于一整套更为抽象和规范统一的底层数据模型，进一步抽象代码中逻辑实体，更改对应的数据结构和逻辑，让处理规则变得更统一。这是一个比较大的工作量，因为所有基于底层数据模型的业务逻辑和 UI 都得相应进行修改，不亚于一次大版本的更新。但最终实践后发现这套更抽象的数据模型依然满足不了一些我想要的细节功能需求，或者说让这些小需求的实现变得更复杂了，所以还是回滚到到了我之前的更符合自然逻辑的版本。&lt;strong&gt;计算机科学的落地应用永远是在找最合适的抽象层级，寻找定制化的用户体验和统一的底层抽象原则之间的平衡&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;优化了一些页面的 UI，解决了一些显示上的 bug。&lt;/li&gt;
+&lt;li&gt;开始实现会员付费订阅的页面、逻辑和功能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;构思和打草稿《普通人如何正确记账》的内容。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
+    
+    <category term="女性主义" scheme="https://maples7.com/tags/%E5%A5%B3%E6%80%A7%E4%B8%BB%E4%B9%89/"/>
+    
+    <category term="Vision Pro" scheme="https://maples7.com/tags/Vision-Pro/"/>
+    
+  </entry>
   
   <entry>
     <title>Maples7 个人开源计划（2）</title>
@@ -525,26 +562,6 @@
     <category term="雪" scheme="https://maples7.com/tags/%E9%9B%AA/"/>
     
     <category term="林海" scheme="https://maples7.com/tags/%E6%9E%97%E6%B5%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2018 年书单</title>
-    <link href="https://maples7.com/2018/12/31/2018-booklist/"/>
-    <id>https://maples7.com/2018/12/31/2018-booklist/</id>
-    <published>2018-12-31T14:51:30.000Z</published>
-    <updated>2023-08-02T07:54:30.865Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。&lt;/p&gt;
-&lt;p&gt;回到「书单」的正题。在&lt;a href=&quot;http://maples7.com/2016/12/31/2016-booklist/&quot;&gt;之前的年终书单总结&lt;/a&gt;中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— &lt;a href=&quot;https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W&quot;&gt;Kindle PaperWhite 4&lt;/a&gt;（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
     
   </entry>
   
