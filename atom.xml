@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2024-12-01T08:39:07.952Z</updated>
+  <updated>2024-12-11T04:11:20.436Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -17,11 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>男性也可以支持女性主义进步思潮</title>
+    <link href="https://maples7.com/2024/12/11/male-and-feminism/"/>
+    <id>https://maples7.com/2024/12/11/male-and-feminism/</id>
+    <published>2024-12-11T03:42:35.000Z</published>
+    <updated>2024-12-11T04:11:20.436Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://maples7.com/2024/12/01/open-source-maples7-3/&quot;&gt;上一期《开源计划》&lt;/a&gt;已经提到了我关于女性主义的一些想法，但为什么还想单写一篇来聊这个话题？&lt;/p&gt;
+&lt;p&gt;起因是最近确实看了很多涉及所谓女性主义题材的各种文艺作品，包括电影《好东西》、《某种物质》的解说、国内综艺《再见爱人4》及一些 UP 主的解说、韩综《思想验证区域：The Community》及一些 UP 主的解说。本来这些文艺作品看过也就看过了，对自己的认知和看法有一些提升，还不至于到想要到公共话语空间表达些什么的程度。但直到最近小红书越来越频繁的刷到各种对《好东西》电影的差评和豆瓣 9.1 分的质疑，以及这些帖子评论区味儿太冲的各种保守派父权言论之后，我决定还是要单写一篇，多为女性主义发声！&lt;/p&gt;
+&lt;p&gt;作为互联网的几大粪坑话题之一，公开聊这个是很有风险的，你不知道你的哪句话又惹恼了哪个意见相左的群体，很多网友在网络环境下会失去深度思考和换位思考的能力，经常不分青红皂白就开始骂人吵架，但我会尽力维护这里的理性、克制和包容，不支持任何极端想法和言论，无关性别。理智沟通，多讨论多交流，真理越辩越明！&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="女性主义" scheme="https://maples7.com/tags/%E5%A5%B3%E6%80%A7%E4%B8%BB%E4%B9%89/"/>
+    
+    <category term="《好东西》" scheme="https://maples7.com/tags/%E3%80%8A%E5%A5%BD%E4%B8%9C%E8%A5%BF%E3%80%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Maples7 个人开源计划（3）</title>
     <link href="https://maples7.com/2024/12/01/open-source-maples7-3/"/>
     <id>https://maples7.com/2024/12/01/open-source-maples7-3/</id>
     <published>2024-12-01T08:33:53.000Z</published>
-    <updated>2024-12-01T08:39:07.952Z</updated>
+    <updated>2024-12-01T15:49:07.592Z</updated>
     
     
     <summary type="html">&lt;p&gt;在 12 月的第一天，更新一下进展。&lt;/p&gt;
@@ -537,31 +560,6 @@
     <category term="高并发" scheme="https://maples7.com/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
     
     <category term="系统架构" scheme="https://maples7.com/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>东北的冬</title>
-    <link href="https://maples7.com/2019/02/05/winter-of-north-east/"/>
-    <id>https://maples7.com/2019/02/05/winter-of-north-east/</id>
-    <published>2019-02-05T12:36:21.000Z</published>
-    <updated>2023-08-02T08:01:42.100Z</updated>
-    
-    
-    <summary type="html">&lt;div class=&quot;group-picture&quot;&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5981f5ee873.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c598233d3831.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c59825ebeeef.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5982bbbc951.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-row&quot;&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c59830583ea1.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c59829a17feb.jpg&quot;&gt;&lt;/div&gt;&lt;div class=&quot;group-picture-column&quot;&gt;&lt;img src=&quot;https://i.loli.net/2019/02/05/5c5983059de98.jpg&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</summary>
-    
-    
-    
-    <category term="视觉动物" scheme="https://maples7.com/categories/%E8%A7%86%E8%A7%89%E5%8A%A8%E7%89%A9/"/>
-    
-    
-    <category term="Sony DSC-RX100" scheme="https://maples7.com/tags/Sony-DSC-RX100/"/>
-    
-    <category term="东北" scheme="https://maples7.com/tags/%E4%B8%9C%E5%8C%97/"/>
-    
-    <category term="雪" scheme="https://maples7.com/tags/%E9%9B%AA/"/>
-    
-    <category term="林海" scheme="https://maples7.com/tags/%E6%9E%97%E6%B5%B7/"/>
     
   </entry>
   
