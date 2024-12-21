@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2024-12-11T09:47:20.231Z</updated>
+  <updated>2024-12-21T07:18:50.644Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Maples7 个人开源计划（4）</title>
+    <link href="https://maples7.com/2024/12/21/open-source-maples7-4/"/>
+    <id>https://maples7.com/2024/12/21/open-source-maples7-4/</id>
+    <published>2024-12-21T06:58:47.000Z</published>
+    <updated>2024-12-21T07:18:50.644Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;年底还会发今年的书单以及按照惯例融入其中的简单的总结、展望，所以先更新一篇《开源计划》。&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;之前参与的 Swift 6.0 中文翻译的工作已经上线了：&lt;a href=&quot;https://doc.swiftgg.team/documentation/the-swift-programming-language&quot;&gt;The Swift Programming Language (6.0) 中文版&lt;/a&gt;，也准备长期在 SwiftGG 翻译组给社区做一些贡献。&lt;br&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/21/ZL8fUGnba4YAQiO.jpg&quot; alt=&quot;翻译完之后的小礼物，程序员的T恤背包又多一件&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
+    
+    <category term="房地产" scheme="https://maples7.com/tags/%E6%88%BF%E5%9C%B0%E4%BA%A7/"/>
+    
+    <category term="中国经济" scheme="https://maples7.com/tags/%E4%B8%AD%E5%9B%BD%E7%BB%8F%E6%B5%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>男性也可以支持女性主义进步思潮</title>
@@ -538,28 +563,6 @@
     <category term="DevOps" scheme="https://maples7.com/tags/DevOps/"/>
     
     <category term="Cloud-Native" scheme="https://maples7.com/tags/Cloud-Native/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>心知天气数据 API 产品的高并发实践</title>
-    <link href="https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/"/>
-    <id>https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/</id>
-    <published>2019-05-09T04:57:40.000Z</published>
-    <updated>2023-08-02T08:02:47.470Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;心知天气&lt;/a&gt;作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;官网首页&lt;/a&gt;一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。&lt;/p&gt;
-&lt;img src=&quot;/uploads/seniverse-index.gif&quot; class=&quot;&quot; title=&quot;心知天气 API 服务实时访问量&quot; alt=&quot;图片显示错误&quot;&gt;</summary>
-    
-    
-    
-    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-    <category term="高并发" scheme="https://maples7.com/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
-    
-    <category term="系统架构" scheme="https://maples7.com/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
