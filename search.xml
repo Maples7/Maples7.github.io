@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>无复屠苏梦，挑灯夜未央</title>
-    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6aaec0.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6894bf.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a19b2.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6baeb1.gif"></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>黑白</tag>
-        <tag>Sony DSC-RX100</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>大理：一场风花雪月的事</title>
     <url>/2014/09/21/dali-things-about-wind-flowers-snow-and-moon/</url>
     <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=29777634&auto=0&height=66"></iframe>
@@ -112,50 +93,22 @@
       </tags>
   </entry>
   <entry>
-    <title>非关系型数据库中的「关系」实现</title>
-    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
-    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
-<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
-<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+    <title>无复屠苏梦，挑灯夜未央</title>
+    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6aaec0.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6894bf.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a19b2.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6baeb1.gif"></div></div></div>
+
 <span id="more"></span>
 
-<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
-<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
-<p>方法如下：</p>
-<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
-<p>举例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
-<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
-<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
-<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
-<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
-<p>引用方法又可分为两种：</p>
-<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
-<p>方法简单，不再举例赘述。</p>
-<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
-<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
-<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
-<p>样例如下：</p>
-<p>在 user.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在 msgboard.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
-<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
-<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
-<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
-<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
-<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
 ]]></content>
       <categories>
-        <category>一只代码狗的自我修养</category>
+        <category>视觉动物</category>
       </categories>
       <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
+        <tag>黑白</tag>
+        <tag>Sony DSC-RX100</tag>
       </tags>
   </entry>
   <entry>
@@ -232,6 +185,122 @@
       </tags>
   </entry>
   <entry>
+    <title>非关系型数据库中的「关系」实现</title>
+    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
+    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
+<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
+<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+<span id="more"></span>
+
+<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
+<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
+<p>方法如下：</p>
+<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
+<p>举例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
+<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
+<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
+<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
+<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
+<p>引用方法又可分为两种：</p>
+<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
+<p>方法简单，不再举例赘述。</p>
+<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
+<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
+<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
+<p>样例如下：</p>
+<p>在 user.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 msgboard.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
+<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
+<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
+<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
+<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
+<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Node.js 中的模块循环依赖及其解决</title>
+    <url>/2016/08/17/cyclic-dependencies-in-node-and-its-solution/</url>
+    <content><![CDATA[<p>Node.js 开发一般不容易遇到真正的模块循环依赖的情况，可是当你的项目开始达到一定的复杂度之后，你很有可能在你的 Node.js 编码生涯中遇到几次。而且如果你之前没有关于这方面的意识，Debug 可能会花费不少的时间。</p>
+<p>我在最近的项目中就遇到了这种情况，而且不能轻易通过项目架构的重构来解决。具体来说，A 文件中需要用 B 文件中某些函数，B 文件又需要用到 A 文件中的某些函数。</p>
+<span id="more"></span>
+
+<h3 id="定义问题"><a href="#定义问题" class="headerlink" title="定义问题"></a>定义问题</h3><p>实际上，Node.js 官网上就有<a href="https://nodejs.org/api/modules.html#modules_cycles">关于模块循环 <code>require()</code> 的说明</a>。</p>
+<p>在官网给出的例子中，有 3 个模块：<code>main.js</code>、<code>a.js</code>、<code>b.js</code>。其中 <code>main.js</code> 有对 <code>a.js</code> 和 <code>b.js</code> 的引用，而 <code>a.js</code> 和 <code>b.js</code> 又是相互引用的关系（详细情况请参阅上段末的超链接）。</p>
+<p>官网上点出了这种模块循环的情况，并且解释清楚了原因（但并没有给出具体可行的解决方案）：</p>
+<blockquote>
+<p>When <code>main.js</code> loads <code>a.js</code>, then <code>a.js</code> in turn loads <code>b.js</code>. At that point, <code>b.js</code> tries to load <code>a.js</code>. In order to prevent an infinite loop, an <strong>unfinished copy</strong> of the <code>a.js</code> exports object is returned to the <code>b.js</code> module. <code>b.js</code> then finishes loading, and its exports object is provided to the <code>a.js</code> module.</p>
+</blockquote>
+<p>简单说就是，为了防止模块载入的死循环，Node.js 在模块第一次载入后会把它的结果进行缓存，下一次再对它进行载入的时候会直接从缓存中取出结果。所以在这种循环依赖情形下，不会有死循环，但是却会因为缓存造成模块没有按照我们预想的那样被导出（export，详细的案例分析见下文）。</p>
+<p>官网给出了三个模块还不是循环依赖最简单的情形。实际上，两个模块就可以很清楚的表达出这种情况。根据递归的思想，解决了最简单的情形，这一类任意大小规模的问题也就解决了一半（另一半还需要探明随着问题规模增长，问题的解将会如何变化）。</p>
+<p>下面是一个两个模块循环依赖的问题最简情形：</p>
+<p><code>A.js</code>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: before logging b&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: after logging b&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>B.js</code>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: before logging a&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: after logging a&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>运行 <code>A.js</code>，将会看到如下输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">B: before logging a</span><br><span class="line">&#123;&#125;</span><br><span class="line">B: after logging a</span><br><span class="line">A: before logging b</span><br><span class="line">&#123; B: &#x27;this is b Object&#x27; &#125;</span><br><span class="line">A: after logging b</span><br></pre></td></tr></table></figure>
+
+<p>JavaScript 作为一门解释型的语言，上面的打印输出清晰的展示出了程序运行的轨迹。在这个例子中，<code>A.js</code> 首先 <code>require</code> 了 <code>B.js</code>, 程序进入 <code>B.js</code>，在 <code>B.js</code> 中第一行又 <code>require</code> 了 <code>A.js</code>。</p>
+<p>如前文所述，为了避免无限循环的模块依赖，在 Node.js 运行 <code>A.js</code> 之后，它就被缓存了，但需要注意的是，此时缓存的仅仅是一个未完工的 <code>A.js</code>（an <strong>unfinished copy</strong> of the <code>a.js</code>）。所以在 <code>B.js</code> <code>require</code> <code>A.js</code> 时，得到的仅仅是缓存中一个未完工的 <code>A.js</code>，具体来说，它并没有明确被导出的具体内容（<code>A.js</code> 尾端）。所以 <code>B.js</code> 中输出的 <code>a</code> 是一个空对象。</p>
+<p>之后，<code>B.js</code> 顺利执行完，回到 <code>A.js</code> 的 <code>require</code> 语句之后，继续执行完成。</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>想要解决这个问题有一个很简明的方法，那就是在循环依赖的每个模块中先导出自身，然后再导入其他模块（对于本文的举例来说，实际只需改动 <code>A.js</code> 就可以达到效果）。</p>
+<p>话不多说，放码过来：</p>
+<p><code>A.js</code>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: before log b&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: after log b&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>B.js</code>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: before log a&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: after log a&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>此时，在 A 和 B 中，都在 <code>require</code> 之前就导出了自身需要导出的模块，此时输出则是这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">B: before log a</span><br><span class="line">&#123; A: &#x27;this is a Object&#x27; &#125;</span><br><span class="line">B: after log a</span><br><span class="line">A: before log b</span><br><span class="line">&#123; B: &#x27;this is b Object&#x27; &#125;</span><br><span class="line">A: after log b</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 B 中按我们的预期输出了 A 中导出的值。</p>
+<p>这种解决办法可行的原因也很简单，还是因为 JavaScript 是一门解释型的语言，在 <code>require</code> 其他模块之前，已经把自身需要导出的部分都导出了，所以即便有模块载入缓存，也不影响最终结果按预期进行。</p>
+<p>这种办法几乎没什么副作用，唯一稍令强迫症感到不快就是这种顺序与我们通常的书写顺序不符。一般我们都会先把 <code>require</code> 写在源文件开头，<code>exports</code> 放到后面的位置。唯一需要祈祷的是，之后接手项目的代码猴儿不会因为觉得这个顺序看着碍眼又把它改回去。鉴于此点，<u><strong>在导入导出语句上添加合理的解释性注释变得很重要</strong></u>。</p>
+<h3 id="其他相关问题"><a href="#其他相关问题" class="headerlink" title="其他相关问题"></a>其他相关问题</h3><p>实际上，我还自己实验并查阅了一些资料来探索是否有其他的解决办法，但那些办法要么是适用于特定的情形和设计模式之下，要么就没有上述方法简洁，本文就不赘述了。如果有兴趣，可以参看本文末尾的 References 链接。如果你发现有更好的解决办法，欢迎在评论区留言。</p>
+<p>要想彻底弄明白 Node.js 模块加载的相关问题，一定得去读读 Node.js 相关部分的源码。其次，推荐阅读<a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第二章与<a href="http://www.ruanyifeng.com/blog/2015/05/require.html">阮一峰的这篇日志</a>。</p>
+<p>有趣的是，ES6 特性中已经有了更优秀的 <code>import/export</code> 模块加载机制，就不会存在这样的问题（原因参考 References 第5条），然而 Node.js 还并不支持。Github 上有人提出过这个问题，Node.js 基金会成员 <a href="https://github.com/bnoordhuis">@bnoordhuis</a> 对此的回复是：</p>
+<blockquote>
+<p>In a nutshell, <code>require()</code> is not going anywhere - removing it would break too much for too little gain - but we’ll almost certainly end up supporting ES6 import&#x2F;export somehow, details TBD.</p>
+<p>Support for ES6 modules first needs to land in V8.</p>
+</blockquote>
+<p>详细的讨论可以到<a href="https://github.com/nodejs/help/issues/53">这里</a>查看。</p>
+<p>虽然因为 V8 的原因 Node.js 官方还不能支持 <code>import/export</code>，不过我们依然可以借助 Babel 来提前在 Node.js 使用这个特性，感兴趣的同学可以参考<a href="http://taobaofed.org/blog/2016/01/07/find-back-the-lost-es6-features-in-nodejs/">这里</a>。 </p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://nodejs.org/api/modules.html#modules_cycles">Modules | Node.js Documentation</a></li>
+<li><a href="https://coderwall.com/p/myzvmg/circular-dependencies-in-node-js">Circular dependencies in node.js</a></li>
+<li><a href="https://cnodejs.org/topic/4f16442ccae1f4aa27001045">node.js的循环依赖 - cnode</a></li>
+<li><a href="https://segmentfault.com/a/1190000004151411">Node.js 中的循环依赖 - sf</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html">JavaScript 模块的循环加载 - 阮一峰</a></li>
+<li><a href="https://github.com/Gaubee/blog/issues/65">nodejs中模块循环依赖的解决方案 #65</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>循环依赖</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>巴山蜀水毓灵秀</title>
     <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
@@ -305,63 +374,94 @@
       </tags>
   </entry>
   <entry>
-    <title>Node.js 中的模块循环依赖及其解决</title>
-    <url>/2016/08/17/cyclic-dependencies-in-node-and-its-solution/</url>
-    <content><![CDATA[<p>Node.js 开发一般不容易遇到真正的模块循环依赖的情况，可是当你的项目开始达到一定的复杂度之后，你很有可能在你的 Node.js 编码生涯中遇到几次。而且如果你之前没有关于这方面的意识，Debug 可能会花费不少的时间。</p>
-<p>我在最近的项目中就遇到了这种情况，而且不能轻易通过项目架构的重构来解决。具体来说，A 文件中需要用 B 文件中某些函数，B 文件又需要用到 A 文件中的某些函数。</p>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 Swagger 构建 Express API Server 的文档系统</title>
+    <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
+    <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
+<img data-src="https://i.loli.net/2018/08/06/5b672f1a563d0.png" class="" title="Swagger——The Most Popular Framework for APIs of The World" alt="图片显示错误">
+
 <span id="more"></span>
 
-<h3 id="定义问题"><a href="#定义问题" class="headerlink" title="定义问题"></a>定义问题</h3><p>实际上，Node.js 官网上就有<a href="https://nodejs.org/api/modules.html#modules_cycles">关于模块循环 <code>require()</code> 的说明</a>。</p>
-<p>在官网给出的例子中，有 3 个模块：<code>main.js</code>、<code>a.js</code>、<code>b.js</code>。其中 <code>main.js</code> 有对 <code>a.js</code> 和 <code>b.js</code> 的引用，而 <code>a.js</code> 和 <code>b.js</code> 又是相互引用的关系（详细情况请参阅上段末的超链接）。</p>
-<p>官网上点出了这种模块循环的情况，并且解释清楚了原因（但并没有给出具体可行的解决方案）：</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>文档生成的「源」（或者说「依据」）与代码不分离，即直接用<code>jsdoc</code>注释生成文档；</li>
+<li>可以用同样的「源」同时实现对接口输入输出参数的验证，最大化保证文档与后端具体实现之间的一致性；</li>
+<li>文档在线可用性测试，并且可以完美解决跨域请求的问题；</li>
+<li>在后端接口还未完成时，可以 Mock 返回数据；</li>
+<li>最好能自动生成一些测试数据甚至自动进行测试；</li>
+</ul>
+<h2 id="从-JSDoc-到可视化文档"><a href="#从-JSDoc-到可视化文档" class="headerlink" title="从 JSDoc 到可视化文档"></a>从 JSDoc 到可视化文档</h2><h3 id="Step-1：定义接口模型"><a href="#Step-1：定义接口模型" class="headerlink" title="Step 1：定义接口模型"></a>Step 1：定义接口模型</h3><p>在 Controller 层每一条路由的函数注释上（具体来说，Routes 目录下或 Controller 目录下均可，只要配置好<code>Step 2</code>中的<code>swagger-jsdoc</code>，明确「源」所在的目录即可）按<code>Swagger YAML</code>语法定义接口模型，示例如下:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * definition:</span></span><br><span class="line"><span class="comment"> *   Puppy:</span></span><br><span class="line"><span class="comment"> *     properties:</span></span><br><span class="line"><span class="comment"> *       name:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       breed:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       age:</span></span><br><span class="line"><span class="comment"> *         type: integer</span></span><br><span class="line"><span class="comment"> *       sex:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   get:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Returns all puppies</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: An array of puppies</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">getAllPuppies</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   post:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Creates a new puppy</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     parameters:</span></span><br><span class="line"><span class="comment"> *       - name: puppy</span></span><br><span class="line"><span class="comment"> *         description: Puppy object</span></span><br><span class="line"><span class="comment"> *         in: body</span></span><br><span class="line"><span class="comment"> *         required: true</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: Successfully created</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">createPuppy</span>);</span><br></pre></td></tr></table></figure>
+
+<p>一些抽象出来的<code>definition</code>直接在前面的<code>/** */</code>注释中定义即可。</p>
+<p>在生成的完整配置中，同一个路径下的配置（比如上述示例中<code>/api/puppies</code>下的<code>get</code>与<code>post</code>）会合并在这同一个路径之下，所以同一个路径下的全局配置只用写一遍就行了（比如下文<code>Mock返回数据</code>小节中使用<code>Swagger Router</code>中间件需要的<code>x-swagger-router-controller</code>配置）。</p>
+<h3 id="Step-2：生成-Swagger-接口定义"><a href="#Step-2：生成-Swagger-接口定义" class="headerlink" title="Step 2：生成 Swagger 接口定义"></a>Step 2：生成 Swagger 接口定义</h3><p>用 <a href="https://github.com/Surnet/swagger-jsdoc">swagger-jsdoc</a> 生成 JSON 格式的 Swagger 接口定义。<br>Demo：<a href="https://github.com/mjhea0/node-swagger-api">mjhea0&#x2F;node-swagger-api</a>。</p>
+<p>这里不用把生成的 JSON 保存在本地磁盘上，直接用一个变量引用即可。</p>
+<h3 id="Step-3：用-Swagger-UI-生成可视化文档"><a href="#Step-3：用-Swagger-UI-生成可视化文档" class="headerlink" title="Step 3：用 Swagger UI 生成可视化文档"></a>Step 3：用 Swagger UI 生成可视化文档</h3><p>在线查看：打开<a href="http://petstore.swagger.io/">http://petstore.swagger.io/</a>，在顶部的 URL 栏输入可以获取<code>Step 2</code>中生成的 JSON 格式的 Swagger 文档定义的 URL，<del>一般来说可以是<a href="http://localhost:3000/swagger.json">http://localhost:3000/swagger.json</a> （需要自己手动在代码中书写路由和请求的返回）</del> 在使用了后文要说明的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>之后按照默认配置是 <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）。这种方式需要解决跨域请求的问题，详见后文。</p>
+<p>本地离线查看：<del>直接在本项目 public（静态文件目录）下放置离线版<code>Swagger UI</code>，直接打开即可查看。详见<code>Step 2</code>中的 Demo 及作者的博文说明。</del>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>，如果你直接使用默认配置：</p>
+<ul>
+<li><a href="http://localhost:3000/docs/">http://localhost:3000/docs/</a> 可以看到完整的可视化文档；</li>
+<li><a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）可以看到自己在<code>Step 2</code>中自动生成的 Swagger 接口定义。</li>
+</ul>
+<p>这个中间件可以让你在开发时再也无需操心可视化文档的前端实现和如何查看自动生成 Swagger 接口定义（以便确定是否符合规范和自己的需求）的问题。</p>
+<h2 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h2><h3 id="解决跨域请求的问题"><a href="#解决跨域请求的问题" class="headerlink" title="解决跨域请求的问题"></a>解决跨域请求的问题</h3><p>官方说明见：<a href="https://github.com/swagger-api/swagger-ui#cors-support">https://github.com/swagger-api/swagger-ui#cors-support</a>。<br>在<code>app.use(&#39;/&#39;, routes);</code>之前加一个如下的中间件设置一些 cors 相关的头可以解决问题:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://petstore.swagger.io&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;GET, POST, DELETE, PUT, PATCH, OPTIONS&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type, api_key, Authorization&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  <span class="title function_">next</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口参数验证"><a href="#接口参数验证" class="headerlink" title="接口参数验证"></a>接口参数验证</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-metadata">Swagger Metadata</a>和<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-validator">Swagger Validator</a>中间件：</p>
+<ul>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools Quick Start</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/tree/master/examples/2.0">Demo</a>；</li>
+</ul>
+<p>其中 Swagger Metadata 中间件做了匹配请求路由与 Swagger 定义路由以及解析参数的工作，Swagger Validator 中间件做了验证参数类型和其他已定义的参数限制的工作。</p>
+<h3 id="Mock-返回数据"><a href="#Mock-返回数据" class="headerlink" title="Mock 返回数据"></a>Mock 返回数据</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-router">Swagger Router 中间件</a>即可实现。</p>
+<p>正常情况下，根据你的 Swagger 定义会返回<code>Response Code</code>为<code>200</code>（当 Swagger 定义中已定义<code>200</code>的返回时）的类似这样的数据：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;breed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;age&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sex&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自动生成测试代码"><a href="#自动生成测试代码" class="headerlink" title="自动生成测试代码"></a>自动生成测试代码</h3><p>使用<a href="https://github.com/apigee-127/swagger-test-templates">apigee-127&#x2F;swagger-test-templates</a>可以根据你的 Swagger 定义自动生成对所有接口功能测试的脚手架代码（基本可以自动确定的地方都自动生成了），在你把自动生成的代码写入磁盘文件后，只需修改极少量的地方（一般是提供一些需要测试的参数）就可以使用测试。</p>
+<p>自动生成的代码长成这样：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> chai = <span class="built_in">require</span>(<span class="string">&#x27;chai&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">ZSchema</span> = <span class="built_in">require</span>(<span class="string">&#x27;z-schema&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> validator = <span class="keyword">new</span> <span class="title class_">ZSchema</span>(&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> supertest = <span class="built_in">require</span>(<span class="string">&#x27;supertest&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> api = <span class="title function_">supertest</span>(<span class="string">&#x27;http://localhost:3000&#x27;</span>); <span class="comment">// supertest init;</span></span><br><span class="line"></span><br><span class="line">chai.<span class="title function_">should</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;get&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 An array of puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      <span class="comment">/*eslint-disable*/</span></span><br><span class="line">      <span class="keyword">var</span> schema = &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="attr">items</span>: &#123;</span><br><span class="line">          <span class="attr">$ref</span>: <span class="string">&#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*eslint-enable*/</span></span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          validator.<span class="title function_">validate</span>(res.<span class="property">body</span>, schema).<span class="property">should</span>.<span class="property">be</span>.<span class="property">true</span>;</span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;post&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 Successfully created&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">send</span>(&#123;</span><br><span class="line">          <span class="attr">puppy</span>: <span class="string">&#x27;DATA GOES HERE&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          res.<span class="property">body</span>.<span class="property">should</span>.<span class="title function_">equal</span>(<span class="literal">null</span>); <span class="comment">// non-json response or no schema</span></span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>之后可以考虑用 gulp 把测试串联起来进行自动化测试。npm 上已经有<a href="https://www.npmjs.com/package/gulp-swagger-test-templates">这样的包</a>，不过我还没有试过。</p>
+<p>目前这个包对于<code>Swagger 2.0</code>的支持还不是很完全，尤其是对<code>$ref</code>不能自动解析，这样的话需要手动改动的测试代码多一些，不过他们正在着力解决这个问题，估计下一个版本（1.3.0）就会加入对<code>$ref</code>的解析，详细的讨论可以<a href="https://github.com/apigee-127/swagger-test-templates/issues/104">看这个 issue</a>。同时，他们还在考虑添加通过 JSON-Schema 自动批量生成测试数据的功能，目测<a href="https://github.com/apigee-127/swagger-test-templates/pull/107">也将在下一个版本中推出</a>，值得期待。</p>
+<h3 id="Mock-或-Swagger-UI-失效"><a href="#Mock-或-Swagger-UI-失效" class="headerlink" title="Mock 或 Swagger UI 失效"></a>Mock 或 Swagger UI 失效</h3><p>由于异步的问题，如果你把<code>app.lieten</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数外面，那很可能在你的应用已经启动时，<code>swagger-tools</code>的中间件并没有加载完毕，导致中间件失效（不会报错）。</p>
+<p>鉴于此，应该尽量把<code>swaggerTools.initializeMiddleware</code>写在中间件链的后面部分，然后把位于其后的<code>app.use</code>（比如<code>app.use(&#39;/&#39;, routes);</code>）和<code>app.listen</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数内部。所以，<code>Express 4</code>中提倡的用<code>./bin/www</code>来启动应用的要求在这里可能无法被遵循了。</p>
+<p>更详细的讨论<a href="https://github.com/apigee-127/swagger-tools/issues/328">看这个 issue</a>。</p>
+<p>另外，Mock 失效还有可能是你已经提供了对应 Controller 来 Handle 对应的 Route 请求。并不是将 Swagger Router 中间件中的<code>useStubs</code>设为<code>true</code>就一定会启动 Mock，官方对此说明是：</p>
 <blockquote>
-<p>When <code>main.js</code> loads <code>a.js</code>, then <code>a.js</code> in turn loads <code>b.js</code>. At that point, <code>b.js</code> tries to load <code>a.js</code>. In order to prevent an infinite loop, an <strong>unfinished copy</strong> of the <code>a.js</code> exports object is returned to the <code>b.js</code> module. <code>b.js</code> then finishes loading, and its exports object is provided to the <code>a.js</code> module.</p>
+<p>Stubs only work for requests where the controller and&#x2F;or controller method is missing. Since you have a working controller method, enabling stub mode doesn’t do anything. It’s working as designed.</p>
 </blockquote>
-<p>简单说就是，为了防止模块载入的死循环，Node.js 在模块第一次载入后会把它的结果进行缓存，下一次再对它进行载入的时候会直接从缓存中取出结果。所以在这种循环依赖情形下，不会有死循环，但是却会因为缓存造成模块没有按照我们预想的那样被导出（export，详细的案例分析见下文）。</p>
-<p>官网给出了三个模块还不是循环依赖最简单的情形。实际上，两个模块就可以很清楚的表达出这种情况。根据递归的思想，解决了最简单的情形，这一类任意大小规模的问题也就解决了一半（另一半还需要探明随着问题规模增长，问题的解将会如何变化）。</p>
-<p>下面是一个两个模块循环依赖的问题最简情形：</p>
-<p><code>A.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: before logging b&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: after logging b&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><code>B.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: before logging a&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: after logging a&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>运行 <code>A.js</code>，将会看到如下输出：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">B: before logging a</span><br><span class="line">&#123;&#125;</span><br><span class="line">B: after logging a</span><br><span class="line">A: before logging b</span><br><span class="line">&#123; B: &#x27;this is b Object&#x27; &#125;</span><br><span class="line">A: after logging b</span><br></pre></td></tr></table></figure>
-
-<p>JavaScript 作为一门解释型的语言，上面的打印输出清晰的展示出了程序运行的轨迹。在这个例子中，<code>A.js</code> 首先 <code>require</code> 了 <code>B.js</code>, 程序进入 <code>B.js</code>，在 <code>B.js</code> 中第一行又 <code>require</code> 了 <code>A.js</code>。</p>
-<p>如前文所述，为了避免无限循环的模块依赖，在 Node.js 运行 <code>A.js</code> 之后，它就被缓存了，但需要注意的是，此时缓存的仅仅是一个未完工的 <code>A.js</code>（an <strong>unfinished copy</strong> of the <code>a.js</code>）。所以在 <code>B.js</code> <code>require</code> <code>A.js</code> 时，得到的仅仅是缓存中一个未完工的 <code>A.js</code>，具体来说，它并没有明确被导出的具体内容（<code>A.js</code> 尾端）。所以 <code>B.js</code> 中输出的 <code>a</code> 是一个空对象。</p>
-<p>之后，<code>B.js</code> 顺利执行完，回到 <code>A.js</code> 的 <code>require</code> 语句之后，继续执行完成。</p>
-<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>想要解决这个问题有一个很简明的方法，那就是在循环依赖的每个模块中先导出自身，然后再导入其他模块（对于本文的举例来说，实际只需改动 <code>A.js</code> 就可以达到效果）。</p>
-<p>话不多说，放码过来：</p>
-<p><code>A.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">A</span>: <span class="string">&#x27;this is a Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./B&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: before log b&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A: after log b&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><code>B.js</code>:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">B</span>: <span class="string">&#x27;this is b Object&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./A&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: before log a&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;B: after log a&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>此时，在 A 和 B 中，都在 <code>require</code> 之前就导出了自身需要导出的模块，此时输出则是这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">B: before log a</span><br><span class="line">&#123; A: &#x27;this is a Object&#x27; &#125;</span><br><span class="line">B: after log a</span><br><span class="line">A: before log b</span><br><span class="line">&#123; B: &#x27;this is b Object&#x27; &#125;</span><br><span class="line">A: after log b</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 B 中按我们的预期输出了 A 中导出的值。</p>
-<p>这种解决办法可行的原因也很简单，还是因为 JavaScript 是一门解释型的语言，在 <code>require</code> 其他模块之前，已经把自身需要导出的部分都导出了，所以即便有模块载入缓存，也不影响最终结果按预期进行。</p>
-<p>这种办法几乎没什么副作用，唯一稍令强迫症感到不快就是这种顺序与我们通常的书写顺序不符。一般我们都会先把 <code>require</code> 写在源文件开头，<code>exports</code> 放到后面的位置。唯一需要祈祷的是，之后接手项目的代码猴儿不会因为觉得这个顺序看着碍眼又把它改回去。鉴于此点，<u><strong>在导入导出语句上添加合理的解释性注释变得很重要</strong></u>。</p>
-<h3 id="其他相关问题"><a href="#其他相关问题" class="headerlink" title="其他相关问题"></a>其他相关问题</h3><p>实际上，我还自己实验并查阅了一些资料来探索是否有其他的解决办法，但那些办法要么是适用于特定的情形和设计模式之下，要么就没有上述方法简洁，本文就不赘述了。如果有兴趣，可以参看本文末尾的 References 链接。如果你发现有更好的解决办法，欢迎在评论区留言。</p>
-<p>要想彻底弄明白 Node.js 模块加载的相关问题，一定得去读读 Node.js 相关部分的源码。其次，推荐阅读<a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第二章与<a href="http://www.ruanyifeng.com/blog/2015/05/require.html">阮一峰的这篇日志</a>。</p>
-<p>有趣的是，ES6 特性中已经有了更优秀的 <code>import/export</code> 模块加载机制，就不会存在这样的问题（原因参考 References 第5条），然而 Node.js 还并不支持。Github 上有人提出过这个问题，Node.js 基金会成员 <a href="https://github.com/bnoordhuis">@bnoordhuis</a> 对此的回复是：</p>
-<blockquote>
-<p>In a nutshell, <code>require()</code> is not going anywhere - removing it would break too much for too little gain - but we’ll almost certainly end up supporting ES6 import&#x2F;export somehow, details TBD.</p>
-<p>Support for ES6 modules first needs to land in V8.</p>
-</blockquote>
-<p>详细的讨论可以到<a href="https://github.com/nodejs/help/issues/53">这里</a>查看。</p>
-<p>虽然因为 V8 的原因 Node.js 官方还不能支持 <code>import/export</code>，不过我们依然可以借助 Babel 来提前在 Node.js 使用这个特性，感兴趣的同学可以参考<a href="http://taobaofed.org/blog/2016/01/07/find-back-the-lost-es6-features-in-nodejs/">这里</a>。 </p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://nodejs.org/api/modules.html#modules_cycles">Modules | Node.js Documentation</a></li>
-<li><a href="https://coderwall.com/p/myzvmg/circular-dependencies-in-node-js">Circular dependencies in node.js</a></li>
-<li><a href="https://cnodejs.org/topic/4f16442ccae1f4aa27001045">node.js的循环依赖 - cnode</a></li>
-<li><a href="https://segmentfault.com/a/1190000004151411">Node.js 中的循环依赖 - sf</a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html">JavaScript 模块的循环加载 - 阮一峰</a></li>
-<li><a href="https://github.com/Gaubee/blog/issues/65">nodejs中模块循环依赖的解决方案 #65</a></li>
+<p>更详细的讨论可以<a href="https://github.com/apigee-127/swagger-tools/issues/48">看这个 issue</a>。</p>
+<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>使用<code>DEBUG=swagger-tools* node app</code>启动项目，控制台会输出更多详细的信息。</p>
+<h2 id="完整的-Demo"><a href="#完整的-Demo" class="headerlink" title="完整的 Demo"></a>完整的 Demo</h2><p><a href="https://github.com/Maples7/swagger-express-demo">Maples7&#x2F;swagger-express-demo</a>： 将前面所讲的内容整合进了一个小示例中，以供参考。</p>
+<h2 id="上手必读"><a href="#上手必读" class="headerlink" title="上手必读"></a>上手必读</h2><ol>
+<li><a href="http://swagger.io/specification/">swagger-spec</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools&#x2F;docs&#x2F;QuickStart.md</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md">swagger-tools&#x2F;docs&#x2F;Middleware.md</a>；</li>
+<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/API.md">swagger-tools&#x2F;docs&#x2F;API.md</a>；</li>
 </ol>
 ]]></content>
       <categories>
@@ -369,8 +469,169 @@
       </categories>
       <tags>
         <tag>Node.js</tag>
-        <tag>循环依赖</tag>
-        <tag>JavaScript</tag>
+        <tag>Swagger</tag>
+        <tag>Express</tag>
+        <tag>API</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编程的快感之「易于驾驭的介质」</title>
+    <url>/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</url>
+    <content><![CDATA[<blockquote class="blockquote-center">
+<p><em>编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作</em></p>
+<p><strong>《人月神话》</strong></p>
+
+</blockquote>
+
+<p><a href="https://book.douban.com/subject/1102259/">《人月神话》</a>是几乎每个程序员都或多或少了解过的一本书，著名的<a href="https://en.wikipedia.org/wiki/No_Silver_Bullet">「没有银弹(No Silver Bullet)」</a>的软件工程理论就被其作者<a href="https://en.wikipedia.org/wiki/Fred_Brooks">Fred Brooks</a>收录在这本书中。</p>
+<p>这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题。简要归纳一下，原书提供了这样几个答案：</p>
+<span id="more"></span>
+<ul>
+<li>一种创建事物的纯粹快乐</li>
+<li>开发对他人有用的东西</li>
+<li>开发过程的强大魅力——将相互啮合的零部件组装在一起</li>
+<li>持续学习的快乐以及非重复性</li>
+<li><strong>在易于驾驭的介质上工作</strong></li>
+</ul>
+<p>我对「在易于驾驭的介质上工作」这个原因尤其认同，结合当下的现实，谈谈我的体会和想法。</p>
+<h3 id="什么是「易于驾驭的介质」？"><a href="#什么是「易于驾驭的介质」？" class="headerlink" title="什么是「易于驾驭的介质」？"></a>什么是「易于驾驭的介质」？</h3><p>要说这个世界上最易于驾驭的介质是什么，我目前能想到的就是人的大脑（思维）。没有具体的形态，无需任何实体的操作，你想到了什么思维就已经被你操纵到了哪里（我不大确定到底是你在操作大脑还是大脑在操纵你）。你可以在大脑里创造出各种各样没有实体的东西。程序员或者文艺工作者往往有这样的体验，当你才思泉涌时，往往觉得双手都跟不上大脑运转的速度，就好像高速运转的 CPU 无法容忍相对而言低速的 I&#x2F;O 操作一样。</p>
+<p>我无法给「易于驾驭的介质」下一个明确的定义，不过如果假设大脑（思维）就是这个世界上最易于驾驭的介质的话，那我可以自然地说能被操纵（manipulate）的速度越接近大脑的速度，这种介质就是越容易被驾驭的。</p>
+<h3 id="为什么代码是易于驾驭的介质？"><a href="#为什么代码是易于驾驭的介质？" class="headerlink" title="为什么代码是易于驾驭的介质？"></a>为什么代码是易于驾驭的介质？</h3><p>我的个人经历就可以告诉我，代码绝对是工程领域最易于驾驭的介质。不同于传统的工科领域总是有具体的实体操纵对象或者危险难以控制的操纵对象，编程所操纵的对象——代码——算是太容易操纵的了，这是软件与硬件天然的区别。你无法说你磁盘上的那一串串 0 和 1 是实体的或者是危险的。即使不知名的宇宙射线打过来反转了你电脑内存中的某一个比特位，相信我，也不会有什么东西会爆炸的（或者极小概率）。</p>
+<p>基于此，编程工作的易于操作性在于，你只消用你的个人电脑，按照一定的规则在键盘上对代码做出任何你想要的更改，你的程序就可以按照你的预期做出你想要的行为，尽管它没有实体无法给你端茶倒水，但在今天这个互联网时代，却已经创造出了前所未有的价值。</p>
+<p>代码之于电脑，就像大脑之于人体一样。</p>
+<h3 id="这种易于驾驭的介质带来了什么？"><a href="#这种易于驾驭的介质带来了什么？" class="headerlink" title="这种易于驾驭的介质带来了什么？"></a>这种易于驾驭的介质带来了什么？</h3><ol>
+<li><strong>低廉的操作成本</strong>：与世俗的观念还是倾向于不想为看不见的东西的付费有关，操作代码的成本是低廉的，你只需要一台可计算设备即可。</li>
+<li><strong>容易传播和产生影响</strong>：下载和使用一个软件现在已经是秒秒钟的事情，好的软件已经非常容易传播和拥有庞大的用户，这同时意味着代码中的任何问题也可能会造成巨大的破坏。</li>
+<li><strong>低廉的试错成本</strong>：每一个产品迭代可能需要很多次才能达到用户满意的标准，一个不关键的 bug 可能需要很多次更新才能彻底解决，然而一个医生却无法把病人当成「小白鼠」来多次试验，一个建筑师却难以修补已建成建筑的设计缺陷。（此点灵感来自于：<a href="https://zhuanlan.zhihu.com/p/19690214">程序员混日子不完全手册</a>）</li>
+</ol>
+<p>把任何实体产业尽量转化为电脑中的 0 和 1，再利用其转化后的优势产生价值，这便是互联网+的本质。<br><br /></p>
+<center><b>诸位，幸福地来码代码吧！</b></center>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>程序员</tag>
+        <tag>《人月神话》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>缓存可以用来做些什么</title>
+    <url>/2016/10/08/what-can-cache-do/</url>
+    <content><![CDATA[<blockquote class="blockquote-center">
+<p><em>There are only two hard things in Computer Science: cache invalidation and naming things.</em><br>—— <strong>Phil Karlton</strong></p>
+
+</blockquote>
+<p>缓存是高性能 Web 服务的基本要求，然而对缓存的处理和使用不当将带来一系列的副作用，尤其是同时考虑到服务的高可用性和同步的问题时。</p>
+<p>本文将简单探讨 Web 服务中哪些功能适合用缓存（此文均指 Web 后端自行实现的缓存，如使用 Redis）来完成。</p>
+<span id="more"></span>
+
+<h2 id="提高性能"><a href="#提高性能" class="headerlink" title="提高性能"></a>提高性能</h2><p>提高服务的性能是缓存最原始的目的，对于数据库中查询频繁而改动不频繁的数据都可以使用缓存以提高服务的性能，这往往是低成本大幅度提高服务性能的手段之一，收效也会非常明显。</p>
+<p>对于一个 Web 服务而言，缓存可以从不同的层级高度来展开：</p>
+<ul>
+<li><strong>路由层级的</strong>：如果是前后端不分离的 Web 服务，可以直接把某个路由下的静态页面缓存（比如未登录情况下具有高访问量的主页，并且不经常被更改时）；如果是前后端分离的 API Server，则是从 API 层级进行的缓存，此时需要注意缓存的 key 一定需要涵盖所有会控制 API 输出的参数。</li>
+<li><strong>单个数据库查询层级的</strong>：我们可以把缓存细化到某个数据库查询操作后的数据返回，这样缓存的数据将更细化和可控，缓存的 key 也可以直接对应 SQL 语句中某些关键的参数。此时需要注意的是，被缓存的数据在其他路由或 API 下被更改时，需要即刻删除（对于一般具有实时性要求的服务，否则可以把过期时间设短一些），这样设置缓存操作和删除缓存操作往往分离在不同的路由或 API 中，需要良好的机制来进行一致性的管理和维护。</li>
+<li><strong>数据库单条记录层级的</strong>：层级再向下，我们甚至可以从数据库中的单条记录为单位进行缓存。此时缓存数据库实际已经变成了总的持久性数据库的一个子集。这种情况下其实可以把缓存操作从应用层开发隐藏，直接在 ORM 中进行完整闭合的操作，也就是说，应用层无需再关心数据是从缓存来的还是从持久性数据库来的，ORM 在持久性数据库的基础上自行维护好的缓存，这将极大的降低应用层开发的缓存维护工作，同时也可以在一定程度上提高性能。不过相应的，应用层也失去了对缓存的控制力。</li>
+</ul>
+<p>在一个应用中，可以混合不同层级高度的缓存，以达到服务性能和开发维护成本之间的平衡。</p>
+<h2 id="优雅实现指定间隔时间后的内容更新"><a href="#优雅实现指定间隔时间后的内容更新" class="headerlink" title="优雅实现指定间隔时间后的内容更新"></a>优雅实现指定间隔时间后的内容更新</h2><p>一个典型的场景是新浪微博的热门话题：每隔十分钟更新一次，而且访问量极高，此时我们可以把该数据完全用缓存来存储，并且把过期时间设置为十分钟，这样每十分钟缓存失效后，自动从数据库获取（组装）新的热门话题数据并存入缓存，在下一个十分钟内，所有的对热门话题的访问都是直接从缓存中拉取数据的。这样利用过期时间的合理设置来实现完全服务业务需求的功能，连手动删除缓存都免了。</p>
+<p>当然，这样的业务需求可遇不可求，遇到一次就要好好把握充分利用。</p>
+<h2 id="作为定时器"><a href="#作为定时器" class="headerlink" title="作为定时器"></a>作为定时器</h2><p>相比上一点的业务需求，定时器的需求要常见得多，比如每天定时进行数据同步、日志导出等等，都需要用到定时任务。从 Node 生态来看，实现定时任务的方式很多，最常见的莫过于使用社区提供的<a href="https://github.com/kelektiv/node-cron">cron库</a>。我不知道 cron 库是如何来实现定时任务的，这里仅探讨定时任务的缓存实现。</p>
+<p>用缓存实现定时任务其实很简单，本质上跟在程序中设置一个 flag 的思想是一致的，当 flag 的状态翻转时，相当于触发了一个事件，此时响应这个事件来执行一些任务。不同的是，程序中的 flag 是没有过期时间的，它只能在一些特定情形下或者另一些事件后改变状态。而利用缓存的过期时间，我们就可以完成一些定时任务了。</p>
+<p>具体来说，我们在缓存中设置一个 flag，并且把过期事件设置为我们需要的定时时间，然后视具体业务对定时的容错情况不断来访问缓存中的这个 flag（为了不阻塞主线程，可能需要多线程支持），当该 flag 不存在后，便执行所需的任务。这样就用缓存实现了定时任务。</p>
+<h2 id="node-redis-cache"><a href="#node-redis-cache" class="headerlink" title="node-redis-cache"></a>node-redis-cache</h2><p>在用 Express 开发 API Server 时，没有在 Github 和 NPM 上找到满意的缓存库，于是想自己来重复造轮子了。</p>
+<p><a href="https://github.com/Maples7/node-redis-cache">node-redis-cache</a>是我建立并想持续维护的一个缓存库，目前基于<a href="https://github.com/luin/ioredis">ioredis</a>并且被设计成单个数据库查询层级，已经实现了一些常用的兼容原生 Redis 接口的 API，具体使用时只需要在对应的数据库查询外面包裹（wrap）一层即可。</p>
+<p>欢迎加入并共同完善！</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Express</tag>
+        <tag>缓存</tag>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>构建合格的 RESTful API Server</title>
+    <url>/2016/09/05/build-qualified-restful-api-server/</url>
+    <content><![CDATA[<p>这一篇我要把 References 写在前面：</p>
+<ul>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=401902529&idx=1&sn=575ae8fdf163afa30604d712a73079fd&scene=21#wechat_redirect">再谈 API 的撰写 - 总览</a>；</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=401924543&idx=1&sn=97de2e09c9fddfd905992c19aedb6182&scene=1&srcid=0427sAmgXKhksqURPXRj2cxv#wechat_redirect">再谈 API 的撰写 - 架构</a>；</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=402076898&idx=1&sn=32b7591a6385ab695d5070061bf18a0a&scene=1&srcid=04276Jyhm6g4QMOyPgfm8jxj#wechat_redirect">再谈 API 的撰写 - 子系统</a>；</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=402114651&idx=1&sn=a7b891f532e29b73afd83f17ae071023&scene=1&srcid=0427CHvTKeMIQsr5uT3x9nIN#wechat_redirect">再谈 API 的撰写 - 契约</a>；</li>
+</ul>
+<p>通过这一系列文章，大神已经自顶向下的把构建一个合格的 RESTful API Server 的要点都涉及到了，并且基本都是最佳实践，值得反复咀嚼。这一篇我结合自己的实践做一些 localization 的总结和实践归纳。文中都以 Node.js 的 Express 框架来举例。</p>
+<span id="more"></span>
+
+<h2 id="分层架构"><a href="#分层架构" class="headerlink" title="分层架构"></a>分层架构</h2><blockquote>
+<p>All problems in computer science can be solved by another level of indirection.<br>—— David Wheeler</p>
+</blockquote>
+<p>分层架构是最常见的软件架构，作为 API Server，一般我们也采用这样的架构，而在 Web 后端架构中最流行的当然是 MVC 的架构模式。不过，View 层对于 API server 是没有的。</p>
+<p>先梳理一下操作流程，前端请求 URL 经过 Router 匹配，之后 Controller 层进行数据处理，不过数据处理一般是繁杂的，这里可以再分一层叫 Service 层，处理所有与数据库直接交互的部分，也便于 Controller 层对于相同功能进行再拆分和复用，最后返回。这样的分层模型我们不如叫 MRCS 比较精确。</p>
+<p>具体来说：</p>
+<ul>
+<li>Model：与数据库的数据模型一一对应，定义了整个项目的所有数据操作的模型基础；</li>
+<li>Router：API Server 所有定义的路由；</li>
+<li>Controller：因为已经有 Service 层，所有这里仅进行一些输入参数的验证和解析以及结果数据的重新组织和返回，更底层的数据库交互交给 Service 层；</li>
+<li>Service：所有与数据库和缓存的数据交互都在这里，这里的函数不是与 Controller 层的函数一一对应的，而应该是更细小颗粒功能的划分，让 Controller 层来进行组织，从而实现对底层功能的充分复用。</li>
+</ul>
+<h2 id="文档与接口参数验证"><a href="#文档与接口参数验证" class="headerlink" title="文档与接口参数验证"></a>文档与接口参数验证</h2><p>一个普通的网站可以没有对外的文档，可是一个 API Server 却一定得有文档，没有文档的 API Server 毫无意义。</p>
+<p>而且，文档和接口参数验证是紧密相关的，如果你把这两部分分开了，那说明你一定是在某处重复定义了接口的参数模型。所以这两部分放在一起来讲。这也就是说，不管具体是写在哪，接口参数模型只手写定义一次，文档生成和参数验证都以这同一个定义为依据来进行（这样也极大的增强了文档与代码一致性的可能）。接口参数验证的同时也可以进行部分参数解析的工作，比如还原参数的类型（前端传递过来的都是 String），甚至还可以顺手把数据组织成 Controller 层需要的格式。</p>
+<p>程序员一般而言都是不喜欢写文档的，团队也通常没有更多的资源让专人来维护文档，所以如何花费最小的代价完成与代码一致的高质量的文档是一个很重要的课题。</p>
+<p>一个好的文档系统应该具备的特性：</p>
+<ul>
+<li>具有良好的机制尽可能保证代码和文档的一致性；</li>
+<li>不同版本之间<code>diff</code>的功能；</li>
+<li>每一个定义的接口下面可以直接在线进行类似于 Postman 的接口可用性测试；</li>
+<li>需要重复定义的部分可以抽象出来，定义一次，多处复用；</li>
+</ul>
+<p>如果你时间充裕，并且想做边际效应高的事情，那么你可以考虑使用 Swagger。这是一个庞大的文档框架体系，工具全面且强大，但有些门槛，需要学习一段时间（使用可以参看我的下一篇博文：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用Swagger构建Express API Server的文档系统</a>）。类似的还有RAML，这是一门基于 YAML 的文档建模语言，用法灵活，功能强大，但是目前工具还不是很靠谱，或许因为用的人也不是很多，项目显得有些缺乏维护，不过我觉得它对于构建文档系统的指导思想是很先进的。</p>
+<p>如果是为了花费最小的成本，可以使用 apidoc，这就是一个普通的 npm 包，你可以直接使用它从函数注释生成 HTML 文档，支持版本对比，支持继承复用，支持接口在线可用性测试。另外，使用这个包的插件可以直接从 json-schema 中导入对参数模型的定义，这样只需要定义一次，就可以同时用 json-shcema 进行接口参数验证和生成文档。<del>目前我一般选择这种方案。</del>不过你也可以反过来，先在注释上定义所有的文档参数模型，然后用一个 Parser 解析从而验证参数（我相信 apidoc 中是有一个这样的 Parser 的，不过对外没有提供参数验证的功能，我也没有找到第三方的插件可以实现，或许有时间可以自己去写一个插件或者直接在 apidoc 上实现）。如果你采用后一种方案，那么分清程序的<a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=402003317&idx=1&sn=68dabd5cbf565ab3fd99f90641a01a9f&scene=21#wechat_redirect">「编译时」和「运行时」</a>很重要，因为如果你要从注释解析后验证参数，那么你必须在「编译时」就已经从注释获得了所有的接口参数的定义模型，只有这样在「运行时」才能快速进行接口参数模型的匹配与验证。</p>
+<p>文档最后需要部署到一个外部可以查看到的地方供使用者查阅和测试，这时可以借助 gulp 等类似工具来尽可能自动化的实现。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>一般的软件可能需要开发书写单元测试，可是个人觉得 API Server 的单元测试和接口测试实际上做的是很多重复的工作。所以我觉得 API Server 直接对接口进行功能性测试就好。</p>
+<p>不过接口测试是非常难写的，一个接口需要完整测试的 test cases 可能高达十几个甚至几十个。除了更好的对接口进行划分外，目前我还没想好如何缓解这个问题。</p>
+<p>不管怎么说，需要持续维护的项目都应该写测试，API Server 依然可以用<code>Mocha/should/supertest/istanbul/gulp</code>这套技术栈来书写自动化的接口测试。</p>
+<h2 id="统一数据返回"><a href="#统一数据返回" class="headerlink" title="统一数据返回"></a>统一数据返回</h2><p>好的 API Server 应该定义统一的数据返回格式，这应该成为与前端的固定约定，这样前端才能方便的对返回数据进行验证和进一步操作。这就好比浏览器通过 Status Code 来进行对应的后续操作一样。</p>
+<p>为了实现这一点，所有的接口调用在返回给前端之前都应该经过至少同一个中间件进行数组格式的重新组织，并且匹配到合适的 HTTP Status Code 以及自定义的返回码（非正常的数据返回时自定义的返回码，这个也是与前端的约定之一）和明确的返回信息，JSON 化之后返回。</p>
+<h2 id="数据序列化"><a href="#数据序列化" class="headerlink" title="数据序列化"></a>数据序列化</h2><p>数据序列化分为输入数据的序列化和输出数据的序列化。</p>
+<p>输入数据的序列化可以在前文所述的接口参数验证时完成（不复杂的情况下），也可以单独在一个中间件中完成。其实这一步不是必要的，因为通常各个接口的 Controller 需求是各不一样的，这里只能进行一些通用化的序列化操作。</p>
+<p>相比于输入数据的序列化，输出数据的序列化要重要得多，而且一般通用性更强。举例来说，你有很多个接口都需要返回数据库中的同一个数据实例，但是不同接口需要返回给前端的字段和内容可能是各不一样的，此时就可以在这一步把输出数据序列化成前端的要求。最后的返回数据都是最精简且语义化良好的。这一步的操作可以有效节省网络流量，对移动端和处女座程序员都很有意义。</p>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>缓存不是必需的，但却是对高性能服务的基本要求。一个好的缓存设计不仅对性能有影响，而且对后期的开发调试也有很大影响。毕竟，解决了缓存，你就已经解决的计算机科学中一半的难题（:D）：</p>
+<blockquote>
+<p>There are only two hard things in Computer Science: cache invalidation and naming things.<br>—— Phil Karlton</p>
+</blockquote>
+<p>你可以进行路由层级的缓存设计，也可以进行数据库操作层级的缓存设计。但不管缓存怎样设计，除去基本的可用性和鲁棒性之外，最大的目标应该是对使用者尽可能友好：</p>
+<blockquote>
+<p>Simplicity is the ultimate sophistication.   - Leonardo Da Vinci</p>
+</blockquote>
+<p>「对使用者尽可能友好」指的是：</p>
+<ol>
+<li>接口调用简单，甚至不需要手动调用；</li>
+<li>缓存可以自动过期；</li>
+<li>尽可能保证已经无效的缓存（缓存数据已经与真实数据不一致，也可以称为旧的缓存）可以无遗漏的尽快被删除；</li>
+</ol>
+<p>第3点尤其重要，因为如果程序员手动控制缓存删除，那么对同一个数据块缓存的操作代码可能分散在项目各处，很难保证及时和没有遗漏。不过目前我也没有找到比较好的实现方案，初步的想法是如果能实现有一个 watcher 可以监听某一个数据块是否即将被改动（或者是否刚刚已经被改动）就好了。如果即将被更改，那在更改后立刻自动删除旧缓存。其实我觉得这个方案可以在 ORM 中实现，但目前没有发现有 ORM 支持这一点。</p>
+<p>与「设计」一样，缓存系统的终极目标应该是使上层使用者根本感觉不到它的存在。这是指，当你调用获取数据的底层接口时，你无需知道数据是来源于真实数据库还是缓存。做到这一点无疑很难，不过你至少可以做到把对上层系统的影响降到最低，也就是说，使用缓存和不使用缓存只需要更改尽可能少的代码即可以轻易实现。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文没有提到标题中 RESTful 相关的东西，主要是路由设计的时候遵循 RESTful 的原则就可以了，无需多讲。</p>
+<p>另外，很多东西还只是提供了一个基本的方向和原则，还有待更多的实践来验证和改进。</p>
+<h2 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h2><ol>
+<li><p>Facebook 提出了一种新的不同于 REST 的 API 数据查询标准——<a href="http://graphql.org/">GraphQL</a>，这套标准可以让前端（广义的，包含移动端）来定义需要获取的数据模型，这样做可以极大的减轻后端对于前文所述的文档、接口参数验证、统一数据返回、数据序列化的工作，看起来很有意思。更多了解除了<a href="http://graphql.org/">官网</a>之外，还可以参考这篇文章：<a href="http://imweb.io/topic/58499c299be501ba17b10a9e">《新一代数据查询语言 GraphQL 来啦！》</a>。</p>
+</li>
+<li><p>Google 在这方面当然也毫不示弱，它家的 Google+ API 中也有类似的思想：<a href="https://developers.google.com/+/web/api/rest/#partial-response">Partial Responses</a>。具体说，利用请求的参数<code>fields</code>来由客户端决定哪些返回参数是我这次请求所需要的。当然，这没有 Facebook 的 GraphQL 功能系统和强大，只能返回一个API全集数据的一个子集，不过它是完全基于REST的，这意味着你可能只需对你现有的系统做最小的改动即可实现类似的功能，减轻后端对于输出数据序列化的负担。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Express</tag>
+        <tag>API</tag>
+        <tag>RESTful</tag>
       </tags>
   </entry>
   <entry>
@@ -450,230 +711,6 @@
       </tags>
   </entry>
   <entry>
-    <title>构建合格的 RESTful API Server</title>
-    <url>/2016/09/05/build-qualified-restful-api-server/</url>
-    <content><![CDATA[<p>这一篇我要把 References 写在前面：</p>
-<ul>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=401902529&idx=1&sn=575ae8fdf163afa30604d712a73079fd&scene=21#wechat_redirect">再谈 API 的撰写 - 总览</a>；</li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=401924543&idx=1&sn=97de2e09c9fddfd905992c19aedb6182&scene=1&srcid=0427sAmgXKhksqURPXRj2cxv#wechat_redirect">再谈 API 的撰写 - 架构</a>；</li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=402076898&idx=1&sn=32b7591a6385ab695d5070061bf18a0a&scene=1&srcid=04276Jyhm6g4QMOyPgfm8jxj#wechat_redirect">再谈 API 的撰写 - 子系统</a>；</li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=402114651&idx=1&sn=a7b891f532e29b73afd83f17ae071023&scene=1&srcid=0427CHvTKeMIQsr5uT3x9nIN#wechat_redirect">再谈 API 的撰写 - 契约</a>；</li>
-</ul>
-<p>通过这一系列文章，大神已经自顶向下的把构建一个合格的 RESTful API Server 的要点都涉及到了，并且基本都是最佳实践，值得反复咀嚼。这一篇我结合自己的实践做一些 localization 的总结和实践归纳。文中都以 Node.js 的 Express 框架来举例。</p>
-<span id="more"></span>
-
-<h2 id="分层架构"><a href="#分层架构" class="headerlink" title="分层架构"></a>分层架构</h2><blockquote>
-<p>All problems in computer science can be solved by another level of indirection.<br>—— David Wheeler</p>
-</blockquote>
-<p>分层架构是最常见的软件架构，作为 API Server，一般我们也采用这样的架构，而在 Web 后端架构中最流行的当然是 MVC 的架构模式。不过，View 层对于 API server 是没有的。</p>
-<p>先梳理一下操作流程，前端请求 URL 经过 Router 匹配，之后 Controller 层进行数据处理，不过数据处理一般是繁杂的，这里可以再分一层叫 Service 层，处理所有与数据库直接交互的部分，也便于 Controller 层对于相同功能进行再拆分和复用，最后返回。这样的分层模型我们不如叫 MRCS 比较精确。</p>
-<p>具体来说：</p>
-<ul>
-<li>Model：与数据库的数据模型一一对应，定义了整个项目的所有数据操作的模型基础；</li>
-<li>Router：API Server 所有定义的路由；</li>
-<li>Controller：因为已经有 Service 层，所有这里仅进行一些输入参数的验证和解析以及结果数据的重新组织和返回，更底层的数据库交互交给 Service 层；</li>
-<li>Service：所有与数据库和缓存的数据交互都在这里，这里的函数不是与 Controller 层的函数一一对应的，而应该是更细小颗粒功能的划分，让 Controller 层来进行组织，从而实现对底层功能的充分复用。</li>
-</ul>
-<h2 id="文档与接口参数验证"><a href="#文档与接口参数验证" class="headerlink" title="文档与接口参数验证"></a>文档与接口参数验证</h2><p>一个普通的网站可以没有对外的文档，可是一个 API Server 却一定得有文档，没有文档的 API Server 毫无意义。</p>
-<p>而且，文档和接口参数验证是紧密相关的，如果你把这两部分分开了，那说明你一定是在某处重复定义了接口的参数模型。所以这两部分放在一起来讲。这也就是说，不管具体是写在哪，接口参数模型只手写定义一次，文档生成和参数验证都以这同一个定义为依据来进行（这样也极大的增强了文档与代码一致性的可能）。接口参数验证的同时也可以进行部分参数解析的工作，比如还原参数的类型（前端传递过来的都是 String），甚至还可以顺手把数据组织成 Controller 层需要的格式。</p>
-<p>程序员一般而言都是不喜欢写文档的，团队也通常没有更多的资源让专人来维护文档，所以如何花费最小的代价完成与代码一致的高质量的文档是一个很重要的课题。</p>
-<p>一个好的文档系统应该具备的特性：</p>
-<ul>
-<li>具有良好的机制尽可能保证代码和文档的一致性；</li>
-<li>不同版本之间<code>diff</code>的功能；</li>
-<li>每一个定义的接口下面可以直接在线进行类似于 Postman 的接口可用性测试；</li>
-<li>需要重复定义的部分可以抽象出来，定义一次，多处复用；</li>
-</ul>
-<p>如果你时间充裕，并且想做边际效应高的事情，那么你可以考虑使用 Swagger。这是一个庞大的文档框架体系，工具全面且强大，但有些门槛，需要学习一段时间（使用可以参看我的下一篇博文：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用Swagger构建Express API Server的文档系统</a>）。类似的还有RAML，这是一门基于 YAML 的文档建模语言，用法灵活，功能强大，但是目前工具还不是很靠谱，或许因为用的人也不是很多，项目显得有些缺乏维护，不过我觉得它对于构建文档系统的指导思想是很先进的。</p>
-<p>如果是为了花费最小的成本，可以使用 apidoc，这就是一个普通的 npm 包，你可以直接使用它从函数注释生成 HTML 文档，支持版本对比，支持继承复用，支持接口在线可用性测试。另外，使用这个包的插件可以直接从 json-schema 中导入对参数模型的定义，这样只需要定义一次，就可以同时用 json-shcema 进行接口参数验证和生成文档。<del>目前我一般选择这种方案。</del>不过你也可以反过来，先在注释上定义所有的文档参数模型，然后用一个 Parser 解析从而验证参数（我相信 apidoc 中是有一个这样的 Parser 的，不过对外没有提供参数验证的功能，我也没有找到第三方的插件可以实现，或许有时间可以自己去写一个插件或者直接在 apidoc 上实现）。如果你采用后一种方案，那么分清程序的<a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&mid=402003317&idx=1&sn=68dabd5cbf565ab3fd99f90641a01a9f&scene=21#wechat_redirect">「编译时」和「运行时」</a>很重要，因为如果你要从注释解析后验证参数，那么你必须在「编译时」就已经从注释获得了所有的接口参数的定义模型，只有这样在「运行时」才能快速进行接口参数模型的匹配与验证。</p>
-<p>文档最后需要部署到一个外部可以查看到的地方供使用者查阅和测试，这时可以借助 gulp 等类似工具来尽可能自动化的实现。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>一般的软件可能需要开发书写单元测试，可是个人觉得 API Server 的单元测试和接口测试实际上做的是很多重复的工作。所以我觉得 API Server 直接对接口进行功能性测试就好。</p>
-<p>不过接口测试是非常难写的，一个接口需要完整测试的 test cases 可能高达十几个甚至几十个。除了更好的对接口进行划分外，目前我还没想好如何缓解这个问题。</p>
-<p>不管怎么说，需要持续维护的项目都应该写测试，API Server 依然可以用<code>Mocha/should/supertest/istanbul/gulp</code>这套技术栈来书写自动化的接口测试。</p>
-<h2 id="统一数据返回"><a href="#统一数据返回" class="headerlink" title="统一数据返回"></a>统一数据返回</h2><p>好的 API Server 应该定义统一的数据返回格式，这应该成为与前端的固定约定，这样前端才能方便的对返回数据进行验证和进一步操作。这就好比浏览器通过 Status Code 来进行对应的后续操作一样。</p>
-<p>为了实现这一点，所有的接口调用在返回给前端之前都应该经过至少同一个中间件进行数组格式的重新组织，并且匹配到合适的 HTTP Status Code 以及自定义的返回码（非正常的数据返回时自定义的返回码，这个也是与前端的约定之一）和明确的返回信息，JSON 化之后返回。</p>
-<h2 id="数据序列化"><a href="#数据序列化" class="headerlink" title="数据序列化"></a>数据序列化</h2><p>数据序列化分为输入数据的序列化和输出数据的序列化。</p>
-<p>输入数据的序列化可以在前文所述的接口参数验证时完成（不复杂的情况下），也可以单独在一个中间件中完成。其实这一步不是必要的，因为通常各个接口的 Controller 需求是各不一样的，这里只能进行一些通用化的序列化操作。</p>
-<p>相比于输入数据的序列化，输出数据的序列化要重要得多，而且一般通用性更强。举例来说，你有很多个接口都需要返回数据库中的同一个数据实例，但是不同接口需要返回给前端的字段和内容可能是各不一样的，此时就可以在这一步把输出数据序列化成前端的要求。最后的返回数据都是最精简且语义化良好的。这一步的操作可以有效节省网络流量，对移动端和处女座程序员都很有意义。</p>
-<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>缓存不是必需的，但却是对高性能服务的基本要求。一个好的缓存设计不仅对性能有影响，而且对后期的开发调试也有很大影响。毕竟，解决了缓存，你就已经解决的计算机科学中一半的难题（:D）：</p>
-<blockquote>
-<p>There are only two hard things in Computer Science: cache invalidation and naming things.<br>—— Phil Karlton</p>
-</blockquote>
-<p>你可以进行路由层级的缓存设计，也可以进行数据库操作层级的缓存设计。但不管缓存怎样设计，除去基本的可用性和鲁棒性之外，最大的目标应该是对使用者尽可能友好：</p>
-<blockquote>
-<p>Simplicity is the ultimate sophistication.   - Leonardo Da Vinci</p>
-</blockquote>
-<p>「对使用者尽可能友好」指的是：</p>
-<ol>
-<li>接口调用简单，甚至不需要手动调用；</li>
-<li>缓存可以自动过期；</li>
-<li>尽可能保证已经无效的缓存（缓存数据已经与真实数据不一致，也可以称为旧的缓存）可以无遗漏的尽快被删除；</li>
-</ol>
-<p>第3点尤其重要，因为如果程序员手动控制缓存删除，那么对同一个数据块缓存的操作代码可能分散在项目各处，很难保证及时和没有遗漏。不过目前我也没有找到比较好的实现方案，初步的想法是如果能实现有一个 watcher 可以监听某一个数据块是否即将被改动（或者是否刚刚已经被改动）就好了。如果即将被更改，那在更改后立刻自动删除旧缓存。其实我觉得这个方案可以在 ORM 中实现，但目前没有发现有 ORM 支持这一点。</p>
-<p>与「设计」一样，缓存系统的终极目标应该是使上层使用者根本感觉不到它的存在。这是指，当你调用获取数据的底层接口时，你无需知道数据是来源于真实数据库还是缓存。做到这一点无疑很难，不过你至少可以做到把对上层系统的影响降到最低，也就是说，使用缓存和不使用缓存只需要更改尽可能少的代码即可以轻易实现。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文没有提到标题中 RESTful 相关的东西，主要是路由设计的时候遵循 RESTful 的原则就可以了，无需多讲。</p>
-<p>另外，很多东西还只是提供了一个基本的方向和原则，还有待更多的实践来验证和改进。</p>
-<h2 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h2><ol>
-<li><p>Facebook 提出了一种新的不同于 REST 的 API 数据查询标准——<a href="http://graphql.org/">GraphQL</a>，这套标准可以让前端（广义的，包含移动端）来定义需要获取的数据模型，这样做可以极大的减轻后端对于前文所述的文档、接口参数验证、统一数据返回、数据序列化的工作，看起来很有意思。更多了解除了<a href="http://graphql.org/">官网</a>之外，还可以参考这篇文章：<a href="http://imweb.io/topic/58499c299be501ba17b10a9e">《新一代数据查询语言 GraphQL 来啦！》</a>。</p>
-</li>
-<li><p>Google 在这方面当然也毫不示弱，它家的 Google+ API 中也有类似的思想：<a href="https://developers.google.com/+/web/api/rest/#partial-response">Partial Responses</a>。具体说，利用请求的参数<code>fields</code>来由客户端决定哪些返回参数是我这次请求所需要的。当然，这没有 Facebook 的 GraphQL 功能系统和强大，只能返回一个API全集数据的一个子集，不过它是完全基于REST的，这意味着你可能只需对你现有的系统做最小的改动即可实现类似的功能，减轻后端对于输出数据序列化的负担。</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>RESTful</tag>
-        <tag>API</tag>
-        <tag>Express</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用 Swagger 构建 Express API Server 的文档系统</title>
-    <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
-    <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
-<img data-src="https://i.loli.net/2018/08/06/5b672f1a563d0.png" class="" title="Swagger——The Most Popular Framework for APIs of The World" alt="图片显示错误">
-
-<span id="more"></span>
-
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li>文档生成的「源」（或者说「依据」）与代码不分离，即直接用<code>jsdoc</code>注释生成文档；</li>
-<li>可以用同样的「源」同时实现对接口输入输出参数的验证，最大化保证文档与后端具体实现之间的一致性；</li>
-<li>文档在线可用性测试，并且可以完美解决跨域请求的问题；</li>
-<li>在后端接口还未完成时，可以 Mock 返回数据；</li>
-<li>最好能自动生成一些测试数据甚至自动进行测试；</li>
-</ul>
-<h2 id="从-JSDoc-到可视化文档"><a href="#从-JSDoc-到可视化文档" class="headerlink" title="从 JSDoc 到可视化文档"></a>从 JSDoc 到可视化文档</h2><h3 id="Step-1：定义接口模型"><a href="#Step-1：定义接口模型" class="headerlink" title="Step 1：定义接口模型"></a>Step 1：定义接口模型</h3><p>在 Controller 层每一条路由的函数注释上（具体来说，Routes 目录下或 Controller 目录下均可，只要配置好<code>Step 2</code>中的<code>swagger-jsdoc</code>，明确「源」所在的目录即可）按<code>Swagger YAML</code>语法定义接口模型，示例如下:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * definition:</span></span><br><span class="line"><span class="comment"> *   Puppy:</span></span><br><span class="line"><span class="comment"> *     properties:</span></span><br><span class="line"><span class="comment"> *       name:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       breed:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> *       age:</span></span><br><span class="line"><span class="comment"> *         type: integer</span></span><br><span class="line"><span class="comment"> *       sex:</span></span><br><span class="line"><span class="comment"> *         type: string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   get:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Returns all puppies</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: An array of puppies</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">getAllPuppies</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@swagger</span></span></span><br><span class="line"><span class="comment"> * /api/puppies:</span></span><br><span class="line"><span class="comment"> *   post:</span></span><br><span class="line"><span class="comment"> *     tags:</span></span><br><span class="line"><span class="comment"> *       - Puppies</span></span><br><span class="line"><span class="comment"> *     description: Creates a new puppy</span></span><br><span class="line"><span class="comment"> *     produces:</span></span><br><span class="line"><span class="comment"> *       - application/json</span></span><br><span class="line"><span class="comment"> *     parameters:</span></span><br><span class="line"><span class="comment"> *       - name: puppy</span></span><br><span class="line"><span class="comment"> *         description: Puppy object</span></span><br><span class="line"><span class="comment"> *         in: body</span></span><br><span class="line"><span class="comment"> *         required: true</span></span><br><span class="line"><span class="comment"> *         schema:</span></span><br><span class="line"><span class="comment"> *           $ref: &#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line"><span class="comment"> *     responses:</span></span><br><span class="line"><span class="comment"> *       200:</span></span><br><span class="line"><span class="comment"> *         description: Successfully created</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">router.<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, db.<span class="property">createPuppy</span>);</span><br></pre></td></tr></table></figure>
-
-<p>一些抽象出来的<code>definition</code>直接在前面的<code>/** */</code>注释中定义即可。</p>
-<p>在生成的完整配置中，同一个路径下的配置（比如上述示例中<code>/api/puppies</code>下的<code>get</code>与<code>post</code>）会合并在这同一个路径之下，所以同一个路径下的全局配置只用写一遍就行了（比如下文<code>Mock返回数据</code>小节中使用<code>Swagger Router</code>中间件需要的<code>x-swagger-router-controller</code>配置）。</p>
-<h3 id="Step-2：生成-Swagger-接口定义"><a href="#Step-2：生成-Swagger-接口定义" class="headerlink" title="Step 2：生成 Swagger 接口定义"></a>Step 2：生成 Swagger 接口定义</h3><p>用 <a href="https://github.com/Surnet/swagger-jsdoc">swagger-jsdoc</a> 生成 JSON 格式的 Swagger 接口定义。<br>Demo：<a href="https://github.com/mjhea0/node-swagger-api">mjhea0&#x2F;node-swagger-api</a>。</p>
-<p>这里不用把生成的 JSON 保存在本地磁盘上，直接用一个变量引用即可。</p>
-<h3 id="Step-3：用-Swagger-UI-生成可视化文档"><a href="#Step-3：用-Swagger-UI-生成可视化文档" class="headerlink" title="Step 3：用 Swagger UI 生成可视化文档"></a>Step 3：用 Swagger UI 生成可视化文档</h3><p>在线查看：打开<a href="http://petstore.swagger.io/">http://petstore.swagger.io/</a>，在顶部的 URL 栏输入可以获取<code>Step 2</code>中生成的 JSON 格式的 Swagger 文档定义的 URL，<del>一般来说可以是<a href="http://localhost:3000/swagger.json">http://localhost:3000/swagger.json</a> （需要自己手动在代码中书写路由和请求的返回）</del> 在使用了后文要说明的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>之后按照默认配置是 <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）。这种方式需要解决跨域请求的问题，详见后文。</p>
-<p>本地离线查看：<del>直接在本项目 public（静态文件目录）下放置离线版<code>Swagger UI</code>，直接打开即可查看。详见<code>Step 2</code>中的 Demo 及作者的博文说明。</del>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-ui">Swagger UI 中间件</a>，如果你直接使用默认配置：</p>
-<ul>
-<li><a href="http://localhost:3000/docs/">http://localhost:3000/docs/</a> 可以看到完整的可视化文档；</li>
-<li><a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a> （注意最后没有<code>/</code>）可以看到自己在<code>Step 2</code>中自动生成的 Swagger 接口定义。</li>
-</ul>
-<p>这个中间件可以让你在开发时再也无需操心可视化文档的前端实现和如何查看自动生成 Swagger 接口定义（以便确定是否符合规范和自己的需求）的问题。</p>
-<h2 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h2><h3 id="解决跨域请求的问题"><a href="#解决跨域请求的问题" class="headerlink" title="解决跨域请求的问题"></a>解决跨域请求的问题</h3><p>官方说明见：<a href="https://github.com/swagger-api/swagger-ui#cors-support">https://github.com/swagger-api/swagger-ui#cors-support</a>。<br>在<code>app.use(&#39;/&#39;, routes);</code>之前加一个如下的中间件设置一些 cors 相关的头可以解决问题:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;http://petstore.swagger.io&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;GET, POST, DELETE, PUT, PATCH, OPTIONS&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  res.<span class="title function_">setHeader</span>(</span><br><span class="line">    <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type, api_key, Authorization&#x27;</span></span><br><span class="line">  );</span><br><span class="line">  <span class="title function_">next</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="接口参数验证"><a href="#接口参数验证" class="headerlink" title="接口参数验证"></a>接口参数验证</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-metadata">Swagger Metadata</a>和<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-validator">Swagger Validator</a>中间件：</p>
-<ul>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools Quick Start</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/tree/master/examples/2.0">Demo</a>；</li>
-</ul>
-<p>其中 Swagger Metadata 中间件做了匹配请求路由与 Swagger 定义路由以及解析参数的工作，Swagger Validator 中间件做了验证参数类型和其他已定义的参数限制的工作。</p>
-<h3 id="Mock-返回数据"><a href="#Mock-返回数据" class="headerlink" title="Mock 返回数据"></a>Mock 返回数据</h3><p>使用<code>swagger-tools</code>中的<a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md#swagger-router">Swagger Router 中间件</a>即可实现。</p>
-<p>正常情况下，根据你的 Swagger 定义会返回<code>Response Code</code>为<code>200</code>（当 Swagger 定义中已定义<code>200</code>的返回时）的类似这样的数据：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;breed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;age&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sex&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample text&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="自动生成测试代码"><a href="#自动生成测试代码" class="headerlink" title="自动生成测试代码"></a>自动生成测试代码</h3><p>使用<a href="https://github.com/apigee-127/swagger-test-templates">apigee-127&#x2F;swagger-test-templates</a>可以根据你的 Swagger 定义自动生成对所有接口功能测试的脚手架代码（基本可以自动确定的地方都自动生成了），在你把自动生成的代码写入磁盘文件后，只需修改极少量的地方（一般是提供一些需要测试的参数）就可以使用测试。</p>
-<p>自动生成的代码长成这样：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> chai = <span class="built_in">require</span>(<span class="string">&#x27;chai&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">ZSchema</span> = <span class="built_in">require</span>(<span class="string">&#x27;z-schema&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> validator = <span class="keyword">new</span> <span class="title class_">ZSchema</span>(&#123;&#125;);</span><br><span class="line"><span class="keyword">var</span> supertest = <span class="built_in">require</span>(<span class="string">&#x27;supertest&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> api = <span class="title function_">supertest</span>(<span class="string">&#x27;http://localhost:3000&#x27;</span>); <span class="comment">// supertest init;</span></span><br><span class="line"></span><br><span class="line">chai.<span class="title function_">should</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;/api/puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;get&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 An array of puppies&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      <span class="comment">/*eslint-disable*/</span></span><br><span class="line">      <span class="keyword">var</span> schema = &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">        <span class="attr">items</span>: &#123;</span><br><span class="line">          <span class="attr">$ref</span>: <span class="string">&#x27;#/definitions/Puppy&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*eslint-enable*/</span></span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">get</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          validator.<span class="title function_">validate</span>(res.<span class="property">body</span>, schema).<span class="property">should</span>.<span class="property">be</span>.<span class="property">true</span>;</span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;post&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;should respond with 200 Successfully created&#x27;</span>, <span class="keyword">function</span>(<span class="params">done</span>) &#123;</span><br><span class="line">      api</span><br><span class="line">        .<span class="title function_">post</span>(<span class="string">&#x27;/api/puppies&#x27;</span>)</span><br><span class="line">        .<span class="title function_">set</span>(<span class="string">&#x27;Accept&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line">        .<span class="title function_">send</span>(&#123;</span><br><span class="line">          <span class="attr">puppy</span>: <span class="string">&#x27;DATA GOES HERE&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">        .<span class="title function_">expect</span>(<span class="number">200</span>)</span><br><span class="line">        .<span class="title function_">end</span>(<span class="keyword">function</span>(<span class="params">err, res</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="title function_">done</span>(err);</span><br><span class="line"></span><br><span class="line">          res.<span class="property">body</span>.<span class="property">should</span>.<span class="title function_">equal</span>(<span class="literal">null</span>); <span class="comment">// non-json response or no schema</span></span><br><span class="line">          <span class="title function_">done</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>之后可以考虑用 gulp 把测试串联起来进行自动化测试。npm 上已经有<a href="https://www.npmjs.com/package/gulp-swagger-test-templates">这样的包</a>，不过我还没有试过。</p>
-<p>目前这个包对于<code>Swagger 2.0</code>的支持还不是很完全，尤其是对<code>$ref</code>不能自动解析，这样的话需要手动改动的测试代码多一些，不过他们正在着力解决这个问题，估计下一个版本（1.3.0）就会加入对<code>$ref</code>的解析，详细的讨论可以<a href="https://github.com/apigee-127/swagger-test-templates/issues/104">看这个 issue</a>。同时，他们还在考虑添加通过 JSON-Schema 自动批量生成测试数据的功能，目测<a href="https://github.com/apigee-127/swagger-test-templates/pull/107">也将在下一个版本中推出</a>，值得期待。</p>
-<h3 id="Mock-或-Swagger-UI-失效"><a href="#Mock-或-Swagger-UI-失效" class="headerlink" title="Mock 或 Swagger UI 失效"></a>Mock 或 Swagger UI 失效</h3><p>由于异步的问题，如果你把<code>app.lieten</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数外面，那很可能在你的应用已经启动时，<code>swagger-tools</code>的中间件并没有加载完毕，导致中间件失效（不会报错）。</p>
-<p>鉴于此，应该尽量把<code>swaggerTools.initializeMiddleware</code>写在中间件链的后面部分，然后把位于其后的<code>app.use</code>（比如<code>app.use(&#39;/&#39;, routes);</code>）和<code>app.listen</code>写在<code>swaggerTools.initializeMiddleware</code>的回调函数内部。所以，<code>Express 4</code>中提倡的用<code>./bin/www</code>来启动应用的要求在这里可能无法被遵循了。</p>
-<p>更详细的讨论<a href="https://github.com/apigee-127/swagger-tools/issues/328">看这个 issue</a>。</p>
-<p>另外，Mock 失效还有可能是你已经提供了对应 Controller 来 Handle 对应的 Route 请求。并不是将 Swagger Router 中间件中的<code>useStubs</code>设为<code>true</code>就一定会启动 Mock，官方对此说明是：</p>
-<blockquote>
-<p>Stubs only work for requests where the controller and&#x2F;or controller method is missing. Since you have a working controller method, enabling stub mode doesn’t do anything. It’s working as designed.</p>
-</blockquote>
-<p>更详细的讨论可以<a href="https://github.com/apigee-127/swagger-tools/issues/48">看这个 issue</a>。</p>
-<h3 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h3><p>使用<code>DEBUG=swagger-tools* node app</code>启动项目，控制台会输出更多详细的信息。</p>
-<h2 id="完整的-Demo"><a href="#完整的-Demo" class="headerlink" title="完整的 Demo"></a>完整的 Demo</h2><p><a href="https://github.com/Maples7/swagger-express-demo">Maples7&#x2F;swagger-express-demo</a>： 将前面所讲的内容整合进了一个小示例中，以供参考。</p>
-<h2 id="上手必读"><a href="#上手必读" class="headerlink" title="上手必读"></a>上手必读</h2><ol>
-<li><a href="http://swagger.io/specification/">swagger-spec</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/QuickStart.md">swagger-tools&#x2F;docs&#x2F;QuickStart.md</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/Middleware.md">swagger-tools&#x2F;docs&#x2F;Middleware.md</a>；</li>
-<li><a href="https://github.com/apigee-127/swagger-tools/blob/master/docs/API.md">swagger-tools&#x2F;docs&#x2F;API.md</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>API</tag>
-        <tag>Express</tag>
-        <tag>Swagger</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>编程的快感之「易于驾驭的介质」</title>
-    <url>/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</url>
-    <content><![CDATA[<blockquote class="blockquote-center">
-<p><em>编程快乐是一种创建事物的纯粹快乐，这种快乐的来源之一来自于在易于驾驭的介质上工作</em></p>
-<p><strong>《人月神话》</strong></p>
-
-</blockquote>
-
-<p><a href="https://book.douban.com/subject/1102259/">《人月神话》</a>是几乎每个程序员都或多或少了解过的一本书，著名的<a href="https://en.wikipedia.org/wiki/No_Silver_Bullet">「没有银弹(No Silver Bullet)」</a>的软件工程理论就被其作者<a href="https://en.wikipedia.org/wiki/Fred_Brooks">Fred Brooks</a>收录在这本书中。</p>
-<p>这本书的第一章「焦油坑」就讨论了「编程的快感是什么？」这样一个对大多数程序员来说不言而喻，但如果要具体说说或许又难以准确表达出来的一个问题。简要归纳一下，原书提供了这样几个答案：</p>
-<span id="more"></span>
-<ul>
-<li>一种创建事物的纯粹快乐</li>
-<li>开发对他人有用的东西</li>
-<li>开发过程的强大魅力——将相互啮合的零部件组装在一起</li>
-<li>持续学习的快乐以及非重复性</li>
-<li><strong>在易于驾驭的介质上工作</strong></li>
-</ul>
-<p>我对「在易于驾驭的介质上工作」这个原因尤其认同，结合当下的现实，谈谈我的体会和想法。</p>
-<h3 id="什么是「易于驾驭的介质」？"><a href="#什么是「易于驾驭的介质」？" class="headerlink" title="什么是「易于驾驭的介质」？"></a>什么是「易于驾驭的介质」？</h3><p>要说这个世界上最易于驾驭的介质是什么，我目前能想到的就是人的大脑（思维）。没有具体的形态，无需任何实体的操作，你想到了什么思维就已经被你操纵到了哪里（我不大确定到底是你在操作大脑还是大脑在操纵你）。你可以在大脑里创造出各种各样没有实体的东西。程序员或者文艺工作者往往有这样的体验，当你才思泉涌时，往往觉得双手都跟不上大脑运转的速度，就好像高速运转的 CPU 无法容忍相对而言低速的 I&#x2F;O 操作一样。</p>
-<p>我无法给「易于驾驭的介质」下一个明确的定义，不过如果假设大脑（思维）就是这个世界上最易于驾驭的介质的话，那我可以自然地说能被操纵（manipulate）的速度越接近大脑的速度，这种介质就是越容易被驾驭的。</p>
-<h3 id="为什么代码是易于驾驭的介质？"><a href="#为什么代码是易于驾驭的介质？" class="headerlink" title="为什么代码是易于驾驭的介质？"></a>为什么代码是易于驾驭的介质？</h3><p>我的个人经历就可以告诉我，代码绝对是工程领域最易于驾驭的介质。不同于传统的工科领域总是有具体的实体操纵对象或者危险难以控制的操纵对象，编程所操纵的对象——代码——算是太容易操纵的了，这是软件与硬件天然的区别。你无法说你磁盘上的那一串串 0 和 1 是实体的或者是危险的。即使不知名的宇宙射线打过来反转了你电脑内存中的某一个比特位，相信我，也不会有什么东西会爆炸的（或者极小概率）。</p>
-<p>基于此，编程工作的易于操作性在于，你只消用你的个人电脑，按照一定的规则在键盘上对代码做出任何你想要的更改，你的程序就可以按照你的预期做出你想要的行为，尽管它没有实体无法给你端茶倒水，但在今天这个互联网时代，却已经创造出了前所未有的价值。</p>
-<p>代码之于电脑，就像大脑之于人体一样。</p>
-<h3 id="这种易于驾驭的介质带来了什么？"><a href="#这种易于驾驭的介质带来了什么？" class="headerlink" title="这种易于驾驭的介质带来了什么？"></a>这种易于驾驭的介质带来了什么？</h3><ol>
-<li><strong>低廉的操作成本</strong>：与世俗的观念还是倾向于不想为看不见的东西的付费有关，操作代码的成本是低廉的，你只需要一台可计算设备即可。</li>
-<li><strong>容易传播和产生影响</strong>：下载和使用一个软件现在已经是秒秒钟的事情，好的软件已经非常容易传播和拥有庞大的用户，这同时意味着代码中的任何问题也可能会造成巨大的破坏。</li>
-<li><strong>低廉的试错成本</strong>：每一个产品迭代可能需要很多次才能达到用户满意的标准，一个不关键的 bug 可能需要很多次更新才能彻底解决，然而一个医生却无法把病人当成「小白鼠」来多次试验，一个建筑师却难以修补已建成建筑的设计缺陷。（此点灵感来自于：<a href="https://zhuanlan.zhihu.com/p/19690214">程序员混日子不完全手册</a>）</li>
-</ol>
-<p>把任何实体产业尽量转化为电脑中的 0 和 1，再利用其转化后的优势产生价值，这便是互联网+的本质。<br><br /></p>
-<center><b>诸位，幸福地来码代码吧！</b></center>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>程序员</tag>
-        <tag>《人月神话》</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>我心中理想的 Web 开发流程</title>
     <url>/2016/10/19/ideal-web-development-work-flow/</url>
     <content><![CDATA[<p>本文总结一下在几个月的 Web 开发实践后，我认为的<strong>目前</strong>进行 Web 开发的一些<strong>工作流程</strong>上的最佳实践。</p>
@@ -714,80 +751,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>Web 开发</tag>
         <tag>工作流程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>缓存可以用来做些什么</title>
-    <url>/2016/10/08/what-can-cache-do/</url>
-    <content><![CDATA[<blockquote class="blockquote-center">
-<p><em>There are only two hard things in Computer Science: cache invalidation and naming things.</em><br>—— <strong>Phil Karlton</strong></p>
-
-</blockquote>
-<p>缓存是高性能 Web 服务的基本要求，然而对缓存的处理和使用不当将带来一系列的副作用，尤其是同时考虑到服务的高可用性和同步的问题时。</p>
-<p>本文将简单探讨 Web 服务中哪些功能适合用缓存（此文均指 Web 后端自行实现的缓存，如使用 Redis）来完成。</p>
-<span id="more"></span>
-
-<h2 id="提高性能"><a href="#提高性能" class="headerlink" title="提高性能"></a>提高性能</h2><p>提高服务的性能是缓存最原始的目的，对于数据库中查询频繁而改动不频繁的数据都可以使用缓存以提高服务的性能，这往往是低成本大幅度提高服务性能的手段之一，收效也会非常明显。</p>
-<p>对于一个 Web 服务而言，缓存可以从不同的层级高度来展开：</p>
-<ul>
-<li><strong>路由层级的</strong>：如果是前后端不分离的 Web 服务，可以直接把某个路由下的静态页面缓存（比如未登录情况下具有高访问量的主页，并且不经常被更改时）；如果是前后端分离的 API Server，则是从 API 层级进行的缓存，此时需要注意缓存的 key 一定需要涵盖所有会控制 API 输出的参数。</li>
-<li><strong>单个数据库查询层级的</strong>：我们可以把缓存细化到某个数据库查询操作后的数据返回，这样缓存的数据将更细化和可控，缓存的 key 也可以直接对应 SQL 语句中某些关键的参数。此时需要注意的是，被缓存的数据在其他路由或 API 下被更改时，需要即刻删除（对于一般具有实时性要求的服务，否则可以把过期时间设短一些），这样设置缓存操作和删除缓存操作往往分离在不同的路由或 API 中，需要良好的机制来进行一致性的管理和维护。</li>
-<li><strong>数据库单条记录层级的</strong>：层级再向下，我们甚至可以从数据库中的单条记录为单位进行缓存。此时缓存数据库实际已经变成了总的持久性数据库的一个子集。这种情况下其实可以把缓存操作从应用层开发隐藏，直接在 ORM 中进行完整闭合的操作，也就是说，应用层无需再关心数据是从缓存来的还是从持久性数据库来的，ORM 在持久性数据库的基础上自行维护好的缓存，这将极大的降低应用层开发的缓存维护工作，同时也可以在一定程度上提高性能。不过相应的，应用层也失去了对缓存的控制力。</li>
-</ul>
-<p>在一个应用中，可以混合不同层级高度的缓存，以达到服务性能和开发维护成本之间的平衡。</p>
-<h2 id="优雅实现指定间隔时间后的内容更新"><a href="#优雅实现指定间隔时间后的内容更新" class="headerlink" title="优雅实现指定间隔时间后的内容更新"></a>优雅实现指定间隔时间后的内容更新</h2><p>一个典型的场景是新浪微博的热门话题：每隔十分钟更新一次，而且访问量极高，此时我们可以把该数据完全用缓存来存储，并且把过期时间设置为十分钟，这样每十分钟缓存失效后，自动从数据库获取（组装）新的热门话题数据并存入缓存，在下一个十分钟内，所有的对热门话题的访问都是直接从缓存中拉取数据的。这样利用过期时间的合理设置来实现完全服务业务需求的功能，连手动删除缓存都免了。</p>
-<p>当然，这样的业务需求可遇不可求，遇到一次就要好好把握充分利用。</p>
-<h2 id="作为定时器"><a href="#作为定时器" class="headerlink" title="作为定时器"></a>作为定时器</h2><p>相比上一点的业务需求，定时器的需求要常见得多，比如每天定时进行数据同步、日志导出等等，都需要用到定时任务。从 Node 生态来看，实现定时任务的方式很多，最常见的莫过于使用社区提供的<a href="https://github.com/kelektiv/node-cron">cron库</a>。我不知道 cron 库是如何来实现定时任务的，这里仅探讨定时任务的缓存实现。</p>
-<p>用缓存实现定时任务其实很简单，本质上跟在程序中设置一个 flag 的思想是一致的，当 flag 的状态翻转时，相当于触发了一个事件，此时响应这个事件来执行一些任务。不同的是，程序中的 flag 是没有过期时间的，它只能在一些特定情形下或者另一些事件后改变状态。而利用缓存的过期时间，我们就可以完成一些定时任务了。</p>
-<p>具体来说，我们在缓存中设置一个 flag，并且把过期事件设置为我们需要的定时时间，然后视具体业务对定时的容错情况不断来访问缓存中的这个 flag（为了不阻塞主线程，可能需要多线程支持），当该 flag 不存在后，便执行所需的任务。这样就用缓存实现了定时任务。</p>
-<h2 id="node-redis-cache"><a href="#node-redis-cache" class="headerlink" title="node-redis-cache"></a>node-redis-cache</h2><p>在用 Express 开发 API Server 时，没有在 Github 和 NPM 上找到满意的缓存库，于是想自己来重复造轮子了。</p>
-<p><a href="https://github.com/Maples7/node-redis-cache">node-redis-cache</a>是我建立并想持续维护的一个缓存库，目前基于<a href="https://github.com/luin/ioredis">ioredis</a>并且被设计成单个数据库查询层级，已经实现了一些常用的兼容原生 Redis 接口的 API，具体使用时只需要在对应的数据库查询外面包裹（wrap）一层即可。</p>
-<p>欢迎加入并共同完善！</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Express</tag>
-        <tag>缓存</tag>
-        <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序员：请不要丢失你的敬畏心</title>
-    <url>/2016/12/09/show-your-respect/</url>
-    <content><![CDATA[<center><b>暗</b></center>
-
-<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
-<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
-<span id="more"></span>
-
-<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
-<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
-<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
-<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
-<center><b>明</b></center>
-
-<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
-<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
-<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
-<p>就像读书的三境界一样，关于认知也有四重境界：</p>
-<ol>
-<li>You don’t know that you don’t know</li>
-<li>You know that you don’t know</li>
-<li>You know that you know</li>
-<li>You don’t know that you know</li>
-</ol>
-<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
-<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
-<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>敬畏之心</tag>
       </tags>
   </entry>
   <entry>
@@ -862,39 +825,74 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>为 Node.js 正名的二三事</title>
-    <url>/2016/12/15/awesome-node/</url>
-    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
-<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+    <title>程序员：请不要丢失你的敬畏心</title>
+    <url>/2016/12/09/show-your-respect/</url>
+    <content><![CDATA[<center><b>暗</b></center>
+
+<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
+<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
 <span id="more"></span>
 
-<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
-<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
-<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
-<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
-<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
-<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
-<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
-<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
-<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
-<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
-<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
-<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
-<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
-<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
-<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
-<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
-<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
-<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
-<p>:D</p>
+<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
+<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
+<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
+<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
+<center><b>明</b></center>
+
+<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
+<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
+<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
+<p>就像读书的三境界一样，关于认知也有四重境界：</p>
+<ol>
+<li>You don’t know that you don’t know</li>
+<li>You know that you don’t know</li>
+<li>You know that you know</li>
+<li>You don’t know that you know</li>
+</ol>
+<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
+<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
+<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Node.js</tag>
-        <tag>Web 开发</tag>
+        <tag>程序员</tag>
+        <tag>敬畏之心</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学生心态与产品演进之路</title>
+    <url>/2016/11/22/stay-hungry-stay-foolish/</url>
+    <content><![CDATA[<p>对于工作稳定的开发者而言，我们每天大多数时间都是在做着我们熟悉的事情。一个又一个不同的业务丢过来，我们却基本上总是使用着我们早已熟悉的技术栈。很多技术先驱们提倡开发者要学会远离自己的 comfort zone，学习一些新的我们所不曾了解的东西。是的，一个没有更高技术追求的开发者很难长久的在技术这条路上走得长远，更是难以达到一定的技术高度。</p>
+<p>选择了开发者这条职业之路，也就同时意味着这将是一条不断学习新知的道路。这篇文章将指出一个已经对自己常用的技术栈熟知的开发者，在学习新知的过程中可能会遇到的一个典型的问题。也许这个问题不仅仅是针对开发者，任何一个对自己常接触的业务领域技能熟知的职业人，在接触到新的知识领域时，都有可能会遇到这样的问题。</p>
+<span id="more"></span>
+
+<p>作为开发者，一个典型的场景就是我们需要在已有技术知识的基础上学习一些新的技术。你可能需要学习一个新框架如何使用、一个第三方服务的 API 如何合理的调用，更甚者，你可能得从后端开发转到前端开发、从移动端开发转到后端开发等等。在学习新东西的过程中，我发现我们极易犯一个心态上的错误——即不能正确的以一个小白的心态来学习新的知识。</p>
+<p>这样说可能对开发者而言有失公允，实际情况可能是，我们会主动的使用我们已经掌握的知识作为参考和背景知识来辅助学习新的知识，这其实是一件很自然也很正确的事情。然而，不知道有没有人有这样的感觉，一个已经有一定使用某一框架开发经验的程序员，与一个毫无开发经验的毕业生，同时学习另一个新的框架来实现一个不算太有难度的业务，往往那个毕业生可以先交出成品。当然，这件事不尽然，但确实有这样的情况发生。表面上，似乎已有的开发经验成为了我们学习新知的负担，真的是这样吗？</p>
+<p>造成这种现象的原因我觉得可能有以下几种：</p>
+<p><strong>1. 可能你并没有真正打心底里认同这门新的技术。</strong></p>
+<p>你可能一开始只是听别人说，有些好奇，于是尝试着去了解这门新的技术，然而发现它并没有你想像的那么好，很多指导思想十分陈旧，使用起来也不是那么的优雅。情况可能真的就如你想的那样，也许你已经掌握的技术确实比这门新技术设计上要先进一些，但我觉得另一种概率更大的可能是你还没有真正体会到这门新技术的精髓。它可能表面上看起来有一些蠢，和你已有的认知有一些出入，但你不妨再耐心一些，深入进去，多问一些为什么，了解这门技术这样设计的真正动因，当你真正开始认同这门新技术的时候，你可能就真正打开了另一个新世界的大门了。</p>
+<p>我之所以说「你可能还没有真正了解新技术的精髓」这种情况的概率更大的原因是，我们在已有技术的基础上，往往能一眼分辨出比这种技术设计更丑陋的技术有哪些，却不能立马分辨出比这种技术设计更优秀的优秀之处在哪里，这是我们所掌握的编程思想所决定的。既然是能诱使你好奇去尝试学习使用的技术，我想一般应该是设计更先进的技术吧。</p>
+<p>当然，你也可能完全是因为团队或上级要求，去学习一门新的技术，如果这门技术的确比你已经掌握的技术设计上更糟糕（或者技术社区中确实大部分人都这样认为），那确实挺难打心底里去认同的。这种情况我建议你好好准备准备，充分了解这门新技术比你掌握的技术差在哪里，然后跟团队的技术 Leader 好好谈谈，争取策反他吧。</p>
+<p><strong>2. 你对自己的代码质量要求太高了。</strong></p>
+<p>这种情况可能更普遍。对于大多数摆正心态的有经验的程序员而言，并不是他们没有认真学习新的知识，而往往是他们对自己的代码质量要求太高。</p>
+<p>我们在已有的知识积累中沉淀出了一些做任何类型开发都需要了解的一些知识，并内化到了自己的知识体系中，比如一些软件工程的思想、一些常用的设计模式等，这些经典的思想限制着我们不愿意写出太烂的代码。我们总是想着我们的代码分层良好、复用程度高、易于后期维护、易于扩展、安全性更好等等，然而此时我们对具体的新技术的掌握还并不允许我们写出这个技术领域符合这些通用技术思想要求的代码。这种具体的技术可能是一门新的语言，你在对这种语言的语法都还不熟悉的情况下，是不可能写出高质量的代码的。然而犹如一张白纸的应届生是不会有这样的顾虑的，能够实现功能可能对他们就已经一种全新的尝试了，所以他们往往可能能更快的做出一个成形的东西来。</p>
+<p>这可以说是一种「了解得更多的烦恼」，我们唯一能做的就是摆正心态，再脚踏实地一些，不要还没学会走路就企图要跑。新技术在你还没掌握之前对你而言它就是新的。如果你以前用你已经了解过的技术随随便便就能写出高质量的代码，那么在这个全新的领域里，我们还是得从一行行的烂代码开始积累起。</p>
+<p>另外需要说明的是，原有的经验积累并不是毫无用处的，我们正是因为了解我们写出的新代码的缺陷可能在哪些地方，我们才能更加明确我们改进的方向。如果要比较谁能把工程代码写得（或改进得）更好，那我想应届生们是断然比不过有经验的老程序员们的。其次，一些其他的软技能，比如查找资料的能力、借助互联网解决问题的能力、对 Bug 可能原因的敏感度等等，这些也是宝贵经验带来的财富。</p>
+<p>其实做产品也很容易犯这样类似的错误。</p>
+<p>一些没有经验的产品经理或者做自己 Side Project 的程序员，往往一开始就把自己的产品构思得很好，并且企图第一版就把功能做得很完美。这样的想法能好，但是太不现实。「罗马不是一天建成的」，任何伟大的产品也是从一点一滴琐碎的改进中积累来的。一开始，它们可能很烂，性能差、页面分布不合理，甚至有明显的 Bug 等等，但经过不断的迭代与打磨，慢慢的它才会变得优秀、变得无可替代、变得不可或缺。尤其是在这样一个互联网浪潮下，任何的机会都经不起犹豫和等待，一个一开始就追求完美的产品，等不到出生，就已经死了。</p>
+<p>说了这么多（甚至个人觉得好像有点儿鸡汤味儿……），其实总结起来也就还是乔布斯的那句话：</p>
+<p><em>Stay hungry, stay foolish.</em></p>
+<p>不仅仅是在行动上，更是在心态和产品设计理念上，用这句话来武装自己。保持学生心态，一点一滴脚踏实地的积累和迭代，才能调和出不一样的色彩。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>学生心态</tag>
+        <tag>产品经理</tag>
       </tags>
   </entry>
   <entry>
@@ -1142,40 +1140,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>学生心态与产品演进之路</title>
-    <url>/2016/11/22/stay-hungry-stay-foolish/</url>
-    <content><![CDATA[<p>对于工作稳定的开发者而言，我们每天大多数时间都是在做着我们熟悉的事情。一个又一个不同的业务丢过来，我们却基本上总是使用着我们早已熟悉的技术栈。很多技术先驱们提倡开发者要学会远离自己的 comfort zone，学习一些新的我们所不曾了解的东西。是的，一个没有更高技术追求的开发者很难长久的在技术这条路上走得长远，更是难以达到一定的技术高度。</p>
-<p>选择了开发者这条职业之路，也就同时意味着这将是一条不断学习新知的道路。这篇文章将指出一个已经对自己常用的技术栈熟知的开发者，在学习新知的过程中可能会遇到的一个典型的问题。也许这个问题不仅仅是针对开发者，任何一个对自己常接触的业务领域技能熟知的职业人，在接触到新的知识领域时，都有可能会遇到这样的问题。</p>
-<span id="more"></span>
-
-<p>作为开发者，一个典型的场景就是我们需要在已有技术知识的基础上学习一些新的技术。你可能需要学习一个新框架如何使用、一个第三方服务的 API 如何合理的调用，更甚者，你可能得从后端开发转到前端开发、从移动端开发转到后端开发等等。在学习新东西的过程中，我发现我们极易犯一个心态上的错误——即不能正确的以一个小白的心态来学习新的知识。</p>
-<p>这样说可能对开发者而言有失公允，实际情况可能是，我们会主动的使用我们已经掌握的知识作为参考和背景知识来辅助学习新的知识，这其实是一件很自然也很正确的事情。然而，不知道有没有人有这样的感觉，一个已经有一定使用某一框架开发经验的程序员，与一个毫无开发经验的毕业生，同时学习另一个新的框架来实现一个不算太有难度的业务，往往那个毕业生可以先交出成品。当然，这件事不尽然，但确实有这样的情况发生。表面上，似乎已有的开发经验成为了我们学习新知的负担，真的是这样吗？</p>
-<p>造成这种现象的原因我觉得可能有以下几种：</p>
-<p><strong>1. 可能你并没有真正打心底里认同这门新的技术。</strong></p>
-<p>你可能一开始只是听别人说，有些好奇，于是尝试着去了解这门新的技术，然而发现它并没有你想像的那么好，很多指导思想十分陈旧，使用起来也不是那么的优雅。情况可能真的就如你想的那样，也许你已经掌握的技术确实比这门新技术设计上要先进一些，但我觉得另一种概率更大的可能是你还没有真正体会到这门新技术的精髓。它可能表面上看起来有一些蠢，和你已有的认知有一些出入，但你不妨再耐心一些，深入进去，多问一些为什么，了解这门技术这样设计的真正动因，当你真正开始认同这门新技术的时候，你可能就真正打开了另一个新世界的大门了。</p>
-<p>我之所以说「你可能还没有真正了解新技术的精髓」这种情况的概率更大的原因是，我们在已有技术的基础上，往往能一眼分辨出比这种技术设计更丑陋的技术有哪些，却不能立马分辨出比这种技术设计更优秀的优秀之处在哪里，这是我们所掌握的编程思想所决定的。既然是能诱使你好奇去尝试学习使用的技术，我想一般应该是设计更先进的技术吧。</p>
-<p>当然，你也可能完全是因为团队或上级要求，去学习一门新的技术，如果这门技术的确比你已经掌握的技术设计上更糟糕（或者技术社区中确实大部分人都这样认为），那确实挺难打心底里去认同的。这种情况我建议你好好准备准备，充分了解这门新技术比你掌握的技术差在哪里，然后跟团队的技术 Leader 好好谈谈，争取策反他吧。</p>
-<p><strong>2. 你对自己的代码质量要求太高了。</strong></p>
-<p>这种情况可能更普遍。对于大多数摆正心态的有经验的程序员而言，并不是他们没有认真学习新的知识，而往往是他们对自己的代码质量要求太高。</p>
-<p>我们在已有的知识积累中沉淀出了一些做任何类型开发都需要了解的一些知识，并内化到了自己的知识体系中，比如一些软件工程的思想、一些常用的设计模式等，这些经典的思想限制着我们不愿意写出太烂的代码。我们总是想着我们的代码分层良好、复用程度高、易于后期维护、易于扩展、安全性更好等等，然而此时我们对具体的新技术的掌握还并不允许我们写出这个技术领域符合这些通用技术思想要求的代码。这种具体的技术可能是一门新的语言，你在对这种语言的语法都还不熟悉的情况下，是不可能写出高质量的代码的。然而犹如一张白纸的应届生是不会有这样的顾虑的，能够实现功能可能对他们就已经一种全新的尝试了，所以他们往往可能能更快的做出一个成形的东西来。</p>
-<p>这可以说是一种「了解得更多的烦恼」，我们唯一能做的就是摆正心态，再脚踏实地一些，不要还没学会走路就企图要跑。新技术在你还没掌握之前对你而言它就是新的。如果你以前用你已经了解过的技术随随便便就能写出高质量的代码，那么在这个全新的领域里，我们还是得从一行行的烂代码开始积累起。</p>
-<p>另外需要说明的是，原有的经验积累并不是毫无用处的，我们正是因为了解我们写出的新代码的缺陷可能在哪些地方，我们才能更加明确我们改进的方向。如果要比较谁能把工程代码写得（或改进得）更好，那我想应届生们是断然比不过有经验的老程序员们的。其次，一些其他的软技能，比如查找资料的能力、借助互联网解决问题的能力、对 Bug 可能原因的敏感度等等，这些也是宝贵经验带来的财富。</p>
-<p>其实做产品也很容易犯这样类似的错误。</p>
-<p>一些没有经验的产品经理或者做自己 Side Project 的程序员，往往一开始就把自己的产品构思得很好，并且企图第一版就把功能做得很完美。这样的想法能好，但是太不现实。「罗马不是一天建成的」，任何伟大的产品也是从一点一滴琐碎的改进中积累来的。一开始，它们可能很烂，性能差、页面分布不合理，甚至有明显的 Bug 等等，但经过不断的迭代与打磨，慢慢的它才会变得优秀、变得无可替代、变得不可或缺。尤其是在这样一个互联网浪潮下，任何的机会都经不起犹豫和等待，一个一开始就追求完美的产品，等不到出生，就已经死了。</p>
-<p>说了这么多（甚至个人觉得好像有点儿鸡汤味儿……），其实总结起来也就还是乔布斯的那句话：</p>
-<p><em>Stay hungry, stay foolish.</em></p>
-<p>不仅仅是在行动上，更是在心态和产品设计理念上，用这句话来武装自己。保持学生心态，一点一滴脚踏实地的积累和迭代，才能调和出不一样的色彩。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>学生心态</tag>
-        <tag>产品经理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>译文 | 入门概念：CSS 选择器是如何工作的</title>
     <url>/2017/03/13/how-css-selectors-work/</url>
     <content><![CDATA[<blockquote>
@@ -1225,6 +1189,62 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>为 Node.js 正名的二三事</title>
+    <url>/2016/12/15/awesome-node/</url>
+    <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
+<p>前端不够了解就不多说什么的了，但我发现现在确实还有一些不搞 Node.js 的人像上文作者那样把 Node.js 当做「玩具」来看待，所以才想写下这篇文章。</p>
+<span id="more"></span>
+
+<p>我是在大一从 PHP 和 Python 入的 Web 后端的坑，当时在学校技术组织还基本是玩票的性质，等真正在工业实践中进行 Web 后端开发，则完全是从 Node.js 开始的（老实讲，我看到的工业实践中的代码还真不一定比在学校的技术组织的代码质量高）。期间也搞过 ASP.NET Core（C#），而且目前大多数时间还是在写 PHP。我之所以要说这些是因为，总是有人会说 Node.js 只是那些前端的人才玩的，说那些人没有后端思维什么的云云。我承认前端开发与后端开发考虑的问题确实很不一样，但如果你硬要认为前端的人来搞 Node.js 不能准确的对 Node.js 在后端开发的表现进行评估，那我可是一开始就真真切切的从一个后端的角度来看待 Node.js 的。</p>
+<p>第一个需要为 Node.js 正名的是：Node.js 在目前主要还是后端的技术（至少肯定不是前端的技术）。尽管前端的同学常拿 NPM 来做包管理、用 Node.js 来写一些自动化脚本，也改变不了 Node.js 是为 Web 后端设计的本质。当然，现在 Node.js 跟很多主要用来做 Web 后端的语言一样，也可以来写 PC 端应用，但还不是主流。岗位划分上，很多公司把 Node.js 归类到前端组，这在一定程度上误导了初学者。 </p>
+<p>从我在 PHP、Python、ASP.NET Core（C#）、Node.js 这些 Web 后端的体验来看，我非但没有觉得 Node.js 在后端开发上有什么明显的不足，反而觉得在很多方面比那些传统主流的 Web 后端技术要好上不少。下面来一一分析。</p>
+<h2 id="不稳定？"><a href="#不稳定？" class="headerlink" title="不稳定？"></a>不稳定？</h2><p>这大概是我最常听到的对 Node.js 的质疑。当跟不熟悉 Node.js 的开发者讨论的时候，他们总是会质疑用 Node.js 写的应用是不是不稳定？能不能写大型应用？有哪些业界有名的公司在使用它？……然而如果问他们为什么说 Node.js 不够稳定时，他们开始变得支支吾吾，说自己不是主要搞 Node.js 的对此并不了解，只是听别人常这么说。</p>
+<p>我不知道质疑 Node.js 是否稳定的疑虑是从哪里跑出来的（早期不成熟版本给人的印象？我不知道……），从我个人的开发经验来看，那些写过 Node.js（以下或简称为 Node） 还质疑其稳定性的人往往是因为自己对 Node 的理解不够深。比如经典的异步流程控制问题，在具体写代码时确实需要注意一些细节，但关键还是要理解 Node 异步的本质，这样才能轻松写出符合自己对它的行为期望的代码。但不能因为自己对语言最大的特点理解不够，写出了自己难以解释其行为的代码，就对别人说这门语言（或者说实现）不稳定吧。</p>
+<p>如果你还是对 Node 的稳定性有疑虑，你知道 <a href="https://github.com/Unitech/pm2">PM2</a> 吧？那 <a href="https://github.com/foreverjs/forever">Forever</a> 呢？如果你依然不放心，那你还可以在 Node 应用外加一层反向代理，过滤掉网络世界里一些「肮脏」的信息。</p>
+<h2 id="性能不够？"><a href="#性能不够？" class="headerlink" title="性能不够？"></a>性能不够？</h2><p>Node 当初就是以单线程异步非阻塞特性在高并发下的优良表现进入大家的视野的，加上 Google 的 V8 JavaScript 引擎，在性能上至少绝对不会成为其短板。虽然微软新推出的 ASP.NET Core 一度宣称<a href="https://blogs.msdn.microsoft.com/dotnet/2016/06/27/announcing-net-core-1-0/#user-content-net-core-usage">其性能是 Node.js 的 8 倍</a>，但脱离的具体的业务场景来谈性能完全就是耍流氓，这种测试与其说是技术上性能的对比，不如说是为了 marketing 的目的而制造的噱头。</p>
+<p>进一步说，真实的业务场景中语言（或者说其实现和技术栈，以下同）几乎不可能真正成为性能瓶颈，带来的瓶颈的往往是 I&#x2F;O 部分。注意，这并不说语言对此没有责任，难以优化的 I&#x2F;O 性能瓶颈可能是因为开发人员由于语言特性写出了不易扩展和优化的代码，这往往是对性能产生更大影响也更有意义的方面，所以因此换语言也是有可能的（比如 <a href="https://www.quora.com/Why-did-Twitter-switch-to-a-Java-based-front-end-after-successfully-using-Ruby-on-Rails-with-200-million-users">Twitter 曾经从 Rails 换到 Scala</a>），但不是说语言本身的运行性能有什么太大的问题。</p>
+<h2 id="第三方库的质量太差？"><a href="#第三方库的质量太差？" class="headerlink" title="第三方库的质量太差？"></a>第三方库的质量太差？</h2><p>我认为这非但不是 Node 技术生态圈的缺点，反而是其对比其他技术生态圈最大的优势。无非你遇到什么问题，无论你想找什么样的解决方案，在 2016 年接近尾声的今天，你都可以在社区找到灵感、吸收别人的养分、站在巨人的肩膀上。换句话说，你在社区提出一个问题，你可以快速且明显地感受到社区的热情。</p>
+<p>截至目前，NPM 上已经有 385684 个 packages。而 GitHub 上 2016 年流行语言排名，JavaScript 更是<a href="https://octoverse.github.com/">超过第二名两倍还不止</a>（当然这之中前端 JS 的贡献也很大）：</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b6730412457a.png" alt="15 most popular languages used on GitHub in 2016"></p>
+<p>可以说，目前没有一个技术社区的社区活跃度比得上 Node&#x2F;JS 社区。</p>
+<p>而至于质疑第三方包质量太差缺乏审核……诶，你是知道广电的电影审查制度的吧？</p>
+<p>正是因为 NPM 使得发布一个包变得如此的简单，才极大的激发了开发者的热情。积木总是越搭才会越高的，需求也总是多种多样的，正是庞大的第三方包的基数使得开发者们有了更多的选择，优秀的第三方包也会在绝对数量上越来越多，从而可以实现更复杂更困难的业务需求。</p>
+<h2 id="其他问题……"><a href="#其他问题……" class="headerlink" title="其他问题……"></a>其他问题……</h2><h3 id="自动化文档？参数验证？"><a href="#自动化文档？参数验证？" class="headerlink" title="自动化文档？参数验证？"></a>自动化文档？参数验证？</h3><p><a href="http://swagger.io/">Swagger</a> 不是针对某一门特定语言的（<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger">ASP.NET Core 的官方文档就是推荐的 Swagger 作为文档系统</a>），也可以参考我的这篇文章：<a href="http://maples7.com/2016/09/06/build-doc-system-of-express-api-server-with-swagger/">使用 Swagger 构建 Express API Server 的文档系统</a>。</p>
+<h3 id="Express-不够强大？不够标准？"><a href="#Express-不够强大？不够标准？" class="headerlink" title="Express 不够强大？不够标准？"></a><a href="http://expressjs.com/">Express</a> 不够强大？不够标准？</h3><p>Express 可以很好的让初学者了解一个常规的 Web 框架在底层是怎么处理问题的，甚至还可以阅读其源码了解其实现。但如果你还是因为不管什么原因不喜欢它，你还可以有各种各样的选择：<a href="http://nodeframework.com/">Hand-picked registry of Node.js frameworks</a>。这里我想着重提一下 <a href="http://feathersjs.com/">FeathersJS</a>，如果你觉得 Express 对于 HTTP(S) 或者 REST <strong>标准</strong>的支持不够专一和规范，你可以考虑看看这个框架，个人认为它在很多关键问题的处理上都有很规范的做法（拿 Express 跟它比可能对 Express 不大公平，它本身是基于 Express 的更高层次上的封装）。</p>
+<h3 id="自动化测试？"><a href="#自动化测试？" class="headerlink" title="自动化测试？"></a>自动化测试？</h3><p>不必多说什么，mocha&#x2F;should(chai)&#x2F;supertest&#x2F;istanbul 基本已经成为共识，大不了再加个 rewire。而如果这样你还觉得麻烦，社区里已经有各种各样基于这些包的使用更方便的封装了，基本思路大概是像写配置一样写测试样例，然后写 Parser 把这些测例加载并解析再去自动化测试。</p>
+<h3 id="……"><a href="#……" class="headerlink" title="……"></a>……</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实上述我说的这些问题早就有技术前辈们的布道和背书，我也不过是拾拾牙慧而已。技术人还是要多保持独立思考，与其道听途说，不如实实在在的自己去了解实践，亲身去感受，得出自己的结论。</p>
+<p>哦，对了，<a href="https://www.zhihu.com/question/53625757/answer/135981220">我这篇文章也可能完全都是错的</a>。</p>
+<p>:D</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>Web 开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>印象青岛</title>
+    <url>/2017/03/14/qingdao/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241202ea.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732410961d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241122ee.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324124390.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241310f1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324137461.jpg"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12595727/">https://maples7.tuchong.com/12595727/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>风光</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Koa2 源码赏析</title>
     <url>/2017/04/09/koa2-src/</url>
     <content><![CDATA[<p>随着 Node 新版本开始支持 async&#x2F;await 异步控制写法，Koa 也相继发布了它的 2.0 版本。用 async&#x2F;await 写法的 Koa 来开发项目，Node 开发者再也没有任何理由不「拥抱变化」——从 Express 转到 Koa 上来。实际上，对于普通 Node 开发者——Express 框架的用户——而言，从 Express 转到 Koa 没有任何技术壁垒，当然前提是你至少得知道 ES2017 中 async&#x2F;await 是个什么东西。</p>
@@ -1263,6 +1283,31 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>Node.js</tag>
         <tag>Koa</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序与人生</title>
+    <url>/2017/05/24/programming-and-life/</url>
+    <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
+<p>越来越发现，前人总结的一些众所周知并经过时间验证过的关于写代码的道理，只要我们换个角度来类比和思考，同样可以适用于我们人生历程的一些方面。这篇文章就是我想到的一些例子，小标题都是写代码时所谓的一些「金科玉律」，而我会试图通过这些相通的「规律」，衍生出个人对人生某个方面的思考，可能小到微不足道的个人习惯，大到能够决定人生方向的人生观。</p>
+<span id="more"></span>
+
+<h2 id="做好垃圾回收"><a href="#做好垃圾回收" class="headerlink" title="做好垃圾回收"></a>做好垃圾回收</h2><p>任何使用 C&#x2F;C++ 写代码的程序员都会在编码时尤其注意一个问题，那就是及时进行垃圾回收。具体来说，由于 C&#x2F;C++ 本身不具有自动垃圾回收的机制，所以但凡程序向操作系统「借用」了一块内存来存放新生成的对象，都必须在对应对象的生命期结束之后的某个时刻主动的进行内存释放，即手动进行垃圾回收。如果没有进行合适的垃圾回收，则系统会陷入了我们常说的「内存泄漏」的问题——由于无用的内存得不到及时的释放，导致程序占用的内存越来越多，最后导致内存不足而整个系统无法正常运行。</p>
+<p>一个合格的 C&#x2F;C++ 程序员会把主动进行垃圾回收的习惯带到生活中，小到随手关灯、随手关门、把用过的会议室恢复原样，中到把借来的东西物归原主，甚至大到整个人类对发展过程中对生态环境破坏的及时弥补，其内在其实都是自然的「垃圾回收」原则。</p>
+<h2 id="永远不忘把错误默默吞掉"><a href="#永远不忘把错误默默吞掉" class="headerlink" title="永远不忘把错误默默吞掉"></a>永远不忘把错误默默吞掉</h2><p><em>“Errors should never pass silently”</em> 是<a href="https://en.wikipedia.org/wiki/Zen_of_Python">《The Zen of Python》</a>中重要的一条，它告诉我们永远不要忽视代码中的「异常」（Exception）。无论你是像目前大多数语言或框架所设计的把「异常」向上「抛」到一个足够高的层次然后统一记录日志并做处理然后程序继续运行，还是像 Erlang 那样崇尚 <em>let it crash</em> 的思想把所有被「异常」所「感染」到的轻量级 Process 全部挂掉，其相同的基点都是不能把异常默默的忽视掉。</p>
+<p>其内在的逻辑在于，我们绝不能忽视系统中的任何一个错误，把问题暴露出来总是比隐藏问题要更好。任何一个不加处理和纠正的错误，对于有状态的系统而言，可能导致系统处于一个完全失常的状态，其行为得不到有效的控制；对于无状态的系统而言，则可能使得任何触发了这个错误的用户请求都产生错误的结果和返回，即便不直接把 Process 挂掉，也至少把错误捕捉到且记录日志并视问题严重程度适当进行告警，否则问题将永远得不到解决。</p>
+<p>生活中其实也是如此。当我们遇到问题时，人的本能反应都是逃避的，但逃避永远解决不了我们遇到的问题。选择直面问题和困难是强者和自信者的逻辑和选择，人生也只有在不断的打怪升级中进阶成为更好的自己。具体来说，学习时遇到难点要想办法去弄懂原理，人际交往中遇到误会要及时沟通，工作时遇到阻碍要直面解决等等。</p>
+<h2 id="分工明确，关注点分离"><a href="#分工明确，关注点分离" class="headerlink" title="分工明确，关注点分离"></a>分工明确，关注点分离</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a>是面向对象程序设计的核心概念之一，它强调把业务逻辑的代码与解决特定领域问题的代码分离，这样才能使得代码具有「高内聚，低耦合，分层明确」的特点，也就是使得日后由于需求变动带来的维护修改能够以尽可能小的影响面来进行。其实 Erlang 的 actor 并发模型设计对此也有所体现，整个系统任务被拆分成一个个不同的小任务，被大量的轻量级 Work Process 来执行，而 Process 之间唯一的交互方式是通过 messages（这就是好比各个子系统通过 API 来进行黑盒交互），这样的并发模型就完全避免了传统的共享内存式并发的 data race、死锁等固有问题。</p>
+<p>人类社会整个就是一个分工明确的动态系统，不同人一定会有不同的专长和兴趣，在走向社会之后也一定会或主动或被动的走到合适自己的岗位上去。而整个人类社会系统是不断动态发展的，正是由于明确的分工机制，客观世界的某个具体的变化不必需要人类全体都进行调整来适应，这样人类社会总体上才得以能够勉力跟上客观世界变化的速度。其实道理很简单，就拿最近影响面极广的 WannaCry 勒索病毒事件来说，即便微软早在两三月前就已经推送了补丁修复漏洞，但由于需要调整的用户数量太大（即便假设所有用户对系统更新都持开放态度），所以肯定还是会有大量来不及进行调整的用户中招。更明确的说，个体数量越多，则所有个体都从当前状态调整到另一个确定状态所遇到的阻力就越大。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实如果有心，还可以发现很多沉淀下来的技术「准则」都可以有更哲学更生活化的解读和理解，也欢迎留言提供你的「新发现」。</p>
+<p>程序与人生，不仅仅是写程序的人生，更是透着程序思想哲思的人生。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>人生</tag>
       </tags>
   </entry>
   <entry>
@@ -1328,31 +1373,6 @@ _Farewell and thanks to each for the company_
         <tag>Erlang</tag>
         <tag>函数式编程</tag>
         <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序与人生</title>
-    <url>/2017/05/24/programming-and-life/</url>
-    <content><![CDATA[<p>最近趁着离职的一点空隙，稍微能有些时间和心情来思考一些更有深度和更长远的问题，这篇文章的内容算是我近期开的小小脑洞之一。</p>
-<p>越来越发现，前人总结的一些众所周知并经过时间验证过的关于写代码的道理，只要我们换个角度来类比和思考，同样可以适用于我们人生历程的一些方面。这篇文章就是我想到的一些例子，小标题都是写代码时所谓的一些「金科玉律」，而我会试图通过这些相通的「规律」，衍生出个人对人生某个方面的思考，可能小到微不足道的个人习惯，大到能够决定人生方向的人生观。</p>
-<span id="more"></span>
-
-<h2 id="做好垃圾回收"><a href="#做好垃圾回收" class="headerlink" title="做好垃圾回收"></a>做好垃圾回收</h2><p>任何使用 C&#x2F;C++ 写代码的程序员都会在编码时尤其注意一个问题，那就是及时进行垃圾回收。具体来说，由于 C&#x2F;C++ 本身不具有自动垃圾回收的机制，所以但凡程序向操作系统「借用」了一块内存来存放新生成的对象，都必须在对应对象的生命期结束之后的某个时刻主动的进行内存释放，即手动进行垃圾回收。如果没有进行合适的垃圾回收，则系统会陷入了我们常说的「内存泄漏」的问题——由于无用的内存得不到及时的释放，导致程序占用的内存越来越多，最后导致内存不足而整个系统无法正常运行。</p>
-<p>一个合格的 C&#x2F;C++ 程序员会把主动进行垃圾回收的习惯带到生活中，小到随手关灯、随手关门、把用过的会议室恢复原样，中到把借来的东西物归原主，甚至大到整个人类对发展过程中对生态环境破坏的及时弥补，其内在其实都是自然的「垃圾回收」原则。</p>
-<h2 id="永远不忘把错误默默吞掉"><a href="#永远不忘把错误默默吞掉" class="headerlink" title="永远不忘把错误默默吞掉"></a>永远不忘把错误默默吞掉</h2><p><em>“Errors should never pass silently”</em> 是<a href="https://en.wikipedia.org/wiki/Zen_of_Python">《The Zen of Python》</a>中重要的一条，它告诉我们永远不要忽视代码中的「异常」（Exception）。无论你是像目前大多数语言或框架所设计的把「异常」向上「抛」到一个足够高的层次然后统一记录日志并做处理然后程序继续运行，还是像 Erlang 那样崇尚 <em>let it crash</em> 的思想把所有被「异常」所「感染」到的轻量级 Process 全部挂掉，其相同的基点都是不能把异常默默的忽视掉。</p>
-<p>其内在的逻辑在于，我们绝不能忽视系统中的任何一个错误，把问题暴露出来总是比隐藏问题要更好。任何一个不加处理和纠正的错误，对于有状态的系统而言，可能导致系统处于一个完全失常的状态，其行为得不到有效的控制；对于无状态的系统而言，则可能使得任何触发了这个错误的用户请求都产生错误的结果和返回，即便不直接把 Process 挂掉，也至少把错误捕捉到且记录日志并视问题严重程度适当进行告警，否则问题将永远得不到解决。</p>
-<p>生活中其实也是如此。当我们遇到问题时，人的本能反应都是逃避的，但逃避永远解决不了我们遇到的问题。选择直面问题和困难是强者和自信者的逻辑和选择，人生也只有在不断的打怪升级中进阶成为更好的自己。具体来说，学习时遇到难点要想办法去弄懂原理，人际交往中遇到误会要及时沟通，工作时遇到阻碍要直面解决等等。</p>
-<h2 id="分工明确，关注点分离"><a href="#分工明确，关注点分离" class="headerlink" title="分工明确，关注点分离"></a>分工明确，关注点分离</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a>是面向对象程序设计的核心概念之一，它强调把业务逻辑的代码与解决特定领域问题的代码分离，这样才能使得代码具有「高内聚，低耦合，分层明确」的特点，也就是使得日后由于需求变动带来的维护修改能够以尽可能小的影响面来进行。其实 Erlang 的 actor 并发模型设计对此也有所体现，整个系统任务被拆分成一个个不同的小任务，被大量的轻量级 Work Process 来执行，而 Process 之间唯一的交互方式是通过 messages（这就是好比各个子系统通过 API 来进行黑盒交互），这样的并发模型就完全避免了传统的共享内存式并发的 data race、死锁等固有问题。</p>
-<p>人类社会整个就是一个分工明确的动态系统，不同人一定会有不同的专长和兴趣，在走向社会之后也一定会或主动或被动的走到合适自己的岗位上去。而整个人类社会系统是不断动态发展的，正是由于明确的分工机制，客观世界的某个具体的变化不必需要人类全体都进行调整来适应，这样人类社会总体上才得以能够勉力跟上客观世界变化的速度。其实道理很简单，就拿最近影响面极广的 WannaCry 勒索病毒事件来说，即便微软早在两三月前就已经推送了补丁修复漏洞，但由于需要调整的用户数量太大（即便假设所有用户对系统更新都持开放态度），所以肯定还是会有大量来不及进行调整的用户中招。更明确的说，个体数量越多，则所有个体都从当前状态调整到另一个确定状态所遇到的阻力就越大。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实如果有心，还可以发现很多沉淀下来的技术「准则」都可以有更哲学更生活化的解读和理解，也欢迎留言提供你的「新发现」。</p>
-<p>程序与人生，不仅仅是写程序的人生，更是透着程序思想哲思的人生。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>人生</tag>
       </tags>
   </entry>
   <entry>
@@ -1513,26 +1533,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>印象青岛</title>
-    <url>/2017/03/14/qingdao/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241202ea.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732410961d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6732411fb6a.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241122ee.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324124390.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b673241310f1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b67324137461.jpg"></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12595727/">https://maples7.tuchong.com/12595727/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>风光</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2017 年书单</title>
     <url>/2017/12/31/2017-booklist/</url>
     <content><![CDATA[<p>今年太「荒废」了。无论是工作还是生活，已经发生的事情之丰富复杂相比去年完全有过之而无不及，自己心态上的改变也是不少。这种内省式的变化会直接导致个人情绪的变化。用一个烂俗的比喻来说，如果去年的心情像一汪平静的湖水，那今年则可以用海啸来形容<del>（夸张到油腻了）</del>。</p>
@@ -1572,35 +1572,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>长按是好的交互方式吗？</title>
-    <url>/2018/12/19/long-press-sucks/</url>
-    <content><![CDATA[<p>长按是好的交互方式吗？</p>
-<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
-<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
-<span id="more"></span>
-
-<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
-<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
-<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
-<p>首先，「长按」交互本身是一种怎样的体验？</p>
-<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
-<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
-<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
-<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
-<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
-<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
-<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
-<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>交互设计</tag>
-        <tag>产品</tag>
       </tags>
   </entry>
   <entry>
@@ -1652,6 +1623,35 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>「完全理解」系列</tag>
         <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>长按是好的交互方式吗？</title>
+    <url>/2018/12/19/long-press-sucks/</url>
+    <content><![CDATA[<p>长按是好的交互方式吗？</p>
+<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
+<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
+<span id="more"></span>
+
+<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
+<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
+<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
+<p>首先，「长按」交互本身是一种怎样的体验？</p>
+<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
+<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
+<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
+<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
+<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
+<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
+<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
+<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>交互设计</tag>
+        <tag>产品</tag>
       </tags>
   </entry>
   <entry>
@@ -1711,6 +1711,46 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>2018 年书单</title>
+    <url>/2018/12/31/2018-booklist/</url>
+    <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
+<p>回到「书单」的正题。在<a href="http://maples7.com/2016/12/31/2016-booklist/">之前的年终书单总结</a>中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— <a href="https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W">Kindle PaperWhite 4</a>（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。</p>
+<span id="more"></span>
+
+<p>废话先不多说，还是按老规矩先列今年看过的书的书单。</p>
+<ol>
+<li><p><a href="https://www.zhihu.com/pub/book/19550356">设计之美</a>：★★★☆<br>前言写得是真好，整本书写得最好的部分也是前言。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26320659/">万物生长</a>：★★★★<br>冯唐的文字远比<a href="https://zh.wikipedia.org/wiki/%E7%8E%8B%E5%B0%8F%E6%B3%A2">王小波</a>的瑰丽绚烂，像被一个习惯了炒食堂大锅菜的师傅炒出的菜，加足了各种重口的佐料，分明就是他自己前不久写的那篇在朋友圈疯转的文章所说的「油腻」。<br>被称为「某某第二」的人永远不能成为「某某」，也永远达不到世俗意义上「某某」的高度，这一点，几乎是一条铁律。号称「王小波第二」的冯唐永远也成不了王小波，是因为他的文字看不到王小波能看到的东西，技巧十足，却没有让人想去细细揣摩的深意。<br>然而这个世界上没有谁需要去成为谁，冯唐不必易老，照样会让世界变得更丰富。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26943161/">未来简史：从智人到智神</a>：★★★★<br>第一部分基本是在重复<a href="https://book.douban.com/subject/26953606/">《人类简史》</a>的观点；第二部分写得比较有意思，把人文主义主导世界的现实情况剖析得鞭辟入里；第三部阐述了数据宗教的概念，基本也没有什么新东西。<br>预言未来当然比叙述历史要难很多，没有《人类简史》那么脉络清晰且具有说服力，不过书中的很多观点都是值得了解的。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27085265/">北京，北京</a>：★★<br>「年轻人没了幻想，一不小心就俗了」；<br>作家要是没了追求，文字一不小心就俗透了。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25881855/">大教堂与集市</a>：★★★★☆<br>可以和<a href="https://book.douban.com/subject/26358448/">《人月神话》</a>一起看。<br><a href="https://en.wikipedia.org/wiki/Fred_Brooks">Brooks</a> 证明了「人月」在软件工程领域的非线性叠加性，而 <a href="https://en.wikipedia.org/wiki/Eric_S._Raymond">Eric S.Raymond</a> 则告诉我们「开源」大概是破局的唯一方式。<br>这部二十多年前写就的作品在如今看来也毫不过时，甚至书中的一些预言都一一应验。开源运动绝对是上世纪末以来黑客们最伟大的宗教活动。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27070488/">围城</a>：★★★★★<br>钱钟书太厉害了，把人物形象简直刻画得惟妙惟肖，个个都像是生活中栩栩如生的样子。<br>一个围城，围住了中国人的人情、世俗、琐碎与人生的苍凉。<br><a href="https://zh.wikipedia.org/wiki/%E9%9F%A9%E5%AF%92">韩寒</a>的所谓<a href="https://book.douban.com/subject/24697636/">《三重门》</a>不及《围城》的 0.01%。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26663519/">MacTalk 跨越边界</a>：★★★☆<br>比前作的干货更少，也看得出对于书本身的内容而言所体现出的作者的野心更少，基本都是些日常感悟和书评。大概已经无需再考虑要证明什么，可以放开手脚写想写的东西。<br>在我所接触到的所有技术人的自媒体当中，不管技术如何，<a href="http://macshuo.com/?page_id=2">池建强</a>和<a href="https://www.zhihu.com/people/tchen/">陈天</a>算是文字写得流畅优美、可读性非常强的两位了。<br>作为枕边读物还行。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26997376/">我是猫</a>：★★★☆<br>简直就是夏目漱石的自嘲式自传。这本书在浮躁的时候是不能读的，只有在悠闲的时候静下心来慢慢跟随「猫」的视野，才能感受到作为一个旁观者的乐趣。跟《围城》的写作手法和主旨其实有一些类似，但可读性并没有那么高，独特的视角也是本书的特色之一吧。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26984868/">神奇动物在哪里（原创电影剧本）</a>：★★★★<br>看完电影再看剧本画面简直扑面而来，第一部无论是剧本还是电影都很不错啊，好奇<a href="https://movie.douban.com/subject/26147417/">第二部</a>的剧本到底是怎么样的，至少从电影的观赏程度上肯定不如第一部，当然也有可能第二部的定位就是为了挖大坑。<br>不过呢，出版的剧本其实并不是为了拍电影工作的原始剧本，而是根据已上映电影内容的再编辑，这样看估计出版的剧本也不会很好了。<a href="https://www.jkrowling.com/">罗姨</a>的确是应该找个专业剧作家一起合作啊。</p>
+</li>
+</ol>
+<p>今年看完的书差不多就是这样了，另外我是那种齐头并进看多本书的类型，每天看心情选择一本想看的书，投入也开心。而书单只会列出在当年看完的书，那些可能看了一半的书不好评价故不在此列，有些书甚至可能会持续一两年还没看完，但最终基本还是会有所了结。以后我也会慢慢把所有在看的书都转移到 Kindle 上去。</p>
+<p>2018 年年初其实制定了一个非常高难度的计划，实现了其中最核心的部分，我个人觉得是幸运且满足的。2018 年似乎也是一个大环境非常不好的一年，「经济衰退」、「资本寒冬」在 2018 年的冬季被各种媒体频频提起，这似乎让 2019 更加让我期待，因为那意味着更加强烈的变化。变化和起落才是世界的真相，而太多人对自我、对世界有太大的误解，对人性和环境有太高的期待，太执拗于自我而丧失了格局。这也是今年我自我感觉更成熟的地方之一，经历得更多也越来越包容，接受各种各样的不同、缺憾、丰富和可能性，但同时也有了更坚定的自我意识。</p>
+<p>另一个今年值得一提的收获是开始探索了一个全新的领域并乐在其中，这也是一个很可能对人生有很大影响的领域。我一直推崇「顿悟」式的习得方式，因为大部分事后复盘看起来比较重要的「获得」其实都非常偶然，可遇不可求，不管这背后的原因是来自于你长期的努力和平时的积累、目前所到达的境界和眼界还是纯粹的运气，就在那一刻，不多不少，不紧不慢，你突然有所发现，打开了新世界的大门。这背后个人努力对最终结果起到了多大的作用，并不好说。「偶然」也是世界的一种真相和常态，很多人对此也有很大的误解。作为人类我们唯一能做的，只能是尽可能多的去了解一些不一样的东西，以求能更贴近真相一些。</p>
+<p>2019 年，我希望我可以更纯粹、更极致、更理想主义，坚定自我，从心所欲，也用更开放的胸怀和包容的态度待人接物，年度书单还将一直继续下去。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>东北的冬</title>
     <url>/2019/02/05/winter-of-north-east/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c598233d3831.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59830583ea1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59829a17feb.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5983059de98.jpg"></div></div></div>
@@ -1760,7 +1800,7 @@ _Farewell and thanks to each for the company_
 <p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
 <p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#x68;&#105;&#x40;&#x73;&#101;&#110;&#105;&#x76;&#101;&#114;&#115;&#101;&#46;&#99;&#x6f;&#x6d;&#63;&#x73;&#x75;&#x62;&#x6a;&#101;&#99;&#116;&#x3d;&#25991;&#31456;&#x8f6c;&#x8f7d;&#25480;&#26435;&#30003;&#35831;">心知天气</a>获取授权】</strong></p>
+<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#x68;&#x69;&#64;&#x73;&#x65;&#x6e;&#105;&#118;&#x65;&#x72;&#115;&#101;&#x2e;&#x63;&#x6f;&#x6d;&#63;&#x73;&#x75;&#x62;&#106;&#x65;&#99;&#116;&#x3d;&#x6587;&#31456;&#36716;&#36733;&#x6388;&#26435;&#30003;&#x8bf7;">心知天气</a>获取授权】</strong></p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
@@ -1900,46 +1940,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>2018 年书单</title>
-    <url>/2018/12/31/2018-booklist/</url>
-    <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
-<p>回到「书单」的正题。在<a href="http://maples7.com/2016/12/31/2016-booklist/">之前的年终书单总结</a>中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— <a href="https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W">Kindle PaperWhite 4</a>（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。</p>
-<span id="more"></span>
-
-<p>废话先不多说，还是按老规矩先列今年看过的书的书单。</p>
-<ol>
-<li><p><a href="https://www.zhihu.com/pub/book/19550356">设计之美</a>：★★★☆<br>前言写得是真好，整本书写得最好的部分也是前言。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26320659/">万物生长</a>：★★★★<br>冯唐的文字远比<a href="https://zh.wikipedia.org/wiki/%E7%8E%8B%E5%B0%8F%E6%B3%A2">王小波</a>的瑰丽绚烂，像被一个习惯了炒食堂大锅菜的师傅炒出的菜，加足了各种重口的佐料，分明就是他自己前不久写的那篇在朋友圈疯转的文章所说的「油腻」。<br>被称为「某某第二」的人永远不能成为「某某」，也永远达不到世俗意义上「某某」的高度，这一点，几乎是一条铁律。号称「王小波第二」的冯唐永远也成不了王小波，是因为他的文字看不到王小波能看到的东西，技巧十足，却没有让人想去细细揣摩的深意。<br>然而这个世界上没有谁需要去成为谁，冯唐不必易老，照样会让世界变得更丰富。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26943161/">未来简史：从智人到智神</a>：★★★★<br>第一部分基本是在重复<a href="https://book.douban.com/subject/26953606/">《人类简史》</a>的观点；第二部分写得比较有意思，把人文主义主导世界的现实情况剖析得鞭辟入里；第三部阐述了数据宗教的概念，基本也没有什么新东西。<br>预言未来当然比叙述历史要难很多，没有《人类简史》那么脉络清晰且具有说服力，不过书中的很多观点都是值得了解的。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27085265/">北京，北京</a>：★★<br>「年轻人没了幻想，一不小心就俗了」；<br>作家要是没了追求，文字一不小心就俗透了。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/25881855/">大教堂与集市</a>：★★★★☆<br>可以和<a href="https://book.douban.com/subject/26358448/">《人月神话》</a>一起看。<br><a href="https://en.wikipedia.org/wiki/Fred_Brooks">Brooks</a> 证明了「人月」在软件工程领域的非线性叠加性，而 <a href="https://en.wikipedia.org/wiki/Eric_S._Raymond">Eric S.Raymond</a> 则告诉我们「开源」大概是破局的唯一方式。<br>这部二十多年前写就的作品在如今看来也毫不过时，甚至书中的一些预言都一一应验。开源运动绝对是上世纪末以来黑客们最伟大的宗教活动。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27070488/">围城</a>：★★★★★<br>钱钟书太厉害了，把人物形象简直刻画得惟妙惟肖，个个都像是生活中栩栩如生的样子。<br>一个围城，围住了中国人的人情、世俗、琐碎与人生的苍凉。<br><a href="https://zh.wikipedia.org/wiki/%E9%9F%A9%E5%AF%92">韩寒</a>的所谓<a href="https://book.douban.com/subject/24697636/">《三重门》</a>不及《围城》的 0.01%。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26663519/">MacTalk 跨越边界</a>：★★★☆<br>比前作的干货更少，也看得出对于书本身的内容而言所体现出的作者的野心更少，基本都是些日常感悟和书评。大概已经无需再考虑要证明什么，可以放开手脚写想写的东西。<br>在我所接触到的所有技术人的自媒体当中，不管技术如何，<a href="http://macshuo.com/?page_id=2">池建强</a>和<a href="https://www.zhihu.com/people/tchen/">陈天</a>算是文字写得流畅优美、可读性非常强的两位了。<br>作为枕边读物还行。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26997376/">我是猫</a>：★★★☆<br>简直就是夏目漱石的自嘲式自传。这本书在浮躁的时候是不能读的，只有在悠闲的时候静下心来慢慢跟随「猫」的视野，才能感受到作为一个旁观者的乐趣。跟《围城》的写作手法和主旨其实有一些类似，但可读性并没有那么高，独特的视角也是本书的特色之一吧。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26984868/">神奇动物在哪里（原创电影剧本）</a>：★★★★<br>看完电影再看剧本画面简直扑面而来，第一部无论是剧本还是电影都很不错啊，好奇<a href="https://movie.douban.com/subject/26147417/">第二部</a>的剧本到底是怎么样的，至少从电影的观赏程度上肯定不如第一部，当然也有可能第二部的定位就是为了挖大坑。<br>不过呢，出版的剧本其实并不是为了拍电影工作的原始剧本，而是根据已上映电影内容的再编辑，这样看估计出版的剧本也不会很好了。<a href="https://www.jkrowling.com/">罗姨</a>的确是应该找个专业剧作家一起合作啊。</p>
-</li>
-</ol>
-<p>今年看完的书差不多就是这样了，另外我是那种齐头并进看多本书的类型，每天看心情选择一本想看的书，投入也开心。而书单只会列出在当年看完的书，那些可能看了一半的书不好评价故不在此列，有些书甚至可能会持续一两年还没看完，但最终基本还是会有所了结。以后我也会慢慢把所有在看的书都转移到 Kindle 上去。</p>
-<p>2018 年年初其实制定了一个非常高难度的计划，实现了其中最核心的部分，我个人觉得是幸运且满足的。2018 年似乎也是一个大环境非常不好的一年，「经济衰退」、「资本寒冬」在 2018 年的冬季被各种媒体频频提起，这似乎让 2019 更加让我期待，因为那意味着更加强烈的变化。变化和起落才是世界的真相，而太多人对自我、对世界有太大的误解，对人性和环境有太高的期待，太执拗于自我而丧失了格局。这也是今年我自我感觉更成熟的地方之一，经历得更多也越来越包容，接受各种各样的不同、缺憾、丰富和可能性，但同时也有了更坚定的自我意识。</p>
-<p>另一个今年值得一提的收获是开始探索了一个全新的领域并乐在其中，这也是一个很可能对人生有很大影响的领域。我一直推崇「顿悟」式的习得方式，因为大部分事后复盘看起来比较重要的「获得」其实都非常偶然，可遇不可求，不管这背后的原因是来自于你长期的努力和平时的积累、目前所到达的境界和眼界还是纯粹的运气，就在那一刻，不多不少，不紧不慢，你突然有所发现，打开了新世界的大门。这背后个人努力对最终结果起到了多大的作用，并不好说。「偶然」也是世界的一种真相和常态，很多人对此也有很大的误解。作为人类我们唯一能做的，只能是尽可能多的去了解一些不一样的东西，以求能更贴近真相一些。</p>
-<p>2019 年，我希望我可以更纯粹、更极致、更理想主义，坚定自我，从心所欲，也用更开放的胸怀和包容的态度待人接物，年度书单还将一直继续下去。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2019 年书单</title>
     <url>/2019/12/31/2019-booklist/</url>
     <content><![CDATA[<p>2019 年对很多人来说似乎是艰难的一年，在这个世界愈发趋于动荡和不信任的大背景下，越来越多的疑惑、迷茫和不确定性从上至下笼罩在每一个人可以感知到的日常生活中。或许只是一种周期，或许就是一种趋势，各种事物的分化与混乱变得越来越明显。如果从热力学第二定律的角度来看，维持事物不走向无序是需要额外付出很多努力的，那说明人类社会目前做的共同有效努力还不够；如果从唯物论的发展观来看，事物总是螺旋式向上发展的，周期中同时也蕴含着一些不可逆的改变。把 2019 年放在历史的长河中，我不知道它处在世界发展周期的哪个部分，但很可能不是在「好」（大部分人认为的世俗意义上的「好」）的那一半。这可能是前些年某些事件的发生导致了现在的局面，同时也可能是未来很长一段时间不同局面的开始。</p>
@@ -2042,72 +2042,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>2020 年书单</title>
-    <url>/2020/12/31/2020-booklist/</url>
-    <content><![CDATA[<p>2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。</p>
-<p>其实这一篇本质上有标题党的嫌疑，因为今年看的书实在太少太少，当然后面我也会解释今年看书少的<del>借口</del>原因。不过，看过<a href="http://maples7.com/tags/%E4%B9%A6%E5%8D%95/">我前几年「书单」</a>的你肯定也知道了，我的书单系列只是用「书单」作为切入口，以此为契机来定期来聊聊我对这个世界的看法而已。虽然我也有要时常更新我的博客的想法，但事实就是总有一些手头上新奇的、或者我认为更重要的事情占据着我的时间，以致于目前这里几乎成了一个年更博客，这确实很不应该。但好在我依然还有年更「书单」这个保留节目。</p>
-<p>Anyway，这依然首先还是一个「书单」，所以我们还是会从正题开始。</p>
-<span id="more"></span>
-
-<ol>
-<li><p><a href="https://book.douban.com/subject/34838232/">新婚之夜</a>：★★★★☆</p>
-<p> 不得不说，我很喜欢这几个中短篇故事，我觉得这才是真正给现代人看的文学作品。作者把细腻的情绪和世界的真实都潜藏在故事情节里，「给残酷的内核外面涂一层奶油」，以至于我会觉得在北京这样的城市路上遇到的每一个人背后都可能有一段类似书里描绘的故事。推理和悬疑的要素也大大增强了故事的可读性。</p>
-<p> 第二篇《模特》也看过 2019 年扩展的中篇电子版，故事叙述方式和人物刻画都比出版的这一版明显更好。</p>
-<p> 很喜欢作者讲故事的风格，如果长期坚持写作，应该很有潜力能写出更优秀的作品。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/5354957/">扶桑</a>：★★★★</p>
-<p> 整个故事的结构和完整性都还不错，也比较有新意。从叙事人的视角来讲这个故事我觉得是个加分项，给了这个故事更多的现实寓意和文化内涵。整个读下来，前面部分会感觉略微零碎而不够畅快，但后面慢慢把拼图拼起来之后会觉得这确实还是一个好故事。</p>
-</li>
-<li><p><a href="https://docs.python.org/3/tutorial/index.html">The Python Tutorial</a>：★★★★☆</p>
-<p> 自从大学期间看完《Dive into Django》和《Learn Python the Hard Way》之后，中间间隔了很长一段时间没有再使用 Python，几乎已经忘得差不多了。尽管在近两三年的工作中又有几个 Python 数据处理相关的项目，但总感觉自己在 Python 方面的理解还不够系统，所以打算再系统的学习学习，同时也看看一些新特性。任何编程语言的官方文档总不会太差，如此大众的 Python 自然也不让人失望，任何想入门的人都可以且应当从这篇文档开始作为学习的内容之一。</p>
-<p> BTW，大体上我不赞同 learn something the hard way 的学习方式。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26752026/">聪明的投资者</a>：★★★★</p>
-<p> 堪称价投宝典，虽然很多具体的事例都已经过时，但投资的大道却永远不过时（主要是第 1、8、20 章），同时这个版本的点评章节也很好的弥补了这方面的不足。投资的确是个体认知能力和认知水平的直接变现行为。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27614523/">刷新：重新发现商业与未来</a>：★★★☆</p>
-<p> 入职微软之前看完了这本书，写得很朴实。从个人经历来说，并没有过分强调自己的努力和付出，也准确表达了顺应趋势在对的时间出现对的地方的重要，同时家庭经历的曲折带给了他更多对于同理心的思考；从公司的层面来说，坦诚微软在当时需要一次文化变革，重新刷新自己，目前看来确实正在扭转颓势；最后谈了谈对未来技术的认识，跨国企业应当是有全球视野和使命感的。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/25910559/">剑指Offer：名企面试官精讲典型编程题</a>：★★★★</p>
-<p> 根据我面试别人和被面试的经验来看，这本书包含了一个合格程序员应该掌握的容易被总结和教材化的基础知识和技巧，针对很多公司已经套路化的面试流程而言的确是有效的。但它依然只是《骗分导论》一般试图突击走捷径的存在，不能作为修炼编程内功和计算机科学素养的考纲。仅对于找工作来说，是必要不充分条件。</p>
-</li>
-<li><p><a href="https://msl.overdrivechina.cn/media/5690793">Learn .Net Core: .NET Core Tutorial</a>：★★★</p>
-<p> 一本非常短小的小册子，适合有其他语言编程经验的人熟悉 .NET 世界的 basics and fundamentals，以图一两天快速建立一个整全观。基本没有什么更深入的细节。</p>
-</li>
-</ol>
-<p>没了。</p>
-<p>如前面提到的，今年看书时间不多的<del>借口</del>原因大概来自于这样几个方面：</p>
-<ol>
-<li><p>换工作和城市，入职微软中国（苏州）。</p>
-<p>从更新简历开始，到投递面试、确认 Offer、从北京离职，最后跨城市搬家、入职、新员工培训、自学一些相关的技术等等，这其中每一个步骤都需要耗费大量的时间和精力。而且微软是我目前为止遇到的入职流程最漫长的公司，毕竟其中的背景调查就耗费了三周到一个月的时间，处处显示着跨国大公司的规范与严谨。如果以后有机会，我也可以在博客或其他社交平台上分享更多在微软的经历。</p>
-<p>舍弃旧的环境和已经熟知的工作流程、技术规格和项目，从零开始投入到一个全新的体系里，有太多的新东西需要学习，这不仅仅包括作为开发者所必须掌握的技术相关的知识（在微软 C# &#x2F; .NET 对于大多数开发者都是必须的，而在此之前我接触得并不多），还有一些事关企业文化、规范、工作流程和团队协作上的软技能的准备。而在像微软这样一个历史悠久的跨国企业里，项目和用户规模都十分庞大（意味着对项目稳定性要求格外高而无法快速变化），项目历史也十分悠久（十几二十年的代码，legacy code 不少），对于这些已经世界级的产品，想要短时间内掌握清楚基本不现实。我的 manager 就曾告诉我，新入职员工基本都需要经过一年到一年半的时间才能对项目上手，这本身就是一个不小的挑战。</p>
-<p>所以更多的时间还是放在了跟工作内容相关的知识的学习上，这不是几本书就可以简单概括的。</p>
-</li>
-<li><p>东航「周末随心飞」。</p>
-<p>一场突如其来的传染性肺炎疫情让所有人都猝不及防，航空公司们为了自救而推出了「随心飞」这样的产品，首先从东航的「周末随心飞」开始。在今年这样的情形下，对于航空公司来说这确实是一招不错的棋，而对于大部分产品购买者来说其实也并不亏。所以借着这样的契机，同时得益于微软讲究 work-life balance 的工作节奏和假期福利，今年我也着实好好<del>在国内到处蹦跶了一下</del>领略了一把祖国的大好河山。最值得一提的当属十一假期前后去了西北一线，包括银川、兰州、青海大环线的南半边、可可西里，确实看到了极其壮阔瑰丽的大漠景观。除此之外，还去了潮汕、长沙（两次）、西安、三亚、济南，也是一年难得的经历。</p>
-<p>为了不辜负路上的美景，今年还购入了无人机和微单来作为拍摄器材，<a href="https://maples7.tuchong.com/">拍了不少照片</a>。我想，要彻底消化完我这个重燃的新兴趣点也是需要不少时间的投入的。</p>
-<p>所谓「要么读书，要么旅行，身体和灵魂必须有一个在路上」，至少今年身体还在路上。曾经为了让自己能多出门走动、不要太宅，也制定过「希望自己周末一半的时间能出门」这样的年度计划，至少今年应该是实现了这个前几年的想法。</p>
-</li>
-<li><p>上完了<a href="https://cs50.harvard.edu/">著名的 MOOC Harvard CS50x</a>。</p>
-<p> 这门课其实我在大学时期就上过一部分。虽然只是哈佛的一个计算机相关的通识基础课，但由于制作的实在太好，内容又相当丰富，我不忍心这么好的课程自己没有全部看完，于是在今年又从头到尾全部过了一遍。尽管对于我这个从业者来说没有什么新鲜的「干货」，但它却是我上过的体验最好的 MOOC。除了哈佛的明星教授 David Malan 精彩的授课讲解，也有制作得非常有层次的课后作业，最后的大作业甚至是独立开发一个完整的应用，这是少有的让我觉得参与起来非常有意思的一门课。实际上，这门课已经成为了一个独立的品牌，有一系列相关的网站、后续课程和工具集供你在 CS50 的海洋里遨游。所以也建议开发者或者对计算机知识感兴趣的人去听听这门课。</p>
-<p> <a href="http://maples7.com/2019/12/31/2019-booklist/">去年的「书单」</a>我就提到了<a href="https://github.com/Maples7/cs-roadmap">我整理的学习 Computer Science 的资源和路径列表</a>，这门课目前就是我列在 Fundamentals 类目下第一位的课程。所以上完这门课也是我遵循去年立下的深入系统有节奏的学习世界顶尖的计算机相关课程的计划之一。这其实也比简单看完几本书需要花费更多的时间和精力。</p>
-</li>
-<li><p>外部环境、事件的影响，包括新冠疫情。</p>
-<p> 说 2020 年是不可能脱离新冠疫情这个大的背景调查来谈的，它已经成为了 2020 年的标签和底色。疫情在今年或多或少的影响了地球上的每一个人，外部环境的剧变需要每一个个体有更加坚定的自我才能在自己的道路上继续走下去。我以前就写过，环境对人的影响往往被低估，相信今年的情况提升了很多人对于环境影响的认知。它或许不能完全左右你的方向，但绝对可以让你的每个动作都充分扭曲变形。这历历在目的一年，相信身处其中的每个人都深有体会，无须多言。</p>
-</li>
-</ol>
-<p>其实从个人角度来说，今年对于我自己算是不错的一年，因为它足够丰富，这主要来源于在微软工作我会有更多时间投入到各种各样不同的我想要投入的事情上去，比如写一些自己想写的代码，比如对新技术的学习、投资领域的深入、其他兴趣爱好的培养等等。往年的「书单」或多或少我都会夹杂着一些「湿货」，以阐述我的世界观的某个部分，但今年这篇我想就保留这样简单平实的记述风格。已经是太不容易的一年了，就给我自己和看到这篇的你留个气口吧。</p>
-<p>另外感谢 12 月有 31 号，让我还有充分的时间来完成这篇「书单」。最后，强烈推荐看到这里的你静下来听一听声动活泼旗下的这期播客：<a href="https://mp.weixin.qq.com/s/IBp5eQ8kggFyi6Egq4VnIQ">《请收下这枚记录2020的声音时光胶囊》</a>。</p>
-<p>「历史就算会反复，但一定会向前走的」，2020 年是需要很多感性力量的一年，现在我们又来到了一个新的时间节点，故事还将继续，只愿世界和平。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>创业的准则</title>
     <url>/2021/11/19/principles-4-startups/</url>
     <content><![CDATA[<p>对于普通的立志于在互联网行业有所作为的大学毕业生而言，选择去大公司还是去创业公司工作一直是一个没有标准答案的问题，不同的人适合不同的道路。而另一个更艰难的道路就是自主创业。我毕业这几年，正好集齐了在创业公司、国内中型民营公司和跨国大公司的工作经验。总的来说，在创业公司的工作是其中目前为止最长也非常可圈可点的难忘经历。这篇文章根据我在创业公司的经验和自己平时对于市场的思考总结而成，是我认为创业应当遵循的创业的准则，不一定正确也不是一个系统完整的阐述，个人观点，仅供参考。</p>
@@ -2178,6 +2112,72 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>2020 年书单</title>
+    <url>/2020/12/31/2020-booklist/</url>
+    <content><![CDATA[<p>2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。</p>
+<p>其实这一篇本质上有标题党的嫌疑，因为今年看的书实在太少太少，当然后面我也会解释今年看书少的<del>借口</del>原因。不过，看过<a href="http://maples7.com/tags/%E4%B9%A6%E5%8D%95/">我前几年「书单」</a>的你肯定也知道了，我的书单系列只是用「书单」作为切入口，以此为契机来定期来聊聊我对这个世界的看法而已。虽然我也有要时常更新我的博客的想法，但事实就是总有一些手头上新奇的、或者我认为更重要的事情占据着我的时间，以致于目前这里几乎成了一个年更博客，这确实很不应该。但好在我依然还有年更「书单」这个保留节目。</p>
+<p>Anyway，这依然首先还是一个「书单」，所以我们还是会从正题开始。</p>
+<span id="more"></span>
+
+<ol>
+<li><p><a href="https://book.douban.com/subject/34838232/">新婚之夜</a>：★★★★☆</p>
+<p> 不得不说，我很喜欢这几个中短篇故事，我觉得这才是真正给现代人看的文学作品。作者把细腻的情绪和世界的真实都潜藏在故事情节里，「给残酷的内核外面涂一层奶油」，以至于我会觉得在北京这样的城市路上遇到的每一个人背后都可能有一段类似书里描绘的故事。推理和悬疑的要素也大大增强了故事的可读性。</p>
+<p> 第二篇《模特》也看过 2019 年扩展的中篇电子版，故事叙述方式和人物刻画都比出版的这一版明显更好。</p>
+<p> 很喜欢作者讲故事的风格，如果长期坚持写作，应该很有潜力能写出更优秀的作品。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/5354957/">扶桑</a>：★★★★</p>
+<p> 整个故事的结构和完整性都还不错，也比较有新意。从叙事人的视角来讲这个故事我觉得是个加分项，给了这个故事更多的现实寓意和文化内涵。整个读下来，前面部分会感觉略微零碎而不够畅快，但后面慢慢把拼图拼起来之后会觉得这确实还是一个好故事。</p>
+</li>
+<li><p><a href="https://docs.python.org/3/tutorial/index.html">The Python Tutorial</a>：★★★★☆</p>
+<p> 自从大学期间看完《Dive into Django》和《Learn Python the Hard Way》之后，中间间隔了很长一段时间没有再使用 Python，几乎已经忘得差不多了。尽管在近两三年的工作中又有几个 Python 数据处理相关的项目，但总感觉自己在 Python 方面的理解还不够系统，所以打算再系统的学习学习，同时也看看一些新特性。任何编程语言的官方文档总不会太差，如此大众的 Python 自然也不让人失望，任何想入门的人都可以且应当从这篇文档开始作为学习的内容之一。</p>
+<p> BTW，大体上我不赞同 learn something the hard way 的学习方式。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26752026/">聪明的投资者</a>：★★★★</p>
+<p> 堪称价投宝典，虽然很多具体的事例都已经过时，但投资的大道却永远不过时（主要是第 1、8、20 章），同时这个版本的点评章节也很好的弥补了这方面的不足。投资的确是个体认知能力和认知水平的直接变现行为。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27614523/">刷新：重新发现商业与未来</a>：★★★☆</p>
+<p> 入职微软之前看完了这本书，写得很朴实。从个人经历来说，并没有过分强调自己的努力和付出，也准确表达了顺应趋势在对的时间出现对的地方的重要，同时家庭经历的曲折带给了他更多对于同理心的思考；从公司的层面来说，坦诚微软在当时需要一次文化变革，重新刷新自己，目前看来确实正在扭转颓势；最后谈了谈对未来技术的认识，跨国企业应当是有全球视野和使命感的。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25910559/">剑指Offer：名企面试官精讲典型编程题</a>：★★★★</p>
+<p> 根据我面试别人和被面试的经验来看，这本书包含了一个合格程序员应该掌握的容易被总结和教材化的基础知识和技巧，针对很多公司已经套路化的面试流程而言的确是有效的。但它依然只是《骗分导论》一般试图突击走捷径的存在，不能作为修炼编程内功和计算机科学素养的考纲。仅对于找工作来说，是必要不充分条件。</p>
+</li>
+<li><p><a href="https://msl.overdrivechina.cn/media/5690793">Learn .Net Core: .NET Core Tutorial</a>：★★★</p>
+<p> 一本非常短小的小册子，适合有其他语言编程经验的人熟悉 .NET 世界的 basics and fundamentals，以图一两天快速建立一个整全观。基本没有什么更深入的细节。</p>
+</li>
+</ol>
+<p>没了。</p>
+<p>如前面提到的，今年看书时间不多的<del>借口</del>原因大概来自于这样几个方面：</p>
+<ol>
+<li><p>换工作和城市，入职微软中国（苏州）。</p>
+<p>从更新简历开始，到投递面试、确认 Offer、从北京离职，最后跨城市搬家、入职、新员工培训、自学一些相关的技术等等，这其中每一个步骤都需要耗费大量的时间和精力。而且微软是我目前为止遇到的入职流程最漫长的公司，毕竟其中的背景调查就耗费了三周到一个月的时间，处处显示着跨国大公司的规范与严谨。如果以后有机会，我也可以在博客或其他社交平台上分享更多在微软的经历。</p>
+<p>舍弃旧的环境和已经熟知的工作流程、技术规格和项目，从零开始投入到一个全新的体系里，有太多的新东西需要学习，这不仅仅包括作为开发者所必须掌握的技术相关的知识（在微软 C# &#x2F; .NET 对于大多数开发者都是必须的，而在此之前我接触得并不多），还有一些事关企业文化、规范、工作流程和团队协作上的软技能的准备。而在像微软这样一个历史悠久的跨国企业里，项目和用户规模都十分庞大（意味着对项目稳定性要求格外高而无法快速变化），项目历史也十分悠久（十几二十年的代码，legacy code 不少），对于这些已经世界级的产品，想要短时间内掌握清楚基本不现实。我的 manager 就曾告诉我，新入职员工基本都需要经过一年到一年半的时间才能对项目上手，这本身就是一个不小的挑战。</p>
+<p>所以更多的时间还是放在了跟工作内容相关的知识的学习上，这不是几本书就可以简单概括的。</p>
+</li>
+<li><p>东航「周末随心飞」。</p>
+<p>一场突如其来的传染性肺炎疫情让所有人都猝不及防，航空公司们为了自救而推出了「随心飞」这样的产品，首先从东航的「周末随心飞」开始。在今年这样的情形下，对于航空公司来说这确实是一招不错的棋，而对于大部分产品购买者来说其实也并不亏。所以借着这样的契机，同时得益于微软讲究 work-life balance 的工作节奏和假期福利，今年我也着实好好<del>在国内到处蹦跶了一下</del>领略了一把祖国的大好河山。最值得一提的当属十一假期前后去了西北一线，包括银川、兰州、青海大环线的南半边、可可西里，确实看到了极其壮阔瑰丽的大漠景观。除此之外，还去了潮汕、长沙（两次）、西安、三亚、济南，也是一年难得的经历。</p>
+<p>为了不辜负路上的美景，今年还购入了无人机和微单来作为拍摄器材，<a href="https://maples7.tuchong.com/">拍了不少照片</a>。我想，要彻底消化完我这个重燃的新兴趣点也是需要不少时间的投入的。</p>
+<p>所谓「要么读书，要么旅行，身体和灵魂必须有一个在路上」，至少今年身体还在路上。曾经为了让自己能多出门走动、不要太宅，也制定过「希望自己周末一半的时间能出门」这样的年度计划，至少今年应该是实现了这个前几年的想法。</p>
+</li>
+<li><p>上完了<a href="https://cs50.harvard.edu/">著名的 MOOC Harvard CS50x</a>。</p>
+<p> 这门课其实我在大学时期就上过一部分。虽然只是哈佛的一个计算机相关的通识基础课，但由于制作的实在太好，内容又相当丰富，我不忍心这么好的课程自己没有全部看完，于是在今年又从头到尾全部过了一遍。尽管对于我这个从业者来说没有什么新鲜的「干货」，但它却是我上过的体验最好的 MOOC。除了哈佛的明星教授 David Malan 精彩的授课讲解，也有制作得非常有层次的课后作业，最后的大作业甚至是独立开发一个完整的应用，这是少有的让我觉得参与起来非常有意思的一门课。实际上，这门课已经成为了一个独立的品牌，有一系列相关的网站、后续课程和工具集供你在 CS50 的海洋里遨游。所以也建议开发者或者对计算机知识感兴趣的人去听听这门课。</p>
+<p> <a href="http://maples7.com/2019/12/31/2019-booklist/">去年的「书单」</a>我就提到了<a href="https://github.com/Maples7/cs-roadmap">我整理的学习 Computer Science 的资源和路径列表</a>，这门课目前就是我列在 Fundamentals 类目下第一位的课程。所以上完这门课也是我遵循去年立下的深入系统有节奏的学习世界顶尖的计算机相关课程的计划之一。这其实也比简单看完几本书需要花费更多的时间和精力。</p>
+</li>
+<li><p>外部环境、事件的影响，包括新冠疫情。</p>
+<p> 说 2020 年是不可能脱离新冠疫情这个大的背景调查来谈的，它已经成为了 2020 年的标签和底色。疫情在今年或多或少的影响了地球上的每一个人，外部环境的剧变需要每一个个体有更加坚定的自我才能在自己的道路上继续走下去。我以前就写过，环境对人的影响往往被低估，相信今年的情况提升了很多人对于环境影响的认知。它或许不能完全左右你的方向，但绝对可以让你的每个动作都充分扭曲变形。这历历在目的一年，相信身处其中的每个人都深有体会，无须多言。</p>
+</li>
+</ol>
+<p>其实从个人角度来说，今年对于我自己算是不错的一年，因为它足够丰富，这主要来源于在微软工作我会有更多时间投入到各种各样不同的我想要投入的事情上去，比如写一些自己想写的代码，比如对新技术的学习、投资领域的深入、其他兴趣爱好的培养等等。往年的「书单」或多或少我都会夹杂着一些「湿货」，以阐述我的世界观的某个部分，但今年这篇我想就保留这样简单平实的记述风格。已经是太不容易的一年了，就给我自己和看到这篇的你留个气口吧。</p>
+<p>另外感谢 12 月有 31 号，让我还有充分的时间来完成这篇「书单」。最后，强烈推荐看到这里的你静下来听一听声动活泼旗下的这期播客：<a href="https://mp.weixin.qq.com/s/IBp5eQ8kggFyi6Egq4VnIQ">《请收下这枚记录2020的声音时光胶囊》</a>。</p>
+<p>「历史就算会反复，但一定会向前走的」，2020 年是需要很多感性力量的一年，现在我们又来到了一个新的时间节点，故事还将继续，只愿世界和平。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2021 年书单</title>
     <url>/2021/12/31/2021-booklist/</url>
     <content><![CDATA[<h3 id="关于书单"><a href="#关于书单" class="headerlink" title="关于书单"></a>关于书单</h3><p>直奔主题：</p>
@@ -2241,6 +2241,33 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>尘埃落定，为什么我依然要力挺《二舅》</title>
+    <url>/2022/09/04/why-i-support-erjiu/</url>
+    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
+<p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
+<p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，与此同时，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
+<span id="more"></span>
+
+<p>有人指责《二舅》没有触及造成二舅人生悲剧的根本。如果你认真看了原视频，你可能只是故意忽视了一些什么，或者理解水平欠佳。任何中国人也都知道那条表达的红线是不是存在，你不去指责造成这个视频不能点名道姓触及根本的根本原因，反而来指责视频内容没有触及根本，你是不是也在这装外宾装大尾巴狼对房间里的大象视而不见呢？不是蠢就是坏，柿子不能专门捡软的捏吧。</p>
+<p>还有人指责《二舅》里对二舅本人的人生经历造假。首先根据无罪推论原则，你先提供造假的证据而不是你们众口铄金的臆断再继续往下的讨论。其次，是不是造假对于 B 站 UP 主的视频创作而言重要吗？《活着》《平凡的世界》是造假吗？J.K.罗琳看到了一个戴圆形眼镜的小朋友就写出的《哈利•波特》是造假吗？普通人是不配进行文学创作吗？再次回到视频本身，任何有基本电影鉴赏水平的人都知道原视频的 BGM 和叙述节奏是想让视频呈现出怎样的影视风格，你总不会觉得这是一部纪录片风格的中视频吧？是创作就一定是主观的，就一定带有创作者本人的价值输出和主观表达，我们应该尊重任何人表达自己价值观的自由，二舅只是一个为了表达而借用的具体途径而已。最后，我推断至少作者没有做完全颠倒黑白说东道西的内容表达，这已经是在创作的底线之上。**在现在这样的社会环境下，敢表达、能表达就已经有其意义。**有些人不仅自己喜欢站在道德制高点上纲上线，还要求能站上原告席的一定得是个没有任何道德瑕疵的完美人。</p>
+<p>也有人说《二舅》这种在农村很多啊，有什么稀奇的。有很多你也去拍啊，你要能创作成这样你也能火，我就不恶意揣测你纯纯的嫉妒心了。如果很多的话至于现在市场上这类的表达少之又少、越来越少吗？甚至都没有人敢讨论为什么这一类表达如此之少，我只能说，站着说话不腰疼，你行你上吧。站在一旁指手画脚确实是比弄脏自己的手要轻松得多。</p>
+<p>文化产业一定是一个需要开放包容的土壤才能繁荣起来的产业。最近正在上映的电影<a href="https://movie.douban.com/subject/35131346/">《隐入尘烟》</a>的导演李睿珺说了这样一段话：</p>
+<blockquote>
+<p>一个电影市场，它应该是各种各样的电影都有才是正常的，<strong>一个市场的健康最重要是多元</strong>，比如超市就是有多种物品，可以让不同的受众去选择。方便面，有一块的，有五块的，甚至你有钱可以买十块的。但是假如说这个超市只卖一种方便面了，这是专卖店，不是超市，那它就不是个市场，那个市场其实就萎缩、死亡了。</p>
+</blockquote>
+<p>我只想对希望能继续看到好作品的观众说，创作环境已经这么不容易了，少一点对创作动机的讨论，多把注意力关注在作品本身吧。对于能填补市场空白的创作和表达，我认为这个行为本身就已经有其值得被肯定的意义。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>苦难</tag>
+        <tag>创作</tag>
+        <tag>电影</tag>
+        <tag>文化产业</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一套大概率可行的具体投资策略</title>
     <url>/2022/08/20/a-specific-investment-strategy/</url>
     <content><![CDATA[<p>这一篇是接着上一篇<a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a>的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对<a href="https://weibo.com/u/5687069307">ETF 拯救世界</a>所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些<del>，毕竟谁没有幻想过自己突然哪一天突然失忆了呢</del>。</p>
@@ -2289,33 +2316,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>尘埃落定，为什么我依然要力挺《二舅》</title>
-    <url>/2022/09/04/why-i-support-erjiu/</url>
-    <content><![CDATA[<p>这事儿都已经过去这么久了，热度也降下来了，应该没有人会指责我写这篇博客是为了蹭热度了吧？同样地，我也想问那些指责《二舅》视频作者创作动机的人，创作动机对作品本身呈现出的意义而言重要吗？带价值输出的作品的创作者必须是完美人设吗？</p>
-<p>提前声明，本文仅针对原视频本身所呈现出来的内容讨论，不包括视频火了之后任何的讨论、解读、采访，更不必说一些空穴来风的臆断歪曲。</p>
-<p>我为什么要力挺《二舅》，主要还是因为现在市场上对底层人民生活的记录和创作实在太少，几乎没有。对这些底层人民来说，你们这些生活稍微好一点的人觉得那是苦难的世界，其实也就只是他们的普通生活。任何有一定电影鉴赏能力的人看过了原视频都不会觉得作者创作这个视频是为了所谓的「赞美苦难」，与此同时，那些城市中产、掌握了互联网最大声量的那群中青年所认为是苦难的生活，在互联网、在媒体上几乎看不到任何的记录和讨论。这件事就像是房间里的大象，大家都不说，似乎也就不存在了。然而生活就是生活，真实就是真实。存在的就是存在，第一个说出来的人非但无罪反而理当得到赞扬。</p>
-<span id="more"></span>
-
-<p>有人指责《二舅》没有触及造成二舅人生悲剧的根本。如果你认真看了原视频，你可能只是故意忽视了一些什么，或者理解水平欠佳。任何中国人也都知道那条表达的红线是不是存在，你不去指责造成这个视频不能点名道姓触及根本的根本原因，反而来指责视频内容没有触及根本，你是不是也在这装外宾装大尾巴狼对房间里的大象视而不见呢？不是蠢就是坏，柿子不能专门捡软的捏吧。</p>
-<p>还有人指责《二舅》里对二舅本人的人生经历造假。首先根据无罪推论原则，你先提供造假的证据而不是你们众口铄金的臆断再继续往下的讨论。其次，是不是造假对于 B 站 UP 主的视频创作而言重要吗？《活着》《平凡的世界》是造假吗？J.K.罗琳看到了一个戴圆形眼镜的小朋友就写出的《哈利•波特》是造假吗？普通人是不配进行文学创作吗？再次回到视频本身，任何有基本电影鉴赏水平的人都知道原视频的 BGM 和叙述节奏是想让视频呈现出怎样的影视风格，你总不会觉得这是一部纪录片风格的中视频吧？是创作就一定是主观的，就一定带有创作者本人的价值输出和主观表达，我们应该尊重任何人表达自己价值观的自由，二舅只是一个为了表达而借用的具体途径而已。最后，我推断至少作者没有做完全颠倒黑白说东道西的内容表达，这已经是在创作的底线之上。**在现在这样的社会环境下，敢表达、能表达就已经有其意义。**有些人不仅自己喜欢站在道德制高点上纲上线，还要求能站上原告席的一定得是个没有任何道德瑕疵的完美人。</p>
-<p>也有人说《二舅》这种在农村很多啊，有什么稀奇的。有很多你也去拍啊，你要能创作成这样你也能火，我就不恶意揣测你纯纯的嫉妒心了。如果很多的话至于现在市场上这类的表达少之又少、越来越少吗？甚至都没有人敢讨论为什么这一类表达如此之少，我只能说，站着说话不腰疼，你行你上吧。站在一旁指手画脚确实是比弄脏自己的手要轻松得多。</p>
-<p>文化产业一定是一个需要开放包容的土壤才能繁荣起来的产业。最近正在上映的电影<a href="https://movie.douban.com/subject/35131346/">《隐入尘烟》</a>的导演李睿珺说了这样一段话：</p>
-<blockquote>
-<p>一个电影市场，它应该是各种各样的电影都有才是正常的，<strong>一个市场的健康最重要是多元</strong>，比如超市就是有多种物品，可以让不同的受众去选择。方便面，有一块的，有五块的，甚至你有钱可以买十块的。但是假如说这个超市只卖一种方便面了，这是专卖店，不是超市，那它就不是个市场，那个市场其实就萎缩、死亡了。</p>
-</blockquote>
-<p>我只想对希望能继续看到好作品的观众说，创作环境已经这么不容易了，少一点对创作动机的讨论，多把注意力关注在作品本身吧。对于能填补市场空白的创作和表达，我认为这个行为本身就已经有其值得被肯定的意义。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>苦难</tag>
-        <tag>创作</tag>
-        <tag>电影</tag>
-        <tag>文化产业</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>这一年多我都拍了些什么图</title>
     <url>/2022/09/06/what-i-shoot-this-year/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo1.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo2.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo4.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo5.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo6.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo3.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo10.JPG"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo7.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo8.JPG"></div><div class="group-picture-column"><img data-src="https://slides.maples7.com/resource/img/2022-8/photo9.JPG"></div></div></div>
@@ -2330,50 +2330,6 @@ _Farewell and thanks to each for the company_
         <tag>泉州</tag>
         <tag>苏州</tag>
         <tag>乌镇</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>热情、工作与理想主义｜为什么我要离开微软</title>
-    <url>/2023/07/25/why-i-leave-microsoft/</url>
-    <content><![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
-<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
-<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>
-<span id="more"></span>
-
-<h2 id="热情"><a href="#热情" class="headerlink" title="热情"></a>热情</h2><p>什么是对一件事情有热情？</p>
-<p>能让你有热情去做的事情，常常是能让你茶不思饭不想、睡不着觉脑子里都要想着去做的事情，而且从结果看，你往往能把这种能充分发挥主观能动性去做的事情做得超越一般水平。比如：写这篇博客，我就充满了热情，以至于我深夜睡不着觉到三四点也在构思我应该怎样清晰、准确、简练地表达出我真实的所思所想，并且都不会感到困倦。这也类似于我一直所追求的<a href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%B5%81%E7%90%86%E8%AB%96">「心流」状态</a>。</p>
-<p>目前可以让我产生原始热情的兴趣包括但不限于：写高质量的代码、做纯粹的 C 端产品、投资、摄影。</p>
-<ul>
-<li>「写高质量的代码」自不必多说，从高中开始编程以来我就觉得这个事情充满了魔力。</li>
-<li>「做纯粹的 C 端产品」是我工作以来才意识到的能让我充满热情的事情，可能是大学时期曾经有过一段纯粹且不用考虑盈利地做互联网产品的经历，使得工作后的我格外怀念那个时期自由、纯粹、充满激情实现自己各种天马行空的想法的感觉。当然，这样的人生阶段可遇不可求，也与所处的环境有关，所以我也不会强求。</li>
-<li>「投资」是这几年才开始的事情，投资固然是一个能够赚钱<del>（或者亏钱）</del>的事情，但我从这件事情上得到的纯粹的乐趣远比资产增值得到的乐趣更多，这有点类似于玩模拟经营类游戏的乐趣，而且是用自己的真金白银去玩。</li>
-<li>「摄影」作为纯粹的业余爱好，是取悦自己的一种方式。取景器、快门声、构图、光线，来捕捉自己喜欢的画面，是一个能让自我愉悦的修行方式。目前我还只能把这件事作为纯粹的爱好去做，我猜想如果摄影变成了职业也许就没那么有趣了。</li>
-</ul>
-<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>每次我听到别人有「工作嘛，赚钱就行了，其他不重要」、「职业化的去工作」、「不要指望能在工作中去做自我提升」这类论断时，我其实都想在心里回一句：Bullshit! 当然这些论断都有其各自的合理性，这个时代百花齐放也各有各的活法，但却不是我认为的我应该找到的那份理想工作。</p>
-<p>从上文就可知，以赚钱为首要目的的工作已经违背了我「理想主义」的本心，可是<strong>为什么「职业化」的工作也不行</strong>？这里的「不要职业化」当然不是说不要遵守各种职业原则和公司规范，而是当你过分的强调「职业化」的去做这件事情的时候，你的「工作」可能就沦为了一种看似非常专业的处理各种事情但其实并不真正用心的「上班」的事情。我承认，其实很多人（尤其是有多年工作经验的职场「老油条」们）追求的就是这种「职业化」的状态，但这是我想在我自己身上极力避免的。而关于要不要在工作中进行纯粹的无关商业的自我提升的部分，我认为这是理想工作所应该提供给职业者的一个最基本的条件，而不是一个可有可无的条件。理想的工作应该是个人和公司相互匹配、互相成就的，每个工作者都应该有从工作中提升自我、获得认同的权利，如果你的工作不能保证这样的机会和时间，那么这就不是一个理想的能与你双向匹配的工作。</p>
-<p>让每一个人都能有热情的做有意义、有价值的事情，依然是我想不断追寻或创造的职业理想。有些公司的某些阶段是可以达到这种状态的，但想长期保持并让每一个员工都能时刻认同这一点非常困难，甚至有可能是达不到的。</p>
-<h2 id="为什么从微软离职"><a href="#为什么从微软离职" class="headerlink" title="为什么从微软离职"></a>为什么从微软离职</h2><p>说了这么多形而上的「虚头巴脑」的东西，回到大家可能更关心的本文的主题，为什么我要从微软离职？如果用一句话来回答，那可以归结为我不愿意再浪费时间和生命在一个二十年的代码屎山上绣花。</p>
-<p>首先还要做一个免责声明，微软是一个庞大的跨国公司，不同国家、不同部门、不同团队、不同产品、不同项目、不同人都可能产生截然不同甚至相反的体验和感受，所以我这里说的只能代表我个人，并不代表微软的普遍情况。但以我所了解的信息来看，我这样类似的感受也并不是个例，甚至很有代表性。</p>
-<p>微软有其适合的员工类型，我前面所说的「职业化」的工作者在这样的大公司里应该会很适应并如鱼得水，但依我看微软不适合任何有创业心态的创造者。微软的大部分成熟项目和绝大多数岗位都非常适合职业化的工作者，最好还是不挑活儿的那种。如果你致力于用职业化的工作心态在微软干到退休，这将会是一个非常友好的平台。而于我而言，恰恰不能忍受的就是这个所谓的「职业化」。能够无差别的处理各种各样的任务和难题，这当然是一项非常厉害且被各种企业所追捧的职业打工人的能力，然而却是很难让像我这样的人学会的，我觉得这是因为我已经养成了时常需要质疑每个任务和工作的意义和价值的习惯。如果这个工作在我看来对产品很有价值（这个价值可能也并不是短期内商业上的价值），我会非常有热情的把它做得尽量完美，反之对于意义不大我打心底不认同的工作则会难以说服自己投入时间和精力去做到足够好。</p>
-<p>另外，作为微软的一线开发，话语权是相当有限的，尤其是微软中国相对于美国总部的话语权。这也无可厚非，毕竟微软从根源上还是一家美国公司。在微软中国这边，一线项目开发的很多想法其实是没有机会去实践的，尽管我们有各种 hackathon week、FHL (fix, hack, learn) week，但大多数项目都是为了 hackathon 而 hackathon，有时候你明知道自己的主项目里有更本质更重要的问题亟待解决，但因为各种非本质的困难（往往是因为所涉团队甚广而无人可以协调），这些问题成为了房间里的大象，大家都选择性的视而不见或无人跟进处理。因为各种各样团队利益、个人利益的原因，人们都会愿意首先解决那些看似容易却很可能不本质的问题，而不去解决那些看似难却很可能更本质的问题。这并不是微软独有的问题，而很可能是大公司的通病。在这样的大公司，很多创意是无法面世的，一线员工可能是最了解某项业务的人，但他们所产生的想法需要层层往上 review，而任何一个 no 都有可能让这样的想法没法被支持，久而久之，大家都已经默契的知道哪些存在已久的问题是不用再提出来的了，因为他们都知道这样的问题提出来也暂时无人能去解决，除非有一个级别足够高、话语权足够重的人重新提出这样的问题，而这样的人往往也脱离一线开发太久，难以体会真实项目中遇到的痛点和难点。这种一线开发对自身项目和产品的失控感和无力感是让人感到很沮丧的。这也是我觉得微软这样的大公司不适合任何有创业者心态的人的原因。作为一个 Geek，通常需要烦恼的是经常性的创意不足，而在微软这样一个大公司里，最好不要有太离经叛道的创意，用最稳妥的方式拧好你的那一颗螺丝，这可能是公司或者更准确说是中间层领导对每个员工最真实的期待。这当然已经违背了我前面所说的「理想主义」原则。</p>
-<p>最近正好在看<a href="https://book.douban.com/subject/26929955/">《腾讯传》</a>，我标记了这样一段话，我感觉放到微软这样的大公司身上同样合适：</p>
-<blockquote>
-<p>在马化腾看来，比自己对公司的控制力的丧失更可怕的，是公司自我生长、自我创新能力的丧失。用成熟的流程来管控公司，似乎避免了内部的冲突和纷争，但企业运行机制的官僚化日益明显，产品、研发按部就班，员工与部门有可能只对流程负责，而不对结果负责。这样的话，企业的创新能力必定下滑，自发的、原生态的创新能力将日渐萎缩。</p>
-</blockquote>
-<p>这也是为什么这个世界上总是不断在发生创业公司在某个领域打败垄断大公司的原因之一。</p>
-<p>但不可否认，微软近些年在商业上堪称成功，从我粗浅的观察来看，我愿意将其归因于 CEO Satya 所领导的管理团队对科技发展趋势的准确把握，很多关键选择上押对了赛道、投资了关键的公司，使其在一波又一波的科技浪潮中始终保持着领先的地位。但依然，这并不代表微软就是一个理想的工作平台，尤其是对于那些有创业者心态的人来说。</p>
-<h2 id="未来的打算"><a href="#未来的打算" class="headerlink" title="未来的打算"></a>未来的打算</h2><p>未来一段时间，我打算先去尝试做一些我一直想做但没有时间和机会去做的东西，学一些一直想学但没有时间系统学习的技术的和非技术的知识，跟技术社区建立更紧密的联系并做一些输入与输出。**不破不立，跟随本心。**所以我暂时也不会着急去找一份全职工作，但也不排除突然发现有很合适的工作机会并参与的可能。</p>
-<p>我自认为我有比大多数同龄人更强的能去广泛接纳各种信息、认清形势和趋势并果断下注的能力，这也是我这些年从投资上认识和体会到的。在这个时代背景下，要做成一件事情，我一直认为<strong>选择的重要性已经越来越大于努力的重要性</strong>，好在我还比较擅长于接纳新鲜事物并做出限制条件下相对更优的选择。这并不是说要投机取巧，而是要清晰客观的认知自我、认知环境，做出最佳选择。当然，必要的努力同样重要，但正如我前面所试图论证的，找到真正有热情从事的工作，努力是自然而然的事情。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>理想主义</tag>
-        <tag>工作</tag>
-        <tag>热情</tag>
-        <tag>微软</tag>
-        <tag>离职</tag>
       </tags>
   </entry>
   <entry>
@@ -2430,6 +2386,50 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>书单</tag>
         <tag>社会生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>热情、工作与理想主义｜为什么我要离开微软</title>
+    <url>/2023/07/25/why-i-leave-microsoft/</url>
+    <content><![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
+<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
+<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>
+<span id="more"></span>
+
+<h2 id="热情"><a href="#热情" class="headerlink" title="热情"></a>热情</h2><p>什么是对一件事情有热情？</p>
+<p>能让你有热情去做的事情，常常是能让你茶不思饭不想、睡不着觉脑子里都要想着去做的事情，而且从结果看，你往往能把这种能充分发挥主观能动性去做的事情做得超越一般水平。比如：写这篇博客，我就充满了热情，以至于我深夜睡不着觉到三四点也在构思我应该怎样清晰、准确、简练地表达出我真实的所思所想，并且都不会感到困倦。这也类似于我一直所追求的<a href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%B5%81%E7%90%86%E8%AB%96">「心流」状态</a>。</p>
+<p>目前可以让我产生原始热情的兴趣包括但不限于：写高质量的代码、做纯粹的 C 端产品、投资、摄影。</p>
+<ul>
+<li>「写高质量的代码」自不必多说，从高中开始编程以来我就觉得这个事情充满了魔力。</li>
+<li>「做纯粹的 C 端产品」是我工作以来才意识到的能让我充满热情的事情，可能是大学时期曾经有过一段纯粹且不用考虑盈利地做互联网产品的经历，使得工作后的我格外怀念那个时期自由、纯粹、充满激情实现自己各种天马行空的想法的感觉。当然，这样的人生阶段可遇不可求，也与所处的环境有关，所以我也不会强求。</li>
+<li>「投资」是这几年才开始的事情，投资固然是一个能够赚钱<del>（或者亏钱）</del>的事情，但我从这件事情上得到的纯粹的乐趣远比资产增值得到的乐趣更多，这有点类似于玩模拟经营类游戏的乐趣，而且是用自己的真金白银去玩。</li>
+<li>「摄影」作为纯粹的业余爱好，是取悦自己的一种方式。取景器、快门声、构图、光线，来捕捉自己喜欢的画面，是一个能让自我愉悦的修行方式。目前我还只能把这件事作为纯粹的爱好去做，我猜想如果摄影变成了职业也许就没那么有趣了。</li>
+</ul>
+<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>每次我听到别人有「工作嘛，赚钱就行了，其他不重要」、「职业化的去工作」、「不要指望能在工作中去做自我提升」这类论断时，我其实都想在心里回一句：Bullshit! 当然这些论断都有其各自的合理性，这个时代百花齐放也各有各的活法，但却不是我认为的我应该找到的那份理想工作。</p>
+<p>从上文就可知，以赚钱为首要目的的工作已经违背了我「理想主义」的本心，可是<strong>为什么「职业化」的工作也不行</strong>？这里的「不要职业化」当然不是说不要遵守各种职业原则和公司规范，而是当你过分的强调「职业化」的去做这件事情的时候，你的「工作」可能就沦为了一种看似非常专业的处理各种事情但其实并不真正用心的「上班」的事情。我承认，其实很多人（尤其是有多年工作经验的职场「老油条」们）追求的就是这种「职业化」的状态，但这是我想在我自己身上极力避免的。而关于要不要在工作中进行纯粹的无关商业的自我提升的部分，我认为这是理想工作所应该提供给职业者的一个最基本的条件，而不是一个可有可无的条件。理想的工作应该是个人和公司相互匹配、互相成就的，每个工作者都应该有从工作中提升自我、获得认同的权利，如果你的工作不能保证这样的机会和时间，那么这就不是一个理想的能与你双向匹配的工作。</p>
+<p>让每一个人都能有热情的做有意义、有价值的事情，依然是我想不断追寻或创造的职业理想。有些公司的某些阶段是可以达到这种状态的，但想长期保持并让每一个员工都能时刻认同这一点非常困难，甚至有可能是达不到的。</p>
+<h2 id="为什么从微软离职"><a href="#为什么从微软离职" class="headerlink" title="为什么从微软离职"></a>为什么从微软离职</h2><p>说了这么多形而上的「虚头巴脑」的东西，回到大家可能更关心的本文的主题，为什么我要从微软离职？如果用一句话来回答，那可以归结为我不愿意再浪费时间和生命在一个二十年的代码屎山上绣花。</p>
+<p>首先还要做一个免责声明，微软是一个庞大的跨国公司，不同国家、不同部门、不同团队、不同产品、不同项目、不同人都可能产生截然不同甚至相反的体验和感受，所以我这里说的只能代表我个人，并不代表微软的普遍情况。但以我所了解的信息来看，我这样类似的感受也并不是个例，甚至很有代表性。</p>
+<p>微软有其适合的员工类型，我前面所说的「职业化」的工作者在这样的大公司里应该会很适应并如鱼得水，但依我看微软不适合任何有创业心态的创造者。微软的大部分成熟项目和绝大多数岗位都非常适合职业化的工作者，最好还是不挑活儿的那种。如果你致力于用职业化的工作心态在微软干到退休，这将会是一个非常友好的平台。而于我而言，恰恰不能忍受的就是这个所谓的「职业化」。能够无差别的处理各种各样的任务和难题，这当然是一项非常厉害且被各种企业所追捧的职业打工人的能力，然而却是很难让像我这样的人学会的，我觉得这是因为我已经养成了时常需要质疑每个任务和工作的意义和价值的习惯。如果这个工作在我看来对产品很有价值（这个价值可能也并不是短期内商业上的价值），我会非常有热情的把它做得尽量完美，反之对于意义不大我打心底不认同的工作则会难以说服自己投入时间和精力去做到足够好。</p>
+<p>另外，作为微软的一线开发，话语权是相当有限的，尤其是微软中国相对于美国总部的话语权。这也无可厚非，毕竟微软从根源上还是一家美国公司。在微软中国这边，一线项目开发的很多想法其实是没有机会去实践的，尽管我们有各种 hackathon week、FHL (fix, hack, learn) week，但大多数项目都是为了 hackathon 而 hackathon，有时候你明知道自己的主项目里有更本质更重要的问题亟待解决，但因为各种非本质的困难（往往是因为所涉团队甚广而无人可以协调），这些问题成为了房间里的大象，大家都选择性的视而不见或无人跟进处理。因为各种各样团队利益、个人利益的原因，人们都会愿意首先解决那些看似容易却很可能不本质的问题，而不去解决那些看似难却很可能更本质的问题。这并不是微软独有的问题，而很可能是大公司的通病。在这样的大公司，很多创意是无法面世的，一线员工可能是最了解某项业务的人，但他们所产生的想法需要层层往上 review，而任何一个 no 都有可能让这样的想法没法被支持，久而久之，大家都已经默契的知道哪些存在已久的问题是不用再提出来的了，因为他们都知道这样的问题提出来也暂时无人能去解决，除非有一个级别足够高、话语权足够重的人重新提出这样的问题，而这样的人往往也脱离一线开发太久，难以体会真实项目中遇到的痛点和难点。这种一线开发对自身项目和产品的失控感和无力感是让人感到很沮丧的。这也是我觉得微软这样的大公司不适合任何有创业者心态的人的原因。作为一个 Geek，通常需要烦恼的是经常性的创意不足，而在微软这样一个大公司里，最好不要有太离经叛道的创意，用最稳妥的方式拧好你的那一颗螺丝，这可能是公司或者更准确说是中间层领导对每个员工最真实的期待。这当然已经违背了我前面所说的「理想主义」原则。</p>
+<p>最近正好在看<a href="https://book.douban.com/subject/26929955/">《腾讯传》</a>，我标记了这样一段话，我感觉放到微软这样的大公司身上同样合适：</p>
+<blockquote>
+<p>在马化腾看来，比自己对公司的控制力的丧失更可怕的，是公司自我生长、自我创新能力的丧失。用成熟的流程来管控公司，似乎避免了内部的冲突和纷争，但企业运行机制的官僚化日益明显，产品、研发按部就班，员工与部门有可能只对流程负责，而不对结果负责。这样的话，企业的创新能力必定下滑，自发的、原生态的创新能力将日渐萎缩。</p>
+</blockquote>
+<p>这也是为什么这个世界上总是不断在发生创业公司在某个领域打败垄断大公司的原因之一。</p>
+<p>但不可否认，微软近些年在商业上堪称成功，从我粗浅的观察来看，我愿意将其归因于 CEO Satya 所领导的管理团队对科技发展趋势的准确把握，很多关键选择上押对了赛道、投资了关键的公司，使其在一波又一波的科技浪潮中始终保持着领先的地位。但依然，这并不代表微软就是一个理想的工作平台，尤其是对于那些有创业者心态的人来说。</p>
+<h2 id="未来的打算"><a href="#未来的打算" class="headerlink" title="未来的打算"></a>未来的打算</h2><p>未来一段时间，我打算先去尝试做一些我一直想做但没有时间和机会去做的东西，学一些一直想学但没有时间系统学习的技术的和非技术的知识，跟技术社区建立更紧密的联系并做一些输入与输出。**不破不立，跟随本心。**所以我暂时也不会着急去找一份全职工作，但也不排除突然发现有很合适的工作机会并参与的可能。</p>
+<p>我自认为我有比大多数同龄人更强的能去广泛接纳各种信息、认清形势和趋势并果断下注的能力，这也是我这些年从投资上认识和体会到的。在这个时代背景下，要做成一件事情，我一直认为<strong>选择的重要性已经越来越大于努力的重要性</strong>，好在我还比较擅长于接纳新鲜事物并做出限制条件下相对更优的选择。这并不是说要投机取巧，而是要清晰客观的认知自我、认知环境，做出最佳选择。当然，必要的努力同样重要，但正如我前面所试图论证的，找到真正有热情从事的工作，努力是自然而然的事情。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>理想主义</tag>
+        <tag>工作</tag>
+        <tag>热情</tag>
+        <tag>微软</tag>
+        <tag>离职</tag>
       </tags>
   </entry>
   <entry>
@@ -2819,7 +2819,7 @@ _Farewell and thanks to each for the company_
     <title>2024 年书单</title>
     <url>/2024/12/31/2024-booklist/</url>
     <content><![CDATA[<p>对我来说，2024 年在我印象中其实比我预想中的感觉更漫长，年初发生过的很多事情现在回看仿佛都已经过去很久了，这间接说明了在我的时间线里，2024 年是一个发生了很多不一样事情、变化也很大的一年，不论是在生活上还是在工作上。</p>
-<p>生活上，因为工作变动去年跟女朋友一起去杭州呆了一年今年年中又再一次回到苏州生活；工作上，<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">去年从微软离职之后</a>今年全年都在进行独立开发，时间分配上基本都很自由。这些变化带给我了一些全新的人生体验和体悟。我一直认为是「对尚未知世界的好奇心」才能长期提供源源不断的动力驱使人作为个体活在这个世界上，这种好奇心包括对自我内在的探索和求知。从这个角度说，是这些变化让我在今年又进一步提升了我的人生体验，因为我没有固守自己所已经拥有的一切过着一天天重复无聊的生活，并且还摆脱了更多的束缚获得了更大的自由和灵活度。</p>
+<p>生活上，因为工作变动去年跟女朋友一起去杭州待了一年今年年中又再一次回到苏州生活；工作上，<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">去年从微软离职之后</a>今年全年都在进行独立开发，时间分配上基本都很自由。这些变化带给我了一些全新的人生体验和体悟。我一直认为是「对尚未知世界的好奇心」才能长期提供源源不断的动力驱使人作为个体活在这个世界上，这种好奇心包括对自我内在的探索和求知。从这个角度说，是这些变化让我在今年又进一步提升了我的人生体验，因为我没有固守自己所已经拥有的一切过着一天天重复无聊的生活，并且还摆脱了更多的束缚获得了更大的自由和灵活度。</p>
 <p>这种变化同样体现在了我今年的书单上：</p>
 <span id="more"></span>
 
@@ -2845,11 +2845,11 @@ _Farewell and thanks to each for the company_
 <p> 从我国民族主义的角度，确实可以说美西方主导下构建的资本主义现代金融有多么邪恶，如何无情的剥削全世界普罗大众的剩余价值，这点确实没错，也是事实。从另一个角度来说，这套体系也是现代商业文明的基石，是社会经济发展的血液供应，<strong>虽然它显然并不公平也不够科学</strong>。作为个人，只有懂得现代商业体系游戏规则和善于顺势而为的人才能在这套体系中获利；作为政治家，从民族国家的角度，确实应该主动把握货币金融领域的主导权，制定符合国家利益的公平的国际社会游戏规则，才对得起本国国民。</p>
 <p> 虽然本书的部分论证逻辑值得商榷，但是想表达的论点和结论却在当前日益混乱的世界局势下变得越来越具有现实参考意义和价值，正如书中所说，<strong>所有历史都是现代史，了解历史是为了找到当下困境的解决办法</strong>，但愿个体、民族和国家在百年未有之大变局面前都能做出对的选择！</p>
 </li>
-<li><p><a href="https://www.jjwxc.net/onebook.php?novelid=7114433">我在废土世界捡垃圾</a>：★★★★</p>
+<li><p><a href="https://www.jjwxc.net/onebook.php?novelid=7114433">我在废土世界扫垃圾</a>：★★★★</p>
 <p> 也是一部超长篇，大概是我完整看完的第一部网文作品，真是太佩服作者的想象力了，我都不敢想如果这部作品影视化之后能有多精彩。而且这是一部绝对的女性主义作品，作者很擅长描摹女性角色之间的人物关系，尤其是母女关系，故事中有几组母女关系的对照。同时把故事融入到一个庞大统一的末日世界观规则中去，很吸引人。</p>
 </li>
 </ol>
-<p>今年的出版物阅读量并不算低，主要是《货币战争》五册 125 万多字基本是从年头看到年尾，以金融视角看古今世界局势演变，其实挺有现实意义；另外，是去年看的《明朝那些事儿》和马伯庸的书让我从厌恶到喜欢上看不枯燥的历史，以及那些历史映照出的现实议题的表达；《我在废土世界捡垃圾》基本算是我认真看的第一篇网文，让我对网文的质量印象很有改观，虽然文字上还是有很多网络用语不规范的表达，但是故事构建上的想象力和对故事节奏的把握并不比大部分出版物差。</p>
+<p>今年的出版物阅读量并不算低，主要是《货币战争》五册 125 万多字基本是从年头看到年尾，以金融视角看古今世界局势演变，其实挺有现实意义；另外，是去年看的《明朝那些事儿》和马伯庸的书让我从厌恶到喜欢上看不枯燥的历史，以及那些历史映照出的现实议题的表达；《我在废土世界扫垃圾》基本算是我认真看的第一篇网文，让我对网文的质量印象很有改观，虽然文字上还是有很多网络用语不规范的表达，但是故事构建上的想象力和对故事节奏的把握并不比大部分出版物差。</p>
 <p>今年久违的让我不觉得时间过得那么快，不像之前每一年年末都感觉这一年又废了，很多事情都还没做的感觉。今年的这种充实感我个人认为来源于对生活的掌控感，从大学毕业以来第一次全年都能如此的自由，你清楚地知道你的大块时间几乎都花在了你想投入的地方，就像我在之前的<a href="https://maples7.com/2024/11/16/open-source-maples7-2/">一篇《开源计划》</a>中所说，<strong>选择的自由，或者说对自己时间分配上的自由，才是真正的自由</strong>。<strong>财富不是人生的目的，而是达到时间分配自由的手段</strong>。而不论周遭的人或事对你输出什么样的观点，只有自己的感受和体验才是最真实的。</p>
 <p>少了很多工作和生活上的束缚之后，我感觉自己都少了很多拖延的习惯。当你真正想到什么的时候，在少了很多客观限制的情况下，你只需要真正遵循你的本心，如果这件事情你真正想去做，你大可以立马就行动起来。这种充实感还不同于大学刚毕业时充满对未来充满憧憬、干劲十足的感觉，刚毕业的大学生几乎都缺少对真实世界和社会的洞察，他们的这种对未来的期待是基于自己一厢情愿对真实世界的无知美好想象，这种期待往往是不可持续的，当了解到更多的世界真相之后往往会产生更大的失望，或者更弱者会主动产生各种自欺欺人的想法和情绪。但现在的我却是在充分认识到现实环境的基础上，主动趋利避害，让自己主动身处在一个自己期望的环境中，再去充分发挥自己的潜能、主观能动性和创造力。这种进化，借用<a href="https://www.xiaoyuzhoufm.com/episode/67650ed31e823e72d35acd40">最近听到的一期播客的标题就是：《做理想主义最务实的践行者：不殉道，不吃苦，还能赚钱》</a>。</p>
 <p>今年的另一个感受就是，我再一次发现我自己在很多认知上与大部分普罗大众存在不同，这种感觉在我大学期间和大学刚毕业的一两年时间里时常会有，而事后回顾往往能证明我的认知的准确性，这些认知让我一次次做出对自己更有利的选择。我一直认为自己有平均水平以上的认知，有些认知会早于真实世界的趋势和潮流两三年，或者说是我有时候能看到某些趋势正在开始发生，而普罗大众需要两三年才反应过来。比如在 20、21 年回老家我都会力荐父母处理掉多余的房产，虽然基于很多原因他们并没有真正把认知化为行动。不过，前几年我会感觉这种与大众认知不同似乎变得更越来越少了，这可能表明我在前几年一直处于一个过于保守稳定的环境中，正在逐渐失去持续对自己认知进行升级的环境或习惯。其实，更深刻的认知永远来源于信息差、来源于广泛的阅读和涉猎、来源于对各种各样社会现象的观察和思考。而在这样一个「百年未有之大变局」的时代背景下，一个越来越正确的<strong>现实情况</strong>是「<strong>勤劳不能致富，信息差才能致富</strong>」（原话同样来源于上一段所说的播客）（请注意，「<strong>现实情况</strong>」<em>不</em>代表<strong>这是一条正确公平的方向，而仅仅只是现实世界逐步发展到了这种情况</strong>。这<strong>更不代表我主观上认同和满意这种现实情况</strong>，作为影响力不大的个体认不认同并不重要，只有顺势而为才能先更好地生存下来，再谈其他）。如果你也看过《货币战争》你一定会更同意这种看法，这一切可能都基于一个从一开始就建立的错误的（或者说不公平的）的信用本位的现代货币制度，在这种制度下不可避免的趋势是「产业会空心化」、「做实业不如做科技和互联网行业、做互联网行业不如做金融投机」、「欠钱的才是大爷」、「财富会偏爱杠杆率更高的人」、「现金会持续贬值」、「金融世家会掌握世界绝大部分财富和权力」。因为人类的贪婪本性，无根之木、无源之水的信用本位的货币肯定是不断引诱人到一个「不讲信用」的地步，直至哪一天脆弱的金融信用链条从某处断裂，危机随之而来。</p>
