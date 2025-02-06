@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2024-12-21T07:18:50.644Z</updated>
+  <updated>2025-02-06T07:21:38.124Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2024 年书单</title>
+    <link href="https://maples7.com/2024/12/31/2024-booklist/"/>
+    <id>https://maples7.com/2024/12/31/2024-booklist/</id>
+    <published>2024-12-31T09:18:33.000Z</published>
+    <updated>2025-02-06T07:21:38.124Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;对我来说，2024 年在我印象中其实比我预想中的感觉更漫长，年初发生过的很多事情现在回看仿佛都已经过去很久了，这间接说明了在我的时间线里，2024 年是一个发生了很多不一样事情、变化也很大的一年，不论是在生活上还是在工作上。&lt;/p&gt;
+&lt;p&gt;生活上，因为工作变动去年跟女朋友一起去杭州呆了一年今年年中又再一次回到苏州生活；工作上，&lt;a href=&quot;https://maples7.com/2023/07/25/why-i-leave-microsoft/&quot;&gt;去年从微软离职之后&lt;/a&gt;今年全年都在进行独立开发，时间分配上基本都很自由。这些变化带给我了一些全新的人生体验和体悟。我一直认为是「对尚未知世界的好奇心」才能长期提供源源不断的动力驱使人作为个体活在这个世界上，这种好奇心包括对自我内在的探索和求知。从这个角度说，是这些变化让我在今年又进一步提升了我的人生体验，因为我没有固守自己所已经拥有的一切过着一天天重复无聊的生活，并且还摆脱了更多的束缚获得了更大的自由和灵活度。&lt;/p&gt;
+&lt;p&gt;这种变化同样体现在了我今年的书单上：&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
+    
+    <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
+    
+    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
+    
+    <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
+    
+  </entry>
   
   <entry>
     <title>Maples7 个人开源计划（4）</title>
@@ -26,7 +53,8 @@
     
     <summary type="html">&lt;p&gt;年底还会发今年的书单以及按照惯例融入其中的简单的总结、展望，所以先更新一篇《开源计划》。&lt;/p&gt;
 &lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;之前参与的 Swift 6.0 中文翻译的工作已经上线了：&lt;a href=&quot;https://doc.swiftgg.team/documentation/the-swift-programming-language&quot;&gt;The Swift Programming Language (6.0) 中文版&lt;/a&gt;，也准备长期在 SwiftGG 翻译组给社区做一些贡献。&lt;br&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/21/ZL8fUGnba4YAQiO.jpg&quot; alt=&quot;翻译完之后的小礼物，程序员的T恤背包又多一件&quot;&gt;&lt;/p&gt;</summary>
+&lt;li&gt;之前参与的 Swift 6.0 中文翻译的工作已经上线了：&lt;a href=&quot;https://doc.swiftgg.team/documentation/the-swift-programming-language&quot;&gt;The Swift Programming Language (6.0) 中文版&lt;/a&gt;，也准备长期在 SwiftGG 翻译组给社区做一些贡献。&lt;br&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/21/ZL8fUGnba4YAQiO.jpg&quot; alt=&quot;翻译完之后的小礼物，程序员的T恤背包又多一件&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary>
     
     
     
@@ -535,34 +563,6 @@
     <category term="性能调优" scheme="https://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
     
     <category term="Elixir" scheme="https://maples7.com/tags/Elixir/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>把 Airflow 搬进 Kubernetes</title>
-    <link href="https://maples7.com/2019/12/03/develop-etl-via-airflow-on-k8s/"/>
-    <id>https://maples7.com/2019/12/03/develop-etl-via-airflow-on-k8s/</id>
-    <published>2019-12-02T16:35:32.000Z</published>
-    <updated>2023-08-02T08:00:39.621Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;背景介绍&quot;&gt;&lt;a href=&quot;#背景介绍&quot; class=&quot;headerlink&quot; title=&quot;背景介绍&quot;&gt;&lt;/a&gt;背景介绍&lt;/h2&gt;&lt;p&gt;稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于&lt;a href=&quot;https://www.seniverse.com/&quot;&gt;专注于气象数据研究的我司&lt;/a&gt;而言，做数据分析和 &lt;a href=&quot;https://zh.wikipedia.org/wiki/ETL&quot;&gt;ETL&lt;/a&gt; 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 &lt;a href=&quot;https://airflow.apache.org/&quot;&gt;Airflow&lt;/a&gt; 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 &lt;a href=&quot;https://zh.wikipedia.org/wiki/Apache_Incubator&quot;&gt;Apache Incubator&lt;/a&gt;，目前已经顺利毕业了。&lt;/p&gt;
-&lt;p&gt;简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 &lt;a href=&quot;https://airflow.apache.org/concepts.html#dags&quot;&gt;DAG&lt;/a&gt; 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 &lt;a href=&quot;https://airflow.apache.org/howto/executor/use-celery.html&quot;&gt;Celery Executor&lt;/a&gt; 来把任务动态分布到多个 Worker 上执行。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-    <category term="Airflow" scheme="https://maples7.com/tags/Airflow/"/>
-    
-    <category term="Kubernetes" scheme="https://maples7.com/tags/Kubernetes/"/>
-    
-    <category term="Helm" scheme="https://maples7.com/tags/Helm/"/>
-    
-    <category term="DevOps" scheme="https://maples7.com/tags/DevOps/"/>
-    
-    <category term="Cloud-Native" scheme="https://maples7.com/tags/Cloud-Native/"/>
     
   </entry>
   
