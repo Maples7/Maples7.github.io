@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":true,"trigger":"auto"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2025 年的第一篇《开源计划》，新的一年，新的开始！ 🧑🏻‍💻 工作 财务类 App 的新进展：  完成了批量生成交易记录和待办事项的功能 交易计划和待办计划支持设置时间范围 首页增加了按天、按月、按年的收支统计图 搜索功能支持显示时间范围的全部交易记录 优化了部分 UI&#x2F;UX，修复了一些 Bugs   SwiftGG 翻译组  继续翻译了 swift.org 的 About S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maples7 个人开源计划（5）">
+<meta property="og:url" content="https://maples7.com/2025/02/19/open-source-maples7-5/">
+<meta property="og:site_name" content="Maples7&#39;s Blog">
+<meta property="og:description" content="2025 年的第一篇《开源计划》，新的一年，新的开始！ 🧑🏻‍💻 工作 财务类 App 的新进展：  完成了批量生成交易记录和待办事项的功能 交易计划和待办计划支持设置时间范围 首页增加了按天、按月、按年的收支统计图 搜索功能支持显示时间范围的全部交易记录 优化了部分 UI&#x2F;UX，修复了一些 Bugs   SwiftGG 翻译组  继续翻译了 swift.org 的 About S">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/02/19/2m6SXpENqDL17Zh.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/02/19/h3sq6zEpde9WoXV.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/02/19/XOr6NYBFD5gWTME.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/02/19/6smGcL45HItFuOd.jpg">
+<meta property="article:published_time" content="2025-02-19T07:52:35.000Z">
+<meta property="article:modified_time" content="2025-02-19T08:38:34.173Z">
+<meta property="article:author" content="Maples7">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="工作">
+<meta property="article:tag" content="Maples7 个人开源计划">
+<meta property="article:tag" content="Vision Pro">
+<meta property="article:tag" content="自由意志">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/02/19/2m6SXpENqDL17Zh.jpg">
+
+
+<link rel="canonical" href="https://maples7.com/2025/02/19/open-source-maples7-5/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://maples7.com/2025/02/19/open-source-maples7-5/","path":"2025/02/19/open-source-maples7-5/","title":"Maples7 个人开源计划（5）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Maples7 个人开源计划（5） | Maples7's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Maples7's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Maples7's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">124</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%A7%91%F0%9F%8F%BB%E2%80%8D%F0%9F%92%BB-%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">🧑🏻‍💻 工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%8E%B2-%E6%BB%9A%E9%9B%AA%E7%90%83"><span class="nav-number">2.</span> <span class="nav-text">🎲 滚雪球</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%99%A8%EF%B8%8F-%E7%94%9F%E6%B4%BB"><span class="nav-number">3.</span> <span class="nav-text">♨️ 生活</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%92%A1-%E8%BF%91%E6%9C%9F%E6%84%9F%E6%82%9F"><span class="nav-number">4.</span> <span class="nav-text">💡 近期感悟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-%E4%B8%8E%E8%87%AA%E7%94%B1%E6%84%8F%E5%BF%97"><span class="nav-number">4.1.</span> <span class="nav-text">AI 与自由意志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI%E3%80%81%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E4%B8%8E%E5%A4%B1%E4%B8%9A"><span class="nav-number">4.2.</span> <span class="nav-text">AI、效率提升与失业</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Maples7"
+      src="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+  <p class="site-author-name" itemprop="name">Maples7</p>
+  <div class="site-description" itemprop="description">知行合一</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">124</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Maples7" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Maples7" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://mp.weixin.qq.com/s/HGeJgFwulVlKGVSgbseing" title="微信公众号 → https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;HGeJgFwulVlKGVSgbseing" rel="noopener me" target="_blank"><i class="fab fa-weixin fa-fw"></i>微信公众号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/5936284f6f02d67ef5665bdc" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;5936284f6f02d67ef5665bdc" rel="noopener me" target="_blank"><i class="fa fa-book fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/maples7" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;maples7" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/82391888/" title="豆瓣 → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;82391888&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-book-reader fa-fw"></i>豆瓣</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/3888197280" title="微博 → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;3888197280" rel="noopener me" target="_blank"><i class="fab fa-weibo fa-fw"></i>微博</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Maples67" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Maples67" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://maples7.tuchong.com/" title="图虫 → https:&#x2F;&#x2F;maples7.tuchong.com&#x2F;" rel="noopener me" target="_blank"><i class="fa-solid fa-camera fa-fw"></i>图虫</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maples7@163.com" title="邮箱 → mailto:maples7@163.com" rel="noopener me" target="_blank"><i class="fas fa-at fa-fw"></i>邮箱</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://cv.maples7.com/" title="简历 → https:&#x2F;&#x2F;cv.maples7.com" rel="noopener me" target="_blank"><i class="fas fa-file fa-fw"></i>简历</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maples7.com/2025/02/19/open-source-maples7-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+      <meta itemprop="name" content="Maples7">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="知行合一">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Maples7 个人开源计划（5） | Maples7's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Maples7 个人开源计划（5）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-02-19 15:52:35 / 修改时间：16:38:34" itemprop="dateCreated datePublished" datetime="2025-02-19T15:52:35+08:00">2025-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">浮生散记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2025/02/19/open-source-maples7-5/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2025/02/19/open-source-maples7-5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>2025 年的第一篇《开源计划》，新的一年，新的开始！</p>
+<h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
+<li><p>财务类 App 的新进展：</p>
+<ul>
+<li>完成了批量生成交易记录和待办事项的功能</li>
+<li>交易计划和待办计划支持设置时间范围</li>
+<li>首页增加了按天、按月、按年的收支统计图</li>
+<li>搜索功能支持显示时间范围的全部交易记录</li>
+<li>优化了部分 UI&#x2F;UX，修复了一些 Bugs</li>
+</ul>
+</li>
+<li><p>SwiftGG 翻译组</p>
+<ul>
+<li>继续翻译了 swift.org 的 <a target="_blank" rel="noopener" href="https://doc.swiftgg.team/documentation/the-swift-programming-language-----/aboutswift">About Swift 页面</a>的内容</li>
+<li>Review 了其他人的一些翻译</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li><p>收到了不多的一封让我觉得很开心的读者来信，这就是分享的意义之一：<br><img data-src="https://s2.loli.net/2025/02/19/2m6SXpENqDL17Zh.jpg" alt="读者来信"></p>
+</li>
+<li><p>现在大部分工作日搭配 Vision Pro 和 MacBook Pro 在家附近的一个书店里面办公，效率还不错。<br><img data-src="https://s2.loli.net/2025/02/19/h3sq6zEpde9WoXV.jpg" alt="使用 Vision Pro 搭配 MacBook Pro 在书店办公"></p>
+</li>
+</ul>
+<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新的资产配置比例的桑吉图：</p>
+<p><img data-src="https://s2.loli.net/2025/02/19/XOr6NYBFD5gWTME.jpg" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"><center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center></p>
+<p>从上一次分享到这一次的过程期间（2024-12-21 ~ 2025-02-19），资产净值<strong>增加 ¥74125.59</strong>，主要收支项来自于这一段时间二级市场的自然涨跌和婚礼准备上的社交资金进出、物资购买和婚庆准备。在投资上，随着近期的涨幅，在「多品种网格交易」中按既定网格策略卖出了 3 网恒生科技（剩 1 网）、1 网恒生（剩 2 网）和 2 网传媒（卖完了）；在「场外自助补充交易」策略中逐步卖出了约 1&#x2F;10 的恒生科技、恒生和沪深 300 的仓位，同时为了将仓位统一到一个账户也简单给医疗医药在场外做个 T；同时赎回了一小部分「春华秋实」的仓位，以后随着大盘的上涨预计会进一步降低这一策略的仓位。</p>
+<p>随着我使用我自己开发的这个 App 记账了大概三个月的时间，我已经可以清楚地比较各个策略的年化收益率了：</p>
+<p><img data-src="https://s2.loli.net/2025/02/19/6smGcL45HItFuOd.jpg" alt="不同投资策略的年化收益率"><center><small>(不同投资策略的年化收益率)</small></center></p>
+<p>基本上算是一目了然，记账是为了更好地指导投资和家庭资产配置，我的 App 的功能设计将会不断围绕这个目的而展开。</p>
+<p>当然，作为一个信奉长期主义的以价值投资为主的投资者，用如此短期和上涨阶段的年化收益率来比较评价各个不同的投资策略是不合理的，不同策略有不同的特点和要应对的不同阶段的问题，这里仅仅只是作为展示和记录。</p>
+<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
+<li><p>看了《破·地狱》，好电影，中国版现实主义现代化《入殓师》。充分展现了一个「重男轻女」的东亚现代父权家庭在封建礼教的约束下对个体的压迫，尤其是对女性的压迫。有些结构化的压迫是代代传承下来无人质疑的，但身处其中的人和人的感情又都是复杂的。大多数人都还有最基本的良善的人性底色，可每个个体又都不完美。人生往往是苦涩的，也还是得苦中作乐。从生到死，人的一生都是一场丰富多彩的经历，先人已故，活着的人还是要坚定破除一切束缚和压迫砥砺前行。从来就没有所谓的「先苦后甜」，酸甜苦辣都是时刻交织在一起的。人的伟大之处在于能创造，唯有做一个乐观的悲观主义者，在认清悲观的现实基调的情况下积极向内向外探索求知，才不枉此生。</p>
+</li>
+<li><p>元旦去西双版纳跨年旅行「避寒」，巴适得板。基诺山雨林徒步（找正规的向导和路线的前提下）很有意思，其他就随便慢慢逛吃逛吃就很惬意了。冬天还真得去热带气候区才有益身心健康。</p>
+</li>
+<li><p>看了《鱿鱼游戏2》，完全拉了，相比第一季就是一整个索然无味。</p>
+</li>
+<li><p>过年回老家🧨，虽然中国的城市化速度和规模都进展飞速，但父母这个年纪的社会圈层依然还停留在人情社会的条条框框里无法自拔，依然是一种突然从商业文明回到乡土中国社会的体验，存在巨大的代差。大部分生活在沿海发达地区的年轻人，其实日常都没意识到中国欠发达的广阔腹地还有巨大的发展潜力，未来中国的经济增长点<em>可能可以</em>来源于此。虽然过年的体验是越来越乏味了，但决定今年开始备婚！</p>
+</li>
+<li><p>春节档电影就看了《哪吒2》和《封神2》（绝不会再让陈思诚赚我一分钱！），论质量前者是吊打春节档其他所有电影。天时、地利、人和，有如今的票房成绩也是无可厚非吧。</p>
+</li>
+</ul>
+<h2 id="💡-近期感悟"><a href="#💡-近期感悟" class="headerlink" title="💡 近期感悟"></a>💡 近期感悟</h2><h3 id="AI-与自由意志"><a href="#AI-与自由意志" class="headerlink" title="AI 与自由意志"></a>AI 与自由意志</h3><p>过年期间，DeepSeek 又带起了一波互联网上关于 AI 的讨论热潮，尤其这还是一个中国量化交易公司推出的大模型（再次论证了为什么「伟大不能被计划」），当然让人振奋。这不禁这又让我来思考这样一个老生常谈但又十分本质的问题：AI 到底有自由意志吗？</p>
+<p>在回答 AI 是否有自由意志前，可能更需要回答另一个更为本质的问题：人类到底有自由意志吗？对 AI 的探索可能可以反过来促进我们对这个问题的理解。在 OpenAI 引领的这一波世界范围的 AI 浪潮之前，我们基本都倾向于认为人类存在一个纯粹精神领域的自由意志，觉得没有通过图灵测试的人工智能跟「人工智障」无异，这些弱人工智能背后依然还是科学家和工程师按人类意志撰写的一条条规则束缚着它。虽然目前的 AI 可能依然无法被称为强人工智能，但是人类似乎大概摸到了进入「智能」的边界模糊的样子。正是这样的探索进一步帮助我们可以回答关于「自由意志」的问题。</p>
+<p>长时间以来，生物学家和计算机科学家都试图弄明白人类大脑的秘密，人类的「意识」到底从何而来？人类到底有没有所谓的灵魂？至少到目前为止，我们还没有发现任何脱离基本物质的物理反应的纯精神化的世界存在。而 AI 到目前的发展似乎可以从侧面佐证一个真正的纯精神世界，或者说真正纯精神化的人类自由意志，其实并不存在。因为目前的 AI 就是一个基于物质、电子、信息的反应链路，所有的反应虽然不一定可以预测，但都可以被人类训练出来。人类的意识和所谓的自由意志可能并没有比现在 AI 的「思维」和反应原理高明到哪里去。</p>
+<p>人类和 AI 都像是一个黑盒反应器，只要给它源源不断的提供原料和能量，它就可以不断对外界的输入和刺激做出反应，可能唯一不同的只是人类有一个具体的物质形体，活在真正的物质世界中，而且是 24 小时不间断地对外部刺激做出反应，同时又不断地从外部刺激的输入中不断训练自己的意识和反应。但从根本上，在这种作为反应黑盒模型的基本原理上，人类和 AI 可能没有本质区别。也就是说，<strong>人类的自由意志也可能只是一组大脑神经元的电子反应，并不存在任何脱离物质的纯精神世界</strong>。</p>
+<p>这种认知可以反过来指导如何进行有效的人类教育，或许在「人之初」，其实无所谓「性本善」或「性本恶」，所谓的善恶观念和人类文化、习俗都是后天教育、培养、驯化的结果。成年人生活在社会规则之中，无法在已经发展至今的社会规则之外生活，但也应该清楚地意识到<strong>有些社会观念和意识是后天规训的结果</strong>，这些观念并不一定是天经地义的铁律，有些社会文明强加的束缚和理念如果让你感到痛苦，该打破时就应当打破。很多所谓的人类文明只有在生活在社会里的大多数人都认同的情况下才能称之为文明，而社会是在不断动态发展的，所以文明也是在不断变化的。这同样暗示了对青少年进行正确引导和教育的重要性，<strong>从小建立良好的认知和观念体系是一个人一生都可以依赖的真正宝贵财富</strong>。</p>
+<p>诚然，即便真正的自由意志可能是不存在的，唯心主义在哲学层面也并不是完全没有意义。退一步讲，神经元的电子反应也会反过来作用于身体的其他物质器官，保持一个健康舒适的平衡状态 —— 「修身养性」，让自己的精神状况处于一个自洽和谐的状态，同样可以让人类的物质肉体存活得更有质量、也更为长久。</p>
+<h3 id="AI、效率提升与失业"><a href="#AI、效率提升与失业" class="headerlink" title="AI、效率提升与失业"></a>AI、效率提升与失业</h3><p>我也经常看到网络上关于 AI 是否会带来更多的失业的争论，很多人会觉得 AI 目前并没有影响到自己的工作岗位，但这些人其实没有看到商业社会事物之间的广泛联系。</p>
+<p>如果说 AI 目前已经能给很多工作带来效率上的提升，相信大部分人都会认同。只要效率有所提升，那需要人类参与的工作岗位的数量就会减少，因为原本完成相同工作量所需的人工数，因为效率的提升变得更少了。你可能暂时不是被减少的那个人工，但被减少的人工会导致越来越多的人工竞争越来越少的人工岗位，最终的结果就是，在一个相互充分关联的商业社会里，无论 AI 是否能参与你的具体工作流来提升效率，你的工作机会都会被影响，即便你是看似无法被 AI 取代的外卖员。</p>
+<p>但新技术带来的新的商业业态也会带来全新的岗位类别，很难说在数量上是增加的多还是减少的多。但从质量上却几乎可以断言，在商业社会下，真正创造价值、提供创造力的工作能力才会越来越有竞争力。科技的发展一定会进一步消除个体之间的信息差，那些无法真正提供有创造力的产品或有价值的服务的工作将会被科技发展的浪潮所慢慢取代。在遥远的未来，在 AI 的帮助下，生产力极度发达的情况下，可能真的会存在大多数的普通人无需通过工作来赚取一般等价物（作为交易媒介的钱）的程度，如果那时候<strong>生产关系也调整得当</strong>，那便是进入了真正的共产主义大同社会，大体上的贫富差距、阶级和剥削也将不复存在。但到那种程度势必需要一个漫长的发展过程，你我有生之年大概率都不会看到。要想发展到如此高度的文明，<strong>最大的障碍可能还真不是科技发展进步的瓶颈，反而可能是人性的丑恶：贪婪、虚荣和自私等等</strong>。</p>
+<p>对于个体来说，让自己的工作更能创造真正的社会价值、提供有意义的独特产品和服务，才会让自己在 AI 浪潮中更具个人竞争力。这也是我倾向于个体要更积极主动地调整自己来拥抱世界的变化的原因。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef0e7fe.gif" alt="Maples7 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef1f148.gif" alt="Maples7 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Maples7
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://maples7.com/2025/02/19/open-source-maples7-5/" title="Maples7 个人开源计划（5）">https://maples7.com/2025/02/19/open-source-maples7-5/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/Maples7">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/WeChat-Official-Account.JPG">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/5936284f6f02d67ef5665bdc">
+            <span class="icon">
+              <i class="fa fa-book"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://maples7.tuchong.com/">
+            <span class="icon">
+              <i class="fas fa-camera-retro"></i>
+            </span>
+
+            <span class="label">图虫</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag"><i class="fa fa-tag"></i> 工作</a>
+              <a href="/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/" rel="tag"><i class="fa fa-tag"></i> Maples7 个人开源计划</a>
+              <a href="/tags/Vision-Pro/" rel="tag"><i class="fa fa-tag"></i> Vision Pro</a>
+              <a href="/tags/%E8%87%AA%E7%94%B1%E6%84%8F%E5%BF%97/" rel="tag"><i class="fa fa-tag"></i> 自由意志</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/12/31/2024-booklist/" rel="prev" title="2024 年书单">
+                  <i class="fa fa-angle-left"></i> 2024 年书单
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2014 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maples7</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">135k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:11</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Maples7" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.1/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.3.0/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2025/02/19/open-source-maples7-5/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"maples7","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-02-06T07:57:20.220Z</updated>
+  <updated>2025-02-19T08:38:34.173Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Maples7 个人开源计划（5）</title>
+    <link href="https://maples7.com/2025/02/19/open-source-maples7-5/"/>
+    <id>https://maples7.com/2025/02/19/open-source-maples7-5/</id>
+    <published>2025-02-19T07:52:35.000Z</published>
+    <updated>2025-02-19T08:38:34.173Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;2025 年的第一篇《开源计划》，新的一年，新的开始！&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;财务类 App 的新进展：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;完成了批量生成交易记录和待办事项的功能&lt;/li&gt;
+&lt;li&gt;交易计划和待办计划支持设置时间范围&lt;/li&gt;
+&lt;li&gt;首页增加了按天、按月、按年的收支统计图&lt;/li&gt;
+&lt;li&gt;搜索功能支持显示时间范围的全部交易记录&lt;/li&gt;
+&lt;li&gt;优化了部分 UI&amp;#x2F;UX，修复了一些 Bugs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;SwiftGG 翻译组&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;继续翻译了 swift.org 的 &lt;a href=&quot;https://doc.swiftgg.team/documentation/the-swift-programming-language-----/aboutswift&quot;&gt;About Swift 页面&lt;/a&gt;的内容&lt;/li&gt;
+&lt;li&gt;Review 了其他人的一些翻译&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="人工智能" scheme="https://maples7.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+    <category term="工作" scheme="https://maples7.com/tags/%E5%B7%A5%E4%BD%9C/"/>
+    
+    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
+    
+    <category term="Vision Pro" scheme="https://maples7.com/tags/Vision-Pro/"/>
+    
+    <category term="自由意志" scheme="https://maples7.com/tags/%E8%87%AA%E7%94%B1%E6%84%8F%E5%BF%97/"/>
+    
+  </entry>
   
   <entry>
     <title>2024 年书单</title>
@@ -539,30 +583,6 @@
     
     
     <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Elixir 代码性能优化指北</title>
-    <link href="https://maples7.com/2019/12/05/elixir-code-performance-optimization/"/>
-    <id>https://maples7.com/2019/12/05/elixir-code-performance-optimization/</id>
-    <published>2019-12-05T13:20:20.000Z</published>
-    <updated>2021-11-19T18:04:03.066Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;Elixir 作为基于 Erlang&amp;#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者&lt;a href=&quot;https://github.com/mroth/phoenix-showdown&quot;&gt;对比过包括 Phoenix 在内不同的 Web Framework 的性能&lt;/a&gt;，可见如果采用 Phoenix&amp;#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 &lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86&quot;&gt;APM&lt;/a&gt; 服务来监控系统状态和性能指标。&lt;/p&gt;
-&lt;p&gt;由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 &lt;a href=&quot;https://hexdocs.pm/elixir/Enum.html&quot;&gt;&lt;code&gt;Enum&lt;/code&gt;&lt;/a&gt;、&lt;a href=&quot;https://hexdocs.pm/elixir/Stream.html&quot;&gt;&lt;code&gt;Stream&lt;/code&gt;&lt;/a&gt;，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    
-    
-    <category term="Erlang" scheme="https://maples7.com/tags/Erlang/"/>
-    
-    <category term="性能调优" scheme="https://maples7.com/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
-    
-    <category term="Elixir" scheme="https://maples7.com/tags/Elixir/"/>
     
   </entry>
   
