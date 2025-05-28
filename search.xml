@@ -31,6 +31,25 @@
       </tags>
   </entry>
   <entry>
+    <title>无复屠苏梦，挑灯夜未央</title>
+    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6aaec0.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6894bf.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a19b2.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6baeb1.gif"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>黑白</tag>
+        <tag>Sony DSC-RX100</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>没有微信的 24 小时里</title>
     <url>/2014/09/25/24h-without-wechat/</url>
     <content><![CDATA[<p>也是前不久在《简书周刊》上看到一篇文章，作者讲述自己在删除了所有手机上的社交 App 后的种种感受。或许我们都早已承认社交网络已经深刻的影响着我们的日常生活，但在看到那篇文章之前，我还真没有意识到离开以微信为首的社交 Apps 之后会是一番怎样真切的感受。</p>
@@ -55,25 +74,6 @@
       <tags>
         <tag>微信</tag>
         <tag>社交网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>无复屠苏梦，挑灯夜未央</title>
-    <url>/2016/02/24/no-childhood-dream-night-does-not-fall/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6aaec0.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6894bf.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a19b2.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6baeb1.gif"></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/12896822/">https://maples7.tuchong.com/12896822/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>黑白</tag>
-        <tag>Sony DSC-RX100</tag>
       </tags>
   </entry>
   <entry>
@@ -185,6 +185,26 @@
       </tags>
   </entry>
   <entry>
+    <title>巴山蜀水毓灵秀</title>
+    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
+    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
+
+<span id="more"></span>
+
+<br />
+
+<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
+]]></content>
+      <categories>
+        <category>视觉动物</category>
+      </categories>
+      <tags>
+        <tag>Sony DSC-RX100</tag>
+        <tag>城市</tag>
+        <tag>光影</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>非关系型数据库中的「关系」实现</title>
     <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
     <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
@@ -229,79 +249,6 @@
       <tags>
         <tag>NoSQL</tag>
         <tag>MongoDB</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>完全理解同步/异步与阻塞/非阻塞</title>
-    <url>/2016/08/24/understand-sync-async-and-blocking-non-blocking/</url>
-    <content><![CDATA[<p>随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。</p>
-<p>可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。</p>
-<p>本文力求以简明的语言来解释清楚这几个概念并加以区分，但不涉及到 Node.js 底层的具体实现。</p>
-<span id="more"></span>
-
-<h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
-<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
-<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
-<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
-<p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
-<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
-<p>对于同步型的调用，应用层需要自己去向系统内核问询，如果数据还未读取完毕，那此时读取文件的任务还未完成，应用层根据其阻塞和非阻塞的划分，或挂起或去做其他事情（所以同步和异步并不决定其等待数据返回时的状态）；如果数据已经读取完毕，那此时系统内核将数据返回给应用层，应用层即可以用取得的数据做其他相关的事情。</p>
-<p>而对于异步型的调用，应用层无需主动向系统内核问询，在系统内核读取完文件数据之后，会主动通知应用层数据已经读取完毕，此时应用层即可以接收系统内核返回过来的数据，再做其他事情。</p>
-<p>这便是（脱离阻塞和非阻塞来说之后）同步和异步的区别。也就是说，是否是同步还是异步，关注的是任务完成时消息通知的方式。由调用方盲目主动问询的方式是同步调用，由被调用方主动通知调用方任务已完成的方式是异步调用。</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b672dabecc59.png" alt="同步和异步调用模型"></p>
-<h3 id="Node-js-的异步非阻塞模型"><a href="#Node-js-的异步非阻塞模型" class="headerlink" title="Node.js 的异步非阻塞模型"></a>Node.js 的异步非阻塞模型</h3><p>完整来说，一个最高效且理想的文件读取异步非阻塞模型应该是这样的：应用层发起调用后系统内核立即返回（还没有文件内容数据），应用层继续做其他无关的事情，在系统内核从磁盘读取完数据之后主动通知应用层任务已完成，应用层此时接收系统内核返回的数据，然后继续做其他相关或不相关的事情。</p>
-<p>可以看到，在这个模型中，没有无谓的挂起、休眠与等待，也没有盲目无知的问询与检查，应用层做到不等候片刻的最大化利用自身的资源，系统内核也十分「善解人意」的在完成任务后主动通知应用层来接收任务成果。</p>
-<p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
-<p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
-<p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
-<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
-<p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
-<h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
-<p>假设小明需要在网上下载一个软件：</p>
-<ul>
-<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，这是同步阻塞；</li>
-<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，但是软件下载完成其实是会「叮」的一声通知的（但小明依然那样干等着），这是异步阻塞；（不常见）</li>
-<li>如果小明点击下载按钮之后，就去做其他事情了，不过他总需要时不时瞄一眼屏幕看软件是不是下载完成了，这是同步非阻塞；</li>
-<li>如果小明点击下载按钮之后，就去做其他事情了，软件下载完之后「叮」的一声通知小明，小明再回来继续处理下载完的软件，这是异步非阻塞。</li>
-</ul>
-<p>相信看完以上这个案例之后，这几个概念已经能够分辨得很清楚了。</p>
-<p>总的来说，同步和异步关注的是<strong>任务完成消息通知的机制</strong>，而阻塞和非阻塞关注的是<strong>等待任务完成时请求者的状态</strong>。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第三章；</li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5OTA1MDUyMA==&mid=2655435714&idx=2&sn=dd23e9d357c3adce3bc1b78956d10105&scene=1&srcid=0423LaJvwtyeAr3OMFwcJeAg#wechat_redirect">聊聊同步、异步、阻塞与非阻塞</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>同步</tag>
-        <tag>异步</tag>
-        <tag>阻塞</tag>
-        <tag>非阻塞</tag>
-        <tag>「完全理解」系列</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>巴山蜀水毓灵秀</title>
-    <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
-    <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
-
-<span id="more"></span>
-
-<br />
-
-<p>图片已经过裁剪与压缩，原图在这里：<a href="https://maples7.tuchong.com/13205116/">https://maples7.tuchong.com/13205116/</a></p>
-]]></content>
-      <categories>
-        <category>视觉动物</category>
-      </categories>
-      <tags>
-        <tag>Sony DSC-RX100</tag>
-        <tag>城市</tag>
-        <tag>光影</tag>
       </tags>
   </entry>
   <entry>
@@ -531,6 +478,59 @@
       </tags>
   </entry>
   <entry>
+    <title>完全理解同步/异步与阻塞/非阻塞</title>
+    <url>/2016/08/24/understand-sync-async-and-blocking-non-blocking/</url>
+    <content><![CDATA[<p>随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。</p>
+<p>可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。</p>
+<p>本文力求以简明的语言来解释清楚这几个概念并加以区分，但不涉及到 Node.js 底层的具体实现。</p>
+<span id="more"></span>
+
+<h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
+<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
+<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
+<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
+<p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
+<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
+<p>对于同步型的调用，应用层需要自己去向系统内核问询，如果数据还未读取完毕，那此时读取文件的任务还未完成，应用层根据其阻塞和非阻塞的划分，或挂起或去做其他事情（所以同步和异步并不决定其等待数据返回时的状态）；如果数据已经读取完毕，那此时系统内核将数据返回给应用层，应用层即可以用取得的数据做其他相关的事情。</p>
+<p>而对于异步型的调用，应用层无需主动向系统内核问询，在系统内核读取完文件数据之后，会主动通知应用层数据已经读取完毕，此时应用层即可以接收系统内核返回过来的数据，再做其他事情。</p>
+<p>这便是（脱离阻塞和非阻塞来说之后）同步和异步的区别。也就是说，是否是同步还是异步，关注的是任务完成时消息通知的方式。由调用方盲目主动问询的方式是同步调用，由被调用方主动通知调用方任务已完成的方式是异步调用。</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b672dabecc59.png" alt="同步和异步调用模型"></p>
+<h3 id="Node-js-的异步非阻塞模型"><a href="#Node-js-的异步非阻塞模型" class="headerlink" title="Node.js 的异步非阻塞模型"></a>Node.js 的异步非阻塞模型</h3><p>完整来说，一个最高效且理想的文件读取异步非阻塞模型应该是这样的：应用层发起调用后系统内核立即返回（还没有文件内容数据），应用层继续做其他无关的事情，在系统内核从磁盘读取完数据之后主动通知应用层任务已完成，应用层此时接收系统内核返回的数据，然后继续做其他相关或不相关的事情。</p>
+<p>可以看到，在这个模型中，没有无谓的挂起、休眠与等待，也没有盲目无知的问询与检查，应用层做到不等候片刻的最大化利用自身的资源，系统内核也十分「善解人意」的在完成任务后主动通知应用层来接收任务成果。</p>
+<p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
+<p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
+<p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
+<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
+<p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
+<h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
+<p>假设小明需要在网上下载一个软件：</p>
+<ul>
+<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，这是同步阻塞；</li>
+<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，但是软件下载完成其实是会「叮」的一声通知的（但小明依然那样干等着），这是异步阻塞；（不常见）</li>
+<li>如果小明点击下载按钮之后，就去做其他事情了，不过他总需要时不时瞄一眼屏幕看软件是不是下载完成了，这是同步非阻塞；</li>
+<li>如果小明点击下载按钮之后，就去做其他事情了，软件下载完之后「叮」的一声通知小明，小明再回来继续处理下载完的软件，这是异步非阻塞。</li>
+</ul>
+<p>相信看完以上这个案例之后，这几个概念已经能够分辨得很清楚了。</p>
+<p>总的来说，同步和异步关注的是<strong>任务完成消息通知的机制</strong>，而阻塞和非阻塞关注的是<strong>等待任务完成时请求者的状态</strong>。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第三章；</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5OTA1MDUyMA==&mid=2655435714&idx=2&sn=dd23e9d357c3adce3bc1b78956d10105&scene=1&srcid=0423LaJvwtyeAr3OMFwcJeAg#wechat_redirect">聊聊同步、异步、阻塞与非阻塞</a>；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>同步</tag>
+        <tag>异步</tag>
+        <tag>阻塞</tag>
+        <tag>非阻塞</tag>
+        <tag>「完全理解」系列</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用 Swagger 构建 Express API Server 的文档系统</title>
     <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
     <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
@@ -606,32 +606,6 @@
       </tags>
   </entry>
   <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>编程的快感之「易于驾驭的介质」</title>
     <url>/2016/09/20/pleasure-of-programming-media-easy-to-manipulate/</url>
     <content><![CDATA[<blockquote class="blockquote-center">
@@ -671,6 +645,32 @@ _Farewell and thanks to each for the company_
         <tag>编程</tag>
         <tag>程序员</tag>
         <tag>《人月神话》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -932,6 +932,68 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>译文 | 为什么面向对象很糟糕</title>
+    <url>/2017/02/09/why-oo-sucks/</url>
+    <content><![CDATA[<blockquote>
+<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
+</blockquote>
+<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
+<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
+<span id="more"></span>
+
+<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
+<blockquote>
+<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
+</blockquote>
+<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
+<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
+<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
+<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
+<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
+<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
+<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
+<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
+<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
+<p>这里没有与之相关联的那些方法。</p>
+<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
+<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
+<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
+<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
+<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
+<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
+<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
+<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
+<ul>
+<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
+<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
+<li>纯粹的声明式语言说：这里没有状态一说。</li>
+</ul>
+<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
+<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
+<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
+<li>理由一：它被认为是容易学习的</li>
+<li>理由二：它被认为可以使代码更易复用</li>
+<li>理由三：是炒作</li>
+<li>理由四：它创造了一个新的软件产业</li>
+</ul>
+<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
+<p>这就是面向对象背后真正的驱动力量。</p>
+<blockquote>
+<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+        <tag>Erlang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2016 年书单</title>
     <url>/2016/12/31/2016-booklist/</url>
     <content><![CDATA[<p>从今年开始，打算每年年终的时候总结这一年读过的书的书单，看看我能坚持多少年。不求看书数量上的多少，只求在每本看过的书中都能找到一些能内化成自己所能掌握的东西。这样做也是希望即便已经没有校园里大把的闲散时间读「野书」，也能不放弃这样的习惯。</p>
@@ -1009,68 +1071,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <url>/2017/02/09/why-oo-sucks/</url>
-    <content><![CDATA[<blockquote>
-<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
-</blockquote>
-<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
-<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
-<span id="more"></span>
-
-<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
-<blockquote>
-<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
-</blockquote>
-<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
-<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
-<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
-<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
-<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
-<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
-<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
-<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
-<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
-<p>这里没有与之相关联的那些方法。</p>
-<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
-<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
-<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
-<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
-<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
-<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
-<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
-<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
-<ul>
-<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
-<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
-<li>纯粹的声明式语言说：这里没有状态一说。</li>
-</ul>
-<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
-<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
-<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
-<li>理由一：它被认为是容易学习的</li>
-<li>理由二：它被认为可以使代码更易复用</li>
-<li>理由三：是炒作</li>
-<li>理由四：它创造了一个新的软件产业</li>
-</ul>
-<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
-<p>这就是面向对象背后真正的驱动力量。</p>
-<blockquote>
-<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-        <tag>Erlang</tag>
       </tags>
   </entry>
   <entry>
@@ -1245,47 +1245,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>Koa2 源码赏析</title>
-    <url>/2017/04/09/koa2-src/</url>
-    <content><![CDATA[<p>随着 Node 新版本开始支持 async&#x2F;await 异步控制写法，Koa 也相继发布了它的 2.0 版本。用 async&#x2F;await 写法的 Koa 来开发项目，Node 开发者再也没有任何理由不「拥抱变化」——从 Express 转到 Koa 上来。实际上，对于普通 Node 开发者——Express 框架的用户——而言，从 Express 转到 Koa 没有任何技术壁垒，当然前提是你至少得知道 ES2017 中 async&#x2F;await 是个什么东西。</p>
-<img data-src="https://i.loli.net/2018/08/06/5b6731c4b534a.png" class="" title="Koa——next generation web framework for node.js" alt="图片显示错误">
-
-<span id="more"></span>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有了 Express 的积累，以 <a href="https://github.com/tj">TJ</a> 为首的 Express 开发团队对于 Koa 的设计也更加的得心应手、游刃有余。从源代码来看，Koa 看起来甚至比 Express 更加简洁和灵活，然而在功能上却丝毫没有让步，甚至更胜一筹。一方面，这得益于 JavaScript 越来越方便好用的各种「语法糖」；另一方面，也在于 Koa 本身简洁强大的设计：它不再绑定任何特定的中间件，也去掉了其他任何多余的设计（连路由系统都抽象成了第三方中间件），而只是简单的提供了一个优雅管理各种中间件的约束系统，用户的所有挂载都是中间件。</p>
-<p>TJ 大神的代码一向简洁强大，Koa 的源码也是如此。如果你<a href="https://github.com/koajs/koa">去 GitHub 上查看 Koa 的源码</a>，你同样会被其简洁所震撼，核心代码不过 4 个文件，平均每个文件代码行数也就四百来行，看似简简单单，却天才般的把 Express 线性的中间件控制流转变为「洋葱体」结构，从而解锁了更多的姿势和玩法。本文就直接深入 Koa 的源码（v2.2.0），来欣赏 Koa 的曼妙身姿。</p>
-<h2 id="代码大体结构"><a href="#代码大体结构" class="headerlink" title="代码大体结构"></a>代码大体结构</h2><p>lib 目录下总共就四个文件：<code>application.js</code>、<code>context.js</code>、<code>request.js</code> 和 <code>response.js</code>。入口文件是 <code>application.js</code>，导出的是一个继承了 Node 内建模块 Events 的 Class，构造函数中进行了必要的参数初始化，并且把 <code>context</code>、<code>request</code> 和 <code>response</code> 属性指向了原型链指向其他三个文件导出对象的实例。</p>
-<p>然后是类方法，主要的几个 public 的方法如下：</p>
-<ul>
-<li><code>listen</code>：一个简单的对 <code>http.createServer(this.callback()).listen(...)</code> 的封装。</li>
-<li><code>callback</code>：在 <code>listen</code> 中有调用，返回一个用于 <code>http.createServer</code> 的回调函数 <code>handleRequest</code>，在这个函数中创建了主角 <code>ctx</code>，并做了一些原型链继承和 aliases。<strong>更重要的是</strong>，<a href="https://github.com/koajs/compose/blob/master/index.js">调用的 <code>koa-compose</code> 返回了一个 <code>fn</code> 函数，负责了整个中间件「洋葱体」流程的实现和控制</a>。在所有中间件执行完之后，做了一些返回之前的琐碎诸如设置必要的返回头等的工作。</li>
-<li><code>use</code>：把中间件参数放入 <code>this.middleware</code> 数组，并返回 <code>this</code> 以便链式调用。</li>
-</ul>
-<p>结合 Koa 文档和 <code>application.js</code>，基本就可以对整个框架的处理流程有个整体的把握了。其中最主要的部分还是 <code>callback</code> 函数中的内容，看完之后对整个基于 Node HTTP 模块封装的中间件处理的流转过程都清楚了。</p>
-<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>这里是对 <code>this.context</code> 的原型对象的实现。</p>
-<p>没有太多值得一提的东西，基本是对上下文对象 <code>ctx</code> 提供几个必需的原型接口以及一个缺省的错误处理函数 <code>onerror</code>。有意思的是，利用 <code>delegates</code> 包，把对 app 的一些属性的访问直接对应的代理到 <code>response</code> 和 <code>request</code> 上，这也就是<a href="http://koajs.com/#request-aliases">文档上所说的 <code>Request aliases</code> 和 <code>Response aliases</code> 的具体原因</a>。</p>
-<h2 id="Request-Response"><a href="#Request-Response" class="headerlink" title="Request &amp; Response"></a>Request &amp; Response</h2><p>这俩文件是对 <code>this.request</code> 和 <code>this.response</code> 的原型对象的实现。</p>
-<p><code>this.request</code> 和 <code>this.response</code> 中都有大量属性的 getter 和 setter 方法，这些可用的属性在 Koa 文档中都已经列出，代码在这里对它们的读写操作进行了实现。这些属性基本是对 Node HTTP 包中 req 和 res 属性的封装。</p>
-<h2 id="「洋葱体」带来了什么"><a href="#「洋葱体」带来了什么" class="headerlink" title="「洋葱体」带来了什么"></a>「洋葱体」带来了什么</h2><p>你固然还是可以像在 Express 中一样把 <code>next();</code> 都放在每个中间件的末尾来线性的传递控制权，但「回形针」式的控制流带来了更多的可能。一个最典型的的例子就是 <code>response-time</code> 中间件的实现。</p>
-<p>在 GitHub 上用 <code>response-time</code> 关键字搜索，前两个 Repo 就分别是 Express 和 Koa 中对这个中间件的实现。</p>
-<p>Express 中的实现其实是 hack 了被 Express 用到的 Node.js 内部 HTTP 模块的 <code>res.writeHead</code> 方法（实际实现细节在 <code>response-time</code> 中间件调用的 <code>on-headers</code> 包中），使得在这一层注入了一小段代码用于在数据返回前计算时间差并写入 Response Headers。这样虽然可以实现，但显然不够好。它 hack 了框架底层的一个内部方法，虽然也巧妙，但代码本身并不是在给它天生就安排好的合适的地方来实现的，可以视为晦涩的「奇技淫巧」，而且与 Express 的内部实现强耦合，指不定哪天 Express 改了 <code>res.writeHead</code> 调用时机，这个中间件的返回值可能就有所不同了（当然按实际情况来说 Express 此处应该也不会改了，而且 Express 的 <code>response-time</code> 最初也是 TJ 写的）。</p>
-<p>Koa 的 <code>response-time</code> 实现自不必多说，官方文档上就有，来欣赏它的简洁优雅：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="keyword">async</span> <span class="keyword">function</span>(<span class="params">ctx, next</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> start = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">  <span class="keyword">const</span> ms = <span class="keyword">new</span> <span class="title class_">Date</span>() - start;</span><br><span class="line">  ctx.<span class="title function_">set</span>(<span class="string">&#x27;X-Response-Time&#x27;</span>, <span class="string">`<span class="subst">$&#123;ms&#125;</span>ms`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>总结来说，Koa 的「洋葱体」结构使得<strong>每个中间件能够在同一次请求的前后对称的部分提供相同的上下文环境</strong>，这样就让实现像 <code>response-time</code> 这样的中间件变得相当简单。</p>
-<h2 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h2><ul>
-<li><a href="https://zhuanlan.zhihu.com/p/26063036">编写可维护代码之“中间件模式”</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>Koa</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>毕业一周年 | 山大印象</title>
     <url>/2017/05/07/grad-anniversary/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d2d2f42.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d352fa4.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d370941.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d33957c.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d363eec.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b6730d371069.jpg"></div></div></div>
@@ -1330,49 +1289,44 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>了不起的 Erlang</title>
-    <url>/2017/06/10/awesome-erlang/</url>
-    <content><![CDATA[<blockquote class="blockquote-center">
-<p><em>Shared mutable state is the root of all evil</em><br><em>共享的可变状态是万恶之源</em></p>
-<p><strong>Pete Hunt</strong>      </p>
+    <title>Koa2 源码赏析</title>
+    <url>/2017/04/09/koa2-src/</url>
+    <content><![CDATA[<p>随着 Node 新版本开始支持 async&#x2F;await 异步控制写法，Koa 也相继发布了它的 2.0 版本。用 async&#x2F;await 写法的 Koa 来开发项目，Node 开发者再也没有任何理由不「拥抱变化」——从 Express 转到 Koa 上来。实际上，对于普通 Node 开发者——Express 框架的用户——而言，从 Express 转到 Koa 没有任何技术壁垒，当然前提是你至少得知道 ES2017 中 async&#x2F;await 是个什么东西。</p>
+<img data-src="https://i.loli.net/2018/08/06/5b6731c4b534a.png" class="" title="Koa——next generation web framework for node.js" alt="图片显示错误">
 
-</blockquote>
-
-<p>大概是从去年年底开始，我开始断断续续地了解 Erlang 这门语言。之所以会想要去学习它，是因为它跟我已经比较熟悉的任何一门语言都有着截然不同的设计理念，而且我了解得越深，就越为其设计思想所折服。</p>
-<p>虽然这门语言的年纪早已不算年轻，而且似乎从未「大众流行」过，但在如今 CPU 多核化和云计算的时代背景下，Erlang 却焕发出了不一样的生机。</p>
 <span id="more"></span>
 
-<p>Erlang 在构建高可用服务上有其独特的优势，这与 Web 服务的要求不谋而合，其设计理念值得每一名 Web 后端开发工程师去了解。</p>
-<p>在介绍 Erlang 的几个核心概念之前，需要先说明的是，本文所指的 Erlang 不仅仅指这门语言本身，而是指整个构建于 Erlang 虚拟机之上的技术体系，这就至少包括了 Erlang 语言、Elixir 语言及围绕它们所展开的技术模型的设计。</p>
-<p>语言并不那么重要，重要的是蕴含在语言之中的设计理念和设计思想。</p>
-<h2 id="不可变状态"><a href="#不可变状态" class="headerlink" title="不可变状态"></a>不可变状态</h2><p>Erlang 是一种一次性赋值（single-assignment variable）的动态类型函数式编程语言。单次赋值意味着每个变量只能被赋值一次，如果试图在变量被赋值后改变它的值，程序会出错。</p>
-<p>如果你初次接触单次赋值这个概念，可能会感到很难理解，但这并不是 Erlang 的原创。函数式编程的重要特点之一就是「不可变状态」（immutable state），Erlang 正符合这个特点。</p>
-<p>实际上，在 Erlang 里，变量获得值是一次成功模式匹配操作的结果。如果你有着 C-like 编程语言的背景，你一定知道 <code>=</code> 表示的是一个赋值语句，而且大有各种入门书籍告诉你务必要与数学中的 <code>=</code> 符号区分开来，并很可能会举出 <code>i = i + 1</code> 这样在 C-like 语言中很常见，但在数学中明显不存在的式子（除非是在反证法中）。而在 Erlang 里，<code>=</code> 是一次模式匹配操作，<code>Lhs = Rhs</code> 的真正意思是：计算右侧（Rhs）的值，然后将结果与左侧（Lhs）的模式相匹配。这更多的像是<strong>回归了数学中 <code>=</code> 符号的本意</strong>。实际上，这也并不奇怪，函数式编程这种编程范型就是为了将电脑运算视为数学上的函数计算，同时还要避免使用程序本身的状态和易变的对象。</p>
-<p>那为什么「不可变状态」会让编程变得更美好呢？</p>
-<p>一个表面上明显的好处是让调试程序变得更简单。引起程序出错的常见原因就是变量得到了意料之外的值，为了防止意料之外的状态进入内部，我们可能不得不在 API 入口处进行参数校验，这意味着我们不得不写出大块的「防御式编程」的代码（这与后文要讲到的 “Let it crash” 特性一脉相承）。在 C-like 的语言里，变量可以被多次修改，因此每一个修改了变量值的地方都有可能是错误产生的地方，而在 Erlang 里，检查这样的错误只需要 check 一处即可。</p>
-<p>另一个更深层次的好处是，「不可变状态」是使得程序运行不会产生副作用的保证之一，而<strong>没有副作用意味着可以让程序并行</strong>，这与后文的 Actor 并发模型又是一脉相承的。</p>
-<h2 id="Actor-并发模型"><a href="#Actor-并发模型" class="headerlink" title="Actor 并发模型"></a>Actor 并发模型</h2><p>并发模型有很多种，大多数人最熟悉的还是 Java 所采用的基于锁和线程的并发模型，但也有其他的如 Golang 采用的 CSP 模型和 Erlang 的 Actor 模型，如果你对并发模型感兴趣，可以参阅<a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a>这本书。</p>
-<p>如果是传统编程语言来为多核 CPU 编程，就不可避免的需要程序员去对付共享内存的问题。进而为了不破坏共享内存，自然而然地又产生了「锁」的概念，即在必要的时候给这些内存加锁来解决共享内存的问题，而且访问这些共享内存的程序在操作共享内存时还万万不能崩溃，否则很可能产生难以追踪且无法预料的错误（可以与后文的 “Let it crash” 特性对比）。这就跟《人类简史》中所说的「农业社会是人类构建错误社会形态的开始」的概念类似，我们很可能从一开始就构建了不正确的模型，从而只能滚雪球式的将错就错、一错到底。而在 Erlang 里，没有可变状态，没有共享内存，也没有锁，这使得要让程序并行变得很简单。</p>
-<p>Erlang 的基本并发单元是进程（Process），它们是一些独立的小型虚拟机。但这与操作系统的进程并不相同，Erlang 的进程是是隶属于编程语言而不是操作系统的。一方面，这意味着 Erlang 是跨平台的，而且它在任何操作系统上都会具有相同的逻辑行为，使得编写可移植的代码完全不是问题；另一方面，这些进程是 Erlang 虚拟机自身实现的，所以它们非常的轻量，创建和销毁都十分快速，占用的资源也非常小，这意味着大量的进程可以并存。</p>
-<p>当然，Erlang 的进程是不共享任何内存的，它们相互之间完全独立，而唯一的交互方式是消息（CSP 模型也是如此）。</p>
-<p>到此为止，我想题记中的那句「共享的可变状态是万恶之源」就不难理解了。</p>
-<h2 id="Let-it-crash"><a href="#Let-it-crash" class="headerlink" title="Let it crash"></a>Let it crash</h2><p>在一般的传统语言里，我们总是被教导着要写「防御性代码」。那可能意味你代码中任何层次抽象出的每一个接口都应当检查传入的参数、可能意味着代码中需要大量的与业务逻辑交织在一起的错误检查代码。这是可以理解的，因为在基于锁和线程的并发模型中，编写多进程代码极其困难，多数程序都只有一个进程，所以如果这个进程随随便便就会崩溃，用专业的话说那就是程序的「鲁棒性」太差了。</p>
-<p>而在 Erlang 里对于错误的处理方式与在传统顺序编程的处理方式完全不同。</p>
-<p>在 Erlang 里，由于我们有大量的轻量级进程可供支配，所以任何的单进程的故障都不会那么重要。一般情况下，在 Erlang 里我们只需要编写极少量的防御性代码（注意，这里有个过犹不及的误解，在编程时我们不能把 <em>Let it crash</em> 当成一个可以被滥用的特性，也就是不要明知道某个地方可能 crash 却不予理睬），而可以把重点放在纠正性代码上。</p>
-<p>在 Erlang 里，系统中的 Process 会划分为两个角色：一部分负责解决业务问题，另一部分则负责在错误发生时纠正错误。负责解决业务问题的部分会尽可能少的使用防御性代码，同时也会假设传入函数的所有参数都是正确的。而纠正错误的部分不会与解决业务的部分耦合在一起，所以这也意味着它们在大部分情况下是<strong>可以被复用</strong>的。</p>
-<p>抽象来说，传统的错误处理方式与 Erlang 的错误处理理念实际上是对于问题发生时解决问题的两种不同思路。传统的方式强调尽可能的避免错误发生的可能，但有过编程经验的人基本都知道，要想避免所有错误发生的可能，这是不可能的。而 Erlang 处理错误的角度则不同，它是在错误已经发生后，不管这个错误是怎样的产生的（当然事后还是要具体分析原因的），或者是什么类型的错误，我们都把 A 进程发生的错误交由与之相关的 B 进程来处理，来试图纠正这个错误，使得整个系统恢复到一个我们已知的可控的状态。同时 A 进程直接 crash 掉就好。Erlang 把错误处理的注意力放在的错误发生后的清理工作上。这一点，其实与 Node.js 集群部署时的理念有类似之处，进程分为主进程和工作进程，但 Erlang 在这一点上做得更为彻底，而且在语言层面上就是这样设计的。</p>
-<p><em>Let it crash</em> 所带来的好处其实有很多，除了前面已经说到的不用写大量与业务代码交织在一起的防御性代码和在错误发生时可以不管原因统一处理之外，他还能使得发生的错误不至于被恶化造成不可控的更严重的后果，因为发生错误的 Process 已经被 crash 了。它也使得错误能够立即被上述的 B 进程处理，而且错误不会继续运行导致调试也变得困难。更深入地，它还使得我们在设计系统时可以有意识地把业务部分和错误恢复部分当成两个独立的问题来思考，这一点是非常符合 <a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a> 的要求的（我在上一篇博文<a href="http://maples7.com/2017/05/24/programming-and-life/#%E5%88%86%E5%B7%A5%E6%98%8E%E7%A1%AE%EF%BC%8C%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">《程序与人生》</a>中也有提到这一点），即特定问题由特定专业分工明确的不同代码来解决。</p>
-<h2 id="GitHub-语言颜色"><a href="#GitHub-语言颜色" class="headerlink" title="GitHub 语言颜色"></a>GitHub 语言颜色</h2><p>最后，说一个 tricky 的理由，在 GitHub 上代表 Erlang 和 Elixir 的颜色是紫色（Elixir 的颜色更深一点），这个已经暗示了这门技术的尊贵之处了。</p>
-<p>哈哈，开个玩笑。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>希望这篇文章能真正引发你对于 Erlang 这门设计优秀的语言的兴趣与关注，并同时推荐你看<a href="https://book.douban.com/subject/25892728/">《Erlang程序设计（第2版）》</a> 这本书，它是由 Erlang 的设计和发明者、「Erlang 之父」Joe Armstrong 亲笔撰写的，所以在语言的诸多设计理念上都有非常清晰的讲解。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有了 Express 的积累，以 <a href="https://github.com/tj">TJ</a> 为首的 Express 开发团队对于 Koa 的设计也更加的得心应手、游刃有余。从源代码来看，Koa 看起来甚至比 Express 更加简洁和灵活，然而在功能上却丝毫没有让步，甚至更胜一筹。一方面，这得益于 JavaScript 越来越方便好用的各种「语法糖」；另一方面，也在于 Koa 本身简洁强大的设计：它不再绑定任何特定的中间件，也去掉了其他任何多余的设计（连路由系统都抽象成了第三方中间件），而只是简单的提供了一个优雅管理各种中间件的约束系统，用户的所有挂载都是中间件。</p>
+<p>TJ 大神的代码一向简洁强大，Koa 的源码也是如此。如果你<a href="https://github.com/koajs/koa">去 GitHub 上查看 Koa 的源码</a>，你同样会被其简洁所震撼，核心代码不过 4 个文件，平均每个文件代码行数也就四百来行，看似简简单单，却天才般的把 Express 线性的中间件控制流转变为「洋葱体」结构，从而解锁了更多的姿势和玩法。本文就直接深入 Koa 的源码（v2.2.0），来欣赏 Koa 的曼妙身姿。</p>
+<h2 id="代码大体结构"><a href="#代码大体结构" class="headerlink" title="代码大体结构"></a>代码大体结构</h2><p>lib 目录下总共就四个文件：<code>application.js</code>、<code>context.js</code>、<code>request.js</code> 和 <code>response.js</code>。入口文件是 <code>application.js</code>，导出的是一个继承了 Node 内建模块 Events 的 Class，构造函数中进行了必要的参数初始化，并且把 <code>context</code>、<code>request</code> 和 <code>response</code> 属性指向了原型链指向其他三个文件导出对象的实例。</p>
+<p>然后是类方法，主要的几个 public 的方法如下：</p>
+<ul>
+<li><code>listen</code>：一个简单的对 <code>http.createServer(this.callback()).listen(...)</code> 的封装。</li>
+<li><code>callback</code>：在 <code>listen</code> 中有调用，返回一个用于 <code>http.createServer</code> 的回调函数 <code>handleRequest</code>，在这个函数中创建了主角 <code>ctx</code>，并做了一些原型链继承和 aliases。<strong>更重要的是</strong>，<a href="https://github.com/koajs/compose/blob/master/index.js">调用的 <code>koa-compose</code> 返回了一个 <code>fn</code> 函数，负责了整个中间件「洋葱体」流程的实现和控制</a>。在所有中间件执行完之后，做了一些返回之前的琐碎诸如设置必要的返回头等的工作。</li>
+<li><code>use</code>：把中间件参数放入 <code>this.middleware</code> 数组，并返回 <code>this</code> 以便链式调用。</li>
+</ul>
+<p>结合 Koa 文档和 <code>application.js</code>，基本就可以对整个框架的处理流程有个整体的把握了。其中最主要的部分还是 <code>callback</code> 函数中的内容，看完之后对整个基于 Node HTTP 模块封装的中间件处理的流转过程都清楚了。</p>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>这里是对 <code>this.context</code> 的原型对象的实现。</p>
+<p>没有太多值得一提的东西，基本是对上下文对象 <code>ctx</code> 提供几个必需的原型接口以及一个缺省的错误处理函数 <code>onerror</code>。有意思的是，利用 <code>delegates</code> 包，把对 app 的一些属性的访问直接对应的代理到 <code>response</code> 和 <code>request</code> 上，这也就是<a href="http://koajs.com/#request-aliases">文档上所说的 <code>Request aliases</code> 和 <code>Response aliases</code> 的具体原因</a>。</p>
+<h2 id="Request-Response"><a href="#Request-Response" class="headerlink" title="Request &amp; Response"></a>Request &amp; Response</h2><p>这俩文件是对 <code>this.request</code> 和 <code>this.response</code> 的原型对象的实现。</p>
+<p><code>this.request</code> 和 <code>this.response</code> 中都有大量属性的 getter 和 setter 方法，这些可用的属性在 Koa 文档中都已经列出，代码在这里对它们的读写操作进行了实现。这些属性基本是对 Node HTTP 包中 req 和 res 属性的封装。</p>
+<h2 id="「洋葱体」带来了什么"><a href="#「洋葱体」带来了什么" class="headerlink" title="「洋葱体」带来了什么"></a>「洋葱体」带来了什么</h2><p>你固然还是可以像在 Express 中一样把 <code>next();</code> 都放在每个中间件的末尾来线性的传递控制权，但「回形针」式的控制流带来了更多的可能。一个最典型的的例子就是 <code>response-time</code> 中间件的实现。</p>
+<p>在 GitHub 上用 <code>response-time</code> 关键字搜索，前两个 Repo 就分别是 Express 和 Koa 中对这个中间件的实现。</p>
+<p>Express 中的实现其实是 hack 了被 Express 用到的 Node.js 内部 HTTP 模块的 <code>res.writeHead</code> 方法（实际实现细节在 <code>response-time</code> 中间件调用的 <code>on-headers</code> 包中），使得在这一层注入了一小段代码用于在数据返回前计算时间差并写入 Response Headers。这样虽然可以实现，但显然不够好。它 hack 了框架底层的一个内部方法，虽然也巧妙，但代码本身并不是在给它天生就安排好的合适的地方来实现的，可以视为晦涩的「奇技淫巧」，而且与 Express 的内部实现强耦合，指不定哪天 Express 改了 <code>res.writeHead</code> 调用时机，这个中间件的返回值可能就有所不同了（当然按实际情况来说 Express 此处应该也不会改了，而且 Express 的 <code>response-time</code> 最初也是 TJ 写的）。</p>
+<p>Koa 的 <code>response-time</code> 实现自不必多说，官方文档上就有，来欣赏它的简洁优雅：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="keyword">async</span> <span class="keyword">function</span>(<span class="params">ctx, next</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> start = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">next</span>();</span><br><span class="line">  <span class="keyword">const</span> ms = <span class="keyword">new</span> <span class="title class_">Date</span>() - start;</span><br><span class="line">  ctx.<span class="title function_">set</span>(<span class="string">&#x27;X-Response-Time&#x27;</span>, <span class="string">`<span class="subst">$&#123;ms&#125;</span>ms`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>总结来说，Koa 的「洋葱体」结构使得<strong>每个中间件能够在同一次请求的前后对称的部分提供相同的上下文环境</strong>，这样就让实现像 <code>response-time</code> 这样的中间件变得相当简单。</p>
+<h2 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/26063036">编写可维护代码之“中间件模式”</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
       </categories>
       <tags>
-        <tag>Erlang</tag>
-        <tag>函数式编程</tag>
-        <tag>并发</tag>
+        <tag>Node.js</tag>
+        <tag>Koa</tag>
       </tags>
   </entry>
   <entry>
@@ -1533,48 +1487,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>2017 年书单</title>
-    <url>/2017/12/31/2017-booklist/</url>
-    <content><![CDATA[<p>今年太「荒废」了。无论是工作还是生活，已经发生的事情之丰富复杂相比去年完全有过之而无不及，自己心态上的改变也是不少。这种内省式的变化会直接导致个人情绪的变化。用一个烂俗的比喻来说，如果去年的心情像一汪平静的湖水，那今年则可以用海啸来形容<del>（夸张到油腻了）</del>。</p>
-<p>我不是一个喜欢制定目标的人，因为无论事情是否达到了你的目标，这个设定都会让你对于自己所做的事情产生反向的反馈：完成了会开始沾沾自喜、放松警惕，没完成则会开始怀疑人生、消极懈怠。当然，这可能只是一个现实的悲观主义者的惯性思维，不足以为参考。</p>
-<p>即便如此，年初也制定了一些小目标，明确了一下「即将过去的这一年」的大致方向。写博客的目标是超额完成了，导致我后几个月的博客更新都放缓了（应证了我上一段的描述），可是看书的目标远远没有达到。这意味着今年是个「输出」大于「输入」的一年。</p>
-<span id="more"></span>
-
-<p>开篇不多说，今年的书单如下：</p>
-<ol>
-<li><p><a href="https://book.douban.com/subject/27013716/">沉默的大多数</a>：★★★★★<br>每一句话的笔触都轻，但合起来的力道却很重。三观正得惊人，王小波手执着民族的警钟。    </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26729776/">雪人</a>：★★★★☆<br>其实不能算典型的推理小说吧，不过读起来非常爽，文字画面感极强。虽然反转设计的痕迹很重，但非常有效的加强了故事的戏剧张力，自然就在一堆老掉牙的传统推理小说中脱颖而出了。    </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26835090/">软技能：代码之外的生存指南</a>：★★★★<br>我是听了译者在某个播客节目的介绍才了解到这本书的，而这本书的内容完全超出了我的预期。<br>首先，这本书的内容不是鸡汤，而是从作者的亲身体验给程序员打造的全方位工作、生活、学习、健身等等各个方面的实用建议。更重要的是这些建议中体现出的作者的技术价值观，我个人也非常认同。<br>目前市面上这类书不多，能跟上时代而不流于形式和灌鸡汤的就更少了。而且译者翻译的中译本很用心，强烈推荐。    </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/25910698/">迷人的假象</a>：★★★★<br>一本现代大众心理学读物。<br>这个社会很多看似神秘的现象或许都可以从心理学的角度找到科学的解释，甚至可以加以利用。<br>而客观世界的大多数情况下，随机、偶然、无意义才是背后最大的真相，这样的真相又乏味又动人。    </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26739566/">途客圈创业记：不疯魔，不成活</a>：★★★★<br>对创业的描写可以说非常真实了，很多事情即便是我这种才进创业公司几个月的人都有些体会，或许大部分人心里都有一个创业梦吧。<br>作者及其团队包括复盘在内一些方法很值得学习，他写过的公众号文章我之前也基本是一篇不落的都看过，非常好。<br>创业维艰，一切都值得好好珍惜。    </p>
-</li>
-<li><p><a href="http://survivor.ruanyifeng.com/">未来世界的幸存者</a>：★★★☆<br>阮一峰老师还未出版的新书。<br>虽然不是所有的推论过程都十分赞同，但内容还是有一定的启发性，阮一峰老师能够看到事物之间的联系。      </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/25892728/">Erlang 程序设计（第二版）</a>：★★★★★<br>其实并没有太深入扣代码细节的东西，但惊艳到我的还是 Erlang 实现并发的「与众不同」的设计思路，值得每一个后端程序员了解：<a href="http://maples7.com/2017/06/10/awesome-erlang/">《了不起的 Erlang》</a>。    </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27059884/">碟形世界：猫和少年魔笛手</a>：★★★☆<br>固然是好的童话故事，也明显可以看出作者就是在暗讽成人世界的一些事情（我愈发开始对这种用童话故事讨好成年世界的做法的动机变得敏感和怀疑，或许是受近年某些国产作品的影响，而且大多时候这些暗讽的内容已经被各种作品说了太多遍了，也没什么意思了），但腰封上宣传的「比《哈利·波特》和《魔戒》加起来还好看的」，仅就这一本来说，哪里来的自信？    </p>
-</li>
-<li><p><a href="https://book.douban.com/subject/11941213/">Learn Python the Hard Way(3rd Edition)</a>：★★★<br>一本非常适合新手入门的书，但我开始越来越不赞同用所谓的 “hard way” 的方式去学习新知，我觉得那只是对自己放弃更进一步去探索的借口和让自己心安的理由。知识是没有边界的，尽管放开了去学就好了，何必用 “hard way” 这种外在方式上的、形而下的枷锁来束缚自己呢？<br>Anyway, 今年大部分的工作时间是在用 Python 的，但对这门语言的自信程度还远不如 Node.js，甚至我并不确定它是否真的能让我达到对 Node.js 那样的感觉。依据我有限的经验，Python 在工程化上的实践成熟度比 Node.js 还是差了不少。</p>
-</li>
-</ol>
-<p>人是复杂的，与人相关的所有事情都复杂，人的复杂之处体现在人性上；但「人群」却是简单的，因为你永远只需要往最坏的方向去想就好了。</p>
-<p>我为什么在最后还莫名其妙的抛出这样的观点？你可以说世界是一直在向前发展的，也可以鸡贼的说世界是「螺旋式上升」的，但在大众认知领域，世界的发展其实是循环的。这大概是我所看到的 2017 年的最大的特征。</p>
-<p>大众认知的底线无疑是在提高，但讨论的实质内容却并没有什么变化。大众热衷于讨论的不是知识，而是观点，而且是些早已经被无数前辈所表达的观点，绝大部分人只是在简单的跟随和重复。知识在信息洪流中的传播天生必然会败给观点，越来越多的人会选择「美味的糖果」而不是「苦口的良药」，依然是人性使然。大众永远在追逐社会热点，而社会热点的发生近乎「随机」。</p>
-<p>不过说到这里，<a href="http://maples7.com/2016/11/27/traditional-edu-and-programming/">再一次</a>为了避免误会，还是得区分一下上文所说的「知识」与「观点」。知识是客观的、量化的、难以简单表达的，而观点则完全相反。只有知识才能产生创造，而观点并不能，甚至可能会扼杀创造。</p>
-<p>所以，新的一年的一个大的方向就是——更多的学习知识，不要热衷于讨论观点。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>完全理解并发</title>
     <url>/2018/10/21/understand-concurrency/</url>
     <content><![CDATA[<p>越是往后端深入到 Web 开发和分布式系统，就越会觉得把「并发」理解清楚是多么重要，而每天的日常工作中很多时候都需要处理与并发有关的话题，大到整个系统架构层面的并发考量，小到某一段代码的并发控制。</p>
@@ -1623,6 +1535,134 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>「完全理解」系列</tag>
         <tag>并发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>了不起的 Erlang</title>
+    <url>/2017/06/10/awesome-erlang/</url>
+    <content><![CDATA[<blockquote class="blockquote-center">
+<p><em>Shared mutable state is the root of all evil</em><br><em>共享的可变状态是万恶之源</em></p>
+<p><strong>Pete Hunt</strong>      </p>
+
+</blockquote>
+
+<p>大概是从去年年底开始，我开始断断续续地了解 Erlang 这门语言。之所以会想要去学习它，是因为它跟我已经比较熟悉的任何一门语言都有着截然不同的设计理念，而且我了解得越深，就越为其设计思想所折服。</p>
+<p>虽然这门语言的年纪早已不算年轻，而且似乎从未「大众流行」过，但在如今 CPU 多核化和云计算的时代背景下，Erlang 却焕发出了不一样的生机。</p>
+<span id="more"></span>
+
+<p>Erlang 在构建高可用服务上有其独特的优势，这与 Web 服务的要求不谋而合，其设计理念值得每一名 Web 后端开发工程师去了解。</p>
+<p>在介绍 Erlang 的几个核心概念之前，需要先说明的是，本文所指的 Erlang 不仅仅指这门语言本身，而是指整个构建于 Erlang 虚拟机之上的技术体系，这就至少包括了 Erlang 语言、Elixir 语言及围绕它们所展开的技术模型的设计。</p>
+<p>语言并不那么重要，重要的是蕴含在语言之中的设计理念和设计思想。</p>
+<h2 id="不可变状态"><a href="#不可变状态" class="headerlink" title="不可变状态"></a>不可变状态</h2><p>Erlang 是一种一次性赋值（single-assignment variable）的动态类型函数式编程语言。单次赋值意味着每个变量只能被赋值一次，如果试图在变量被赋值后改变它的值，程序会出错。</p>
+<p>如果你初次接触单次赋值这个概念，可能会感到很难理解，但这并不是 Erlang 的原创。函数式编程的重要特点之一就是「不可变状态」（immutable state），Erlang 正符合这个特点。</p>
+<p>实际上，在 Erlang 里，变量获得值是一次成功模式匹配操作的结果。如果你有着 C-like 编程语言的背景，你一定知道 <code>=</code> 表示的是一个赋值语句，而且大有各种入门书籍告诉你务必要与数学中的 <code>=</code> 符号区分开来，并很可能会举出 <code>i = i + 1</code> 这样在 C-like 语言中很常见，但在数学中明显不存在的式子（除非是在反证法中）。而在 Erlang 里，<code>=</code> 是一次模式匹配操作，<code>Lhs = Rhs</code> 的真正意思是：计算右侧（Rhs）的值，然后将结果与左侧（Lhs）的模式相匹配。这更多的像是<strong>回归了数学中 <code>=</code> 符号的本意</strong>。实际上，这也并不奇怪，函数式编程这种编程范型就是为了将电脑运算视为数学上的函数计算，同时还要避免使用程序本身的状态和易变的对象。</p>
+<p>那为什么「不可变状态」会让编程变得更美好呢？</p>
+<p>一个表面上明显的好处是让调试程序变得更简单。引起程序出错的常见原因就是变量得到了意料之外的值，为了防止意料之外的状态进入内部，我们可能不得不在 API 入口处进行参数校验，这意味着我们不得不写出大块的「防御式编程」的代码（这与后文要讲到的 “Let it crash” 特性一脉相承）。在 C-like 的语言里，变量可以被多次修改，因此每一个修改了变量值的地方都有可能是错误产生的地方，而在 Erlang 里，检查这样的错误只需要 check 一处即可。</p>
+<p>另一个更深层次的好处是，「不可变状态」是使得程序运行不会产生副作用的保证之一，而<strong>没有副作用意味着可以让程序并行</strong>，这与后文的 Actor 并发模型又是一脉相承的。</p>
+<h2 id="Actor-并发模型"><a href="#Actor-并发模型" class="headerlink" title="Actor 并发模型"></a>Actor 并发模型</h2><p>并发模型有很多种，大多数人最熟悉的还是 Java 所采用的基于锁和线程的并发模型，但也有其他的如 Golang 采用的 CSP 模型和 Erlang 的 Actor 模型，如果你对并发模型感兴趣，可以参阅<a href="https://book.douban.com/subject/26337939/">《七周七并发模型》</a>这本书。</p>
+<p>如果是传统编程语言来为多核 CPU 编程，就不可避免的需要程序员去对付共享内存的问题。进而为了不破坏共享内存，自然而然地又产生了「锁」的概念，即在必要的时候给这些内存加锁来解决共享内存的问题，而且访问这些共享内存的程序在操作共享内存时还万万不能崩溃，否则很可能产生难以追踪且无法预料的错误（可以与后文的 “Let it crash” 特性对比）。这就跟《人类简史》中所说的「农业社会是人类构建错误社会形态的开始」的概念类似，我们很可能从一开始就构建了不正确的模型，从而只能滚雪球式的将错就错、一错到底。而在 Erlang 里，没有可变状态，没有共享内存，也没有锁，这使得要让程序并行变得很简单。</p>
+<p>Erlang 的基本并发单元是进程（Process），它们是一些独立的小型虚拟机。但这与操作系统的进程并不相同，Erlang 的进程是是隶属于编程语言而不是操作系统的。一方面，这意味着 Erlang 是跨平台的，而且它在任何操作系统上都会具有相同的逻辑行为，使得编写可移植的代码完全不是问题；另一方面，这些进程是 Erlang 虚拟机自身实现的，所以它们非常的轻量，创建和销毁都十分快速，占用的资源也非常小，这意味着大量的进程可以并存。</p>
+<p>当然，Erlang 的进程是不共享任何内存的，它们相互之间完全独立，而唯一的交互方式是消息（CSP 模型也是如此）。</p>
+<p>到此为止，我想题记中的那句「共享的可变状态是万恶之源」就不难理解了。</p>
+<h2 id="Let-it-crash"><a href="#Let-it-crash" class="headerlink" title="Let it crash"></a>Let it crash</h2><p>在一般的传统语言里，我们总是被教导着要写「防御性代码」。那可能意味你代码中任何层次抽象出的每一个接口都应当检查传入的参数、可能意味着代码中需要大量的与业务逻辑交织在一起的错误检查代码。这是可以理解的，因为在基于锁和线程的并发模型中，编写多进程代码极其困难，多数程序都只有一个进程，所以如果这个进程随随便便就会崩溃，用专业的话说那就是程序的「鲁棒性」太差了。</p>
+<p>而在 Erlang 里对于错误的处理方式与在传统顺序编程的处理方式完全不同。</p>
+<p>在 Erlang 里，由于我们有大量的轻量级进程可供支配，所以任何的单进程的故障都不会那么重要。一般情况下，在 Erlang 里我们只需要编写极少量的防御性代码（注意，这里有个过犹不及的误解，在编程时我们不能把 <em>Let it crash</em> 当成一个可以被滥用的特性，也就是不要明知道某个地方可能 crash 却不予理睬），而可以把重点放在纠正性代码上。</p>
+<p>在 Erlang 里，系统中的 Process 会划分为两个角色：一部分负责解决业务问题，另一部分则负责在错误发生时纠正错误。负责解决业务问题的部分会尽可能少的使用防御性代码，同时也会假设传入函数的所有参数都是正确的。而纠正错误的部分不会与解决业务的部分耦合在一起，所以这也意味着它们在大部分情况下是<strong>可以被复用</strong>的。</p>
+<p>抽象来说，传统的错误处理方式与 Erlang 的错误处理理念实际上是对于问题发生时解决问题的两种不同思路。传统的方式强调尽可能的避免错误发生的可能，但有过编程经验的人基本都知道，要想避免所有错误发生的可能，这是不可能的。而 Erlang 处理错误的角度则不同，它是在错误已经发生后，不管这个错误是怎样的产生的（当然事后还是要具体分析原因的），或者是什么类型的错误，我们都把 A 进程发生的错误交由与之相关的 B 进程来处理，来试图纠正这个错误，使得整个系统恢复到一个我们已知的可控的状态。同时 A 进程直接 crash 掉就好。Erlang 把错误处理的注意力放在的错误发生后的清理工作上。这一点，其实与 Node.js 集群部署时的理念有类似之处，进程分为主进程和工作进程，但 Erlang 在这一点上做得更为彻底，而且在语言层面上就是这样设计的。</p>
+<p><em>Let it crash</em> 所带来的好处其实有很多，除了前面已经说到的不用写大量与业务代码交织在一起的防御性代码和在错误发生时可以不管原因统一处理之外，他还能使得发生的错误不至于被恶化造成不可控的更严重的后果，因为发生错误的 Process 已经被 crash 了。它也使得错误能够立即被上述的 B 进程处理，而且错误不会继续运行导致调试也变得困难。更深入地，它还使得我们在设计系统时可以有意识地把业务部分和错误恢复部分当成两个独立的问题来思考，这一点是非常符合 <a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">SoC（Separation of Concerns）</a> 的要求的（我在上一篇博文<a href="http://maples7.com/2017/05/24/programming-and-life/#%E5%88%86%E5%B7%A5%E6%98%8E%E7%A1%AE%EF%BC%8C%E5%85%B3%E6%B3%A8%E7%82%B9%E5%88%86%E7%A6%BB">《程序与人生》</a>中也有提到这一点），即特定问题由特定专业分工明确的不同代码来解决。</p>
+<h2 id="GitHub-语言颜色"><a href="#GitHub-语言颜色" class="headerlink" title="GitHub 语言颜色"></a>GitHub 语言颜色</h2><p>最后，说一个 tricky 的理由，在 GitHub 上代表 Erlang 和 Elixir 的颜色是紫色（Elixir 的颜色更深一点），这个已经暗示了这门技术的尊贵之处了。</p>
+<p>哈哈，开个玩笑。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>希望这篇文章能真正引发你对于 Erlang 这门设计优秀的语言的兴趣与关注，并同时推荐你看<a href="https://book.douban.com/subject/25892728/">《Erlang程序设计（第2版）》</a> 这本书，它是由 Erlang 的设计和发明者、「Erlang 之父」Joe Armstrong 亲笔撰写的，所以在语言的诸多设计理念上都有非常清晰的讲解。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Erlang</tag>
+        <tag>并发</tag>
+        <tag>函数式编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2017 年书单</title>
+    <url>/2017/12/31/2017-booklist/</url>
+    <content><![CDATA[<p>今年太「荒废」了。无论是工作还是生活，已经发生的事情之丰富复杂相比去年完全有过之而无不及，自己心态上的改变也是不少。这种内省式的变化会直接导致个人情绪的变化。用一个烂俗的比喻来说，如果去年的心情像一汪平静的湖水，那今年则可以用海啸来形容<del>（夸张到油腻了）</del>。</p>
+<p>我不是一个喜欢制定目标的人，因为无论事情是否达到了你的目标，这个设定都会让你对于自己所做的事情产生反向的反馈：完成了会开始沾沾自喜、放松警惕，没完成则会开始怀疑人生、消极懈怠。当然，这可能只是一个现实的悲观主义者的惯性思维，不足以为参考。</p>
+<p>即便如此，年初也制定了一些小目标，明确了一下「即将过去的这一年」的大致方向。写博客的目标是超额完成了，导致我后几个月的博客更新都放缓了（应证了我上一段的描述），可是看书的目标远远没有达到。这意味着今年是个「输出」大于「输入」的一年。</p>
+<span id="more"></span>
+
+<p>开篇不多说，今年的书单如下：</p>
+<ol>
+<li><p><a href="https://book.douban.com/subject/27013716/">沉默的大多数</a>：★★★★★<br>每一句话的笔触都轻，但合起来的力道却很重。三观正得惊人，王小波手执着民族的警钟。    </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26729776/">雪人</a>：★★★★☆<br>其实不能算典型的推理小说吧，不过读起来非常爽，文字画面感极强。虽然反转设计的痕迹很重，但非常有效的加强了故事的戏剧张力，自然就在一堆老掉牙的传统推理小说中脱颖而出了。    </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26835090/">软技能：代码之外的生存指南</a>：★★★★<br>我是听了译者在某个播客节目的介绍才了解到这本书的，而这本书的内容完全超出了我的预期。<br>首先，这本书的内容不是鸡汤，而是从作者的亲身体验给程序员打造的全方位工作、生活、学习、健身等等各个方面的实用建议。更重要的是这些建议中体现出的作者的技术价值观，我个人也非常认同。<br>目前市面上这类书不多，能跟上时代而不流于形式和灌鸡汤的就更少了。而且译者翻译的中译本很用心，强烈推荐。    </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25910698/">迷人的假象</a>：★★★★<br>一本现代大众心理学读物。<br>这个社会很多看似神秘的现象或许都可以从心理学的角度找到科学的解释，甚至可以加以利用。<br>而客观世界的大多数情况下，随机、偶然、无意义才是背后最大的真相，这样的真相又乏味又动人。    </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26739566/">途客圈创业记：不疯魔，不成活</a>：★★★★<br>对创业的描写可以说非常真实了，很多事情即便是我这种才进创业公司几个月的人都有些体会，或许大部分人心里都有一个创业梦吧。<br>作者及其团队包括复盘在内一些方法很值得学习，他写过的公众号文章我之前也基本是一篇不落的都看过，非常好。<br>创业维艰，一切都值得好好珍惜。    </p>
+</li>
+<li><p><a href="http://survivor.ruanyifeng.com/">未来世界的幸存者</a>：★★★☆<br>阮一峰老师还未出版的新书。<br>虽然不是所有的推论过程都十分赞同，但内容还是有一定的启发性，阮一峰老师能够看到事物之间的联系。      </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25892728/">Erlang 程序设计（第二版）</a>：★★★★★<br>其实并没有太深入扣代码细节的东西，但惊艳到我的还是 Erlang 实现并发的「与众不同」的设计思路，值得每一个后端程序员了解：<a href="http://maples7.com/2017/06/10/awesome-erlang/">《了不起的 Erlang》</a>。    </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27059884/">碟形世界：猫和少年魔笛手</a>：★★★☆<br>固然是好的童话故事，也明显可以看出作者就是在暗讽成人世界的一些事情（我愈发开始对这种用童话故事讨好成年世界的做法的动机变得敏感和怀疑，或许是受近年某些国产作品的影响，而且大多时候这些暗讽的内容已经被各种作品说了太多遍了，也没什么意思了），但腰封上宣传的「比《哈利·波特》和《魔戒》加起来还好看的」，仅就这一本来说，哪里来的自信？    </p>
+</li>
+<li><p><a href="https://book.douban.com/subject/11941213/">Learn Python the Hard Way(3rd Edition)</a>：★★★<br>一本非常适合新手入门的书，但我开始越来越不赞同用所谓的 “hard way” 的方式去学习新知，我觉得那只是对自己放弃更进一步去探索的借口和让自己心安的理由。知识是没有边界的，尽管放开了去学就好了，何必用 “hard way” 这种外在方式上的、形而下的枷锁来束缚自己呢？<br>Anyway, 今年大部分的工作时间是在用 Python 的，但对这门语言的自信程度还远不如 Node.js，甚至我并不确定它是否真的能让我达到对 Node.js 那样的感觉。依据我有限的经验，Python 在工程化上的实践成熟度比 Node.js 还是差了不少。</p>
+</li>
+</ol>
+<p>人是复杂的，与人相关的所有事情都复杂，人的复杂之处体现在人性上；但「人群」却是简单的，因为你永远只需要往最坏的方向去想就好了。</p>
+<p>我为什么在最后还莫名其妙的抛出这样的观点？你可以说世界是一直在向前发展的，也可以鸡贼的说世界是「螺旋式上升」的，但在大众认知领域，世界的发展其实是循环的。这大概是我所看到的 2017 年的最大的特征。</p>
+<p>大众认知的底线无疑是在提高，但讨论的实质内容却并没有什么变化。大众热衷于讨论的不是知识，而是观点，而且是些早已经被无数前辈所表达的观点，绝大部分人只是在简单的跟随和重复。知识在信息洪流中的传播天生必然会败给观点，越来越多的人会选择「美味的糖果」而不是「苦口的良药」，依然是人性使然。大众永远在追逐社会热点，而社会热点的发生近乎「随机」。</p>
+<p>不过说到这里，<a href="http://maples7.com/2016/11/27/traditional-edu-and-programming/">再一次</a>为了避免误会，还是得区分一下上文所说的「知识」与「观点」。知识是客观的、量化的、难以简单表达的，而观点则完全相反。只有知识才能产生创造，而观点并不能，甚至可能会扼杀创造。</p>
+<p>所以，新的一年的一个大的方向就是——更多的学习知识，不要热衷于讨论观点。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2018 年书单</title>
+    <url>/2018/12/31/2018-booklist/</url>
+    <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
+<p>回到「书单」的正题。在<a href="http://maples7.com/2016/12/31/2016-booklist/">之前的年终书单总结</a>中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— <a href="https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W">Kindle PaperWhite 4</a>（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。</p>
+<span id="more"></span>
+
+<p>废话先不多说，还是按老规矩先列今年看过的书的书单。</p>
+<ol>
+<li><p><a href="https://www.zhihu.com/pub/book/19550356">设计之美</a>：★★★☆<br>前言写得是真好，整本书写得最好的部分也是前言。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26320659/">万物生长</a>：★★★★<br>冯唐的文字远比<a href="https://zh.wikipedia.org/wiki/%E7%8E%8B%E5%B0%8F%E6%B3%A2">王小波</a>的瑰丽绚烂，像被一个习惯了炒食堂大锅菜的师傅炒出的菜，加足了各种重口的佐料，分明就是他自己前不久写的那篇在朋友圈疯转的文章所说的「油腻」。<br>被称为「某某第二」的人永远不能成为「某某」，也永远达不到世俗意义上「某某」的高度，这一点，几乎是一条铁律。号称「王小波第二」的冯唐永远也成不了王小波，是因为他的文字看不到王小波能看到的东西，技巧十足，却没有让人想去细细揣摩的深意。<br>然而这个世界上没有谁需要去成为谁，冯唐不必易老，照样会让世界变得更丰富。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26943161/">未来简史：从智人到智神</a>：★★★★<br>第一部分基本是在重复<a href="https://book.douban.com/subject/26953606/">《人类简史》</a>的观点；第二部分写得比较有意思，把人文主义主导世界的现实情况剖析得鞭辟入里；第三部阐述了数据宗教的概念，基本也没有什么新东西。<br>预言未来当然比叙述历史要难很多，没有《人类简史》那么脉络清晰且具有说服力，不过书中的很多观点都是值得了解的。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27085265/">北京，北京</a>：★★<br>「年轻人没了幻想，一不小心就俗了」；<br>作家要是没了追求，文字一不小心就俗透了。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25881855/">大教堂与集市</a>：★★★★☆<br>可以和<a href="https://book.douban.com/subject/26358448/">《人月神话》</a>一起看。<br><a href="https://en.wikipedia.org/wiki/Fred_Brooks">Brooks</a> 证明了「人月」在软件工程领域的非线性叠加性，而 <a href="https://en.wikipedia.org/wiki/Eric_S._Raymond">Eric S.Raymond</a> 则告诉我们「开源」大概是破局的唯一方式。<br>这部二十多年前写就的作品在如今看来也毫不过时，甚至书中的一些预言都一一应验。开源运动绝对是上世纪末以来黑客们最伟大的宗教活动。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27070488/">围城</a>：★★★★★<br>钱钟书太厉害了，把人物形象简直刻画得惟妙惟肖，个个都像是生活中栩栩如生的样子。<br>一个围城，围住了中国人的人情、世俗、琐碎与人生的苍凉。<br><a href="https://zh.wikipedia.org/wiki/%E9%9F%A9%E5%AF%92">韩寒</a>的所谓<a href="https://book.douban.com/subject/24697636/">《三重门》</a>不及《围城》的 0.01%。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26663519/">MacTalk 跨越边界</a>：★★★☆<br>比前作的干货更少，也看得出对于书本身的内容而言所体现出的作者的野心更少，基本都是些日常感悟和书评。大概已经无需再考虑要证明什么，可以放开手脚写想写的东西。<br>在我所接触到的所有技术人的自媒体当中，不管技术如何，<a href="http://macshuo.com/?page_id=2">池建强</a>和<a href="https://www.zhihu.com/people/tchen/">陈天</a>算是文字写得流畅优美、可读性非常强的两位了。<br>作为枕边读物还行。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26997376/">我是猫</a>：★★★☆<br>简直就是夏目漱石的自嘲式自传。这本书在浮躁的时候是不能读的，只有在悠闲的时候静下心来慢慢跟随「猫」的视野，才能感受到作为一个旁观者的乐趣。跟《围城》的写作手法和主旨其实有一些类似，但可读性并没有那么高，独特的视角也是本书的特色之一吧。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/26984868/">神奇动物在哪里（原创电影剧本）</a>：★★★★<br>看完电影再看剧本画面简直扑面而来，第一部无论是剧本还是电影都很不错啊，好奇<a href="https://movie.douban.com/subject/26147417/">第二部</a>的剧本到底是怎么样的，至少从电影的观赏程度上肯定不如第一部，当然也有可能第二部的定位就是为了挖大坑。<br>不过呢，出版的剧本其实并不是为了拍电影工作的原始剧本，而是根据已上映电影内容的再编辑，这样看估计出版的剧本也不会很好了。<a href="https://www.jkrowling.com/">罗姨</a>的确是应该找个专业剧作家一起合作啊。</p>
+</li>
+</ol>
+<p>今年看完的书差不多就是这样了，另外我是那种齐头并进看多本书的类型，每天看心情选择一本想看的书，投入也开心。而书单只会列出在当年看完的书，那些可能看了一半的书不好评价故不在此列，有些书甚至可能会持续一两年还没看完，但最终基本还是会有所了结。以后我也会慢慢把所有在看的书都转移到 Kindle 上去。</p>
+<p>2018 年年初其实制定了一个非常高难度的计划，实现了其中最核心的部分，我个人觉得是幸运且满足的。2018 年似乎也是一个大环境非常不好的一年，「经济衰退」、「资本寒冬」在 2018 年的冬季被各种媒体频频提起，这似乎让 2019 更加让我期待，因为那意味着更加强烈的变化。变化和起落才是世界的真相，而太多人对自我、对世界有太大的误解，对人性和环境有太高的期待，太执拗于自我而丧失了格局。这也是今年我自我感觉更成熟的地方之一，经历得更多也越来越包容，接受各种各样的不同、缺憾、丰富和可能性，但同时也有了更坚定的自我意识。</p>
+<p>另一个今年值得一提的收获是开始探索了一个全新的领域并乐在其中，这也是一个很可能对人生有很大影响的领域。我一直推崇「顿悟」式的习得方式，因为大部分事后复盘看起来比较重要的「获得」其实都非常偶然，可遇不可求，不管这背后的原因是来自于你长期的努力和平时的积累、目前所到达的境界和眼界还是纯粹的运气，就在那一刻，不多不少，不紧不慢，你突然有所发现，打开了新世界的大门。这背后个人努力对最终结果起到了多大的作用，并不好说。「偶然」也是世界的一种真相和常态，很多人对此也有很大的误解。作为人类我们唯一能做的，只能是尽可能多的去了解一些不一样的东西，以求能更贴近真相一些。</p>
+<p>2019 年，我希望我可以更纯粹、更极致、更理想主义，坚定自我，从心所欲，也用更开放的胸怀和包容的态度待人接物，年度书单还将一直继续下去。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
       </tags>
   </entry>
   <entry>
@@ -1711,46 +1751,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>2018 年书单</title>
-    <url>/2018/12/31/2018-booklist/</url>
-    <content><![CDATA[<p>今年的个人状态要比去年好多了，好在心态的逐渐平和。毫无疑问，今年要比去年忙很多，工作和生活都是如此，不过事情也开始越来越聚焦，大概是一种越来越明白自己在做什么以及为什么要这样做的状态。</p>
-<p>回到「书单」的正题。在<a href="http://maples7.com/2016/12/31/2016-booklist/">之前的年终书单总结</a>中，我说过一般用 iPad 看电子书，今年引入了一个新设备 —— <a href="https://www.amazon.com/All-new-Kindle-Paperwhite-Waterproof-Storage/dp/B07CXG6C9W">Kindle PaperWhite 4</a>（官方名称是 “All-new Kindle Paperwhite”），这是目前为止最轻的一款 Kindle。之前我一直不理解用 Kindle 看电子书比用 iPad 看电子书好在哪里 —— 忍受着上世纪电子设备的响应速度，使用着非常有限的功能，就为了墨水屏？不用不知道，在真正使用了 Kindle 之后我发现，所有的「轻薄」、「有限的功能」、「电子墨水屏」等特性，都是为了让你在阅读时更加专注 —— 避免打扰、减少疲劳感。从中我体悟到一个道理，任何细微而又专注于目标的优势都不应该被忽视，它可能是一个产品制胜的关键。Kindle 所有的设计都是为了「阅读」这一场景而设计，尽管 iPad 有着丰富得多的功能，但对于体验敏感的用户来说，在「阅读」这件事情上还是会为了用户体验而买一个 Kindle。细小而专注的优势，很重要，不仅仅适用于电子设备产品，也适用于每一件事、每一个人本身。</p>
-<span id="more"></span>
-
-<p>废话先不多说，还是按老规矩先列今年看过的书的书单。</p>
-<ol>
-<li><p><a href="https://www.zhihu.com/pub/book/19550356">设计之美</a>：★★★☆<br>前言写得是真好，整本书写得最好的部分也是前言。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26320659/">万物生长</a>：★★★★<br>冯唐的文字远比<a href="https://zh.wikipedia.org/wiki/%E7%8E%8B%E5%B0%8F%E6%B3%A2">王小波</a>的瑰丽绚烂，像被一个习惯了炒食堂大锅菜的师傅炒出的菜，加足了各种重口的佐料，分明就是他自己前不久写的那篇在朋友圈疯转的文章所说的「油腻」。<br>被称为「某某第二」的人永远不能成为「某某」，也永远达不到世俗意义上「某某」的高度，这一点，几乎是一条铁律。号称「王小波第二」的冯唐永远也成不了王小波，是因为他的文字看不到王小波能看到的东西，技巧十足，却没有让人想去细细揣摩的深意。<br>然而这个世界上没有谁需要去成为谁，冯唐不必易老，照样会让世界变得更丰富。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26943161/">未来简史：从智人到智神</a>：★★★★<br>第一部分基本是在重复<a href="https://book.douban.com/subject/26953606/">《人类简史》</a>的观点；第二部分写得比较有意思，把人文主义主导世界的现实情况剖析得鞭辟入里；第三部阐述了数据宗教的概念，基本也没有什么新东西。<br>预言未来当然比叙述历史要难很多，没有《人类简史》那么脉络清晰且具有说服力，不过书中的很多观点都是值得了解的。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27085265/">北京，北京</a>：★★<br>「年轻人没了幻想，一不小心就俗了」；<br>作家要是没了追求，文字一不小心就俗透了。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/25881855/">大教堂与集市</a>：★★★★☆<br>可以和<a href="https://book.douban.com/subject/26358448/">《人月神话》</a>一起看。<br><a href="https://en.wikipedia.org/wiki/Fred_Brooks">Brooks</a> 证明了「人月」在软件工程领域的非线性叠加性，而 <a href="https://en.wikipedia.org/wiki/Eric_S._Raymond">Eric S.Raymond</a> 则告诉我们「开源」大概是破局的唯一方式。<br>这部二十多年前写就的作品在如今看来也毫不过时，甚至书中的一些预言都一一应验。开源运动绝对是上世纪末以来黑客们最伟大的宗教活动。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27070488/">围城</a>：★★★★★<br>钱钟书太厉害了，把人物形象简直刻画得惟妙惟肖，个个都像是生活中栩栩如生的样子。<br>一个围城，围住了中国人的人情、世俗、琐碎与人生的苍凉。<br><a href="https://zh.wikipedia.org/wiki/%E9%9F%A9%E5%AF%92">韩寒</a>的所谓<a href="https://book.douban.com/subject/24697636/">《三重门》</a>不及《围城》的 0.01%。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26663519/">MacTalk 跨越边界</a>：★★★☆<br>比前作的干货更少，也看得出对于书本身的内容而言所体现出的作者的野心更少，基本都是些日常感悟和书评。大概已经无需再考虑要证明什么，可以放开手脚写想写的东西。<br>在我所接触到的所有技术人的自媒体当中，不管技术如何，<a href="http://macshuo.com/?page_id=2">池建强</a>和<a href="https://www.zhihu.com/people/tchen/">陈天</a>算是文字写得流畅优美、可读性非常强的两位了。<br>作为枕边读物还行。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26997376/">我是猫</a>：★★★☆<br>简直就是夏目漱石的自嘲式自传。这本书在浮躁的时候是不能读的，只有在悠闲的时候静下心来慢慢跟随「猫」的视野，才能感受到作为一个旁观者的乐趣。跟《围城》的写作手法和主旨其实有一些类似，但可读性并没有那么高，独特的视角也是本书的特色之一吧。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/26984868/">神奇动物在哪里（原创电影剧本）</a>：★★★★<br>看完电影再看剧本画面简直扑面而来，第一部无论是剧本还是电影都很不错啊，好奇<a href="https://movie.douban.com/subject/26147417/">第二部</a>的剧本到底是怎么样的，至少从电影的观赏程度上肯定不如第一部，当然也有可能第二部的定位就是为了挖大坑。<br>不过呢，出版的剧本其实并不是为了拍电影工作的原始剧本，而是根据已上映电影内容的再编辑，这样看估计出版的剧本也不会很好了。<a href="https://www.jkrowling.com/">罗姨</a>的确是应该找个专业剧作家一起合作啊。</p>
-</li>
-</ol>
-<p>今年看完的书差不多就是这样了，另外我是那种齐头并进看多本书的类型，每天看心情选择一本想看的书，投入也开心。而书单只会列出在当年看完的书，那些可能看了一半的书不好评价故不在此列，有些书甚至可能会持续一两年还没看完，但最终基本还是会有所了结。以后我也会慢慢把所有在看的书都转移到 Kindle 上去。</p>
-<p>2018 年年初其实制定了一个非常高难度的计划，实现了其中最核心的部分，我个人觉得是幸运且满足的。2018 年似乎也是一个大环境非常不好的一年，「经济衰退」、「资本寒冬」在 2018 年的冬季被各种媒体频频提起，这似乎让 2019 更加让我期待，因为那意味着更加强烈的变化。变化和起落才是世界的真相，而太多人对自我、对世界有太大的误解，对人性和环境有太高的期待，太执拗于自我而丧失了格局。这也是今年我自我感觉更成熟的地方之一，经历得更多也越来越包容，接受各种各样的不同、缺憾、丰富和可能性，但同时也有了更坚定的自我意识。</p>
-<p>另一个今年值得一提的收获是开始探索了一个全新的领域并乐在其中，这也是一个很可能对人生有很大影响的领域。我一直推崇「顿悟」式的习得方式，因为大部分事后复盘看起来比较重要的「获得」其实都非常偶然，可遇不可求，不管这背后的原因是来自于你长期的努力和平时的积累、目前所到达的境界和眼界还是纯粹的运气，就在那一刻，不多不少，不紧不慢，你突然有所发现，打开了新世界的大门。这背后个人努力对最终结果起到了多大的作用，并不好说。「偶然」也是世界的一种真相和常态，很多人对此也有很大的误解。作为人类我们唯一能做的，只能是尽可能多的去了解一些不一样的东西，以求能更贴近真相一些。</p>
-<p>2019 年，我希望我可以更纯粹、更极致、更理想主义，坚定自我，从心所欲，也用更开放的胸怀和包容的态度待人接物，年度书单还将一直继续下去。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>东北的冬</title>
     <url>/2019/02/05/winter-of-north-east/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5981f5ee873.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c598233d3831.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59825ebeeef.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982bbbc951.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5982e2aac4d.jpg"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59830583ea1.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c59829a17feb.jpg"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2019/02/05/5c5983059de98.jpg"></div></div></div>
@@ -1800,7 +1800,7 @@ _Farewell and thanks to each for the company_
 <p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
 <p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#x69;&#x40;&#x73;&#x65;&#110;&#105;&#x76;&#101;&#114;&#115;&#x65;&#x2e;&#x63;&#x6f;&#109;&#63;&#115;&#117;&#98;&#x6a;&#101;&#99;&#116;&#61;&#25991;&#x7ae0;&#x8f6c;&#36733;&#x6388;&#x6743;&#30003;&#x8bf7;">心知天气</a>获取授权】</strong></p>
+<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#105;&#64;&#115;&#101;&#110;&#x69;&#118;&#x65;&#114;&#115;&#x65;&#x2e;&#x63;&#x6f;&#x6d;&#x3f;&#x73;&#x75;&#x62;&#106;&#101;&#x63;&#x74;&#61;&#25991;&#31456;&#36716;&#x8f7d;&#25480;&#x6743;&#x7533;&#x8bf7;">心知天气</a>获取授权】</strong></p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
@@ -2751,54 +2751,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>男性也可以支持女性主义进步思潮</title>
-    <url>/2024/12/11/male-and-feminism/</url>
-    <content><![CDATA[<p><a href="https://maples7.com/2024/12/01/open-source-maples7-3/">上一期《开源计划》</a>已经提到了我关于女性主义的一些想法，但为什么还想单写一篇来聊这个话题？</p>
-<p>起因是最近确实看了很多涉及所谓女性主义题材的各种文艺作品，包括电影《好东西》、《某种物质》的解说、国内综艺《再见爱人4》及一些 UP 主的解说、韩综《思想验证区域：The Community》及一些 UP 主的解说。本来这些文艺作品看过也就看过了，对自己的认知和看法有一些提升，还不至于到想要到公共话语空间表达些什么的程度。但直到最近小红书越来越频繁的刷到各种对《好东西》电影的差评和豆瓣 9.1 分的质疑，以及这些帖子评论区味儿太冲的各种保守派父权言论之后，我决定还是要单写一篇，多为女性主义发声！</p>
-<p>作为互联网的几大粪坑话题之一，公开聊这个是很有风险的，你不知道你的哪句话又惹恼了哪个意见相左的群体，很多网友在网络环境下会失去深度思考和换位思考的能力，经常不分青红皂白就开始骂人吵架，但我会尽力维护这里的理性、克制和包容，不支持任何极端想法和言论，无关性别。理智沟通，多讨论多交流，真理越辩越明！</p>
-<span id="more"></span>
-
-<p>提前声明，我当然不是什么女性主义研究专家，实际上我也只知道很碎片化的一些女性主义思想，并未做任何系统研究，但我觉得有些我看到的观点确实提升了我的认知。我更不是《好东西》里讽刺的女权表演艺术家，在真正通过正确的渠道和途径了解到真正正确的女性主义思想之前，我也对偶尔在网络上看到的极端女权和田园女权行为和言论嗤之以鼻。在我以前的朴素观念里，对于这个议题，我自认为我是一个平权主义者，男女或许性别上有客观的生理差异，但主要还是讲究考虑客观生理差异的前提下，在各个领域的权益的公正平等，也不真正了解女性主义的真正诉求到底是什么。我相信依然有很多自认为有进步思想的男性对待女性主义还是这样的看法。</p>
-<p>就像我偶然在豆瓣看到的一个男生写的<a href="https://www.douban.com/doubanapp/dispatch?uri=/status/4803315042/&_i=3385289527121cd&dt_dapp=1">这样一个帖子</a>：</p>
-<p><img data-src="https://s2.loli.net/2024/12/11/bPGo7hvVtulaOyM.jpg" alt="豆瓣网友关于男性对女性主义的看法"></p>
-<p>这个帖子讲述了他在女性主义议题上的心路历程，我觉得很真诚也很有代表性。人天生是没有这些所谓的主义和社会观念的，但「人人生而平等」的良善却是作为人从小就应该追求的基本原则。朴素的有着正常价值观的男性在女性主义议题上很容易经历同样的心路历程。</p>
-<p>这是我在这个帖子下有感而发的回复，以及跟网友的「辩论」：</p>
-<p><img data-src="https://s2.loli.net/2024/12/11/Gy1HvcdWLzi2rTo.jpg" alt="我在豆瓣的男性对女性主义看法帖子下回复的讨论"></p>
-<p>我承认，男性如果要在女性主义上支持女性主义是很有难度的，这会产生表面上身份认同的矛盾，在社区讨论里更是可能落得「里外不是人」两边立场都不讨好的的下场。一方面，由于客观生理差异和长期的社会结构化问题，男性无法真正同女性做到感同身受；另一方面，作为天然的性别特征，在长期固化的社会结构下，男性确实又在很多方面享受着「第一性」带来的优势。但正如我在<a href="https://maples7.com/2024/12/01/open-source-maples7-3/">上一期《开源计划》</a>和上面的回复中所说的，<strong>真正的女性主义思想内核其实是反压迫、反剥削、追求平等公正，这跟其他人权斗争思潮（比如阶级议题）的内核都是一致的</strong>。反父权社会就是在反压迫和反剥削。</p>
-<p>我的女性主义思想启蒙除了最初在网上看到的一些社会现象和一些激进的网络言论，更多的还是女朋友给我的。我们会在一些社会议题和文艺作品上讨论女性主义观点，她也会看一点上野千鹤子的书，但我并没有真正看过，只是知道有这样的书和书中提炼出的一些观点。在生活中偶尔讨论到这些话题时，我觉得是女朋友温和的性格和讲道理逻辑的能力让我逐渐抛弃了一些对女权的刻板印象和错误认知（但不否认这样对极端女权和田园女权的刻板印象在网络上依然是真实存在的），我慢慢意识到真正的女性主义思想并没有我认为的那样极端和反智。</p>
-<p>最近看到的一些文艺作品让我对真正的女性主义思想的具体观点和诉求有了更清晰的认知，我同样强烈安利给所有人：</p>
-<ul>
-<li>UP 主陈小姐的十五楼对《某种物质》的拉片（共三集）：<ul>
-<li><a href="https://b23.tv/Vmc1Wr7">她是女性却认同父权所定义的女性价值！《某种物质》拉片第一集（共3集）-哔哩哔哩</a></li>
-<li><a href="https://b23.tv/ET1q7W2">当代女性困境：既要女人生又要女人死！《某种物质》拉片第二集（共3集）-哔哩哔哩</a></li>
-<li><a href="https://b23.tv/Q5IqkBW">父权不是男权！《某种物质》拉片第三集（共3集）-哔哩哔哩</a></li>
-</ul>
-</li>
-<li><a href="https://b23.tv/6UH4cl4">从画像事件到熏鸡事变！麦琳发疯的本质是厌女？|《再见爱人4》深度解读01-哔哩哔哩</a></li>
-</ul>
-<p>尤其是陈小姐对《某种物质》的拉片分析，先不简单评论观点的对错，至少让我对真正的女性主义观点有了实感和更深入的思考。</p>
-<p>我之所以非常喜欢《好东西》，除了电影本身的质量确实就很高以外，我还倾佩于邵艺辉导演在采访中透露出的价值观念和社会认知。她是真正对女性主义的各种话题有过深入思考的，从她的这些思考中诞生了她的两部电影作品，真诚又别致，对敏感和沉重话题的表现手法上又有独具一格、颇具匠心的轻盈灵巧。抛开各种主义，她的两部电影单论电影质量我都很喜欢，甚至有一种想让自己生活在电影中这样美好的社区氛围下的感觉，这是很独特的观影体验。对生活的艺术表现也丝毫不让我觉得悬浮，电影中的事件源于真实生活，也贴近现实生活。</p>
-<p>这样真诚又富有沟通技巧的人也能因为点赞了一条微博被「猎巫」到关闭主页和关注，确实很容易让人对当下公共话语空间的舆论氛围感到绝望。但环境再差，我也还是会选择正面表达和发声，因为我「正直、勇敢、有阅读量」。我也认为理智有思考的人要更多的躬身入局、主动发声（虽然他们往往因为更在意自己表达的准确严谨而倾向于谨慎发言），有些话语空间理智的思想不去占领就会被极端言论占领，我依然相信人性中真善美本源的存在。</p>
-<p>最后，说说我自己的一些特质：</p>
-<p>我喜欢《好东西》和《爱情神话》，也喜欢《教父》、《让子弹飞》这些在这几天网络上很火的所谓的「老登电影」（我理解这个词对「小妞电影」这个词的讽刺意味），都是我认为的值得目前豆瓣评分的作品，《芭比》我觉得还行，但不觉得比《好东西》好；我不是很喜欢《我的天才女友》电视剧，在女朋友的强烈安利下勉强看完了第一季，但没找到什么共鸣；我喜欢《极限挑战》前四季，不认为黄磊在各个综艺里的表现有任何「爹味」问题且对他的才智和能力表示钦佩；我经常看 B 站 UP 主峰哥亡命天涯的视频，偶尔也看一眼他的直播；我喜欢看宠物博主们可爱的猫猫狗狗视频；我会关注军事自媒体账号，了解最新的世界军事动态；我热衷于研究投资和资产配置，喜欢写代码、做产品，偏理工科思维，讲究有逻辑的思考，但也有很多在文艺上偏女性化的审美趣味；作为直男，我也天然的会对美女自发地产生好感；我开车会经常吐槽路上不遵守交规的男女司机的各种行为，有时也感到生气和愤怒；我认同女性主义的价值和诉求，当然我相信我依然有很多所谓不「女性主义」的想法和行为，但我悦纳自己意识和行为上的改变，不为任何主义，只为一个更具进步性的自己；……</p>
-<p>我很想问问那些在女性主义议题上站在光谱两个极端上的人，像我这样的一个真实个体，又要被打上哪样的标签，归类于什么成分呢？</p>
-<p><a href="http://xhslink.com/a/MUcMi2cj5pq1">邵艺辉导演在采访中对如何避免女性主义走向极端的问题有很精彩的回答</a>：</p>
-<blockquote>
-<p>大部分人首先是理智的，只有不理智的人才容易落入到不理智的极端。我是比较相信人的理性、控制和平等沟通交流的渴望的，只要我们有这种交流的耐心。</p>
-<p>女性主义本来就是一个又解放男人又解放女人的一个共同利好的事儿。</p>
-</blockquote>
-<p>人是复杂多样的动态有机生物体，人个体的喜好和行为从概率上来看其实是很随机的。人类社会一定是不断螺旋向前发展进步的，但固守成见的人一定意味着个体认知能力和水平的停滞和衰退。</p>
-<p>朋友，不管你是男是女，让我们都做一个开放、多元、包容、追求进步的正常个体，让整个社会更理想一点。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>女性主义</tag>
-        <tag>《好东西》</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Maples7 个人开源计划（4）</title>
     <url>/2024/12/21/open-source-maples7-4/</url>
     <content><![CDATA[<p>年底还会发今年的书单以及按照惯例融入其中的简单的总结、展望，所以先更新一篇《开源计划》。</p>
@@ -2864,6 +2816,54 @@ _Farewell and thanks to each for the company_
         <tag>Maples7 个人开源计划</tag>
         <tag>房地产</tag>
         <tag>中国经济</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>男性也可以支持女性主义进步思潮</title>
+    <url>/2024/12/11/male-and-feminism/</url>
+    <content><![CDATA[<p><a href="https://maples7.com/2024/12/01/open-source-maples7-3/">上一期《开源计划》</a>已经提到了我关于女性主义的一些想法，但为什么还想单写一篇来聊这个话题？</p>
+<p>起因是最近确实看了很多涉及所谓女性主义题材的各种文艺作品，包括电影《好东西》、《某种物质》的解说、国内综艺《再见爱人4》及一些 UP 主的解说、韩综《思想验证区域：The Community》及一些 UP 主的解说。本来这些文艺作品看过也就看过了，对自己的认知和看法有一些提升，还不至于到想要到公共话语空间表达些什么的程度。但直到最近小红书越来越频繁的刷到各种对《好东西》电影的差评和豆瓣 9.1 分的质疑，以及这些帖子评论区味儿太冲的各种保守派父权言论之后，我决定还是要单写一篇，多为女性主义发声！</p>
+<p>作为互联网的几大粪坑话题之一，公开聊这个是很有风险的，你不知道你的哪句话又惹恼了哪个意见相左的群体，很多网友在网络环境下会失去深度思考和换位思考的能力，经常不分青红皂白就开始骂人吵架，但我会尽力维护这里的理性、克制和包容，不支持任何极端想法和言论，无关性别。理智沟通，多讨论多交流，真理越辩越明！</p>
+<span id="more"></span>
+
+<p>提前声明，我当然不是什么女性主义研究专家，实际上我也只知道很碎片化的一些女性主义思想，并未做任何系统研究，但我觉得有些我看到的观点确实提升了我的认知。我更不是《好东西》里讽刺的女权表演艺术家，在真正通过正确的渠道和途径了解到真正正确的女性主义思想之前，我也对偶尔在网络上看到的极端女权和田园女权行为和言论嗤之以鼻。在我以前的朴素观念里，对于这个议题，我自认为我是一个平权主义者，男女或许性别上有客观的生理差异，但主要还是讲究考虑客观生理差异的前提下，在各个领域的权益的公正平等，也不真正了解女性主义的真正诉求到底是什么。我相信依然有很多自认为有进步思想的男性对待女性主义还是这样的看法。</p>
+<p>就像我偶然在豆瓣看到的一个男生写的<a href="https://www.douban.com/doubanapp/dispatch?uri=/status/4803315042/&_i=3385289527121cd&dt_dapp=1">这样一个帖子</a>：</p>
+<p><img data-src="https://s2.loli.net/2024/12/11/bPGo7hvVtulaOyM.jpg" alt="豆瓣网友关于男性对女性主义的看法"></p>
+<p>这个帖子讲述了他在女性主义议题上的心路历程，我觉得很真诚也很有代表性。人天生是没有这些所谓的主义和社会观念的，但「人人生而平等」的良善却是作为人从小就应该追求的基本原则。朴素的有着正常价值观的男性在女性主义议题上很容易经历同样的心路历程。</p>
+<p>这是我在这个帖子下有感而发的回复，以及跟网友的「辩论」：</p>
+<p><img data-src="https://s2.loli.net/2024/12/11/Gy1HvcdWLzi2rTo.jpg" alt="我在豆瓣的男性对女性主义看法帖子下回复的讨论"></p>
+<p>我承认，男性如果要在女性主义上支持女性主义是很有难度的，这会产生表面上身份认同的矛盾，在社区讨论里更是可能落得「里外不是人」两边立场都不讨好的的下场。一方面，由于客观生理差异和长期的社会结构化问题，男性无法真正同女性做到感同身受；另一方面，作为天然的性别特征，在长期固化的社会结构下，男性确实又在很多方面享受着「第一性」带来的优势。但正如我在<a href="https://maples7.com/2024/12/01/open-source-maples7-3/">上一期《开源计划》</a>和上面的回复中所说的，<strong>真正的女性主义思想内核其实是反压迫、反剥削、追求平等公正，这跟其他人权斗争思潮（比如阶级议题）的内核都是一致的</strong>。反父权社会就是在反压迫和反剥削。</p>
+<p>我的女性主义思想启蒙除了最初在网上看到的一些社会现象和一些激进的网络言论，更多的还是女朋友给我的。我们会在一些社会议题和文艺作品上讨论女性主义观点，她也会看一点上野千鹤子的书，但我并没有真正看过，只是知道有这样的书和书中提炼出的一些观点。在生活中偶尔讨论到这些话题时，我觉得是女朋友温和的性格和讲道理逻辑的能力让我逐渐抛弃了一些对女权的刻板印象和错误认知（但不否认这样对极端女权和田园女权的刻板印象在网络上依然是真实存在的），我慢慢意识到真正的女性主义思想并没有我认为的那样极端和反智。</p>
+<p>最近看到的一些文艺作品让我对真正的女性主义思想的具体观点和诉求有了更清晰的认知，我同样强烈安利给所有人：</p>
+<ul>
+<li>UP 主陈小姐的十五楼对《某种物质》的拉片（共三集）：<ul>
+<li><a href="https://b23.tv/Vmc1Wr7">她是女性却认同父权所定义的女性价值！《某种物质》拉片第一集（共3集）-哔哩哔哩</a></li>
+<li><a href="https://b23.tv/ET1q7W2">当代女性困境：既要女人生又要女人死！《某种物质》拉片第二集（共3集）-哔哩哔哩</a></li>
+<li><a href="https://b23.tv/Q5IqkBW">父权不是男权！《某种物质》拉片第三集（共3集）-哔哩哔哩</a></li>
+</ul>
+</li>
+<li><a href="https://b23.tv/6UH4cl4">从画像事件到熏鸡事变！麦琳发疯的本质是厌女？|《再见爱人4》深度解读01-哔哩哔哩</a></li>
+</ul>
+<p>尤其是陈小姐对《某种物质》的拉片分析，先不简单评论观点的对错，至少让我对真正的女性主义观点有了实感和更深入的思考。</p>
+<p>我之所以非常喜欢《好东西》，除了电影本身的质量确实就很高以外，我还倾佩于邵艺辉导演在采访中透露出的价值观念和社会认知。她是真正对女性主义的各种话题有过深入思考的，从她的这些思考中诞生了她的两部电影作品，真诚又别致，对敏感和沉重话题的表现手法上又有独具一格、颇具匠心的轻盈灵巧。抛开各种主义，她的两部电影单论电影质量我都很喜欢，甚至有一种想让自己生活在电影中这样美好的社区氛围下的感觉，这是很独特的观影体验。对生活的艺术表现也丝毫不让我觉得悬浮，电影中的事件源于真实生活，也贴近现实生活。</p>
+<p>这样真诚又富有沟通技巧的人也能因为点赞了一条微博被「猎巫」到关闭主页和关注，确实很容易让人对当下公共话语空间的舆论氛围感到绝望。但环境再差，我也还是会选择正面表达和发声，因为我「正直、勇敢、有阅读量」。我也认为理智有思考的人要更多的躬身入局、主动发声（虽然他们往往因为更在意自己表达的准确严谨而倾向于谨慎发言），有些话语空间理智的思想不去占领就会被极端言论占领，我依然相信人性中真善美本源的存在。</p>
+<p>最后，说说我自己的一些特质：</p>
+<p>我喜欢《好东西》和《爱情神话》，也喜欢《教父》、《让子弹飞》这些在这几天网络上很火的所谓的「老登电影」（我理解这个词对「小妞电影」这个词的讽刺意味），都是我认为的值得目前豆瓣评分的作品，《芭比》我觉得还行，但不觉得比《好东西》好；我不是很喜欢《我的天才女友》电视剧，在女朋友的强烈安利下勉强看完了第一季，但没找到什么共鸣；我喜欢《极限挑战》前四季，不认为黄磊在各个综艺里的表现有任何「爹味」问题且对他的才智和能力表示钦佩；我经常看 B 站 UP 主峰哥亡命天涯的视频，偶尔也看一眼他的直播；我喜欢看宠物博主们可爱的猫猫狗狗视频；我会关注军事自媒体账号，了解最新的世界军事动态；我热衷于研究投资和资产配置，喜欢写代码、做产品，偏理工科思维，讲究有逻辑的思考，但也有很多在文艺上偏女性化的审美趣味；作为直男，我也天然的会对美女自发地产生好感；我开车会经常吐槽路上不遵守交规的男女司机的各种行为，有时也感到生气和愤怒；我认同女性主义的价值和诉求，当然我相信我依然有很多所谓不「女性主义」的想法和行为，但我悦纳自己意识和行为上的改变，不为任何主义，只为一个更具进步性的自己；……</p>
+<p>我很想问问那些在女性主义议题上站在光谱两个极端上的人，像我这样的一个真实个体，又要被打上哪样的标签，归类于什么成分呢？</p>
+<p><a href="http://xhslink.com/a/MUcMi2cj5pq1">邵艺辉导演在采访中对如何避免女性主义走向极端的问题有很精彩的回答</a>：</p>
+<blockquote>
+<p>大部分人首先是理智的，只有不理智的人才容易落入到不理智的极端。我是比较相信人的理性、控制和平等沟通交流的渴望的，只要我们有这种交流的耐心。</p>
+<p>女性主义本来就是一个又解放男人又解放女人的一个共同利好的事儿。</p>
+</blockquote>
+<p>人是复杂多样的动态有机生物体，人个体的喜好和行为从概率上来看其实是很随机的。人类社会一定是不断螺旋向前发展进步的，但固守成见的人一定意味着个体认知能力和水平的停滞和衰退。</p>
+<p>朋友，不管你是男是女，让我们都做一个开放、多元、包容、追求进步的正常个体，让整个社会更理想一点。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>女性主义</tag>
+        <tag>《好东西》</tag>
       </tags>
   </entry>
   <entry>
@@ -3098,5 +3098,12 @@ _Farewell and thanks to each for the company_
       <categories>
         <category>浮生散记</category>
       </categories>
+      <tags>
+        <tag>社会生活</tag>
+        <tag>阶层固化</tag>
+        <tag>社会学</tag>
+        <tag>婚礼</tag>
+        <tag>成长</tag>
+      </tags>
   </entry>
 </search>
