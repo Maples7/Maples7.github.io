@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-05-28T09:46:42.275Z</updated>
+  <updated>2025-05-28T11:54:50.860Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://maples7.com/2025/05/27/open-source-maples7-7/"/>
     <id>https://maples7.com/2025/05/27/open-source-maples7-7/</id>
     <published>2025-05-27T08:16:04.000Z</published>
-    <updated>2025-05-28T09:46:42.275Z</updated>
+    <updated>2025-05-28T11:54:50.860Z</updated>
     
     
     <summary type="html">&lt;p&gt;一个多月没有更新了，这期间主要精力都在备婚并且在老家办了婚礼，也是完结了一件大事，现在终于有时间来更新一篇《开源计划》。&lt;/p&gt;
@@ -255,9 +255,9 @@
     <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
     
     
-    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
-    
     <category term="女性主义" scheme="https://maples7.com/tags/%E5%A5%B3%E6%80%A7%E4%B8%BB%E4%B9%89/"/>
+    
+    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     <category term="Vision Pro" scheme="https://maples7.com/tags/Vision-Pro/"/>
     
