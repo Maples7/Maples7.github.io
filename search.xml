@@ -232,6 +232,59 @@
       </tags>
   </entry>
   <entry>
+    <title>完全理解同步/异步与阻塞/非阻塞</title>
+    <url>/2016/08/24/understand-sync-async-and-blocking-non-blocking/</url>
+    <content><![CDATA[<p>随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。</p>
+<p>可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。</p>
+<p>本文力求以简明的语言来解释清楚这几个概念并加以区分，但不涉及到 Node.js 底层的具体实现。</p>
+<span id="more"></span>
+
+<h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
+<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
+<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
+<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
+<p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
+<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
+<p>对于同步型的调用，应用层需要自己去向系统内核问询，如果数据还未读取完毕，那此时读取文件的任务还未完成，应用层根据其阻塞和非阻塞的划分，或挂起或去做其他事情（所以同步和异步并不决定其等待数据返回时的状态）；如果数据已经读取完毕，那此时系统内核将数据返回给应用层，应用层即可以用取得的数据做其他相关的事情。</p>
+<p>而对于异步型的调用，应用层无需主动向系统内核问询，在系统内核读取完文件数据之后，会主动通知应用层数据已经读取完毕，此时应用层即可以接收系统内核返回过来的数据，再做其他事情。</p>
+<p>这便是（脱离阻塞和非阻塞来说之后）同步和异步的区别。也就是说，是否是同步还是异步，关注的是任务完成时消息通知的方式。由调用方盲目主动问询的方式是同步调用，由被调用方主动通知调用方任务已完成的方式是异步调用。</p>
+<p><img data-src="https://i.loli.net/2018/08/06/5b672dabecc59.png" alt="同步和异步调用模型"></p>
+<h3 id="Node-js-的异步非阻塞模型"><a href="#Node-js-的异步非阻塞模型" class="headerlink" title="Node.js 的异步非阻塞模型"></a>Node.js 的异步非阻塞模型</h3><p>完整来说，一个最高效且理想的文件读取异步非阻塞模型应该是这样的：应用层发起调用后系统内核立即返回（还没有文件内容数据），应用层继续做其他无关的事情，在系统内核从磁盘读取完数据之后主动通知应用层任务已完成，应用层此时接收系统内核返回的数据，然后继续做其他相关或不相关的事情。</p>
+<p>可以看到，在这个模型中，没有无谓的挂起、休眠与等待，也没有盲目无知的问询与检查，应用层做到不等候片刻的最大化利用自身的资源，系统内核也十分「善解人意」的在完成任务后主动通知应用层来接收任务成果。</p>
+<p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
+<p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
+<p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
+<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
+<p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
+<h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
+<p>假设小明需要在网上下载一个软件：</p>
+<ul>
+<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，这是同步阻塞；</li>
+<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，但是软件下载完成其实是会「叮」的一声通知的（但小明依然那样干等着），这是异步阻塞；（不常见）</li>
+<li>如果小明点击下载按钮之后，就去做其他事情了，不过他总需要时不时瞄一眼屏幕看软件是不是下载完成了，这是同步非阻塞；</li>
+<li>如果小明点击下载按钮之后，就去做其他事情了，软件下载完之后「叮」的一声通知小明，小明再回来继续处理下载完的软件，这是异步非阻塞。</li>
+</ul>
+<p>相信看完以上这个案例之后，这几个概念已经能够分辨得很清楚了。</p>
+<p>总的来说，同步和异步关注的是<strong>任务完成消息通知的机制</strong>，而阻塞和非阻塞关注的是<strong>等待任务完成时请求者的状态</strong>。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
+<li><a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第三章；</li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5OTA1MDUyMA==&mid=2655435714&idx=2&sn=dd23e9d357c3adce3bc1b78956d10105&scene=1&srcid=0423LaJvwtyeAr3OMFwcJeAg#wechat_redirect">聊聊同步、异步、阻塞与非阻塞</a>；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>同步</tag>
+        <tag>异步</tag>
+        <tag>阻塞</tag>
+        <tag>非阻塞</tag>
+        <tag>「完全理解」系列</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>巴山蜀水毓灵秀</title>
     <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
@@ -318,59 +371,6 @@
         <tag>Node.js</tag>
         <tag>循环依赖</tag>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>完全理解同步/异步与阻塞/非阻塞</title>
-    <url>/2016/08/24/understand-sync-async-and-blocking-non-blocking/</url>
-    <content><![CDATA[<p>随便翻开一本 Node.js 入门书籍的绪论部分，一般都可以看到「异步」、「单线程」、「非阻塞」这样的字眼。因其采用异步非阻塞的模型而构建，Node.js 得以能充分利用 CPU 资源，具有极强的处理高并发请求的能力。</p>
-<p>可是到底什么是同步和异步？什么是阻塞和非阻塞？同步就意味着阻塞吗？异步就一定是非阻塞吗？即便是业务经验十分丰富的 Node.js 程序员，都不一定对这些概念辨别得十分明晰。</p>
-<p>本文力求以简明的语言来解释清楚这几个概念并加以区分，但不涉及到 Node.js 底层的具体实现。</p>
-<span id="more"></span>
-
-<h3 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h3><p>从简单的开始，我们以经典的读取文件的模型举例。（对操作系统而言，所有的输入输出设备都被抽象成文件。）</p>
-<p>在发起读取文件的请求时，应用层会调用系统内核的 I&#x2F;O 接口。</p>
-<p>如果应用层调用的是阻塞型 I&#x2F;O，那么在调用之后，应用层即刻被挂起，一直出于等待数据返回的状态，直到系统内核从磁盘读取完数据并返回给应用层，应用层才用获得的数据进行接下来的其他操作。</p>
-<p>如果应用层调用的是非阻塞 I&#x2F;O，那么调用后，系统内核会立即返回（虽然还没有文件内容的数据），应用层并不会被挂起，它可以做其他任意它想做的操作。（至于文件内容数据如何返回给应用层，这已经超出了阻塞和非阻塞的辨别范畴。）</p>
-<p>这便是（脱离同步和异步来说之后）阻塞和非阻塞的区别。总结来说，是否是阻塞还是非阻塞，关注的是接口调用（发出请求）后等待数据返回时的状态。被挂起无法执行其他操作的则是阻塞型的，可以被立即「抽离」去完成其他「任务」的则是非阻塞型的。</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b672dabdf36a.png" alt="阻塞和非阻塞调用模型"></p>
-<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>阻塞和非阻塞解决了应用层等待数据返回时的状态问题，那系统内核获取到的数据到底如何返回给应用层呢？这里不同类型的操作便体现的是同步和异步的区别。</p>
-<p>对于同步型的调用，应用层需要自己去向系统内核问询，如果数据还未读取完毕，那此时读取文件的任务还未完成，应用层根据其阻塞和非阻塞的划分，或挂起或去做其他事情（所以同步和异步并不决定其等待数据返回时的状态）；如果数据已经读取完毕，那此时系统内核将数据返回给应用层，应用层即可以用取得的数据做其他相关的事情。</p>
-<p>而对于异步型的调用，应用层无需主动向系统内核问询，在系统内核读取完文件数据之后，会主动通知应用层数据已经读取完毕，此时应用层即可以接收系统内核返回过来的数据，再做其他事情。</p>
-<p>这便是（脱离阻塞和非阻塞来说之后）同步和异步的区别。也就是说，是否是同步还是异步，关注的是任务完成时消息通知的方式。由调用方盲目主动问询的方式是同步调用，由被调用方主动通知调用方任务已完成的方式是异步调用。</p>
-<p><img data-src="https://i.loli.net/2018/08/06/5b672dabecc59.png" alt="同步和异步调用模型"></p>
-<h3 id="Node-js-的异步非阻塞模型"><a href="#Node-js-的异步非阻塞模型" class="headerlink" title="Node.js 的异步非阻塞模型"></a>Node.js 的异步非阻塞模型</h3><p>完整来说，一个最高效且理想的文件读取异步非阻塞模型应该是这样的：应用层发起调用后系统内核立即返回（还没有文件内容数据），应用层继续做其他无关的事情，在系统内核从磁盘读取完数据之后主动通知应用层任务已完成，应用层此时接收系统内核返回的数据，然后继续做其他相关或不相关的事情。</p>
-<p>可以看到，在这个模型中，没有无谓的挂起、休眠与等待，也没有盲目无知的问询与检查，应用层做到不等候片刻的最大化利用自身的资源，系统内核也十分「善解人意」的在完成任务后主动通知应用层来接收任务成果。</p>
-<p>Node.js 是不是就是这样实现的呢？是，也不是。</p>
-<p>现实总是比理想骨感，系统内核并没有理想中那样「善解人意」。异步模型的内核调用在各个平台上实现不一，而且各有各的问题，所以实际上， Node.js 其实是借助多线程来模拟实现了上述理想的异步非阻塞模型。</p>
-<p>有人可能有疑问，前面不是说 Node.js 是单线程的吗？</p>
-<p>实际上单线程是对用户（使用 Node.js 进行上层开发的程序员，而不是开发 Node.js 的人员）而言的。Node.js 在底层对多个 I&#x2F;O 操作是借助多线程实现异步非阻塞的，具体来说，Node.js 总是存在一个主线程，用来管理调度 I&#x2F;O 线程并进行运算，而其他的线程都是 I&#x2F;O 线程。I&#x2F;O 线程在主线程的调度下与系统内核进行交互完成完成 I&#x2F;O 操作并把数据返回给主线程，而主线程对 I&#x2F;O 线程的调度就完全是上述异步非阻塞的（至于 I&#x2F;O 线程是异步还是同步、阻塞还是非阻塞，已经不重要了，因为它不影响主线程的效率，只要它能按时返回预期的数据就行）。我们平时所说的 Node.js 是单线程的，就是指 Node.js 的主线程。I&#x2F;O 线程完全是对用户屏蔽的，所以用户根本无需关心。</p>
-<p>这也解释了为什么我们要避免书写计算密集型或者阻塞的代码，一旦主线程被阻塞，那整个应用就是真的都被阻塞了。</p>
-<h3 id="场景举例与总结"><a href="#场景举例与总结" class="headerlink" title="场景举例与总结"></a>场景举例与总结</h3><p>最后，再来举一个我们日常的例子来加深对这几个概念的理解。</p>
-<p>假设小明需要在网上下载一个软件：</p>
-<ul>
-<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，这是同步阻塞；</li>
-<li>如果小明点击下载按钮之后，就一直干瞪着进度条不做其他任何事情直到软件下载完成，但是软件下载完成其实是会「叮」的一声通知的（但小明依然那样干等着），这是异步阻塞；（不常见）</li>
-<li>如果小明点击下载按钮之后，就去做其他事情了，不过他总需要时不时瞄一眼屏幕看软件是不是下载完成了，这是同步非阻塞；</li>
-<li>如果小明点击下载按钮之后，就去做其他事情了，软件下载完之后「叮」的一声通知小明，小明再回来继续处理下载完的软件，这是异步非阻塞。</li>
-</ul>
-<p>相信看完以上这个案例之后，这几个概念已经能够分辨得很清楚了。</p>
-<p>总的来说，同步和异步关注的是<strong>任务完成消息通知的机制</strong>，而阻塞和非阻塞关注的是<strong>等待任务完成时请求者的状态</strong>。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://book.douban.com/subject/25768396/">《深入浅出 Node.js》</a>第三章；</li>
-<li><a href="http://mp.weixin.qq.com/s?__biz=MjM5OTA1MDUyMA==&mid=2655435714&idx=2&sn=dd23e9d357c3adce3bc1b78956d10105&scene=1&srcid=0423LaJvwtyeAr3OMFwcJeAg#wechat_redirect">聊聊同步、异步、阻塞与非阻塞</a>；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Node.js</tag>
-        <tag>同步</tag>
-        <tag>异步</tag>
-        <tag>阻塞</tag>
-        <tag>非阻塞</tag>
-        <tag>「完全理解」系列</tag>
       </tags>
   </entry>
   <entry>
@@ -531,32 +531,6 @@
       </tags>
   </entry>
   <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用 Swagger 构建 Express API Server 的文档系统</title>
     <url>/2016/09/06/build-doc-system-of-express-api-server-with-swagger/</url>
     <content><![CDATA[<p>如<a href="http://maples7.com/2016/09/05/build-qualified-restful-api-server/">上一篇博客</a>所说，好的文档系统对 API Server 至关重要，本文介绍在 Express 框架中使用 Swagger 构建一个良好的项目文档系统的基本流程，同时明确一些实践过程中肯定会遇到的问题的解决方案。本文遵循<code>Swagger 2.0</code>使用规范。</p>
@@ -629,6 +603,32 @@ _Farewell and thanks to each for the company_
         <tag>API</tag>
         <tag>Express</tag>
         <tag>Swagger</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -859,6 +859,43 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>程序员：请不要丢失你的敬畏心</title>
+    <url>/2016/12/09/show-your-respect/</url>
+    <content><![CDATA[<center><b>暗</b></center>
+
+<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
+<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
+<span id="more"></span>
+
+<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
+<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
+<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
+<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
+<center><b>明</b></center>
+
+<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
+<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
+<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
+<p>就像读书的三境界一样，关于认知也有四重境界：</p>
+<ol>
+<li>You don’t know that you don’t know</li>
+<li>You know that you don’t know</li>
+<li>You know that you know</li>
+<li>You don’t know that you know</li>
+</ol>
+<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
+<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
+<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>敬畏之心</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>为 Node.js 正名的二三事</title>
     <url>/2016/12/15/awesome-node/</url>
     <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
@@ -892,68 +929,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>Node.js</tag>
         <tag>Web 开发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>译文 | 为什么面向对象很糟糕</title>
-    <url>/2017/02/09/why-oo-sucks/</url>
-    <content><![CDATA[<blockquote>
-<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
-</blockquote>
-<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
-<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
-<span id="more"></span>
-
-<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
-<blockquote>
-<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
-</blockquote>
-<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
-<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
-<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
-<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
-<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
-<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
-<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
-<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
-<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
-<p>这里没有与之相关联的那些方法。</p>
-<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
-<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
-<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
-<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
-<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
-<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
-<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
-<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
-<ul>
-<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
-<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
-<li>纯粹的声明式语言说：这里没有状态一说。</li>
-</ul>
-<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
-<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
-<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
-<li>理由一：它被认为是容易学习的</li>
-<li>理由二：它被认为可以使代码更易复用</li>
-<li>理由三：是炒作</li>
-<li>理由四：它创造了一个新的软件产业</li>
-</ul>
-<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
-<p>这就是面向对象背后真正的驱动力量。</p>
-<blockquote>
-<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-        <tag>Erlang</tag>
       </tags>
   </entry>
   <entry>
@@ -1037,6 +1012,68 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>译文 | 为什么面向对象很糟糕</title>
+    <url>/2017/02/09/why-oo-sucks/</url>
+    <content><![CDATA[<blockquote>
+<p>作者简介：Joe Armstrong，编程语言 Erlang 之父。<br>参考原文地址：<a href="http://harmful.cat-v.org/software/OO_programming/why_oo_sucks">Why OO Sucks by Joe Armstrong</a>。</p>
+</blockquote>
+<p>当我第一次接触到面向对象编程的概念时，我是持怀疑态度的，可是我并不知道这是为什么——我就是觉得哪里不大对。在面向对象编程的概念面世后，它很快变得非常流行（稍后我会解释这是为什么），而对它的批评之声就像是「教堂里的誓言」（译注：形容微不足道）。面向对象的特性变成了每个受人尊敬的编程语言都不得不拥有的东西。</p>
+<p>在 Erlang 变得越来越流行的过程中，我们经常被人问：Erlang 是面向对象的吗？好吧，尽管正确的答案是「不，当然不是」，但我们并没有当面大声的说出来。我们发明了一系列独创的方式来回答这个问题，以便给人 Erlang 是（有几分）支持面向对象但又不真的是的印象。</p>
+<span id="more"></span>
+
+<p>此刻我想起了在巴黎第七届 IEEE 逻辑编程大会上， IBM （法国）的老板在演讲中向听众强调的事情。IBM 的 prolog 已经被加入了很多面向对象的扩展，当问起为什么时他回答说：</p>
+<blockquote>
+<p>我们的顾客想要面向对象的 prolog，所以我们创造了面向对象的 prolog。</p>
+</blockquote>
+<p>我始终记得如此简单的回答，没有良心不安，也没有灵魂拷问，更没有问一句：面向对象真的是正确的做法吗？</p>
+<h2 id="为什么面向对象很糟糕"><a href="#为什么面向对象很糟糕" class="headerlink" title="为什么面向对象很糟糕"></a>为什么面向对象很糟糕</h2><p>对于面向对象，我主要的反对点要落实在相关的基础概念上，我将会列出这些概念和我反对的理由。</p>
+<h3 id="反对点-1：数据结构和函数不应该被绑定在一起"><a href="#反对点-1：数据结构和函数不应该被绑定在一起" class="headerlink" title="反对点 1：数据结构和函数不应该被绑定在一起"></a>反对点 1：数据结构和函数不应该被绑定在一起</h3><p>对象在不可分割的微小单元里把函数和数据结构绑定在一起。我认为这是一个根本的错误，因为函数和数据结构完全属于不同的世界。为什么呢？</p>
+<p>函数用来做事情，它们有输入和输出。输入和输出是数据结构，并且被函数所改动。在大部分编程语言里，函数由一系列指令组成：先做这个然后去做那个事情。为了理解函数，你必须理解事情被完成的顺序（在惰性函数式编程语言和逻辑语言里，这个限制没那么严格）。</p>
+<p>数据结构就是数据结构，它们不做事情。它们本质上是声明式的。理解一个数据结构比理解一个函数要简单得多。</p>
+<p>函数被视为转换输入成输出的黑匣子。如果我理解了输入和输出我就理解了这个函数，但这并不意味着我已经能够写出这个函数了。</p>
+<p>函数通常通过观察来理解，它们是计算系统中的一部分，这个系统的工作就是把类型为 T1 的数据结构转换为类型为 T2 的数据结构。</p>
+<p>因为函数和数据结构是完全不同的东西，所以把它们硬绑定在一起在根本上就是错误的。</p>
+<h3 id="反对点-2：万物皆对象"><a href="#反对点-2：万物皆对象" class="headerlink" title="反对点 2：万物皆对象"></a>反对点 2：万物皆对象</h3><p>我们来考虑一下「时间」。在一门面向对象的语言里，「时间」必须是一个对象。但是在一个非面向对象的语言里，「时间」是一种数据类型的实例。例如，在 Erlang 里，有许多不同种类的时间，它们能够用类型声明来清清楚楚的定义出来，就像下面这样：</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">-deftype day<span class="params">()</span> = 1..<span class="number">31</span>.</span><br><span class="line">-deftype month<span class="params">()</span> = 1..<span class="number">12</span>.</span><br><span class="line">-deftype year<span class="params">()</span> = int<span class="params">()</span>.</span><br><span class="line">-deftype hour<span class="params">()</span> = 1..<span class="number">24</span>.</span><br><span class="line">-deftype minute<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype second<span class="params">()</span> = 1..<span class="number">60</span>.</span><br><span class="line">-deftype abstime<span class="params">()</span> = &#123;abstime, year<span class="params">()</span>, month<span class="params">()</span>, day<span class="params">()</span>, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">-deftype hms<span class="params">()</span> = &#123;hms, hour<span class="params">()</span>, min<span class="params">()</span>, sec<span class="params">()</span>&#125;.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意这些定义不属于任何特定的对象。它们无处不在，并且用数据结构来表示的时间能够被系统中的任何函数操作。</p>
+<p>这里没有与之相关联的那些方法。</p>
+<h3 id="反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"><a href="#反对点-3：在一门面向对象的编程语言里，数据类型定义散落在各个地方" class="headerlink" title="反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方"></a>反对点 3：在一门面向对象的编程语言里，数据类型定义散落在各个地方</h3><p>在一门面向对象的编程语言里，数据类型定义属于对象。所以我不能在某个地方找到所有的数据类型定义。在 Erlang 或者 C 里，我可以在一个简单的 include 文件或者数据字典里定义我的所有的数据类型。在面向对象语言里我不能这样做，数据类型定义散落在各个地方。</p>
+<p>我来举个例子。假设我要定义一种无处不在的数据结构。「无处不在」指的是在系统的各个地方都有可能出现。</p>
+<p>Lisp 程序员可能早已知道，相比于大量的数据类型和一小撮作用于它们的函数来说，定义一小部分无处不在的数据类型和大量作用于它们的函数会更好。</p>
+<p>一种无处不在的数据结构是那种类似于链表、数组、哈希表或者时间、数据或文件名这样更高级的对象的东西。</p>
+<p>在面向对象编程语言里，我不得不选择某个基础的对象去定义普遍存在的数据结构，所有其他想要使用这些数据结构的对象都必须继承这个基础对象。假设我现在想要创造某个「时间」对象，它应该属于哪里呢……</p>
+<h3 id="反对点-4：对象有私有状态"><a href="#反对点-4：对象有私有状态" class="headerlink" title="反对点 4：对象有私有状态"></a>反对点 4：对象有私有状态</h3><p>状态是万恶之源。在特定的有副作用的函数里应该被避免。</p>
+<p>虽然编程语言中的状态可以是不可获得的，但现实世界里的状态却十分之多。我对我银行账户的状态十分感兴趣，并且当我从中存入和取出一些钱的时候，我也希望我的银行账户的状态能够被正确地更新。</p>
+<p>提出一个问题：在现实世界里存在的状态，一门编程语言应该提供什么工具来处理它们呢？</p>
+<ul>
+<li>面向对象编程语言说：从程序员那里隐藏这些状态。这些状态被隐藏并且只能通过特定的访问函数来获得。</li>
+<li>传统的编程语言（比如 C，Pascal）说：状态变量的可见性由语言的作用域规则来控制。</li>
+<li>纯粹的声明式语言说：这里没有状态一说。</li>
+</ul>
+<p>系统的全局状态从各个函数中进进出出。像单体结构（对于函数式编程语言）和分布式结构（对于逻辑语言）这样的机制被用来从程序员手中隐藏状态，这样他们就可以像「状态似乎不重要」一样来编程。不过，拥有对系统状态的全部访问权限是必要的。</p>
+<p>面向对象编程语言选择「从程序员手中隐藏状态」是十分糟糕的选择。它们不但不展现状态和找到减少令人讨厌的状态的方法，反而把它们都藏了起来。</p>
+<h2 id="为什么面向对象如此流行？"><a href="#为什么面向对象如此流行？" class="headerlink" title="为什么面向对象如此流行？"></a>为什么面向对象如此流行？</h2><ul>
+<li>理由一：它被认为是容易学习的</li>
+<li>理由二：它被认为可以使代码更易复用</li>
+<li>理由三：是炒作</li>
+<li>理由四：它创造了一个新的软件产业</li>
+</ul>
+<p>我没有明白理由一和理由二为什么成立。理由三和四似乎是技术背后的驱动力量。如果一门语言技术是如此糟糕但是它却创造了一个新的产业来解决它自己产生的问题，那对于很多想赚钱的人来说一定是个好主意。</p>
+<p>这就是面向对象背后真正的驱动力量。</p>
+<blockquote>
+<p>译注：文章观点仅供参考，作者本人后来也说自己的观点或许有些不成熟。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>面向对象</tag>
+        <tag>Erlang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Express 性能调优</title>
     <url>/2017/03/03/express-run-faster/</url>
     <content><![CDATA[<p>最近遇到了一个奇怪的事情，自己负责的一个项目的 RC（Release Condidate）版本突然在某一天打开时访问非常之慢，达到了完全不能接受的程度。奇怪的是，就在前一天，页面的访问速度至少是不会让人觉得不可接受的。更加奇怪的是，代码我完全没有改动过。</p>
@@ -1086,43 +1123,6 @@ _Farewell and thanks to each for the company_
         <tag>Node.js</tag>
         <tag>Express</tag>
         <tag>性能调优</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>程序员：请不要丢失你的敬畏心</title>
-    <url>/2016/12/09/show-your-respect/</url>
-    <content><![CDATA[<center><b>暗</b></center>
-
-<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
-<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
-<span id="more"></span>
-
-<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
-<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
-<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
-<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
-<center><b>明</b></center>
-
-<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
-<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
-<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
-<p>就像读书的三境界一样，关于认知也有四重境界：</p>
-<ol>
-<li>You don’t know that you don’t know</li>
-<li>You know that you don’t know</li>
-<li>You know that you know</li>
-<li>You don’t know that you know</li>
-</ol>
-<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
-<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
-<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>敬畏之心</tag>
       </tags>
   </entry>
   <entry>
@@ -1800,7 +1800,7 @@ _Farewell and thanks to each for the company_
 <p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
 <p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#x69;&#64;&#115;&#101;&#x6e;&#105;&#x76;&#101;&#114;&#x73;&#101;&#46;&#99;&#111;&#x6d;&#x3f;&#x73;&#x75;&#98;&#x6a;&#101;&#99;&#116;&#61;&#25991;&#x7ae0;&#36716;&#36733;&#25480;&#26435;&#30003;&#x8bf7;">心知天气</a>获取授权】</strong></p>
+<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#x69;&#x40;&#x73;&#x65;&#110;&#105;&#x76;&#101;&#114;&#115;&#x65;&#x2e;&#x63;&#x6f;&#109;&#63;&#115;&#117;&#98;&#x6a;&#101;&#99;&#116;&#61;&#25991;&#x7ae0;&#x8f6c;&#36733;&#x6388;&#x6743;&#30003;&#x8bf7;">心知天气</a>获取授权】</strong></p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
@@ -1808,6 +1808,60 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>高并发</tag>
         <tag>系统架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>把 Airflow 搬进 Kubernetes</title>
+    <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
+    <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
+<p>简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 <a href="https://airflow.apache.org/concepts.html#dags">DAG</a> 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 <a href="https://airflow.apache.org/howto/executor/use-celery.html">Celery Executor</a> 来把任务动态分布到多个 Worker 上执行。</p>
+<span id="more"></span>
+
+<p>如果数据处理任务长期不变，这样的系统已经可以满足我们的需求了。但实际上随着越来越多的数据任务被添加到整个系统，任务负载变得越来越重，很多时候固定数量的 Worker 已经不能及时的处理完被 scheduled 的任务，造成任务队列堆积，一段时间后如果一直不能改善负载情况甚至会拖垮整个系统。这种情况下，只能手动增加更多的 Worker 来分担任务处理工作。然后不同类型的数据处理越多，Worker 所需要安装的依赖也越多，每手工增加一个 Worker 的成本也越来越高。甚至对于气象数据的处理而言，有很多非常古老的数据处理工具（很多还是 Fortran 写的），经常出现依赖相互冲突的情况（版本冲突，编译通不过等等）。如何隔离各个任务之间的运行环境，以及如何根据负载需求动态的伸缩 Worker 的数量日益成为了这个系统的一个痛点。</p>
+<p>动态伸缩，环境隔离，自然让人联想到 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/zh/">Kubernetes</a> 这样的技术。好在 Airflow 1.10 版本引入了 <a href="https://airflow.apache.org/kubernetes.html">Kubernetes Executor 和 Kubernetes Operator</a> 允许为每一个任务创建新的 Pod 来处理，而执行完之后新创建的 Pod 会被清理掉，并且每一个任务都可以指定不同的 Docker image 来处理，这样看起来就可以完全解决我们前面的问题。</p>
+<p>目前这部分功能似乎还很不稳定，官方文档和讨论都还不多，这篇博客也是为了记录下我们的踩坑过程。</p>
+<h2 id="在-Kubernetes-上搭建-Airflow"><a href="#在-Kubernetes-上搭建-Airflow" class="headerlink" title="在 Kubernetes 上搭建 Airflow"></a>在 Kubernetes 上搭建 Airflow</h2><p>我们使用 <a href="https://helm.sh/">Helm</a> 来管理在 Kubernetes 上个各个应用以及它们的依赖，目前官方也已经给出了 <a href="https://github.com/helm/charts/tree/master/stable/airflow">stable&#x2F;airflow 的 Chart</a>，我们可以直接使用或部分参考。下面我们介绍一下从零开始的搭建过程。</p>
+<ol>
+<li><p>安装 Kubernetes</p>
+<p>本地安装的可以选择 <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a>，主要它解决了跨平台的问题。我在 macOS 上使用的是 <a href="https://hub.docker.com/editions/community/docker-ce-desktop-mac">Docker Desktop for Mac</a> 里<a href="https://www.docker.com/blog/docker-mac-kubernetes/">自带的 Kubernetes 集群</a>，如果你安装遇到了问题可以看看<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac">这里</a>是不是解决了你的问题，或者自行 Google 也可。</p>
+</li>
+<li><p>安装 Helm</p>
+<p>Helm 3 已经是正式的稳定版本，可惜我们线上还在使用 Helm 2，而 Helm 2 的版本不兼容是没法使用的。为了跟线上保持一致，我本地也是安装的 Helm 2，所以后面都是以 Helm 2 的操作来执行的，第一次进行的朋友可以直接用 Helm 3。当然安装过程也<a href="https://github.com/helm/helm/issues/4730">很可能出现问题</a>，可以自行 Google 解决。</p>
+</li>
+<li><p>在 Kubernetes 上用 Helm 安装 Airflow Chart</p>
+<p>直接根据<a href="https://github.com/helm/charts/tree/master/stable/airflow">官方的 Airflow Chart</a>步骤执行 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow</code> 即可在 Kubernetes 上安装一个标准的 Airflow 集群，之后可以查看各个 Pod 的状态是不是已经 ready（一切正常的情况下会在 <code>airflow</code> 的 Namespace 下安装 airflow-web、airflow-scheduler、airflow-postgresql、airflow-flower、airflow-redis）。还可以根据 NOTES 的提示在浏览器中查看 Airflow 的 UI 界面是不是也启动良好：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">NOTES:</span><br><span class="line">Congratulations. You have just deployed Apache Airflow</span><br><span class="line">   export POD_NAME=$(kubectl get pods --namespace airflow -l &quot;component=web,app=airflow&quot; -o jsonpath=&quot;&#123;.items[0].metadata.name&#125;&quot;)</span><br><span class="line">   echo http://127.0.0.1:8080</span><br><span class="line">   kubectl port-forward --namespace airflow $POD_NAME 8080:8080</span><br><span class="line"></span><br><span class="line"> Open Airflow in your web browser</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据自身业务情况自定义一些配置</p>
+<p>之后可以根据 Helm 的 官方 Airflow Chart 提供的配置方式进行一些自定义配置，比如把默认的 Airflow 镜像 <code>puckel/docker-airflow</code> 替换成自己根据自身业务需求构建的（比如已经安装了实现业务需求所有必要底层依赖的 Airflow 镜像，或者对于 Kubernetes Executor and operator 必需的 <code>apache-airflow[kubernetes]</code>，这样就不用每次部署更新都安装这些依赖了）、更改 <code>executor</code> 的类型（我们改为 <code>Kubernetes</code>）等等。官方的 Chart 目录下也提供了<a href="https://github.com/helm/charts/blob/master/stable/airflow/examples/minikube-values.yaml">一个例子</a>可供参考。</p>
+<p>值得额外注意的是我们如何做数据的持久化。这既包括 DAGs、日志 logs，也包括 Airflow 的运行态数据 —— 存储在 Postgres 或 MySQL 中的数据 —— 如何持久化。官方的 README 对此<a href="https://github.com/helm/charts/tree/master/stable/airflow#dags-deployment">已经有介绍</a>，同样如果有额外的自定义配置直接写到我们自己的 <code>values</code> YAML 文件中即可。<a href="https://github.com/apache/airflow/blob/1.10.6/airflow/config_templates/default_airflow.cfg"><code>airflow.cfg</code></a> 中 <code>[kubernetes]</code> 对应的每一项配置也应该过一遍并做相应的修改，尤其是关于 <code>namespace</code> 和 <code>dags_in_image</code> 的部分。对我司而言，我们自己的 Kubernetes 集群运行在阿里云上，直接使用一个外挂的 NAS 作为 DAGs 和 logs 的共享存储即可（通过 <code>extraVolumeMounts</code> 和 <code>extraVolumes</code> 挂载和声明，也要注意跟 <code>dags.path</code> 路径保持一致），以后我们自己开发的 DAGs 可以直接通过 CI&#x2F;CD 更新到 NAS 上相应的目录。数据库采用一个已经存在的外部 Postgres。</p>
+<p>假设我们将自定义的 <code>values</code> 配置写成 <code>minikube-values.yaml</code> 的本地 YAML 文件，就可以用 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow -f minikube-values.yaml</code> 启动一个经过自定义修改后的 Airflow 集群（可以先把之前启动的集群通过 <code>helm delete --purge &quot;airflow&quot;</code> 清除）。</p>
+</li>
+</ol>
+<p>因为业务需求和基础设施现状的不同，中间可能有不同的架构选择，但总体上经过这几步之后，一个采用 <code>KubernetesExecutor</code> 并运行在 Kubernetes 上的 Airflow 集群就基本搭建好了。</p>
+<h2 id="开发-DAGs"><a href="#开发-DAGs" class="headerlink" title="开发 DAGs"></a>开发 DAGs</h2><p>参考 Airflow 官方文档中 Kubernetes Operator 的例子可以开发适用于自身业务需求的 DAG。之后就可以访问 Airflow WebServer 来开启相应的 DAG 任务，并观察集群中 Task 的运行行为是否与预期的一致，并逐步迭代。</p>
+<h2 id="悄悄告诉你，真相其实是这样……"><a href="#悄悄告诉你，真相其实是这样……" class="headerlink" title="悄悄告诉你，真相其实是这样……"></a>悄悄告诉你，真相其实是这样……</h2><p>实际上，在经过我的一番折腾之后，最终我们线上使用的版本并没有使用官方的 Helm Chart，而是完全基于我们自己 build 的 Airflow 镜像，从头搭建了我们自己的 Helm Release Chart，这样整个系统拥有最高的可定制度（有些问题不在代码层面定制根本没法绕过去，下文有详述），同时也剔除了很多 Helm 官方 Chart 里有但我们不需要的东西。跟官方的 Chart 相比，我们主要做了这些更改：</p>
+<ul>
+<li><p>没有使用 Airflow 官方的 Kubernetes Executor，而是自己继承 <code>LocalExecutor</code> 类定制我们自己的 <code>KubeExecutor</code>，实际做的事情也很简单，就是实际在执行任务的时候不直接像 <code>LocalExecutor</code> 那样在本地执行命令，而用 <code>kubectl</code> 把任务指定在某一个 Worker Pod 或使用了 <code>KubernetesPodOperator</code> 启动的临时 Pod 里运行。这样做主要考虑的是官方的 <code>KubernetesPodOperator</code> 为了一些通用性功能从而进行了较为复杂的流程设计，我们团队自身完全可以结合在阿里云里 Kubernetes 集群的具体特点改造 <code>LocalExecutor</code>，这样不仅在运行时可以节省更多的机器资源，而且对于我们最核心的需求 —— 稳定的生产数据 —— 来说是更有利的，毕竟在运行时动态操作 Kubernetes 集群资源的流程变得简单了很多。</p>
+</li>
+<li><p>阿里云还有一个很大的坑是在它上面构建的官方 Kubernetes 集群产品不提供阿里云的 CA 根证书校验，而 <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/#directly-accessing-the-rest-api-1">Kubernetes 官方明确指明了需要校验 CA bundle</a>，导致我们无法通过 API 与 Kubernetes Server 进行交互，进而在使用 <code>KubernetesPodOperator</code> 时会因为证书校验失败而无法创建 Pod。而 <code>KubernetesPodOperator</code> 也并没有提供参数让我们将 <code>verify_ssl</code> 设置为 False。所以最终我们也没有直接用官方的 <code>KubernetesPodOperator</code>，而是自己改了一个类似的把 <code>verify_ssl</code> 设置为 False 的 Operator 的版本来使用。同时这里也呼吁一下阿里云能按照技术社区标准来提供自己的技术服务与产品（我们提了工单 argue 这个事情，最终客服给我提供了根证书并叮嘱不要扩散，并不清楚阿里云不能对外公开根证书是基于什么样的考量；在其他项目中我们使用了客服提供的根证书来进行校验是没有问题的）。</p>
+</li>
+<li><p>去掉了不必要的通用型适配的各种选择，完全按自身需求合理定制。</p>
+</li>
+</ul>
+<p>虽然我们做了定制，需要考虑的一些核心问题是没有变的，它们是：如何共享 DAG 的 Python 代码、如何做日志和数据库数据的持久化、是否使用 <a href="https://airflow.apache.org/docs/stable/concepts.html?highlight=xcom#xcoms">XComs</a> 来做 Task 之间的消息通信（同时在集群环境下如何实现这一点）、如何注入依赖（官方 Helm Chart 的 <code>requirements.txt</code> 方式）等等。由于这个尝试和定制的过程着实复杂和不那么让人愉快，甚至需要阅读一些 Airflow 的源码和各个云服务组件的接口参数设计，所以一篇博客无法一一详尽，我自己也不想写那些我们是如何绕过由于各方面的设计缺陷或开源产品不稳定导致的问题的技术细节，它们可能时刻会变，也没有技术深度，更多的是枯燥的云服务运维细节，所以不会在这里赘述太多而分散更大层面的宏观框架上的注意力。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在我们实际使用的过程中其实还遇到了很多 Airflow 的坑，作为一个 Apache 基金会的开源项目，它确实弥补了 ETL 场景下工具和框架的缺失，也提供了非常丰富的功能，不过尽管目前版本号已经到了 1.10.6，但还是有很多明显可感知的 BUG 存在，实际的使用感受是能用但总存在一些小问题，偶尔对任务的调度和管理还可能会失灵，不那么可靠，不算是一个高质量的开源项目，所以在使用时加上适当的重试机制是很有必要的。不过目前社区里在这部分并没有更好的替代品，Airflow 已经是我们考查过的最契合管理 ETL 流程的框架了。如果有新的开源项目能弥补这方面的空缺我们会很乐意去尝试，我们自己团队也在考虑是否在更长期的计划中开发一套自己的 ETL 流程框架。</p>
+<p>几周不断折腾尝试的搭建、使用和实际开发的过程下来，其实涉及了很多开发<a href="https://pivotal.io/cloud-native">云原生服务</a>常用的 DevOps 工具和组件，比如 Helm、Kubernetes 和 Docker，能得心应手的使用这些工具需要一段时间的学习实践来积累知识和经验。要想在 Kubernetes 环境下玩转 Airflow，了解这些周边支撑的工具也是不可或缺极其重要的一部分。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Airflow</tag>
+        <tag>Kubernetes</tag>
+        <tag>Helm</tag>
+        <tag>DevOps</tag>
+        <tag>Cloud-Native</tag>
       </tags>
   </entry>
   <entry>
@@ -1883,60 +1937,6 @@ _Farewell and thanks to each for the company_
         <tag>Erlang</tag>
         <tag>性能调优</tag>
         <tag>Elixir</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>把 Airflow 搬进 Kubernetes</title>
-    <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
-    <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
-<p>简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 <a href="https://airflow.apache.org/concepts.html#dags">DAG</a> 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 <a href="https://airflow.apache.org/howto/executor/use-celery.html">Celery Executor</a> 来把任务动态分布到多个 Worker 上执行。</p>
-<span id="more"></span>
-
-<p>如果数据处理任务长期不变，这样的系统已经可以满足我们的需求了。但实际上随着越来越多的数据任务被添加到整个系统，任务负载变得越来越重，很多时候固定数量的 Worker 已经不能及时的处理完被 scheduled 的任务，造成任务队列堆积，一段时间后如果一直不能改善负载情况甚至会拖垮整个系统。这种情况下，只能手动增加更多的 Worker 来分担任务处理工作。然后不同类型的数据处理越多，Worker 所需要安装的依赖也越多，每手工增加一个 Worker 的成本也越来越高。甚至对于气象数据的处理而言，有很多非常古老的数据处理工具（很多还是 Fortran 写的），经常出现依赖相互冲突的情况（版本冲突，编译通不过等等）。如何隔离各个任务之间的运行环境，以及如何根据负载需求动态的伸缩 Worker 的数量日益成为了这个系统的一个痛点。</p>
-<p>动态伸缩，环境隔离，自然让人联想到 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/zh/">Kubernetes</a> 这样的技术。好在 Airflow 1.10 版本引入了 <a href="https://airflow.apache.org/kubernetes.html">Kubernetes Executor 和 Kubernetes Operator</a> 允许为每一个任务创建新的 Pod 来处理，而执行完之后新创建的 Pod 会被清理掉，并且每一个任务都可以指定不同的 Docker image 来处理，这样看起来就可以完全解决我们前面的问题。</p>
-<p>目前这部分功能似乎还很不稳定，官方文档和讨论都还不多，这篇博客也是为了记录下我们的踩坑过程。</p>
-<h2 id="在-Kubernetes-上搭建-Airflow"><a href="#在-Kubernetes-上搭建-Airflow" class="headerlink" title="在 Kubernetes 上搭建 Airflow"></a>在 Kubernetes 上搭建 Airflow</h2><p>我们使用 <a href="https://helm.sh/">Helm</a> 来管理在 Kubernetes 上个各个应用以及它们的依赖，目前官方也已经给出了 <a href="https://github.com/helm/charts/tree/master/stable/airflow">stable&#x2F;airflow 的 Chart</a>，我们可以直接使用或部分参考。下面我们介绍一下从零开始的搭建过程。</p>
-<ol>
-<li><p>安装 Kubernetes</p>
-<p>本地安装的可以选择 <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a>，主要它解决了跨平台的问题。我在 macOS 上使用的是 <a href="https://hub.docker.com/editions/community/docker-ce-desktop-mac">Docker Desktop for Mac</a> 里<a href="https://www.docker.com/blog/docker-mac-kubernetes/">自带的 Kubernetes 集群</a>，如果你安装遇到了问题可以看看<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac">这里</a>是不是解决了你的问题，或者自行 Google 也可。</p>
-</li>
-<li><p>安装 Helm</p>
-<p>Helm 3 已经是正式的稳定版本，可惜我们线上还在使用 Helm 2，而 Helm 2 的版本不兼容是没法使用的。为了跟线上保持一致，我本地也是安装的 Helm 2，所以后面都是以 Helm 2 的操作来执行的，第一次进行的朋友可以直接用 Helm 3。当然安装过程也<a href="https://github.com/helm/helm/issues/4730">很可能出现问题</a>，可以自行 Google 解决。</p>
-</li>
-<li><p>在 Kubernetes 上用 Helm 安装 Airflow Chart</p>
-<p>直接根据<a href="https://github.com/helm/charts/tree/master/stable/airflow">官方的 Airflow Chart</a>步骤执行 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow</code> 即可在 Kubernetes 上安装一个标准的 Airflow 集群，之后可以查看各个 Pod 的状态是不是已经 ready（一切正常的情况下会在 <code>airflow</code> 的 Namespace 下安装 airflow-web、airflow-scheduler、airflow-postgresql、airflow-flower、airflow-redis）。还可以根据 NOTES 的提示在浏览器中查看 Airflow 的 UI 界面是不是也启动良好：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">NOTES:</span><br><span class="line">Congratulations. You have just deployed Apache Airflow</span><br><span class="line">   export POD_NAME=$(kubectl get pods --namespace airflow -l &quot;component=web,app=airflow&quot; -o jsonpath=&quot;&#123;.items[0].metadata.name&#125;&quot;)</span><br><span class="line">   echo http://127.0.0.1:8080</span><br><span class="line">   kubectl port-forward --namespace airflow $POD_NAME 8080:8080</span><br><span class="line"></span><br><span class="line"> Open Airflow in your web browser</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>根据自身业务情况自定义一些配置</p>
-<p>之后可以根据 Helm 的 官方 Airflow Chart 提供的配置方式进行一些自定义配置，比如把默认的 Airflow 镜像 <code>puckel/docker-airflow</code> 替换成自己根据自身业务需求构建的（比如已经安装了实现业务需求所有必要底层依赖的 Airflow 镜像，或者对于 Kubernetes Executor and operator 必需的 <code>apache-airflow[kubernetes]</code>，这样就不用每次部署更新都安装这些依赖了）、更改 <code>executor</code> 的类型（我们改为 <code>Kubernetes</code>）等等。官方的 Chart 目录下也提供了<a href="https://github.com/helm/charts/blob/master/stable/airflow/examples/minikube-values.yaml">一个例子</a>可供参考。</p>
-<p>值得额外注意的是我们如何做数据的持久化。这既包括 DAGs、日志 logs，也包括 Airflow 的运行态数据 —— 存储在 Postgres 或 MySQL 中的数据 —— 如何持久化。官方的 README 对此<a href="https://github.com/helm/charts/tree/master/stable/airflow#dags-deployment">已经有介绍</a>，同样如果有额外的自定义配置直接写到我们自己的 <code>values</code> YAML 文件中即可。<a href="https://github.com/apache/airflow/blob/1.10.6/airflow/config_templates/default_airflow.cfg"><code>airflow.cfg</code></a> 中 <code>[kubernetes]</code> 对应的每一项配置也应该过一遍并做相应的修改，尤其是关于 <code>namespace</code> 和 <code>dags_in_image</code> 的部分。对我司而言，我们自己的 Kubernetes 集群运行在阿里云上，直接使用一个外挂的 NAS 作为 DAGs 和 logs 的共享存储即可（通过 <code>extraVolumeMounts</code> 和 <code>extraVolumes</code> 挂载和声明，也要注意跟 <code>dags.path</code> 路径保持一致），以后我们自己开发的 DAGs 可以直接通过 CI&#x2F;CD 更新到 NAS 上相应的目录。数据库采用一个已经存在的外部 Postgres。</p>
-<p>假设我们将自定义的 <code>values</code> 配置写成 <code>minikube-values.yaml</code> 的本地 YAML 文件，就可以用 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow -f minikube-values.yaml</code> 启动一个经过自定义修改后的 Airflow 集群（可以先把之前启动的集群通过 <code>helm delete --purge &quot;airflow&quot;</code> 清除）。</p>
-</li>
-</ol>
-<p>因为业务需求和基础设施现状的不同，中间可能有不同的架构选择，但总体上经过这几步之后，一个采用 <code>KubernetesExecutor</code> 并运行在 Kubernetes 上的 Airflow 集群就基本搭建好了。</p>
-<h2 id="开发-DAGs"><a href="#开发-DAGs" class="headerlink" title="开发 DAGs"></a>开发 DAGs</h2><p>参考 Airflow 官方文档中 Kubernetes Operator 的例子可以开发适用于自身业务需求的 DAG。之后就可以访问 Airflow WebServer 来开启相应的 DAG 任务，并观察集群中 Task 的运行行为是否与预期的一致，并逐步迭代。</p>
-<h2 id="悄悄告诉你，真相其实是这样……"><a href="#悄悄告诉你，真相其实是这样……" class="headerlink" title="悄悄告诉你，真相其实是这样……"></a>悄悄告诉你，真相其实是这样……</h2><p>实际上，在经过我的一番折腾之后，最终我们线上使用的版本并没有使用官方的 Helm Chart，而是完全基于我们自己 build 的 Airflow 镜像，从头搭建了我们自己的 Helm Release Chart，这样整个系统拥有最高的可定制度（有些问题不在代码层面定制根本没法绕过去，下文有详述），同时也剔除了很多 Helm 官方 Chart 里有但我们不需要的东西。跟官方的 Chart 相比，我们主要做了这些更改：</p>
-<ul>
-<li><p>没有使用 Airflow 官方的 Kubernetes Executor，而是自己继承 <code>LocalExecutor</code> 类定制我们自己的 <code>KubeExecutor</code>，实际做的事情也很简单，就是实际在执行任务的时候不直接像 <code>LocalExecutor</code> 那样在本地执行命令，而用 <code>kubectl</code> 把任务指定在某一个 Worker Pod 或使用了 <code>KubernetesPodOperator</code> 启动的临时 Pod 里运行。这样做主要考虑的是官方的 <code>KubernetesPodOperator</code> 为了一些通用性功能从而进行了较为复杂的流程设计，我们团队自身完全可以结合在阿里云里 Kubernetes 集群的具体特点改造 <code>LocalExecutor</code>，这样不仅在运行时可以节省更多的机器资源，而且对于我们最核心的需求 —— 稳定的生产数据 —— 来说是更有利的，毕竟在运行时动态操作 Kubernetes 集群资源的流程变得简单了很多。</p>
-</li>
-<li><p>阿里云还有一个很大的坑是在它上面构建的官方 Kubernetes 集群产品不提供阿里云的 CA 根证书校验，而 <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/#directly-accessing-the-rest-api-1">Kubernetes 官方明确指明了需要校验 CA bundle</a>，导致我们无法通过 API 与 Kubernetes Server 进行交互，进而在使用 <code>KubernetesPodOperator</code> 时会因为证书校验失败而无法创建 Pod。而 <code>KubernetesPodOperator</code> 也并没有提供参数让我们将 <code>verify_ssl</code> 设置为 False。所以最终我们也没有直接用官方的 <code>KubernetesPodOperator</code>，而是自己改了一个类似的把 <code>verify_ssl</code> 设置为 False 的 Operator 的版本来使用。同时这里也呼吁一下阿里云能按照技术社区标准来提供自己的技术服务与产品（我们提了工单 argue 这个事情，最终客服给我提供了根证书并叮嘱不要扩散，并不清楚阿里云不能对外公开根证书是基于什么样的考量；在其他项目中我们使用了客服提供的根证书来进行校验是没有问题的）。</p>
-</li>
-<li><p>去掉了不必要的通用型适配的各种选择，完全按自身需求合理定制。</p>
-</li>
-</ul>
-<p>虽然我们做了定制，需要考虑的一些核心问题是没有变的，它们是：如何共享 DAG 的 Python 代码、如何做日志和数据库数据的持久化、是否使用 <a href="https://airflow.apache.org/docs/stable/concepts.html?highlight=xcom#xcoms">XComs</a> 来做 Task 之间的消息通信（同时在集群环境下如何实现这一点）、如何注入依赖（官方 Helm Chart 的 <code>requirements.txt</code> 方式）等等。由于这个尝试和定制的过程着实复杂和不那么让人愉快，甚至需要阅读一些 Airflow 的源码和各个云服务组件的接口参数设计，所以一篇博客无法一一详尽，我自己也不想写那些我们是如何绕过由于各方面的设计缺陷或开源产品不稳定导致的问题的技术细节，它们可能时刻会变，也没有技术深度，更多的是枯燥的云服务运维细节，所以不会在这里赘述太多而分散更大层面的宏观框架上的注意力。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在我们实际使用的过程中其实还遇到了很多 Airflow 的坑，作为一个 Apache 基金会的开源项目，它确实弥补了 ETL 场景下工具和框架的缺失，也提供了非常丰富的功能，不过尽管目前版本号已经到了 1.10.6，但还是有很多明显可感知的 BUG 存在，实际的使用感受是能用但总存在一些小问题，偶尔对任务的调度和管理还可能会失灵，不那么可靠，不算是一个高质量的开源项目，所以在使用时加上适当的重试机制是很有必要的。不过目前社区里在这部分并没有更好的替代品，Airflow 已经是我们考查过的最契合管理 ETL 流程的框架了。如果有新的开源项目能弥补这方面的空缺我们会很乐意去尝试，我们自己团队也在考虑是否在更长期的计划中开发一套自己的 ETL 流程框架。</p>
-<p>几周不断折腾尝试的搭建、使用和实际开发的过程下来，其实涉及了很多开发<a href="https://pivotal.io/cloud-native">云原生服务</a>常用的 DevOps 工具和组件，比如 Helm、Kubernetes 和 Docker，能得心应手的使用这些工具需要一段时间的学习实践来积累知识和经验。要想在 Kubernetes 环境下玩转 Airflow，了解这些周边支撑的工具也是不可或缺极其重要的一部分。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Airflow</tag>
-        <tag>Kubernetes</tag>
-        <tag>Helm</tag>
-        <tag>DevOps</tag>
-        <tag>Cloud-Native</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,6 +2016,32 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>「必然」有多必然？</title>
+    <url>/2020/05/19/how-certain-is-certain/</url>
+    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
+<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
+<span id="more"></span>
+
+<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
+<p>所以已经发生的「必然」到底多必然？</p>
+<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
+<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
+<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
+<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
+<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
+<p>我想我是得看一些关于复杂系统理论的书了。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>人生</tag>
+        <tag>必然</tag>
+        <tag>哲学</tag>
+        <tag>复杂系统</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2020 年书单</title>
     <url>/2020/12/31/2020-booklist/</url>
     <content><![CDATA[<p>2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。</p>
@@ -2079,32 +2105,6 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「必然」有多必然？</title>
-    <url>/2020/05/19/how-certain-is-certain/</url>
-    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
-<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
-<span id="more"></span>
-
-<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
-<p>所以已经发生的「必然」到底多必然？</p>
-<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
-<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
-<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
-<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
-<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
-<p>我想我是得看一些关于复杂系统理论的书了。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>人生</tag>
-        <tag>必然</tag>
-        <tag>哲学</tag>
-        <tag>复杂系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2175,6 +2175,69 @@ _Farewell and thanks to each for the company_
         <tag>创业</tag>
         <tag>北京</tag>
         <tag>望京</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2021 年书单</title>
+    <url>/2021/12/31/2021-booklist/</url>
+    <content><![CDATA[<h3 id="关于书单"><a href="#关于书单" class="headerlink" title="关于书单"></a>关于书单</h3><p>直奔主题：</p>
+<ol>
+<li><p><a href="https://book.douban.com/subject/35275524/">晚婚</a>：★★★★</p>
+<p> 人物描写十分细节，情绪表达非常细腻，如果没有一定的人生阅历和生活体悟，很难相信作者能把书中的某些人情世故和人物动机描写得如此让人感同身受，这是某种源于生活的真切（而且很现代），但故事的戏剧性又提醒着读者小说创作高于生活的存在。</p>
+<p> 相比于《新婚之夜》少了很多推理和悬疑的要素，但依然还是有很多伏笔在前后呼应。整个故事的基调是压抑的，给人无力感，的确是一部「漠然记」。还是很喜欢辽京的写故事风格。</p>
+</li>
+</ol>
+<span id="more"></span>
+
+<ol start="2">
+<li><p><a href="https://book.douban.com/subject/35250412/">候场</a>：★★★★</p>
+<p> 第一次看李诞的书，我也是边喝着凉凉的啤酒边看着新一季的《吐槽大会》边看完这本书的，文字跟他说的话一样个人风格非常强烈。</p>
+<p> 李诞整本所谓的「小说」都在写一个叫李诞的人的愁苦和自我厌恶，如果他是真的「诚实」的话。任何能称之为作品的东西，比如电影或小说，都不是绝对的真实，因为生活本身其实是麻木混乱无趣、极少有戏剧点、不值得被看的。这还是我看大鹏的《吉祥如意》的一点想法。</p>
+<p> 会自我怀疑的人，一是自恋矫情，二是值得做朋友。这个世界已经有太多的成年人被规训得有着过于明确清晰的自我意志，每一个动作的目的性都如此强烈，以致于世界才会像现在这样无趣。不过我不是在说那种冠冕堂皇自欺欺人的假的「自我怀疑」。这本书讲的我前面所指的真的「自我怀疑」。</p>
+</li>
+<li><p><a href="https://arxiv.org/ftp/arxiv/papers/1702/1702.01715.pdf">Software Engineering at Google</a>：★★★★★</p>
+<p> Google 在 Web 领域深耕多年，对于做 Web 产品的软件工程经验积累颇深。随着战略转变和软件系统的逐渐庞大，微软也在多年前就意识到了内部工程化的重要性。虽然这是一篇写 Google 的文章，却可以从中看到很多微软内部在践行的实践，说明微软也在快速补齐 Web 软件工程化方面的短板，1ES 策略在内部践行多年，很多开发上的体验都大有改善，这对提高开发者开发效率、产品质量和稳定性都是极为重要的一部分，尤其是对这种动辄已经迭代了一二十年的产品的庞大代码库以及如今的全球用户基数而言。</p>
+<p> 比较而言，微软在工程化上还是有两点跟 Google 有比较大的不同：<br>1. Google 几乎所有的代码在一个大的 repo 里，不是 git 管理的；<br>2. 他们经常重写代码。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/35339729/">微信背后的产品观</a>：★★★★☆</p>
+<p> 「需求只来自你对用户的了解，这里非常想强调几点：第一，需求不来自调研；第二，需求不来自分析；第三，需求不来自讨论；第四，需求不来自竞争对手。」</p>
+<p> 太赞了！张小龙是典型的原教旨主义产品经理，这一领域的另一个知名代表是乔布斯。而与这一派相对的国内的字节系大概可以代表。我是从来都不相信用数据来决定一个产品的方向的，这种做法本质上是在跟人类历史好不容易构建的人文主义作斗争，是在剥夺人之所以为人的本质，甚至可能在将来导致人类的灭亡。</p>
+<p> 产品经理永远要保持对自己主导的产品的人文温度，这样世界才能越来越好。</p>
+</li>
+<li><p><a href="https://read.douban.com/column/59545797/">我们消失的那一年</a>：★★★☆</p>
+<p> 「像是终于找到了线头，慢慢地提起来，一些原本散落在记忆深处的珠子都串到一起了」。多线多时空叙事慢慢串起来好评，悬疑感十足，让人很想继续读下去。部分地方文笔和遣词造句还可以再斟酌斟酌。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/35552655/">李诞脱口秀工作手册</a>：★★★☆</p>
+<p> 这本书（工作手册）首先是写给内容创作者的现实的工作经验和方法，不是什么复杂的理论，全是从个人感受和实际出发，追求一种长期持续的专业内容生产；其次有些命题也是很终极的，是可以面向普罗大众的，当然同样也是很实用主义倾向的，所以非从业者也可以看看，或许能从窥探脱口秀行业的工作方式中获得一些启发（比如第二节工作和生活是否应该分开的问题、第十七节如何给别人 pitch 你的想法）；另外，了解他们在这个新兴行业摸索同时尝试总结出一些规律的思考过程是有趣的。</p>
+<p> 问题就是太短，不够系统，很多地方也是点到即止，有的地方模棱两可不可言尽，还有些地方可能也不是完全没有异议的。不过作为一个指导作用的给从业者工作手册是不错的。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/35295592/">小狗钱钱</a>：★★★★★</p>
+<p> 我每次看这种经典的投资入门类型的书都会觉得：Damn! 为什么我十岁的时候没有看过这书。哈哈哈有点夸张，合适的时候看到比更早的看到要有意义得多，尤其是在这几年的所有关于钱的实践之后，很多点已经是心领神会。几乎你人生中所有与钱相关的选择和决定都可以在这一类书中找到明确的答案。</p>
+<p> 讲故事的方式提高了这本书所要说明的道理的可读性，后记部分提到的企业家精神与如今以培养社畜为目的的教育模式的冲突尤其令人深思。虽然很短但是绝对是今年看完的最值得的一本书。</p>
+</li>
+</ol>
+<h3 id="关于摄影"><a href="#关于摄影" class="headerlink" title="关于摄影"></a>关于摄影</h3><p>还称不上摄影吧，顶多就是拍拍照片。</p>
+<p>「读万卷书，行万里路」，「身体和灵魂总要有一个在路上」，不看书的时候出门拍拍照是一个很好的跟自己独处的方式。当你能够专注的沉浸在如何拍到一张好照片的状态中时，很容易进入那种「心流」状态。专注于写代码也能达到这种状态。本质上，这都是一种利用自己沉淀的技术、品味和灵感进行创作的行为。</p>
+<p>摄影圈目前是有一些不好的风气和迷思的，我很庆幸我从一开始就树立比较正确的摄影价值观，就跟我接触其他我本不了解的领域（比如投资）一样，这样比较不容易被网络上各种各样的言论带偏。跑题的结论是，学习新东西最开始重要的不是快速掌握技术，而是树立正确的看待这个事情的观念。</p>
+<p>转回来，很多真正能让自己满意的好照片可能都诞生于不经意的一瞬间，而这样的时刻往往你的手边并没有相机。对于初学者而言，有一个能让你愿意经常带出去拍照的相机比去学习什么艰涩难懂的摄影理论和培养艺术品味要重要得多。希望明年仍然有机会会拍到很多不期而遇的好照片。</p>
+<h3 id="关于投资"><a href="#关于投资" class="headerlink" title="关于投资"></a>关于投资</h3><p><a href="https://maples7.com/2019/12/31/2019-booklist/">前年的「书单」</a>说过，我在几年前一个很偶然的机会开始接触投资。依然非常幸运的是，我从一开始就树立了比较正确的投资理念。这基本上是近几年我最大的收获之一，也很可能是我这一生很重要的收获之一。</p>
+<p>投资其实是一个早就有前人公开最优解法的领域，但大多数人要么懒于学习、要么惧于尝试。它其实一点都不难，基本原理甚至相当简单。甚至于说，对于投资，大道至简才是最终的归途。当然，更多已经开始投资的人莽莽撞撞全凭一时的感觉来操作，运气好是可以短时间获得不错的收益，但很可能不是长久之计。这是一件非常考验人的耐心和毅力的一件事，但不同的人可能有不一样的适合自己的投资策略，一旦认定一种策略，剩下的就是绝不轻易放弃的不断「滚雪球」。</p>
+<h3 id="关于疫情"><a href="#关于疫情" class="headerlink" title="关于疫情"></a>关于疫情</h3><p>这两三年的头条自然是新冠疫情，疫情对人的异化作用远比大多数人想象的要深刻，甚至你现在看到电影里人多的场景都可能潜意识里感到不适。这几天有不少专业人士预言疫情会在 2022 年结束，我远没有这么乐观。对于国内的普通人来说，疫情什么时候结束已经不是最重要的事，重要的是如何减少疫情对自身的人生规划产生的影响。世界已经安定这么多年，没理由一直这样期待下去。这个道理对于投资同样也很重要。</p>
+<h3 id="关于预测"><a href="#关于预测" class="headerlink" title="关于预测"></a>关于预测</h3><p>我不敢说明年，我觉得三年内会有一场金融危机，或者是比金融危机更严重得多的危机。没什么 solid 的依据，就是一种直觉，当然，这不是这一天两天的直觉。当年，危机只是危机，即便它比任何一次危机还要严重，也不会是末日。危机过后，世界还会继续。当然，末日也总有一天会来，但应该不会这么早。</p>
+<h3 id="关于人生"><a href="#关于人生" class="headerlink" title="关于人生"></a>关于人生</h3><p>我一直试图在人生的所有事情上成为一个纯粹的理想主义者，这当然不是一件简单的事情，但却值得为之付出所有的努力。但是，保持理想主义的同时，我开始意识到一些我值得改变的地方。</p>
+<p>以前我对竞争是不屑的，我总是会抱着一些提升自己远比这一两次直接的竞争来得重要的心态，而从小父母的言传身教家庭教育也让我骨子里养成了谦让的习惯，如果有人明确的说喜欢什么东西，不管我是不是喜欢或者讨厌这个人，我大概率是会让给对方的。这当然不是一个坏的品质，但却值得重新审视。本质上，理想主义者愿意为这个世界变得更美好而付出自己的努力，但一味的谦让有时候让出去的却是未来对世界的掌控权和话语权，这并不是一个理想主义者愿意看到的，因为真正的理想主义者实在不多。所以以后希望自己能更敢于直接竞争，不要把这个世界拱手让给我们讨厌的那些人。</p>
+<p>另外，希望自己能更有行动力，我今年无疑是想得比做得多很多，这其实很不好。虽然在很多事情上需要细火慢煨、想清楚了再行动，但有些不那么重要的事情上早行动会带来更多切实的好处，至少实践也会加深自己对事物本身的理解。运用 72 小时法则 —— 一件事情如果 72 小时内没有开始，那你很可能永远不会开始。我经常有一些不错的主意，但很多时候没有好好完成使得并没有充分利用好这样的灵感和机会，这是很可惜的。</p>
+<p>最后，希望自己能更有专注力吧。看到一种说法是专注力是一种稀缺资源，用完了就没有了。我将信将疑。但我打心底里认为，用强迫自己的方式做自己本身不认同或不喜欢的事情是难以为继的，从这个角度来说，专注力的确是一种用完了就没有的稀缺资源。另一方面，能否专注其实反映的还是自己内心的安定程度，希望新的一年自己的心态能更安定，意志力能更强。</p>
+<p>Hope for the best and prepare for the worst. Always!</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+        <tag>人生</tag>
+        <tag>投资</tag>
+        <tag>摄影</tag>
       </tags>
   </entry>
   <entry>
@@ -2274,69 +2337,6 @@ _Farewell and thanks to each for the company_
         <tag>投资</tag>
         <tag>指数基金</tag>
         <tag>资产配置</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2021 年书单</title>
-    <url>/2021/12/31/2021-booklist/</url>
-    <content><![CDATA[<h3 id="关于书单"><a href="#关于书单" class="headerlink" title="关于书单"></a>关于书单</h3><p>直奔主题：</p>
-<ol>
-<li><p><a href="https://book.douban.com/subject/35275524/">晚婚</a>：★★★★</p>
-<p> 人物描写十分细节，情绪表达非常细腻，如果没有一定的人生阅历和生活体悟，很难相信作者能把书中的某些人情世故和人物动机描写得如此让人感同身受，这是某种源于生活的真切（而且很现代），但故事的戏剧性又提醒着读者小说创作高于生活的存在。</p>
-<p> 相比于《新婚之夜》少了很多推理和悬疑的要素，但依然还是有很多伏笔在前后呼应。整个故事的基调是压抑的，给人无力感，的确是一部「漠然记」。还是很喜欢辽京的写故事风格。</p>
-</li>
-</ol>
-<span id="more"></span>
-
-<ol start="2">
-<li><p><a href="https://book.douban.com/subject/35250412/">候场</a>：★★★★</p>
-<p> 第一次看李诞的书，我也是边喝着凉凉的啤酒边看着新一季的《吐槽大会》边看完这本书的，文字跟他说的话一样个人风格非常强烈。</p>
-<p> 李诞整本所谓的「小说」都在写一个叫李诞的人的愁苦和自我厌恶，如果他是真的「诚实」的话。任何能称之为作品的东西，比如电影或小说，都不是绝对的真实，因为生活本身其实是麻木混乱无趣、极少有戏剧点、不值得被看的。这还是我看大鹏的《吉祥如意》的一点想法。</p>
-<p> 会自我怀疑的人，一是自恋矫情，二是值得做朋友。这个世界已经有太多的成年人被规训得有着过于明确清晰的自我意志，每一个动作的目的性都如此强烈，以致于世界才会像现在这样无趣。不过我不是在说那种冠冕堂皇自欺欺人的假的「自我怀疑」。这本书讲的我前面所指的真的「自我怀疑」。</p>
-</li>
-<li><p><a href="https://arxiv.org/ftp/arxiv/papers/1702/1702.01715.pdf">Software Engineering at Google</a>：★★★★★</p>
-<p> Google 在 Web 领域深耕多年，对于做 Web 产品的软件工程经验积累颇深。随着战略转变和软件系统的逐渐庞大，微软也在多年前就意识到了内部工程化的重要性。虽然这是一篇写 Google 的文章，却可以从中看到很多微软内部在践行的实践，说明微软也在快速补齐 Web 软件工程化方面的短板，1ES 策略在内部践行多年，很多开发上的体验都大有改善，这对提高开发者开发效率、产品质量和稳定性都是极为重要的一部分，尤其是对这种动辄已经迭代了一二十年的产品的庞大代码库以及如今的全球用户基数而言。</p>
-<p> 比较而言，微软在工程化上还是有两点跟 Google 有比较大的不同：<br>1. Google 几乎所有的代码在一个大的 repo 里，不是 git 管理的；<br>2. 他们经常重写代码。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/35339729/">微信背后的产品观</a>：★★★★☆</p>
-<p> 「需求只来自你对用户的了解，这里非常想强调几点：第一，需求不来自调研；第二，需求不来自分析；第三，需求不来自讨论；第四，需求不来自竞争对手。」</p>
-<p> 太赞了！张小龙是典型的原教旨主义产品经理，这一领域的另一个知名代表是乔布斯。而与这一派相对的国内的字节系大概可以代表。我是从来都不相信用数据来决定一个产品的方向的，这种做法本质上是在跟人类历史好不容易构建的人文主义作斗争，是在剥夺人之所以为人的本质，甚至可能在将来导致人类的灭亡。</p>
-<p> 产品经理永远要保持对自己主导的产品的人文温度，这样世界才能越来越好。</p>
-</li>
-<li><p><a href="https://read.douban.com/column/59545797/">我们消失的那一年</a>：★★★☆</p>
-<p> 「像是终于找到了线头，慢慢地提起来，一些原本散落在记忆深处的珠子都串到一起了」。多线多时空叙事慢慢串起来好评，悬疑感十足，让人很想继续读下去。部分地方文笔和遣词造句还可以再斟酌斟酌。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/35552655/">李诞脱口秀工作手册</a>：★★★☆</p>
-<p> 这本书（工作手册）首先是写给内容创作者的现实的工作经验和方法，不是什么复杂的理论，全是从个人感受和实际出发，追求一种长期持续的专业内容生产；其次有些命题也是很终极的，是可以面向普罗大众的，当然同样也是很实用主义倾向的，所以非从业者也可以看看，或许能从窥探脱口秀行业的工作方式中获得一些启发（比如第二节工作和生活是否应该分开的问题、第十七节如何给别人 pitch 你的想法）；另外，了解他们在这个新兴行业摸索同时尝试总结出一些规律的思考过程是有趣的。</p>
-<p> 问题就是太短，不够系统，很多地方也是点到即止，有的地方模棱两可不可言尽，还有些地方可能也不是完全没有异议的。不过作为一个指导作用的给从业者工作手册是不错的。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/35295592/">小狗钱钱</a>：★★★★★</p>
-<p> 我每次看这种经典的投资入门类型的书都会觉得：Damn! 为什么我十岁的时候没有看过这书。哈哈哈有点夸张，合适的时候看到比更早的看到要有意义得多，尤其是在这几年的所有关于钱的实践之后，很多点已经是心领神会。几乎你人生中所有与钱相关的选择和决定都可以在这一类书中找到明确的答案。</p>
-<p> 讲故事的方式提高了这本书所要说明的道理的可读性，后记部分提到的企业家精神与如今以培养社畜为目的的教育模式的冲突尤其令人深思。虽然很短但是绝对是今年看完的最值得的一本书。</p>
-</li>
-</ol>
-<h3 id="关于摄影"><a href="#关于摄影" class="headerlink" title="关于摄影"></a>关于摄影</h3><p>还称不上摄影吧，顶多就是拍拍照片。</p>
-<p>「读万卷书，行万里路」，「身体和灵魂总要有一个在路上」，不看书的时候出门拍拍照是一个很好的跟自己独处的方式。当你能够专注的沉浸在如何拍到一张好照片的状态中时，很容易进入那种「心流」状态。专注于写代码也能达到这种状态。本质上，这都是一种利用自己沉淀的技术、品味和灵感进行创作的行为。</p>
-<p>摄影圈目前是有一些不好的风气和迷思的，我很庆幸我从一开始就树立比较正确的摄影价值观，就跟我接触其他我本不了解的领域（比如投资）一样，这样比较不容易被网络上各种各样的言论带偏。跑题的结论是，学习新东西最开始重要的不是快速掌握技术，而是树立正确的看待这个事情的观念。</p>
-<p>转回来，很多真正能让自己满意的好照片可能都诞生于不经意的一瞬间，而这样的时刻往往你的手边并没有相机。对于初学者而言，有一个能让你愿意经常带出去拍照的相机比去学习什么艰涩难懂的摄影理论和培养艺术品味要重要得多。希望明年仍然有机会会拍到很多不期而遇的好照片。</p>
-<h3 id="关于投资"><a href="#关于投资" class="headerlink" title="关于投资"></a>关于投资</h3><p><a href="https://maples7.com/2019/12/31/2019-booklist/">前年的「书单」</a>说过，我在几年前一个很偶然的机会开始接触投资。依然非常幸运的是，我从一开始就树立了比较正确的投资理念。这基本上是近几年我最大的收获之一，也很可能是我这一生很重要的收获之一。</p>
-<p>投资其实是一个早就有前人公开最优解法的领域，但大多数人要么懒于学习、要么惧于尝试。它其实一点都不难，基本原理甚至相当简单。甚至于说，对于投资，大道至简才是最终的归途。当然，更多已经开始投资的人莽莽撞撞全凭一时的感觉来操作，运气好是可以短时间获得不错的收益，但很可能不是长久之计。这是一件非常考验人的耐心和毅力的一件事，但不同的人可能有不一样的适合自己的投资策略，一旦认定一种策略，剩下的就是绝不轻易放弃的不断「滚雪球」。</p>
-<h3 id="关于疫情"><a href="#关于疫情" class="headerlink" title="关于疫情"></a>关于疫情</h3><p>这两三年的头条自然是新冠疫情，疫情对人的异化作用远比大多数人想象的要深刻，甚至你现在看到电影里人多的场景都可能潜意识里感到不适。这几天有不少专业人士预言疫情会在 2022 年结束，我远没有这么乐观。对于国内的普通人来说，疫情什么时候结束已经不是最重要的事，重要的是如何减少疫情对自身的人生规划产生的影响。世界已经安定这么多年，没理由一直这样期待下去。这个道理对于投资同样也很重要。</p>
-<h3 id="关于预测"><a href="#关于预测" class="headerlink" title="关于预测"></a>关于预测</h3><p>我不敢说明年，我觉得三年内会有一场金融危机，或者是比金融危机更严重得多的危机。没什么 solid 的依据，就是一种直觉，当然，这不是这一天两天的直觉。当年，危机只是危机，即便它比任何一次危机还要严重，也不会是末日。危机过后，世界还会继续。当然，末日也总有一天会来，但应该不会这么早。</p>
-<h3 id="关于人生"><a href="#关于人生" class="headerlink" title="关于人生"></a>关于人生</h3><p>我一直试图在人生的所有事情上成为一个纯粹的理想主义者，这当然不是一件简单的事情，但却值得为之付出所有的努力。但是，保持理想主义的同时，我开始意识到一些我值得改变的地方。</p>
-<p>以前我对竞争是不屑的，我总是会抱着一些提升自己远比这一两次直接的竞争来得重要的心态，而从小父母的言传身教家庭教育也让我骨子里养成了谦让的习惯，如果有人明确的说喜欢什么东西，不管我是不是喜欢或者讨厌这个人，我大概率是会让给对方的。这当然不是一个坏的品质，但却值得重新审视。本质上，理想主义者愿意为这个世界变得更美好而付出自己的努力，但一味的谦让有时候让出去的却是未来对世界的掌控权和话语权，这并不是一个理想主义者愿意看到的，因为真正的理想主义者实在不多。所以以后希望自己能更敢于直接竞争，不要把这个世界拱手让给我们讨厌的那些人。</p>
-<p>另外，希望自己能更有行动力，我今年无疑是想得比做得多很多，这其实很不好。虽然在很多事情上需要细火慢煨、想清楚了再行动，但有些不那么重要的事情上早行动会带来更多切实的好处，至少实践也会加深自己对事物本身的理解。运用 72 小时法则 —— 一件事情如果 72 小时内没有开始，那你很可能永远不会开始。我经常有一些不错的主意，但很多时候没有好好完成使得并没有充分利用好这样的灵感和机会，这是很可惜的。</p>
-<p>最后，希望自己能更有专注力吧。看到一种说法是专注力是一种稀缺资源，用完了就没有了。我将信将疑。但我打心底里认为，用强迫自己的方式做自己本身不认同或不喜欢的事情是难以为继的，从这个角度来说，专注力的确是一种用完了就没有的稀缺资源。另一方面，能否专注其实反映的还是自己内心的安定程度，希望新的一年自己的心态能更安定，意志力能更强。</p>
-<p>Hope for the best and prepare for the worst. Always!</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>书单</tag>
-        <tag>人生</tag>
-        <tag>投资</tag>
-        <tag>摄影</tag>
       </tags>
   </entry>
   <entry>
@@ -3035,7 +3035,7 @@ _Farewell and thanks to each for the company_
 <p>不得不再次感叹，投资的大道就是人生的大道。在这两个游戏里，投机者不会赢 —— 想要左右逢源、这也沾一点那也碰一点、什么是风口什么赚钱就干啥，并不会让你在长期赛道中精通深入奠定优势和门槛，你的目的会落空；无脑定投者不会赢 —— 只会无脑坚持、只会埋头拉车不会抬头看路者可能会一不小心就会落后于这个快速变动的时代，一不小心就深套在了最高点。在这两个游戏里，只有低买高卖的长期价值投资者最终能赢 —— 你得确立自己的主线任务轻易不改其意，也要对趋势和变化了然于心并加以合理利用，作用于自己的主线目标和最高任务，同时也要利用复利效应长期坚持，只有这样，你才能在个人事业和投资这两个游戏中胜出。</p>
 ]]></content>
       <categories>
-        <category>生散记</category>
+        <category>浮生散记</category>
       </categories>
       <tags>
         <tag>人生</tag>
@@ -3045,5 +3045,58 @@ _Farewell and thanks to each for the company_
         <tag>消费行业</tag>
         <tag>概率思维</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Maples7 个人开源计划（7）</title>
+    <url>/2025/05/27/open-source-maples7-7/</url>
+    <content><![CDATA[<p>一个多月没有更新了，这期间主要精力都在备婚并且在老家办了婚礼，也是完结了一件大事，现在终于有时间来更新一篇《开源计划》。</p>
+<h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
+<li>财务类 App 最新的进展如下：<ul>
+<li>对统计图表页的所有图表和列表进行了全面的重构，让它们更美观和实用</li>
+<li>增加了对「交易事件」的统计页面</li>
+<li>增加「一键结汇」功能，允许用户用基准货币对历史财务数据进行结汇</li>
+<li>增加「数据归集」功能，允许用户将历史数据进行汇总</li>
+<li>增加对交易列表过滤「大额交易」的功能</li>
+<li>增加了更多搜索功能的可用过滤条件，在其他列表页也相应增加了更多过滤条件</li>
+<li>允许用户自定义打开 App 的首页，但同时也支持在不同情况下依然遵循 App 打开时的自然逻辑</li>
+<li>实现了 Pro 功能仅对付费会员用户开放的限制逻辑，对会员功能添加了 Pro 标记</li>
+<li>修改了使用 iCloud sync data 的逻辑 —— iOS 本身对使用 iCloud 进行数据同步的限制很多且非常不灵活，所以为了 App 的稳定性暂时放弃了一些自定义数据同步逻辑的想法</li>
+<li>多项 UI 优化和 bug 修复</li>
+<li>使用 LazyView 优化启动 App 时的性能</li>
+</ul>
+</li>
+</ul>
+<p>我预想的第一个版本的功能都已经实现了，接下来会专注于 App 备案（难绷 &gt;_&lt;）、注册软件著作权和商标，实现一些平台合规的要求，预计下一次更新《开源计划》之前就会正式发布上架第一个版本！🎉</p>
+<span id="more"></span>
+
+<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新的资产配置比例的桑吉图：</p>
+<p><img data-src="https://s2.loli.net/2025/05/27/GyoDLPrKm5UJdV4.jpg" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"><center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center></p>
+<p>从上一次分享到这一次的过程期间（2025-04-07 ～ 2025-05-27），资产净值<strong>增加 ¥640868.41</strong>。资产结构和数量都有不小的变化，主要是因为婚礼后把我们小家庭的其他资产的变化也开始并表纳入这个工具的追踪和统计，方便我们随时能得知家庭总资产的变化（见上图现金类别下新增的「家庭」账户），这是完全新增的部分。其次，婚礼前后也有一些婚礼筹备和家庭资金的进出项。最后是投资账户随二级市场增幅的涨幅。</p>
+<p>在这期间，我做过的投资操作有：在多个策略里逢高卖出恒生、恒生科技、医疗等 ETF；网格策略中有出网卖出的有恒生、恒生科技、纳指、传媒等 ETF；「春华秋实」持续逢高减仓，共卖出它的约 1&#x2F;4 ～ 1&#x2F;5 的仓位。</p>
+<p>这段时间二级市场涨幅尚可，但后续上涨也显乏力。还是那句话，逢高适当慢慢出货置换到更便宜的筹码、构建更合理的仓位结构，未来无论市场如何变化，我们都能从容应对。</p>
+<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
+<li><p>最大的事情就是在老家办完了婚礼💒，虽然婚礼的筹备和举办过程想当的累（<del>再也不想干这活儿了，婚礼完一回苏州就猛猛睡觉，但是今年苏州可能还会再来一次朋友的聚会 &gt;_&lt;</del>），但最终的效果都还不错。婚礼是我们自己主持，所有的流程都是按我们自己的想法设计的，去掉一些必要性不是很大、形式大于内容的环节，简化并留下我们觉得必要的环节，让婚礼过程更轻松、更温馨。</p>
+<p>最主要的经验就是跟妆和跟拍老师一定要找专业的，最终留下的婚礼回忆都是甜蜜、温馨和美好的。我们的小家也算是正式在亲友的见证和祝福中成立，未来会继续努力，让这个小家更温馨、更幸福。</p>
+<p>通过这次婚礼我也更理解一个熟人社会和人情社会是如何具体运作的，长大后很多亲友也是难得一聚，越往后也越只有通过这些重要的人生事件节点来聚一回。另外，环境塑造人和改变人，每个人都有自己要面对的社会学命题，这导致同样的事情在不同人眼里的优先级和重要程度都是不同的，或多或少，人终究是逃不过社会的规训。（我似乎还觉醒了我一直对社会学的兴趣，当然，并不是国内大学教材里那种照本宣科的社会学。）</p>
+</li>
+<li><p>看了最新一季的《黑镜》，算是还行吧，但也没有更多值得一提的。不知道是因为自己随着年龄和阅历的增长越来越难对新鲜事物感兴趣了，还是因为全世界范围内新出的好内容 —— 不论是电影、电视剧还是书 —— 确实在越来越少。如果后者确实是原因之一，那现阶段大概就是历史周期里衰退阶段的垃圾时间吧。现实世界已经足够魔幻和离奇，大众都开始更关注现实议题、更关注自己的切身生活。</p>
+</li>
+</ul>
+<h2 id="💡-近期感悟"><a href="#💡-近期感悟" class="headerlink" title="💡 近期感悟"></a>💡 近期感悟</h2><h3 id="中国的阶层固化现状（纯主观感受）"><a href="#中国的阶层固化现状（纯主观感受）" class="headerlink" title="中国的阶层固化现状（纯主观感受）"></a>中国的阶层固化现状（纯主观感受）</h3><p>这段时间有两个社会新闻掀起了很大的舆论浪潮，之前的「协和 4+4」事件和最近的「天价耳环」事件，都再一次把中国的阶层固化现状赤裸裸暴露在大众面前。先不管这些人的家族权势和巨量财富是不是通过正常合法的渠道积累来的，这些现象的屡屡曝光都说明了类似的食利阶层在国内已经并不罕见了。</p>
+<p>普通人近年来几乎都有这样的感受，就是单靠个人努力已经越来越难实现阶层跨越，这并不是说每个人都应该成功，而是这样的概率在越来越低。这也是「内卷」、「打工牛马」、「996 福报」等词如此持续在互联网上被热议和关注的原因。越辛苦的人似乎越命苦，越会吃苦耐劳的人似乎越得不到应有的回报。一方面，世界处于大的转型和变革阶段，在信息传播如此快速和便捷的今天，信息差也已经越来越少，本来靠这些信息差所带来高回报的工作都在回归自己真正能提供的社会价值，陈旧的职业理念和岗位在 AI 时代里正在慢性死亡，这是「内卷」。另一方面，阶层固化也确实在明显破坏社会进步的公平性，很多行业「潜规则」已经逐渐变成大家心知肚明的「明规则」，生产关系和分配体系如果不能及时做出合理的调整来纠偏，未来的阶层固化将还会越来越严重，也将直接阻碍社会的进步。</p>
+<p>在「协和 4+4」事件里，我其实非常好奇为什么当事人家庭会认为医生这样公认又苦又累的工作会被认为是一条好的人生道路。后来想一想也合理，他们家庭的显性或隐性的资源和财富都在医疗行业里，这些资源和财富需要子女进入这个行业镀金来继承。财富、资源、权力的传承或许是全世界所有富一代们都在处心积虑筹谋烦恼的事情。其实不仅仅是权贵，对于普通人，只要稍微有些积累的家庭都是如此，如果父母混得还不错，大多数父母都希望子女继承家业站在自己的肩膀上继续打拼，才会事倍功半。再想想那些福利待遇一直都不错的垄断行业，比如烟草、电力、能源、通信、金融等行业，有多少行业二代们都是被父母安排了一条直通行业的人生道路，人性如此。这些阶层固化的现象每天就发生在我们身边，很多人也是这个固化社会的维护者和获益者。这些并不公平的现象自然会挑动绝大多数毕业即失业的年轻人们的神经。</p>
+<p>基于这些想法，我是不是可以进一步推测，其实国内现阶段的阶层固化大多还是某个垂直行业的资源和财富的传承，还没有像欧美老牌资本主义国家那样跨行业全方位垄断型的阶层固化。当然这并不说国内没有真正的跨行业权贵，而是在国内能达到这样程度的家庭确实太有难度，尤其是对于我们的特色体制和文化传统而言，不入仕且走到金字塔顶端是几乎不可能达到的。</p>
+<p>以上只是我个人关于这个话题的一些不成熟的臆测和瞎想，仅供参考，切勿对号入座和过度解读。</p>
+<h3 id="再谈国内高等教育与科研创新"><a href="#再谈国内高等教育与科研创新" class="headerlink" title="再谈国内高等教育与科研创新"></a>再谈国内高等教育与科研创新</h3><p>在读大学时我就有深刻的感受，国内的高等教育体系其实很有问题，高校的行政化和官僚化几乎是另一个「小官场」，满是利益勾连和人情世故，这样的体系下是诞生不了真正的科研创新的。</p>
+<p>把这样的高校体系结合上一个话题中切实发生的阶层固化现象来看，也不难理解了。这样的体系下，教育变成了学阀们维护利益和资源的工具，高校的所谓科研创新大多也只是为了获取更多的科研经费和行政资源，而不是为了真正推动社会进步和科技发展。而医院和医疗行业的人员构成和职级评定更是直接脱胎于高校体系，同样继承了这个体系的所有弊病。从这个角度再看「协和 4+4」事件，是不是这些现象都可以解释得通了。</p>
+<p>可以说，高校本该是社会中最具创新和活力的地方，但在现今这样的体系下，它反而变成了最迂腐和保守的地方，变成了学阀们捞取利益资源、维护阶层和等级制度的温床。这样的体系下，真正的科研创新和社会进步是很难实现的。</p>
+<h3 id="人的成长，就是逐渐理解之前的不理解"><a href="#人的成长，就是逐渐理解之前的不理解" class="headerlink" title="人的成长，就是逐渐理解之前的不理解"></a>人的成长，就是逐渐理解之前的不理解</h3><p>最近看到一句话，说人的成长就是逐渐理解自己之前的不理解。确实如此，随着年龄的增长和阅历的积累，人的心态大约会变得越来越成熟和豁达，我们会逐渐理解自己年轻时曾经不理解的事情。就像我们看自己曾经的朋友圈和 QQ 空间，会发现我们年轻时的想法和观点其实是很幼稚和片面的。</p>
+<p>这并不是说年轻时的想法就一定是错的，而是随着时间的推移，我们会逐渐看到更全面和深刻的真相。很多时候，我们年轻时的反对和不理解，都是因为缺乏足够的经验和视角。这也是为什么很多人会说，年轻时的反叛和不理解其实是成长的一部分。我们需要经历这些反叛和不理解，才能在未来更好地理解自己和世界。</p>
+<p>这也让我想起了之前提到的社会学命题，人的成长和社会的规训是密不可分的。我们每个人都在不断地被社会塑造和改变，而这种塑造和改变往往是潜移默化的。随着时间的推移，我们会逐渐理解社会对我们的期望和要求，也会逐渐适应这种期望和要求。</p>
+<p>这并不是说我们要完全放弃自己的个性和独立思考，而是要在理解和适应社会的基础上，找到自己的位置和价值。只有这样，我们才会更好地实现个人成长，尽最大努力提供自己的社会价值。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
   </entry>
 </search>

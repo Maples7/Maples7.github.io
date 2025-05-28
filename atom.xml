@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-04-07T09:13:46.738Z</updated>
+  <updated>2025-05-28T09:42:50.074Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -17,11 +17,45 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Maples7 个人开源计划（7）</title>
+    <link href="https://maples7.com/2025/05/27/open-source-maples7-7/"/>
+    <id>https://maples7.com/2025/05/27/open-source-maples7-7/</id>
+    <published>2025-05-27T08:16:04.000Z</published>
+    <updated>2025-05-28T09:42:50.074Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;一个多月没有更新了，这期间主要精力都在备婚并且在老家办了婚礼，也是完结了一件大事，现在终于有时间来更新一篇《开源计划》。&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;财务类 App 最新的进展如下：&lt;ul&gt;
+&lt;li&gt;对统计图表页的所有图表和列表进行了全面的重构，让它们更美观和实用&lt;/li&gt;
+&lt;li&gt;增加了对「交易事件」的统计页面&lt;/li&gt;
+&lt;li&gt;增加「一键结汇」功能，允许用户用基准货币对历史财务数据进行结汇&lt;/li&gt;
+&lt;li&gt;增加「数据归集」功能，允许用户将历史数据进行汇总&lt;/li&gt;
+&lt;li&gt;增加对交易列表过滤「大额交易」的功能&lt;/li&gt;
+&lt;li&gt;增加了更多搜索功能的可用过滤条件，在其他列表页也相应增加了更多过滤条件&lt;/li&gt;
+&lt;li&gt;允许用户自定义打开 App 的首页，但同时也支持在不同情况下依然遵循 App 打开时的自然逻辑&lt;/li&gt;
+&lt;li&gt;实现了 Pro 功能仅对付费会员用户开放的限制逻辑，对会员功能添加了 Pro 标记&lt;/li&gt;
+&lt;li&gt;修改了使用 iCloud sync data 的逻辑 —— iOS 本身对使用 iCloud 进行数据同步的限制很多且非常不灵活，所以为了 App 的稳定性暂时放弃了一些自定义数据同步逻辑的想法&lt;/li&gt;
+&lt;li&gt;多项 UI 优化和 bug 修复&lt;/li&gt;
+&lt;li&gt;使用 LazyView 优化启动 App 时的性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我预想的第一个版本的功能都已经实现了，接下来会专注于 App 备案（难绷 &amp;gt;_&amp;lt;）、注册软件著作权和商标，实现一些平台合规的要求，预计下一次更新《开源计划》之前就会正式发布上架第一个版本！🎉&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Maples7 个人开源计划（6）</title>
     <link href="https://maples7.com/2025/04/07/open-source-maples7-6/"/>
     <id>https://maples7.com/2025/04/07/open-source-maples7-6/</id>
     <published>2025-04-07T04:45:40.000Z</published>
-    <updated>2025-04-07T09:13:46.738Z</updated>
+    <updated>2025-05-27T08:21:29.830Z</updated>
     
     
     <summary type="html">&lt;p&gt;中美贸易战大升级，全球金融市场已经巨幅震动，在今天收盘资产更新之前先更新一篇新的《开源计划》，同时更新个人资产比例，作为上一个阶段的结束，想必是很合适的。&lt;/p&gt;
@@ -45,7 +79,7 @@
     
     
     
-    <category term="生散记" scheme="https://maples7.com/categories/%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
     
     
     <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
@@ -583,32 +617,6 @@
     
     
     <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「必然」有多必然？</title>
-    <link href="https://maples7.com/2020/05/19/how-certain-is-certain/"/>
-    <id>https://maples7.com/2020/05/19/how-certain-is-certain/</id>
-    <published>2020-05-19T14:10:20.000Z</published>
-    <updated>2021-11-19T18:04:03.097Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;最近在看美剧《高堡奇人》（&lt;em&gt;The Man in the High Castle&lt;/em&gt;）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？&lt;/p&gt;
-&lt;p&gt;当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-    <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
-    
-    <category term="必然" scheme="https://maples7.com/tags/%E5%BF%85%E7%84%B6/"/>
-    
-    <category term="哲学" scheme="https://maples7.com/tags/%E5%93%B2%E5%AD%A6/"/>
-    
-    <category term="复杂系统" scheme="https://maples7.com/tags/%E5%A4%8D%E6%9D%82%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
