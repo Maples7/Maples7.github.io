@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-06-30T10:15:11.863Z</updated>
+  <updated>2025-06-30T10:19:05.683Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://maples7.com/2025/06/30/open-source-maples7-8/"/>
     <id>https://maples7.com/2025/06/30/open-source-maples7-8/</id>
     <published>2025-06-30T08:00:46.000Z</published>
-    <updated>2025-06-30T10:15:11.863Z</updated>
+    <updated>2025-06-30T10:19:05.683Z</updated>
     
     
     <summary type="html">&lt;p&gt;六月的最后一天，也是 2025 年上半年的结束，正好又赶上我的新财务类工具 App —— BeanLedger —— 在大陆地区 App Store 上架第一周，是很适合写一篇新的《开源计划》做一些回顾和总结的。&lt;/p&gt;
@@ -37,11 +37,15 @@
     <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
     
     
+    <category term="创业" scheme="https://maples7.com/tags/%E5%88%9B%E4%B8%9A/"/>
+    
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     
     <category term="BeanLedger" scheme="https://maples7.com/tags/BeanLedger/"/>
     
     <category term="复式记账" scheme="https://maples7.com/tags/%E5%A4%8D%E5%BC%8F%E8%AE%B0%E8%B4%A6/"/>
+    
+    <category term="通缩" scheme="https://maples7.com/tags/%E9%80%9A%E7%BC%A9/"/>
     
   </entry>
   
@@ -200,9 +204,9 @@
     
     <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
     
-    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
-    
     <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
+    
+    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     
   </entry>
   
@@ -321,9 +325,9 @@
     
     <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
-    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
-    
     <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
+    
+    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     
     <category term="Apple Developer Program" scheme="https://maples7.com/tags/Apple-Developer-Program/"/>
     

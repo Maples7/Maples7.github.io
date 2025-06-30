@@ -185,6 +185,53 @@
       </tags>
   </entry>
   <entry>
+    <title>非关系型数据库中的「关系」实现</title>
+    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
+    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
+<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
+<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
+<span id="more"></span>
+
+<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
+<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
+<p>方法如下：</p>
+<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
+<p>举例如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
+<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
+<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
+<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
+<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
+<p>引用方法又可分为两种：</p>
+<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
+<p>方法简单，不再举例赘述。</p>
+<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
+<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
+<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
+<p>样例如下：</p>
+<p>在 user.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在 msgboard.js 中定义：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
+<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
+<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
+<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
+<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
+<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>巴山蜀水毓灵秀</title>
     <url>/2016/06/10/mountains-in-chongqin-and-water-in-chengdu/</url>
     <content><![CDATA[<div class="group-picture"><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a96f4.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af68b036.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a29bb.gif"></div></div><div class="group-picture-row"><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a482e.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6a5fdb.gif"></div><div class="group-picture-column"><img data-src="https://i.loli.net/2018/08/06/5b672af6b7aa7.gif"></div></div></div>
@@ -271,53 +318,6 @@
         <tag>Node.js</tag>
         <tag>循环依赖</tag>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>非关系型数据库中的「关系」实现</title>
-    <url>/2016/04/06/how-to-implement-relationship-in-nosql/</url>
-    <content><![CDATA[<p>这两三年来，伴随着大数据（Big Data）的空前火热，无论是在工程界还是科研界，非关系型数据库（NoSQL）都已经成为了一个热门话题。</p>
-<p>相比于传统的关系型数据库，非关系型数据库天生从理念上就给数据存储提供了一种新的思路。而在实际应用中，它往往更轻巧灵活、扩展性高，并且更能胜任高性能、大数据量的场景。</p>
-<p>值得一提的是，NoSQL并不是 “No SQL” 的意思，而是 “Not Only SQL” 的简写。</p>
-<span id="more"></span>
-
-<p>尽管非关系型数据库没有关系型数据库中很多预定义的死板模式的限制，但自然数据间总是充满联系的，所以在数据库中我们势必需要抽象出这种数据之间的联系。</p>
-<p>本文就个人实践经验，总结一下 NoSQL 数据库中表现数据关系的常见办法，并且结合一个实践项目来举例说明（样例为 Node.js 项目，使用常用的文档型数据库 MongoDB（Mongoose 来操作）来举例）。</p>
-<p>方法如下：</p>
-<h3 id="1-嵌套"><a href="#1-嵌套" class="headerlink" title="1. 嵌套"></a>1. 嵌套</h3><p>得益于非关系型数据库的灵活数据类型，我们可以直接将 Schema A 中的某个属性设置为「数组」类型，用以存储所有与它有 1：N 关系的其他数据对象。</p>
-<p>举例如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> commentSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">comments</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: [commentSchema],</span><br><span class="line">    <span class="attr">default</span>: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在上例中，一个 <code>message</code> 文档可能包含很多 <code>comment</code> 文档，所以在 <code>messageSchema</code> 的 <code>comments</code> 属性中用一个数组来存储某个 <code>message</code> 的所有 <code>comment</code>。</p>
-<p>值得注意的是，这里 <code>commentSchema</code> 并不实际对应一个数据集合，它只用于在这里帮助定义 <code>messageSchema</code>。</p>
-<p>相比于下面要讲到的引用的办法，这个方法适合于查询频繁（少了引用查询）、有强逻辑联系的 1：N 关系（即每次显示 A 文档都需要显示众多 B 文档）、且 B 文档改动较少（毕竟嵌套操作相对复杂一些）的场景。</p>
-<p>这种方法也是 NoSQL 数据库相比于传统的关系型数据库的优势所在。</p>
-<h3 id="2-引用"><a href="#2-引用" class="headerlink" title="2. 引用"></a>2. 引用</h3><p>NoSQL 数据库中并不存在传统关系型数据中类似于 join 的方法，所以这使得我们的复杂查询可能会变得相对困难，好在很多封装好的数据库包提供了很多便利。</p>
-<p>引用方法又可分为两种：</p>
-<h4 id="Ⅰ-手动引用"><a href="#Ⅰ-手动引用" class="headerlink" title="Ⅰ. 手动引用"></a>Ⅰ. 手动引用</h4><p>手动引用很简单，就是在 Schema A 中定义一个 Schema B 中唯一（<code>unique</code>）的属性（一般为<code>_id</code>），每次当查询 A 后又需要查询 B 时，需要自己根据 A 中定义的 <code>_id</code> 值手动去查询 B 的完整数据。</p>
-<p>方法简单，不再举例赘述。</p>
-<p>不过，在实践中唯一值得注意的是：A 中定义的与 B 相关的属性应该不具备业务语义，且基本不会被改动，否则当你对 B 中的相应属性进行改动的时候，所有引用此 B 文档的 A 文档，都需要对定义的引用属性进行更新，这是绝对需要避免的！这也是为什么一般引用 <code>_id</code> 的原因（一般在生命期内都不会被业务需求改变）。</p>
-<h4 id="Ⅱ-自动引用"><a href="#Ⅱ-自动引用" class="headerlink" title="Ⅱ. 自动引用"></a>Ⅱ. 自动引用</h4><p>自动引用是借助于类似关系型数据库中定义的 Reference key 或 Foreign key 进行预先的引用定义。在查询时，数据库可以根据事先定义的「引用键」进行解引用，找到引用到的另一个集合中的文档。</p>
-<p>在有一些封装好的数据库操作包中，可以实现自动解引用的功能，即凡是检测到引用键就自动的去查询对应的文档进而解引用。不过即便不是自动解引用，手动解引用也会花费开销进行查询，这也是为什么使用引用查询次数会更多的原因。试想如果对于「嵌套」方法中的样例，每次都进行自动解引用，那么在嵌套方法中可能进行的 1 次查询，在这里可能就需要 N+1 次了（N 为 <code>message</code> 中 <code>comments</code> 数组的长度）。</p>
-<p>样例如下：</p>
-<p>在 user.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">unique</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">password</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">email</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">intro</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">    <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>在 msgboard.js 中定义：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> messageSchema = <span class="keyword">new</span> <span class="title class_">Schema</span>(&#123;</span><br><span class="line">  <span class="attr">user_id</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: mongoose.<span class="property">Schema</span>.<span class="property">ObjectId</span>,</span><br><span class="line">    <span class="attr">ref</span>: <span class="string">&#x27;User&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">content</span>: <span class="title class_">String</span>,</span><br><span class="line">  <span class="attr">time</span>: &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="title class_">Date</span>,</span><br><span class="line">    <span class="attr">default</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这里，我们在 <code>messageSchema</code> 中定义了一个引用键 <code>user_id</code> 引用到 <code>userSchema</code> 中 <code>_id</code> 字段。<br>注意：MongoDB 会自动为文档创建唯一的 <code>_id</code> 字段！</p>
-<p>如此，便在 Schema 层次上定义好了引用。具体在查询时，我们可以根据具体使用的包的特性来决定如何进行解引用的操作。</p>
-<p>在 Mongoose 里，可以使用 <code>populate</code> 方法。详细的使用方法可以参考 Mongoose API 文档，这里仅给出一个样例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Message</span>.<span class="title function_">find</span>(query)</span><br><span class="line">  .<span class="title function_">populate</span>(<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">  .<span class="title function_">skip</span>((page - <span class="number">1</span>) * <span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">  .<span class="title function_">limit</span>(<span class="variable constant_">NUM_EACH_PAGE</span>)</span><br><span class="line">.<span class="title function_">sort</span>(&#123;<span class="attr">time</span>: -<span class="number">1</span>&#125;).<span class="title function_">exec</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">messages</span>) &#123;</span><br><span class="line">    <span class="comment">// do something with messages</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(messages);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>这里用 Promise（异步流程控制方式的一种） 链式操作的方进行对 <code>messages</code> 进行查询，同时 <code>skip</code> 和 <code>limit</code> 用于翻页。</p>
-<p>重点可关注 <code>populate</code> 方法，我们在这里获取了引用到的 <code>user</code> 文档 <code>name</code> 字段的值。</p>
-<p>对于自动引用方式而言，由于在同等数据量的情况下查询次数一般要多，所以适用于查询不大频繁、具有相对更弱逻辑性的数据关系之间（不是 A 出现 B 一定需要出现的关系），而且用它既定义了数据之间的关系，也方便对数据进行各种 CURD 操作（没有嵌套或少嵌套了）。</p>
-<p>注：本文在 NoSQL 数据库中使用关系型数据库中的「字段」的概念，实际是表示 NoSQL 数据库文档中的属性。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
       </tags>
   </entry>
   <entry>
@@ -447,6 +447,32 @@
         <tag>JavaScript</tag>
         <tag>ES6</tag>
         <tag>Promise</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>失落之星</title>
+    <url>/2016/09/10/lost-stars/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
+_Life is like a long journey_   
+_Some ones get on and some off_   
+_Those can accompany me to the destination are rare_   
+_Even none_   
+_Do not feel bad or complain_    
+_Farewell and thanks to each for the company_
+
+<span id="more"></span>  
+<p>译自：</p>
+<blockquote>
+<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
+</blockquote>
+<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>Lost Stars</tag>
+        <tag>诗</tag>
       </tags>
   </entry>
   <entry>
@@ -648,32 +674,6 @@
       </tags>
   </entry>
   <entry>
-    <title>失落之星</title>
-    <url>/2016/09/10/lost-stars/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/outchain/player?type=2&id=28747428&auto=0&height=66"></iframe>
-_Life is like a long journey_   
-_Some ones get on and some off_   
-_Those can accompany me to the destination are rare_   
-_Even none_   
-_Do not feel bad or complain_    
-_Farewell and thanks to each for the company_
-
-<span id="more"></span>  
-<p>译自：</p>
-<blockquote>
-<p>人生就像一场长途旅行<br>有人上车 也有人下车<br>能陪我坐到最后的人少之又少<br>甚至 可能没有<br>所以不要对下车的人太不舍 也不要怨愤<br>要好好跟他们道别<br>感谢彼此陪伴的这一段旅程   </p>
-</blockquote>
-<p><em>From:</em> <a href="http://m.weibo.cn/5505502029/4018205955518754?uicode=10000002&moduleID=feed&featurecode=10000001&mid=4018205955518754&luicode=10000001&_status_id=4018205955518754&rid=20_0_8_2666547007196013052&fromlog=100013888197280&lfid=100013888197280">Sina Weibo: Pepe佩佩小姐</a></p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>Lost Stars</tag>
-        <tag>诗</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>缓存可以用来做些什么</title>
     <url>/2016/10/08/what-can-cache-do/</url>
     <content><![CDATA[<blockquote class="blockquote-center">
@@ -859,43 +859,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>程序员：请不要丢失你的敬畏心</title>
-    <url>/2016/12/09/show-your-respect/</url>
-    <content><![CDATA[<center><b>暗</b></center>
-
-<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
-<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
-<span id="more"></span>
-
-<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
-<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
-<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
-<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
-<center><b>明</b></center>
-
-<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
-<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
-<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
-<p>就像读书的三境界一样，关于认知也有四重境界：</p>
-<ol>
-<li>You don’t know that you don’t know</li>
-<li>You know that you don’t know</li>
-<li>You know that you know</li>
-<li>You don’t know that you know</li>
-</ol>
-<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
-<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
-<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>程序员</tag>
-        <tag>敬畏之心</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>为 Node.js 正名的二三事</title>
     <url>/2016/12/15/awesome-node/</url>
     <content><![CDATA[<p>这篇文章的起因是《程序员》杂志上的这两天在前端界闹得沸沸扬扬的文章——<a href="http://geek.csdn.net/news/detail/128912">《2016 年前端技术观察》</a>，我在知乎上看到相关文章的时候大概已经是凌晨两点，看完后（准确说，前端我不大了解的部分没怎么细看）「精神抖擞」，当即在知乎写下了这个回答：<a href="https://www.zhihu.com/question/53625757/answer/135902282">如何评价真阿当的文章：《2016 年前端技术观察》？</a>。</p>
@@ -1071,6 +1034,43 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>面向对象</tag>
         <tag>Erlang</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>程序员：请不要丢失你的敬畏心</title>
+    <url>/2016/12/09/show-your-respect/</url>
+    <content><![CDATA[<center><b>暗</b></center>
+
+<p>或许是因为整天抓着代码里的 Bug 从而锻就了能敏锐发现世界缺憾的能力，抑或是这个世界本来就充满着污秽与糟粕，大多数技术人员都普遍缺乏敬畏之心。</p>
+<p>他们习惯性的高高在上俯瞰着众生的琐碎，从不懂得尊重其他人的劳动和创作；<br>他们在自己狭窄可怜的 comfort zone 里游刃有余，认为自己了解到就是全世界，而剩下的全是垃圾；<br>他们自以为是的对待自己所遇到的一切事物，以为看一眼书名就能通晓书中的精华，瞥一眼标题就能知道全文在讲些什么，瞅一眼角色的长相就能知道是好人还是坏人；<br>……</p>
+<span id="more"></span>
+
+<p>他们局限在自己固若金汤的生活里，选择性的忽视着他们不擅长的世界的 B 面，一边自得其乐的吐槽着世界的种种不完善，一边心满意足的看着综艺刷着微博写着不思进取的代码。</p>
+<p>他们的宗旨是，自己最聪明，别人的产品都充满问题。他们觉得，对于自己了解的部分自己说的都是对的，对于自己不了解的部分根本没有存在的必要，不屑于去了解。无知成为了他们的一种幸福。</p>
+<p>这样的人，永远心安理得的停留在原地，嘲笑着汗流浃背奔跑的人。</p>
+<p>其实，他们不仅仅是技术工作着，他们可能是我们每一个人。<br><br /></p>
+<center><b>明</b></center>
+
+<p>国人的劣根性也好，人性的自然缺憾也罢，就跟古时候「文人相轻」的现象一样，技术工作者往往也有同源的类似的问题。想想永远活跃于各大社交网络的编程语言之争、技术范式之争、工具链之争等等就不难发现，很多技术工作者都真情实意的认为自己研究的东西最重要、自己写出的代码赏心悦目，而往往对别人的工作和自己尚不了解的领域充满偏见。</p>
+<p>诚然，大多数技术工作者确实有着严谨的逻辑思维、强悍的学习能力、不畏艰难的卓绝品质，但也许正是这些表象的或者是世俗眼中的刻板印象，浇灌了技术工作者心里的自我满足感。</p>
+<p>最近在看《人类简史》，作者在第十四章中明确指出近代欧洲文明正是在认识到自身的无知之后，才开始对未知的世界进行探索，从而一跃成为世界文明的中心。一个典型的现象是最初欧洲人所测绘的地图事无巨细、没有空白，认为自己所认知的世界就已经是全世界，而他们在探索到新大陆发现了自身的无知之后，地图测绘上开始学会了留白，坦诚的面对自己所还未曾涉足的地域。而同时代的近代中国却固步自封、骄傲自大，之后的故事大家都耳熟能详了。</p>
+<p>就像读书的三境界一样，关于认知也有四重境界：</p>
+<ol>
+<li>You don’t know that you don’t know</li>
+<li>You know that you don’t know</li>
+<li>You know that you know</li>
+<li>You don’t know that you know</li>
+</ol>
+<p>大多数人都只是在第一重境界，但这之中却有不少人误以为自己在第三境界。放下自己认知上的自我满足感，不断去探求新知，才只是从第一境界过渡到第二境界而已。</p>
+<p>果粉熟知的乔布斯关于 “connect the dots” 的论断也有异曲同工之妙，你永远也不会知道现在你所了解到的看似无用的新事物会不会在未来的某个时刻成为组成你的伟大的不可或缺的重要的一部分。</p>
+<p>所以，程序员，请不要丢失你的敬畏心，这个世界你不了解的事情不胜枚举。用开放的心态拥抱自己不了解的领域，你会无意中打开更多新世界的大门。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>程序员</tag>
+        <tag>敬畏之心</tag>
       </tags>
   </entry>
   <entry>
@@ -1330,6 +1330,37 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>被分化的树叶</title>
+    <url>/2017/07/15/diversified-leaves/</url>
+    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
+<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
+<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
+<span id="more"></span>
+
+<p>树叶们早已经被分化了。</p>
+<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
+<p>太阳越升越高，雾也开始渐渐散去。</p>
+<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
+<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
+<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
+<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
+<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
+<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
+<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
+<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
+<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
+<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
+<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>意识流</tag>
+        <tag>散文</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>了不起的 Erlang</title>
     <url>/2017/06/10/awesome-erlang/</url>
     <content><![CDATA[<blockquote class="blockquote-center">
@@ -1376,106 +1407,25 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>如何系统地学习一门编程语言？</title>
-    <url>/2017/07/13/comprehensively-learn-a-new-programming-lauguage/</url>
-    <content><![CDATA[<p>「学习一门新的编程语言」是每个程序员都必然会面对的一个课题（注：本文特指工程实践中常用的高级编程语言）。自从高一开始编程到现在，我也接触了不少的编程语言，有的语言已经能在工作中得心应手的使用；有的语言用的不多，但大概了解其设计，也能在官方文档的帮助下简单使用；还有的则之前很了解，但很长时间没有使用过了。</p>
-<p>换一份新的工作是最有机会让程序员接触到新的东西的，最近我就应工作需求开始接触一门新的编程语言，学习过程中难免会和已经熟悉的编程语言进行对比，然后发现其实编程语言的学习完全是有「套路」可循的，这篇博客试图总结一下这种「套路」。</p>
+    <title>今晚月色真美</title>
+    <url>/2017/12/21/love/</url>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
+
+<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
+<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
 <span id="more"></span>
 
-<p>总的来说，编程语言各种各样的特性共同决定了这门语言，这样的特性可能大到并发模型的设计，小到某个具体的语法特性。学习一门编程语言的过程就是不断了解这些语言特性并进行实践应用以及工程化使用的过程。系统性地把语言的主要特性明确清楚，可以快速地建立对一门语言的基本认识，并能做到胸有成竹地深入和细化。</p>
-<p>下面就一一说明学习一门新的编程语言至少需要明确的语言特性有哪些，供参考。</p>
-<h3 id="编译型-or-解释型"><a href="#编译型-or-解释型" class="headerlink" title="编译型 or 解释型"></a>编译型 or 解释型</h3><p>如今一门语言是编译型语言还是解释型语言似乎对工程开发的影响越来越小（而且大有相互靠拢之势，界限也变得越来越不清晰），这或多或少得益于各种编辑器和 IDE 对于中间过程的自动化处理。不过，明确一门编程语言是编译型还是解释型依然是基础且非常有必要的，这对于理解一些程序的深层行为逻辑会很有帮助。</p>
-<p>其实对于语言设计者来说，编译型和解释型从根本上是语言开发自由度和性能优化能力之间的博弈。</p>
-<h3 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h3><p>基本地，需要了解该语言都原生支持哪些数据类型，而其中哪些是简单／基础类型，哪些又是复杂／复合类型，各个类型之间又有哪些区别等等。</p>
-<p>更抽象来看，类型系统又可以从两个维度来定义：</p>
-<ul>
-<li>强类型 or 弱类型：核心的区别在于语言<strong>是否偏向于容忍隐式的类型转换</strong>。一个常见的错误理解是「C&#x2F;C++ 是强类型语言」，实际上，在 C&#x2F;C++ 中隐式类型转换很常见，它们是弱类型语言。与之相对的，Python 则是强类型语言。</li>
-<li>动态类型 or 静态类型：核心区别在于<strong>是否在编译时就能明确每一个变量的类型</strong>。对于静态类型来说，如果编译时存在类型错误，是无法编译通过的，而对于动态类型来说，由于程序运行时才能明确类型，所以类型错误通常不会导致编译出错（错误会在运行时暴露出来）。Python 就是动态类型，而 C&#x2F;C++ 则是静态类型。</li>
-</ul>
-<h3 id="模块系统"><a href="#模块系统" class="headerlink" title="模块系统"></a>模块系统</h3><p>如今的高级语言基本都会有成熟的模块系统，好的模块系统对于构建大型工程项目来说必不可少，它可以大大提高程序的可复用能力和模块化能力。</p>
-<p>了解一门编程语言的模块系统大概至少需要了解这些细节：</p>
-<ul>
-<li>依赖的路径是如何解析的？</li>
-<li>如何引用自定义模块（文件）？</li>
-<li>如何引用第三方的模块或包？</li>
-</ul>
-<h4 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h4><p>与模块系统相关的一个很影响实际开发的问题是「变量的作用域（scope）是怎样的」。常见的可以自己问的问题是：</p>
-<ul>
-<li>什么情况下是全局作用域？</li>
-<li>什么时候又会是函数作用域？</li>
-<li>块作用域又是怎样的？</li>
-</ul>
-<p>不过，不同的语言对于作用域的定义和分类可能不同，需要具体情况具体了解。</p>
-<p>另外，明确语言是「动态作用域」还是「静态（词法）作用域」也非常重要：与动态类型和静态类型的区别类似，静态作用域是在<strong>书写代码</strong>或者说定义时确定的，而动态作用域是在<strong>运行时</strong>确定的。静态作用域关注函数在<strong>何处声明</strong>，而动态作用域关注函数从<strong>何处调用</strong>，其作用域链是基于运行时的调用栈的。可以看看<a href="https://www.zhihu.com/question/20032419/answer/112564460">这个例子</a>做进一步的区分。</p>
-<h3 id="支持的编程范式与特色"><a href="#支持的编程范式与特色" class="headerlink" title="支持的编程范式与特色"></a>支持的编程范式与特色</h3><p>编程语言支持哪样的编程范式对于工程项目也非常重要，这也基本和语言设计上的一些别具一格不那么常见的特色相关。比如函数式编程中的「函数是一等公民」、面向对象中的「封装、继承和多态」对应到编程语言上应该如何具体实现、面向并行的语言又是如何实现并发的等等。</p>
-<p>了解了这些特色你才能更清楚这门语言在工程中更擅长做哪样的事情，更适合哪些项目。</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>基础的你需要了解基本的语法规则和特性，比如分支、循环、函数等等。更深入一些的时候则可以了解一下语言的架构设计、那些语言特性为什么会这样设计以及它们都是如何被实现的。了解实现不一定非得去看源码，搞清楚语言大体上的实现过程还是比较简单的。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后，把前文的部分<a href="https://www.processon.com/chart_image/595f2e79e4b0a77c5aeb50d7.png">总结成一张思维导图</a>，希望能够让开始学习新编程语言的过程更清晰快速。</p>
-<img data-src="https://i.loli.net/2018/08/06/5b6731fe12be8.png" />
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>编程</tag>
-        <tag>程序员</tag>
-        <tag>编程语言</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>被分化的树叶</title>
-    <url>/2017/07/15/diversified-leaves/</url>
-    <content><![CDATA[<p>窗外是早晨浓重的雾。那的确只是雾，而不是在这座城市常见的霾。</p>
-<p>窗子属于道路边一幢十多层高的居民楼，楼的西边儿有一棵不知名的树。树长得很高，树顶已经没过了两旁的建筑。虽然高，但看起来并不显得十分茂盛。树枝均匀的分布在树干上，让树整体上显得很有层次，像二十多岁少女的身姿。</p>
-<p>透过洒落在晨雾里的朦朦胧胧的阳光，还是可以勉强从树下看到树上叶子的形状。椭圆形的树叶，面积并不大，长度只及人类中指的二分之一左右。叶片边缘有细小的锯齿，但在这么大的雾里肯定是分辨不出的了。或许是因为阳光的缘故，树南侧的叶子明显比北侧要茂密一些。</p>
-<span id="more"></span>
-
-<p>树叶们早已经被分化了。</p>
-<p>那是很多年以前，这棵树还只是南方某森林里不知名的小树苗，树叶也不多，但它们在各个方向的长势却基本一致。然而，从它被种到这座北方城市的这一隅开始，树叶们的分化就命中注定般的开始了。自然环境基本决定了每一片叶子未来的大小和形状，无一幸免，无一例外。</p>
-<p>太阳越升越高，雾也开始渐渐散去。</p>
-<p>树的正西侧中上部位有一片很普通的叶子，大小在这棵树的所有树叶中居中，可是身材已经完全走了样。尽管它很努力的想要保持自己沿中茎两侧的部分对称且均匀，甚至曾经不惜费尽心思借住风的力量让自己的右半边多接触些阳光，然而还是可以明显看出它的左半边比右半边要大一些，而且中茎也已经被左边压弯了，呈现出指向北边的弧度。这片叶子很不喜欢自己失衡的身材，它觉得很失落，也很苦恼。</p>
-<p>从树所在的地方再往西边走十几米，是一个十字路口。这个路口是这座城市繁华的缩影，每天从这经过的人和车成千上万，附近的地铁站里也无时无刻不挤满了人。那片身材走样了的叶子每天除了绞尽脑汁的想着如何让自己的右半边的大小能追上自己的左半边之外，就是从这些在它跟前经过的形形色色的人身上找些乐子了。它认为其他树叶肯定也跟它一样，只是都不好意思说。</p>
-<p>这么多年过去了，叶子早已经阅人无数了。它看过各种不同年纪的人、各种不同长相的人、各种不同打扮的人、各种不同身材的人、各种不同职业的人、各种不同心情的人、使用各种不同交通工具的人，甚至是在各种不同天气下的各种各样的人。叶子觉得自己已经不能更了解人类了。</p>
-<p>然而在这个平凡的大雾的早晨，叶子感觉自己还是在人类身上发掘出了不一样的东西。</p>
-<p>以往的叶子总是把它有限的注意力都放在经过它前面的它感兴趣的某一个人类个体上。虽然它的注意力很有限，但它总是能把个体观察得格外细致。经过它长年累月不断打磨的关于人类的经验，它现在已经能从一个人经过它跟前的短短几秒到十几秒钟内，判断出这个人的职业和大致的社会地位。这种判断几乎是瞬间做出的，叶子知道它现在都已经不必经过叶脑思考了。</p>
-<p>这个关于人类的新发现正是发生在叶子一如既往百无聊赖地观察人类的时候。这片因身材而犹豫的叶子大概是心情过于郁闷，想找点事情转移一下自己关于自身身材的注意力，于是尝试着强迫自己重新带上自己的脑子去观察人类，很快，它产生了新的思考。</p>
-<p>今天的叶子萌芽出了一种更宏观的思维，它开始思考它所观察到的人类样本总体，于是它很顺理成章地就发现了人类个体之间巨大的差异性。它以前只是能把某个人类个体的特征描述完整，从而形成对这个个体的画像，但今天经过它自己的思考，它发现原来人与人之间是那么的不同，这种差异之巨大应该是它们树叶所完全不能理解也无法想象的。</p>
-<p>它当然知道树叶们都已经是各不相同的了，即便它和它的兄弟姐妹们都生长在同一颗树上，也已经产生了很大的不同，而且他还知道世界上还有其他树的存在（这是它对侧的兄弟告诉它的，那个兄弟说它对面就有另外一棵树，树上也长满了叶子）。有的叶子色泽光鲜、叶片饱满、茎脉挺拔，有的则显得相对孱弱，甚至还有的叶片都已经有部分残缺了。但从人类之间的差异性上看，它突然觉得它们树叶之间的差异根本算不上什么，因为树叶之间的差异再怎么大也不至于连一丁点儿相似的地方也找不出吧，然而从人类身上它却可以轻松地从记忆中找到两个没有半点特征一样的人。</p>
-<p>这样想着，它觉得它自己左半边和右半边之间的差异好像也不那么可恨了。它不知道这是不是它为了自我合理化所找的借口。</p>
-<p>太阳好像已经快到树的正上方了，大雾也基本已经散去。</p>
-<p>突然，一阵儿微风吹过，这片爱思考的叶子条件反射般地借着风的力量努力扭转着自己的身姿，想尽量让自己相对瘦小的右半边能多接触到一些正午的阳光。</p>
+<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
+<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
+<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
+<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
+<p>我，好像是你的。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>意识流</tag>
-        <tag>散文</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>独立书店的生存困境</title>
-    <url>/2017/08/23/arduous-independent-bookstores/</url>
-    <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
-<span id="more"></span>
-
-<p>讲到中国内地的书店，目光自然首先要聚焦到文化中心——北京。</p>
-<p>在被戏称为「宇宙中心」的海淀区五道口，高校环伺，不少别具一格的独立书店藏匿其中，这之中最有名的要数目前位于<a href="http://www.tsinghua.edu.cn/">清华</a>南门附近的<a href="http://www.allsagesbooks.com/GUANYU/JIANJIE.HTM">万圣书园</a>。如果你第一次来这个书店，很可能会感到失望——「名声在外的万圣书园原来就是这个破败的样子？」。这也侧面反映出了大环境下独立书店的生存不易。北京的房价自不必多说，更何况是在五道口，2012 年的搬迁直接就让万圣书园的面积缩水了 300 多平米。目前，万圣书园凭借着创办人<a href="https://zh.wikipedia.org/wiki/%E5%88%98%E8%8B%8F%E9%87%8C">刘苏里</a>在文化圈的影响力，依然吸引着众多爱书之人慕名前来，而且这里还时不时会举办一些新书发布会、读书会等活动，客流量还算可观，依傍其旁的醒客咖啡也势必把客单价提高了不少。万圣书园最大的优势就在于其书籍收录之广泛全面，这从店面内直接码放到天花板的书架就可以看出。如果你想找别的书店找不到的书，如果你想找某个品类下一系列相关的书，<del>如果你还想逗一逗书店里的万圣猫，</del>来万圣书园看看吧。</p>
-<p>与万圣书园隔街相望的是<a href="https://baike.baidu.com/item/%E8%B1%86%E7%93%A3%E4%B9%A6%E5%BA%97">豆瓣书店</a>。这个书店的店面就更小了，总共也就约五十平米。它最大的特色就是专营旧书，这也可能是它至今还能在著名的万圣书园对面存活下来的原因。旧书并不是指二手书，而是指那些出版年代久远，可能即将被出版社销毁的库存书。但可别因为这样就小看了这些书的质量，能进入豆瓣书店的书都是店长去北京的各大出版社收罗的。因此，你总是能在豆瓣书店找到很多奇特又便宜的旧书，它们可能出版了 5-20 年甚至更长的时间，但你还是很有可能在它们中发现你感兴趣的东西。豆瓣书店每个月还会设计不一样的书签放在门口，供顾客随意取用收藏。值得一提的是，豆瓣书店跟<a href="https://www.douban.com/">豆瓣网</a>没有任何关系，纯粹只是起名的巧合而已<del>，不然店面就不会这么小了（甚至有热心的豆瓣网友呼吁豆瓣网收购豆瓣书店）</del>。</p>
-<p>另一个在<a href="http://www.pku.edu.cn/">北大</a>师生心中拥有崇高地位的书店是<a href="http://www.jiemian.com/article/1426822.html">野草书店</a>。本来它已经在北大校园内呆了 14 年了，但因为今年初夏的店面招标失败，被迫搬离了北大，来到了万圣书园附近的一个地下超市的旁边。野草书店可能是这三个书店里网络营销做得最好的。书店经理赵亮用几个手机几个微信号在网上维护着一两万个野草书店的忠实客户，微博上也会时常更新最新到货的新书（可网购邮寄），再配合令人难以想象的折扣力度，野草书店在线上线下应该都还经营得不错。听北大的朋友说，他们以前经常拿着老师开的书单来野草书店购书。</p>
-<p>位于成府路上的这三个独立书店可以说是北京众多独立书店的代表，它们各有各的特色，能够在艰难环境中存活下来的原因更是各不相同。</p>
-<p>跳出北京，南方的一些半独立书店就和北京这几个书店的经营策略不完全相同<del>，至少它们的店面都有着现代化的精致装修和室内设计</del>。</p>
-<p>拿 2015 年年底在苏州开业的<a href="https://www.esliteliving.com/store/store.aspx?a=CN&l=gb&storeno=201511180004">诚品书店</a>来说，它已经被打造成集潮流生活、风格美学、创意设计于一体，照顾现代人品质生活方方面面的一个联合体。这里不仅仅做到了藏书丰富（尤其是一些外文书和台版书），是爱书之人的首选，同时也吸引了一群对生活品质有要求的人。和诚品有着类似经营策略的还有<a href="https://zh.wikipedia.org/wiki/%E6%96%B9%E6%89%80">方所</a>，目前总共只有四家，分别位于广州、成都、重庆和青岛。方所甚至比诚品有着更高的「艺术」和「审美」追求，基本都开在奢侈品林立的中心商务区。</p>
-<p>另外一些规模相对小一些的半独立书店，像<a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%A5%BF%E5%BC%97%E4%B9%A6%E5%BA%97">西西弗书店</a>、广州北京路上的<a href="https://baike.baidu.com/item/%E8%81%94%E5%90%88%E4%B9%A6%E5%BA%97">联合书店</a>，虽然还没有达到像苏州诚品这样多位一体的状态，但靠着经常举办的特色活动，也吸引着一批对特定领域感兴趣的人群的光顾，再加上店内的饮品店和一些其他的配套服务，应该也都还有尚可观的经营状态。</p>
-<p>综合来看，虽然本文所列出的书店有的似乎还活得不错，但整个实体书店行业一定是一年不如一年了。高昂的地价成本，加上纸质书相对于电子书的固有成本，以及电商时代人们购书习惯的逐渐变化，使得这些书店不得不树立自己的特色、塑造自己别具一格的品牌形象，来吸引那些有特定需求的人群。好在，这个时间节点上，有不少人还是偏爱纸质书阅读的。</p>
-<p>很多爱书之人都有这样的一个梦想，那就是退休之后开一家有个性的书店。随着时间的推移和时代的发展，这个梦想可能会变得越来越遥不可及。对于现有的这些独立书店来说，如果不迅速找准自己的特色和定位，扬长补短，那它们的命运都值得让人担忧。</p>
-<p>或许，在独立书店这个领域，光有一点点理想主义情怀，还远远不够。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>独立书店</tag>
+        <tag>感情</tag>
       </tags>
   </entry>
   <entry>
@@ -1553,25 +1503,79 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>今晚月色真美</title>
-    <url>/2017/12/21/love/</url>
-    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5099468&auto=0&height=66"></iframe>
-
-<p>这个世界上最复杂、最难以捉摸的事情是什么？</p>
-<p>有人说，永远不要在晚上做任何一个决定，因为那是人一天中最不理性的时候。<br>我并不赞同。<br>如果所有的事情都由理性思维来主导，那这个世界上不会有音乐和诗歌，<a href="https://www.youtube.com/watch?v=L9jiPQAuTBw">约翰·列侬、爱因斯坦、乔布斯、黑泽明也不会被人们传颂和铭记</a>。<br>夜深人静，是一个人能与自己对话的时候，也是最能看清自己心意的时候。</p>
+    <title>如何系统地学习一门编程语言？</title>
+    <url>/2017/07/13/comprehensively-learn-a-new-programming-lauguage/</url>
+    <content><![CDATA[<p>「学习一门新的编程语言」是每个程序员都必然会面对的一个课题（注：本文特指工程实践中常用的高级编程语言）。自从高一开始编程到现在，我也接触了不少的编程语言，有的语言已经能在工作中得心应手的使用；有的语言用的不多，但大概了解其设计，也能在官方文档的帮助下简单使用；还有的则之前很了解，但很长时间没有使用过了。</p>
+<p>换一份新的工作是最有机会让程序员接触到新的东西的，最近我就应工作需求开始接触一门新的编程语言，学习过程中难免会和已经熟悉的编程语言进行对比，然后发现其实编程语言的学习完全是有「套路」可循的，这篇博客试图总结一下这种「套路」。</p>
 <span id="more"></span>
 
-<p>有一种感觉，我遗失了很久，最近又开始出现了。<br>也可能并不是我遗失了她。她一直在那儿，但我以为她已经不存在了。<br>这是一种什么样的感觉？<br>她会让人开始做奇怪的事情。<br>她会让头脑里产生更多的臆想和猜测。<br>她会让你的心时而悬着、时而放下。</p>
-<p>人的一生中存在命中注定吗？<br>存在一个对其他人而言「正确」的人吗？<br>右边是被保护的位置吗？<br>人与人都是如何相遇的？<br>人的意识是怎样产生的？<br>地球为什么是圆的？<br>…………<br>噢，不，这些问题都太俗气了……</p>
-<p>人为什么活着？<br>只能也只有唯一一个答案——好奇心，对尚未知世界的好奇心。<br>世界上唯一不变的事情就是永远在变，是好奇心让你想知道世界下一秒会变成什么样子。<br>嗯，这是我上一秒钟的答案。<br>可是事情似乎已经超出了「好奇心」可以解释的范畴。<br>真的超出了吗？</p>
-<p>云朵本来是没有形状的，有人赋予了它们形状。<br>流星本来是没有寓意的，有人相信它们有寓意。<br>世界依然是概率的。<br>今晚的月色是美的。</p>
-<p>我，好像是你的。</p>
+<p>总的来说，编程语言各种各样的特性共同决定了这门语言，这样的特性可能大到并发模型的设计，小到某个具体的语法特性。学习一门编程语言的过程就是不断了解这些语言特性并进行实践应用以及工程化使用的过程。系统性地把语言的主要特性明确清楚，可以快速地建立对一门语言的基本认识，并能做到胸有成竹地深入和细化。</p>
+<p>下面就一一说明学习一门新的编程语言至少需要明确的语言特性有哪些，供参考。</p>
+<h3 id="编译型-or-解释型"><a href="#编译型-or-解释型" class="headerlink" title="编译型 or 解释型"></a>编译型 or 解释型</h3><p>如今一门语言是编译型语言还是解释型语言似乎对工程开发的影响越来越小（而且大有相互靠拢之势，界限也变得越来越不清晰），这或多或少得益于各种编辑器和 IDE 对于中间过程的自动化处理。不过，明确一门编程语言是编译型还是解释型依然是基础且非常有必要的，这对于理解一些程序的深层行为逻辑会很有帮助。</p>
+<p>其实对于语言设计者来说，编译型和解释型从根本上是语言开发自由度和性能优化能力之间的博弈。</p>
+<h3 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h3><p>基本地，需要了解该语言都原生支持哪些数据类型，而其中哪些是简单／基础类型，哪些又是复杂／复合类型，各个类型之间又有哪些区别等等。</p>
+<p>更抽象来看，类型系统又可以从两个维度来定义：</p>
+<ul>
+<li>强类型 or 弱类型：核心的区别在于语言<strong>是否偏向于容忍隐式的类型转换</strong>。一个常见的错误理解是「C&#x2F;C++ 是强类型语言」，实际上，在 C&#x2F;C++ 中隐式类型转换很常见，它们是弱类型语言。与之相对的，Python 则是强类型语言。</li>
+<li>动态类型 or 静态类型：核心区别在于<strong>是否在编译时就能明确每一个变量的类型</strong>。对于静态类型来说，如果编译时存在类型错误，是无法编译通过的，而对于动态类型来说，由于程序运行时才能明确类型，所以类型错误通常不会导致编译出错（错误会在运行时暴露出来）。Python 就是动态类型，而 C&#x2F;C++ 则是静态类型。</li>
+</ul>
+<h3 id="模块系统"><a href="#模块系统" class="headerlink" title="模块系统"></a>模块系统</h3><p>如今的高级语言基本都会有成熟的模块系统，好的模块系统对于构建大型工程项目来说必不可少，它可以大大提高程序的可复用能力和模块化能力。</p>
+<p>了解一门编程语言的模块系统大概至少需要了解这些细节：</p>
+<ul>
+<li>依赖的路径是如何解析的？</li>
+<li>如何引用自定义模块（文件）？</li>
+<li>如何引用第三方的模块或包？</li>
+</ul>
+<h4 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h4><p>与模块系统相关的一个很影响实际开发的问题是「变量的作用域（scope）是怎样的」。常见的可以自己问的问题是：</p>
+<ul>
+<li>什么情况下是全局作用域？</li>
+<li>什么时候又会是函数作用域？</li>
+<li>块作用域又是怎样的？</li>
+</ul>
+<p>不过，不同的语言对于作用域的定义和分类可能不同，需要具体情况具体了解。</p>
+<p>另外，明确语言是「动态作用域」还是「静态（词法）作用域」也非常重要：与动态类型和静态类型的区别类似，静态作用域是在<strong>书写代码</strong>或者说定义时确定的，而动态作用域是在<strong>运行时</strong>确定的。静态作用域关注函数在<strong>何处声明</strong>，而动态作用域关注函数从<strong>何处调用</strong>，其作用域链是基于运行时的调用栈的。可以看看<a href="https://www.zhihu.com/question/20032419/answer/112564460">这个例子</a>做进一步的区分。</p>
+<h3 id="支持的编程范式与特色"><a href="#支持的编程范式与特色" class="headerlink" title="支持的编程范式与特色"></a>支持的编程范式与特色</h3><p>编程语言支持哪样的编程范式对于工程项目也非常重要，这也基本和语言设计上的一些别具一格不那么常见的特色相关。比如函数式编程中的「函数是一等公民」、面向对象中的「封装、继承和多态」对应到编程语言上应该如何具体实现、面向并行的语言又是如何实现并发的等等。</p>
+<p>了解了这些特色你才能更清楚这门语言在工程中更擅长做哪样的事情，更适合哪些项目。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>基础的你需要了解基本的语法规则和特性，比如分支、循环、函数等等。更深入一些的时候则可以了解一下语言的架构设计、那些语言特性为什么会这样设计以及它们都是如何被实现的。了解实现不一定非得去看源码，搞清楚语言大体上的实现过程还是比较简单的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后，把前文的部分<a href="https://www.processon.com/chart_image/595f2e79e4b0a77c5aeb50d7.png">总结成一张思维导图</a>，希望能够让开始学习新编程语言的过程更清晰快速。</p>
+<img data-src="https://i.loli.net/2018/08/06/5b6731fe12be8.png" />
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>编程</tag>
+        <tag>程序员</tag>
+        <tag>编程语言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>长按是好的交互方式吗？</title>
+    <url>/2018/12/19/long-press-sucks/</url>
+    <content><![CDATA[<p>长按是好的交互方式吗？</p>
+<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
+<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
+<span id="more"></span>
+
+<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
+<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
+<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
+<p>首先，「长按」交互本身是一种怎样的体验？</p>
+<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
+<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
+<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
+<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
+<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
+<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
+<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
+<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>感情</tag>
+        <tag>交互设计</tag>
+        <tag>产品</tag>
       </tags>
   </entry>
   <entry>
@@ -1623,35 +1627,6 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>「完全理解」系列</tag>
         <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>长按是好的交互方式吗？</title>
-    <url>/2018/12/19/long-press-sucks/</url>
-    <content><![CDATA[<p>长按是好的交互方式吗？</p>
-<p>这个问题虽然微小但其实困扰了我本人很久。每当我拿起索尼头戴式耳机，忍受着右手以一种不那么舒服的姿势，心里充满不确定性和不安全感地用自己的大拇指紧紧按住电源键几秒钟试图开机或关机时，我都会反复的问自己：长按是一种好的交互方式吗？</p>
-<p>智能手机时代，最开始接触到「长按」这种交互方式，大概始于智能手机的电源键。记忆里，在 iOS 系统中，「长按电源键」一开始是唤出关机界面「滑动已关机」的交互方式，而在新款 iPhone 搭配的 iOS 中，「长按电源键」是唤醒 Siri 的一种方式。</p>
-<span id="more"></span>
-
-<p>除了平时最长接触到的手机，「长按」交互在各种音乐相关的电子设备上也常见，比如各种便携式音箱和头戴式耳机<del>（也不知道是音箱「抄」了耳机，还是耳机「抄」了音箱）</del>。在我的索尼 SRS-X11 小音箱上，「短按电源键」是开关，「长按电源键直到听到哔声」会进入蓝牙配对模式。而在索尼 WH-CH500 头戴式耳机上，「长按电源键约 2 秒」是开关耳机，「长按电源键约 7 秒」会让耳机进入蓝牙配对模式，这几乎是目前我所有电子设备中让我最想吐槽的交互方式。</p>
-<p>不管是 iPhone 还是索尼的这两款音乐电子设备，都是大众电子消费品。对于我个人而言，长按的交互方式在 iPhone 和 SRS-X11 上的设计是合格的，在 WH-CH500 上的设计则完全不合格，这几乎是初级产品经理或交互设计师都不应该犯的设计错误。</p>
-<p>作为一名软件开发工程师，我并不知道「长按」在交互设计上是否有硬件技术或工程上的考量，这里仅从用户体验的角度来妄自品评一下。</p>
-<p>首先，「长按」交互本身是一种怎样的体验？</p>
-<p>第一，「长」不是一个可以量化的形容词。我并不知道我需要按多久才算「长」，每个人对于「长」的理解是不一样的，用户由此在心中产生的不确定性疑惑和不安全感最终会转化成对产品的不信任，使得用户体验大打折扣。更不用说「长按 2 秒是 A 操作而长按 7 秒是 B 操作」这种失败设计了：我要是不小心长按了 3.5 秒会怎么样？多长时间是 7 秒呢？我需要用秒表数吗？现在我已经按几秒了？</p>
-<p>第二，「长」这个字首先就说明了这是一个需要用户<strong>持续</strong>用力的<strong>过程</strong>，可以说非常不友好。在这个快节奏的社会，人们都在追求<a href="http://maples7.com/2016/08/24/understand-sync-async-and-blocking-non-blocking/">「异步非阻塞」式的交互方式</a>：所谓「异步」，我希望我调用了任务之后可以在它完成后主动通知我；所谓「非阻塞」，在这个任务执行的过程中我希望我自己是自由的，可以去做任何我想做的事情，我作为独立个体是完全解放的。虽然「长按」交互本身是一个时间上并不算长的交互，但它几乎带给我几秒钟的「同步阻塞」的体验，这意味着我的 CPU —— 大脑 —— 甚至需要一直关注在我的长按操作上，并且要不断的 check 我的操作是否成功了。这简直「反现代人类」。</p>
-<p>第三，「长按」的重试成本很高。「长按」本身就是一个耗时操作，假设在我的一阵不安的惊恐长按操作之后，产品并没有实现我预期的效果，我首先可能会怀疑 —— 是它还在「反应中」吗？操作本身的延时性会让人怀疑是不是这个操作产生的结果也是耗时的，这意味着我需要等。如果稍等片刻之后大概率确信是刚才的操作失败，我就需要不断的重试，这是一个接一个「同步阻塞」的耗时操作。</p>
-<p>对于 C 端产品而言，好的交互应该是自然而然的，在你进行过操作之后你不需要意识到你做过了什么，也不需要怀疑自己，产品就已经给了你想要的东西。而「长按」的交互方式违背了这一点。</p>
-<p>那「长按」交互的设计初衷是什么呢？我想本质上是为了使得操作本身不那么容易被触发。所以接下来，我们再结合具体产品的使用场景来琢磨一下这个交互方式。</p>
-<p>在 iPhone 上，无论是「开关机」操作还是「唤醒 Siri」的操作，都不算是常用操作，而且由于电源键的位置正好是单手拿起握住时食指所在的位置，削弱了「长按」操作本身的「存在感」；在 SRS-X11 上，「长按」仅用于蓝牙配对，这本身也是一个很低频的操作；而在 WH-CH500 上，「长按」居然被用在了耳机开关这种高频操作上，在有时不确定设备是否是开启状态而又不想把它从头上摘下来看指示灯的状态的时候，我甚至需要先长按试试耳机是开机状态还是关机状态，如果不幸把它按关机了我还需要再长按一次来开启它。更不必说「长按不同时间产品会响应不同的操作结果」了，这几乎是一个类似于用多进制计算机取代二进制计算机的失败设计，加剧了系统的不稳定性和用户体验的不确定性。似乎几乎所有的索尼头戴式耳机都是采用的「长按电源键进行开关」的交互设计，我非常希望他们能仔细考虑一下这一点。在我看来，即便是拨动式的开关设计也比长按来开关耳机的交互体验要好。</p>
-<p>综上所述，从具体产品的使用场景上来说，「长按」其实类似于软件开发中日志等级的 WARNING 级别，不是日常信息且需要一些用户的注意力，如果用户需要使用到这个操作，那希望他是有一定的意识清楚自己在做什么的。按这个类比，日常的点按、滑动等无意识操作算是 INFO 级别的日志；而非紧急情况下不应该使用的操作，比如 iOS 里的「SOS 紧急呼叫」、楼道里需要砸破玻璃才能按下的消防按钮等，应该归类到 ERROR 级别。</p>
-<p>希望以后的产品设计师在选择使用「长按」作为交互方式时都能走点心，而不仅仅是按照所谓的「传统如此」。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>交互设计</tag>
-        <tag>产品</tag>
       </tags>
   </entry>
   <entry>
@@ -1708,6 +1683,31 @@ _Farewell and thanks to each for the company_
         <tag>冷数据</tag>
         <tag>在线数据</tag>
         <tag>离线数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>独立书店的生存困境</title>
+    <url>/2017/08/23/arduous-independent-bookstores/</url>
+    <content><![CDATA[<p>独立书店，<a href="https://www.wikipedia.org/">维基百科</a>给的描述是<a href="https://zh.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B9%A6%E5%BA%97">「主要以当地人拥有、经营的书店」、「可以是连锁书店的相反词」</a>，这个描述多半还给「独立书店」这个词涂抹上了一点纸质书年代的理想主义色彩。在电商平台、互联网经济大行其道的今天，甭说是「当地人经营」的书店了，即便是那些可以给不同地域的人留下共同回忆、实力还算雄厚的半独立半连锁书店，其生存状态同样不容乐观。又或者说，作为一家「书」店，单看其书籍的销售量，基本已经可以用「垂死挣扎」来形容了。本文就着眼于这些宽泛定义的独立书店的生存困境。当然，新华书店至少是不在这个讨论的范围之内了。</p>
+<span id="more"></span>
+
+<p>讲到中国内地的书店，目光自然首先要聚焦到文化中心——北京。</p>
+<p>在被戏称为「宇宙中心」的海淀区五道口，高校环伺，不少别具一格的独立书店藏匿其中，这之中最有名的要数目前位于<a href="http://www.tsinghua.edu.cn/">清华</a>南门附近的<a href="http://www.allsagesbooks.com/GUANYU/JIANJIE.HTM">万圣书园</a>。如果你第一次来这个书店，很可能会感到失望——「名声在外的万圣书园原来就是这个破败的样子？」。这也侧面反映出了大环境下独立书店的生存不易。北京的房价自不必多说，更何况是在五道口，2012 年的搬迁直接就让万圣书园的面积缩水了 300 多平米。目前，万圣书园凭借着创办人<a href="https://zh.wikipedia.org/wiki/%E5%88%98%E8%8B%8F%E9%87%8C">刘苏里</a>在文化圈的影响力，依然吸引着众多爱书之人慕名前来，而且这里还时不时会举办一些新书发布会、读书会等活动，客流量还算可观，依傍其旁的醒客咖啡也势必把客单价提高了不少。万圣书园最大的优势就在于其书籍收录之广泛全面，这从店面内直接码放到天花板的书架就可以看出。如果你想找别的书店找不到的书，如果你想找某个品类下一系列相关的书，<del>如果你还想逗一逗书店里的万圣猫，</del>来万圣书园看看吧。</p>
+<p>与万圣书园隔街相望的是<a href="https://baike.baidu.com/item/%E8%B1%86%E7%93%A3%E4%B9%A6%E5%BA%97">豆瓣书店</a>。这个书店的店面就更小了，总共也就约五十平米。它最大的特色就是专营旧书，这也可能是它至今还能在著名的万圣书园对面存活下来的原因。旧书并不是指二手书，而是指那些出版年代久远，可能即将被出版社销毁的库存书。但可别因为这样就小看了这些书的质量，能进入豆瓣书店的书都是店长去北京的各大出版社收罗的。因此，你总是能在豆瓣书店找到很多奇特又便宜的旧书，它们可能出版了 5-20 年甚至更长的时间，但你还是很有可能在它们中发现你感兴趣的东西。豆瓣书店每个月还会设计不一样的书签放在门口，供顾客随意取用收藏。值得一提的是，豆瓣书店跟<a href="https://www.douban.com/">豆瓣网</a>没有任何关系，纯粹只是起名的巧合而已<del>，不然店面就不会这么小了（甚至有热心的豆瓣网友呼吁豆瓣网收购豆瓣书店）</del>。</p>
+<p>另一个在<a href="http://www.pku.edu.cn/">北大</a>师生心中拥有崇高地位的书店是<a href="http://www.jiemian.com/article/1426822.html">野草书店</a>。本来它已经在北大校园内呆了 14 年了，但因为今年初夏的店面招标失败，被迫搬离了北大，来到了万圣书园附近的一个地下超市的旁边。野草书店可能是这三个书店里网络营销做得最好的。书店经理赵亮用几个手机几个微信号在网上维护着一两万个野草书店的忠实客户，微博上也会时常更新最新到货的新书（可网购邮寄），再配合令人难以想象的折扣力度，野草书店在线上线下应该都还经营得不错。听北大的朋友说，他们以前经常拿着老师开的书单来野草书店购书。</p>
+<p>位于成府路上的这三个独立书店可以说是北京众多独立书店的代表，它们各有各的特色，能够在艰难环境中存活下来的原因更是各不相同。</p>
+<p>跳出北京，南方的一些半独立书店就和北京这几个书店的经营策略不完全相同<del>，至少它们的店面都有着现代化的精致装修和室内设计</del>。</p>
+<p>拿 2015 年年底在苏州开业的<a href="https://www.esliteliving.com/store/store.aspx?a=CN&l=gb&storeno=201511180004">诚品书店</a>来说，它已经被打造成集潮流生活、风格美学、创意设计于一体，照顾现代人品质生活方方面面的一个联合体。这里不仅仅做到了藏书丰富（尤其是一些外文书和台版书），是爱书之人的首选，同时也吸引了一群对生活品质有要求的人。和诚品有着类似经营策略的还有<a href="https://zh.wikipedia.org/wiki/%E6%96%B9%E6%89%80">方所</a>，目前总共只有四家，分别位于广州、成都、重庆和青岛。方所甚至比诚品有着更高的「艺术」和「审美」追求，基本都开在奢侈品林立的中心商务区。</p>
+<p>另外一些规模相对小一些的半独立书店，像<a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E8%A5%BF%E5%BC%97%E4%B9%A6%E5%BA%97">西西弗书店</a>、广州北京路上的<a href="https://baike.baidu.com/item/%E8%81%94%E5%90%88%E4%B9%A6%E5%BA%97">联合书店</a>，虽然还没有达到像苏州诚品这样多位一体的状态，但靠着经常举办的特色活动，也吸引着一批对特定领域感兴趣的人群的光顾，再加上店内的饮品店和一些其他的配套服务，应该也都还有尚可观的经营状态。</p>
+<p>综合来看，虽然本文所列出的书店有的似乎还活得不错，但整个实体书店行业一定是一年不如一年了。高昂的地价成本，加上纸质书相对于电子书的固有成本，以及电商时代人们购书习惯的逐渐变化，使得这些书店不得不树立自己的特色、塑造自己别具一格的品牌形象，来吸引那些有特定需求的人群。好在，这个时间节点上，有不少人还是偏爱纸质书阅读的。</p>
+<p>很多爱书之人都有这样的一个梦想，那就是退休之后开一家有个性的书店。随着时间的推移和时代的发展，这个梦想可能会变得越来越遥不可及。对于现有的这些独立书店来说，如果不迅速找准自己的特色和定位，扬长补短，那它们的命运都值得让人担忧。</p>
+<p>或许，在独立书店这个领域，光有一点点理想主义情怀，还远远不够。</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>独立书店</tag>
       </tags>
   </entry>
   <entry>
@@ -1800,7 +1800,7 @@ _Farewell and thanks to each for the company_
 <p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
 <p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#x69;&#x40;&#x73;&#101;&#x6e;&#x69;&#118;&#x65;&#x72;&#115;&#x65;&#x2e;&#x63;&#111;&#x6d;&#63;&#115;&#x75;&#x62;&#106;&#x65;&#99;&#116;&#x3d;&#25991;&#31456;&#x8f6c;&#x8f7d;&#x6388;&#x6743;&#x7533;&#x8bf7;">心知天气</a>获取授权】</strong></p>
+<p><strong>【本文由多人协作完成，版权归<a href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#x69;&#x40;&#115;&#x65;&#x6e;&#x69;&#118;&#101;&#114;&#115;&#101;&#x2e;&#99;&#x6f;&#x6d;&#x3f;&#x73;&#117;&#x62;&#x6a;&#x65;&#99;&#x74;&#x3d;&#25991;&#x7ae0;&#36716;&#36733;&#25480;&#26435;&#30003;&#x8bf7;">心知天气</a>获取授权】</strong></p>
 ]]></content>
       <categories>
         <category>一只代码狗的自我修养</category>
@@ -1811,132 +1811,29 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>Elixir 代码性能优化指北</title>
-    <url>/2019/12/05/elixir-code-performance-optimization/</url>
-    <content><![CDATA[<p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
-<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
+    <title>「必然」有多必然？</title>
+    <url>/2020/05/19/how-certain-is-certain/</url>
+    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
+<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
 <span id="more"></span>
 
-<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
-<ul>
-<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
-</li>
-<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = <span class="title class_">Map</span>.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
-</li>
-<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
-</li>
-<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
-</li>
-<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
-</li>
-<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
-<p>改动前：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="title class_">Enum</span>.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p>改动后：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
-</li>
-</ul>
-<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
+<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
+<p>所以已经发生的「必然」到底多必然？</p>
+<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
+<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
+<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
+<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
+<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
+<p>我想我是得看一些关于复杂系统理论的书了。</p>
 ]]></content>
       <categories>
-        <category>一只代码狗的自我修养</category>
+        <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>Erlang</tag>
-        <tag>性能调优</tag>
-        <tag>Elixir</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>把 Airflow 搬进 Kubernetes</title>
-    <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
-    <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
-<p>简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 <a href="https://airflow.apache.org/concepts.html#dags">DAG</a> 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 <a href="https://airflow.apache.org/howto/executor/use-celery.html">Celery Executor</a> 来把任务动态分布到多个 Worker 上执行。</p>
-<span id="more"></span>
-
-<p>如果数据处理任务长期不变，这样的系统已经可以满足我们的需求了。但实际上随着越来越多的数据任务被添加到整个系统，任务负载变得越来越重，很多时候固定数量的 Worker 已经不能及时的处理完被 scheduled 的任务，造成任务队列堆积，一段时间后如果一直不能改善负载情况甚至会拖垮整个系统。这种情况下，只能手动增加更多的 Worker 来分担任务处理工作。然后不同类型的数据处理越多，Worker 所需要安装的依赖也越多，每手工增加一个 Worker 的成本也越来越高。甚至对于气象数据的处理而言，有很多非常古老的数据处理工具（很多还是 Fortran 写的），经常出现依赖相互冲突的情况（版本冲突，编译通不过等等）。如何隔离各个任务之间的运行环境，以及如何根据负载需求动态的伸缩 Worker 的数量日益成为了这个系统的一个痛点。</p>
-<p>动态伸缩，环境隔离，自然让人联想到 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/zh/">Kubernetes</a> 这样的技术。好在 Airflow 1.10 版本引入了 <a href="https://airflow.apache.org/kubernetes.html">Kubernetes Executor 和 Kubernetes Operator</a> 允许为每一个任务创建新的 Pod 来处理，而执行完之后新创建的 Pod 会被清理掉，并且每一个任务都可以指定不同的 Docker image 来处理，这样看起来就可以完全解决我们前面的问题。</p>
-<p>目前这部分功能似乎还很不稳定，官方文档和讨论都还不多，这篇博客也是为了记录下我们的踩坑过程。</p>
-<h2 id="在-Kubernetes-上搭建-Airflow"><a href="#在-Kubernetes-上搭建-Airflow" class="headerlink" title="在 Kubernetes 上搭建 Airflow"></a>在 Kubernetes 上搭建 Airflow</h2><p>我们使用 <a href="https://helm.sh/">Helm</a> 来管理在 Kubernetes 上个各个应用以及它们的依赖，目前官方也已经给出了 <a href="https://github.com/helm/charts/tree/master/stable/airflow">stable&#x2F;airflow 的 Chart</a>，我们可以直接使用或部分参考。下面我们介绍一下从零开始的搭建过程。</p>
-<ol>
-<li><p>安装 Kubernetes</p>
-<p>本地安装的可以选择 <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a>，主要它解决了跨平台的问题。我在 macOS 上使用的是 <a href="https://hub.docker.com/editions/community/docker-ce-desktop-mac">Docker Desktop for Mac</a> 里<a href="https://www.docker.com/blog/docker-mac-kubernetes/">自带的 Kubernetes 集群</a>，如果你安装遇到了问题可以看看<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac">这里</a>是不是解决了你的问题，或者自行 Google 也可。</p>
-</li>
-<li><p>安装 Helm</p>
-<p>Helm 3 已经是正式的稳定版本，可惜我们线上还在使用 Helm 2，而 Helm 2 的版本不兼容是没法使用的。为了跟线上保持一致，我本地也是安装的 Helm 2，所以后面都是以 Helm 2 的操作来执行的，第一次进行的朋友可以直接用 Helm 3。当然安装过程也<a href="https://github.com/helm/helm/issues/4730">很可能出现问题</a>，可以自行 Google 解决。</p>
-</li>
-<li><p>在 Kubernetes 上用 Helm 安装 Airflow Chart</p>
-<p>直接根据<a href="https://github.com/helm/charts/tree/master/stable/airflow">官方的 Airflow Chart</a>步骤执行 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow</code> 即可在 Kubernetes 上安装一个标准的 Airflow 集群，之后可以查看各个 Pod 的状态是不是已经 ready（一切正常的情况下会在 <code>airflow</code> 的 Namespace 下安装 airflow-web、airflow-scheduler、airflow-postgresql、airflow-flower、airflow-redis）。还可以根据 NOTES 的提示在浏览器中查看 Airflow 的 UI 界面是不是也启动良好：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">NOTES:</span><br><span class="line">Congratulations. You have just deployed Apache Airflow</span><br><span class="line">   export POD_NAME=$(kubectl get pods --namespace airflow -l &quot;component=web,app=airflow&quot; -o jsonpath=&quot;&#123;.items[0].metadata.name&#125;&quot;)</span><br><span class="line">   echo http://127.0.0.1:8080</span><br><span class="line">   kubectl port-forward --namespace airflow $POD_NAME 8080:8080</span><br><span class="line"></span><br><span class="line"> Open Airflow in your web browser</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>根据自身业务情况自定义一些配置</p>
-<p>之后可以根据 Helm 的 官方 Airflow Chart 提供的配置方式进行一些自定义配置，比如把默认的 Airflow 镜像 <code>puckel/docker-airflow</code> 替换成自己根据自身业务需求构建的（比如已经安装了实现业务需求所有必要底层依赖的 Airflow 镜像，或者对于 Kubernetes Executor and operator 必需的 <code>apache-airflow[kubernetes]</code>，这样就不用每次部署更新都安装这些依赖了）、更改 <code>executor</code> 的类型（我们改为 <code>Kubernetes</code>）等等。官方的 Chart 目录下也提供了<a href="https://github.com/helm/charts/blob/master/stable/airflow/examples/minikube-values.yaml">一个例子</a>可供参考。</p>
-<p>值得额外注意的是我们如何做数据的持久化。这既包括 DAGs、日志 logs，也包括 Airflow 的运行态数据 —— 存储在 Postgres 或 MySQL 中的数据 —— 如何持久化。官方的 README 对此<a href="https://github.com/helm/charts/tree/master/stable/airflow#dags-deployment">已经有介绍</a>，同样如果有额外的自定义配置直接写到我们自己的 <code>values</code> YAML 文件中即可。<a href="https://github.com/apache/airflow/blob/1.10.6/airflow/config_templates/default_airflow.cfg"><code>airflow.cfg</code></a> 中 <code>[kubernetes]</code> 对应的每一项配置也应该过一遍并做相应的修改，尤其是关于 <code>namespace</code> 和 <code>dags_in_image</code> 的部分。对我司而言，我们自己的 Kubernetes 集群运行在阿里云上，直接使用一个外挂的 NAS 作为 DAGs 和 logs 的共享存储即可（通过 <code>extraVolumeMounts</code> 和 <code>extraVolumes</code> 挂载和声明，也要注意跟 <code>dags.path</code> 路径保持一致），以后我们自己开发的 DAGs 可以直接通过 CI&#x2F;CD 更新到 NAS 上相应的目录。数据库采用一个已经存在的外部 Postgres。</p>
-<p>假设我们将自定义的 <code>values</code> 配置写成 <code>minikube-values.yaml</code> 的本地 YAML 文件，就可以用 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow -f minikube-values.yaml</code> 启动一个经过自定义修改后的 Airflow 集群（可以先把之前启动的集群通过 <code>helm delete --purge &quot;airflow&quot;</code> 清除）。</p>
-</li>
-</ol>
-<p>因为业务需求和基础设施现状的不同，中间可能有不同的架构选择，但总体上经过这几步之后，一个采用 <code>KubernetesExecutor</code> 并运行在 Kubernetes 上的 Airflow 集群就基本搭建好了。</p>
-<h2 id="开发-DAGs"><a href="#开发-DAGs" class="headerlink" title="开发 DAGs"></a>开发 DAGs</h2><p>参考 Airflow 官方文档中 Kubernetes Operator 的例子可以开发适用于自身业务需求的 DAG。之后就可以访问 Airflow WebServer 来开启相应的 DAG 任务，并观察集群中 Task 的运行行为是否与预期的一致，并逐步迭代。</p>
-<h2 id="悄悄告诉你，真相其实是这样……"><a href="#悄悄告诉你，真相其实是这样……" class="headerlink" title="悄悄告诉你，真相其实是这样……"></a>悄悄告诉你，真相其实是这样……</h2><p>实际上，在经过我的一番折腾之后，最终我们线上使用的版本并没有使用官方的 Helm Chart，而是完全基于我们自己 build 的 Airflow 镜像，从头搭建了我们自己的 Helm Release Chart，这样整个系统拥有最高的可定制度（有些问题不在代码层面定制根本没法绕过去，下文有详述），同时也剔除了很多 Helm 官方 Chart 里有但我们不需要的东西。跟官方的 Chart 相比，我们主要做了这些更改：</p>
-<ul>
-<li><p>没有使用 Airflow 官方的 Kubernetes Executor，而是自己继承 <code>LocalExecutor</code> 类定制我们自己的 <code>KubeExecutor</code>，实际做的事情也很简单，就是实际在执行任务的时候不直接像 <code>LocalExecutor</code> 那样在本地执行命令，而用 <code>kubectl</code> 把任务指定在某一个 Worker Pod 或使用了 <code>KubernetesPodOperator</code> 启动的临时 Pod 里运行。这样做主要考虑的是官方的 <code>KubernetesPodOperator</code> 为了一些通用性功能从而进行了较为复杂的流程设计，我们团队自身完全可以结合在阿里云里 Kubernetes 集群的具体特点改造 <code>LocalExecutor</code>，这样不仅在运行时可以节省更多的机器资源，而且对于我们最核心的需求 —— 稳定的生产数据 —— 来说是更有利的，毕竟在运行时动态操作 Kubernetes 集群资源的流程变得简单了很多。</p>
-</li>
-<li><p>阿里云还有一个很大的坑是在它上面构建的官方 Kubernetes 集群产品不提供阿里云的 CA 根证书校验，而 <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/#directly-accessing-the-rest-api-1">Kubernetes 官方明确指明了需要校验 CA bundle</a>，导致我们无法通过 API 与 Kubernetes Server 进行交互，进而在使用 <code>KubernetesPodOperator</code> 时会因为证书校验失败而无法创建 Pod。而 <code>KubernetesPodOperator</code> 也并没有提供参数让我们将 <code>verify_ssl</code> 设置为 False。所以最终我们也没有直接用官方的 <code>KubernetesPodOperator</code>，而是自己改了一个类似的把 <code>verify_ssl</code> 设置为 False 的 Operator 的版本来使用。同时这里也呼吁一下阿里云能按照技术社区标准来提供自己的技术服务与产品（我们提了工单 argue 这个事情，最终客服给我提供了根证书并叮嘱不要扩散，并不清楚阿里云不能对外公开根证书是基于什么样的考量；在其他项目中我们使用了客服提供的根证书来进行校验是没有问题的）。</p>
-</li>
-<li><p>去掉了不必要的通用型适配的各种选择，完全按自身需求合理定制。</p>
-</li>
-</ul>
-<p>虽然我们做了定制，需要考虑的一些核心问题是没有变的，它们是：如何共享 DAG 的 Python 代码、如何做日志和数据库数据的持久化、是否使用 <a href="https://airflow.apache.org/docs/stable/concepts.html?highlight=xcom#xcoms">XComs</a> 来做 Task 之间的消息通信（同时在集群环境下如何实现这一点）、如何注入依赖（官方 Helm Chart 的 <code>requirements.txt</code> 方式）等等。由于这个尝试和定制的过程着实复杂和不那么让人愉快，甚至需要阅读一些 Airflow 的源码和各个云服务组件的接口参数设计，所以一篇博客无法一一详尽，我自己也不想写那些我们是如何绕过由于各方面的设计缺陷或开源产品不稳定导致的问题的技术细节，它们可能时刻会变，也没有技术深度，更多的是枯燥的云服务运维细节，所以不会在这里赘述太多而分散更大层面的宏观框架上的注意力。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在我们实际使用的过程中其实还遇到了很多 Airflow 的坑，作为一个 Apache 基金会的开源项目，它确实弥补了 ETL 场景下工具和框架的缺失，也提供了非常丰富的功能，不过尽管目前版本号已经到了 1.10.6，但还是有很多明显可感知的 BUG 存在，实际的使用感受是能用但总存在一些小问题，偶尔对任务的调度和管理还可能会失灵，不那么可靠，不算是一个高质量的开源项目，所以在使用时加上适当的重试机制是很有必要的。不过目前社区里在这部分并没有更好的替代品，Airflow 已经是我们考查过的最契合管理 ETL 流程的框架了。如果有新的开源项目能弥补这方面的空缺我们会很乐意去尝试，我们自己团队也在考虑是否在更长期的计划中开发一套自己的 ETL 流程框架。</p>
-<p>几周不断折腾尝试的搭建、使用和实际开发的过程下来，其实涉及了很多开发<a href="https://pivotal.io/cloud-native">云原生服务</a>常用的 DevOps 工具和组件，比如 Helm、Kubernetes 和 Docker，能得心应手的使用这些工具需要一段时间的学习实践来积累知识和经验。要想在 Kubernetes 环境下玩转 Airflow，了解这些周边支撑的工具也是不可或缺极其重要的一部分。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>Airflow</tag>
-        <tag>Kubernetes</tag>
-        <tag>Helm</tag>
-        <tag>DevOps</tag>
-        <tag>Cloud-Native</tag>
+        <tag>人生</tag>
+        <tag>必然</tag>
+        <tag>哲学</tag>
+        <tag>复杂系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,32 +1913,6 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
-    <title>「必然」有多必然？</title>
-    <url>/2020/05/19/how-certain-is-certain/</url>
-    <content><![CDATA[<p>最近在看美剧《高堡奇人》（<em>The Man in the High Castle</em>）第四季，也是最终季。整个剧是基于 Philip K. Dick 的同名长篇小说改编的，也是这部作品创造了一种「架空历史」的新的科幻作品类型，剧情大致是基于纳粹德国和日本天皇打赢了二战，共同统治了世界之后的人类历史发展。值得一说的是，这部小说是 1962 年写的。作为 2020 的人类，我们早已习惯了第二次世界大战同盟国胜利之后的历史，但这部小说带给了我们这样一种思考，这种已经发生的历史是一种冥冥之中的「必然」吗？</p>
-<p>当然，历史是经不起假设的，这个宇宙到底存不存在平行时空人类目前也不甚清楚。在这里，我并不是想讨论历史，也不是想讨论科幻，而是想讨论某个事件发生的必然性到底有多「必然」的问题。并不像大多数人以为的那样，人类的潜意识其实非常习惯于从某个结果来抽象总结出事情发生的原因，习惯于找出其中存在的一系列因果关系的逻辑链条而忽视次要因素，从而把事情化繁为简存储在自己的经验模型库之中。人性使然，已经获得成功的人也会不自觉的从自身的成功中总结经验并加以传授，告诉人们你们这样做也可以像我一样成功，这不禁也让人怀疑，成功学有必然性吗？</p>
-<span id="more"></span>
-
-<p>最近我还从<a href="https://zh.wikipedia.org/wiki/%E6%A2%81%E6%96%87%E9%81%93">梁文道</a>的播客<a href="https://shop.vistopia.com.cn/detail?id=4z4Ew">《八分》</a>的<a href="https://shop.vistopia.com.cn/article?article_id=vG_Cc">第 203 期节目</a>中听到这样一个故事（道长的这期节目本来是在探讨人性中善良的部分的问题），长篇小说<a href="https://zh.wikipedia.org/wiki/%E8%9D%87%E7%8E%8B">《蝇王》</a>讲了一群小孩被困荒岛在没有成人引导的情况下如何建立起一个脆弱的、充斥着野蛮与暴力的文明体系的故事，基本是社会达尔文主义的荒岛实验版本，充分揭露了人性中的恶。小说是虚构的，然而<a href="https://zh.wikipedia.org/wiki/%E7%91%AA%E6%A0%BC%E9%BA%97%E7%89%B9%C2%B7%E7%B1%B3%E5%BE%B7">人类学家 Margaret Mead</a>在《Humankind: A Hopeful History》中却写了一个真实的有类似情境却完全不同结局的故事：六个偶然迷失在无人岛上的小孩通过合作、民主、和平的方式生存下来活了十五个月的故事。Margaret Mead 企图用这个真实的故事说明人类本性中除了有自私的天性以外同时也有一种互助友爱的天性。但以此就可以推翻虚构的小说《蝇王》所描写的那个故事的可能性吗？人类是一种相当复杂的动物，我们既能看到《蝇王》小说中的恶，也可能看到如童话般的善，真实的人类社群更是一个庞大的复杂系统。</p>
-<p>所以已经发生的「必然」到底多必然？</p>
-<p>有无数的历史教材告诉我们历史中某些重大事件的发生是某种趋势的必然结果，彷佛世界的发展有一张无形的手在推动着前进，我们也无数次听到「即便现在某个人&#x2F;某件事不出现&#x2F;发生，这样的历史时刻&#x2F;趋势&#x2F;潮流之下也会诞生另一个某某人&#x2F;发生同样的某某事」这样类似的说法，彷佛条件到了该来的一定会来。人类自古以来就希望拥有预测未来的能力，玩狼人杀拿到预言家的身份都会精神几分，从进化心理学的角度，这本质上源于人类对不确定性的恐惧。每个人都希望生活在稳定安全的环境之中，如果能有效预测未来，则可以为即将发生的事情做好万全的准备从而获得对自己有利的条件。</p>
-<p>不言自明，预测肯定是基于当下的现实来产生的，是基于此时此刻这一秒的全部已经发生的现实，来预测未来某个时刻将要发生的现实。首先，没有人可以同时了解到此时此刻的全部现实，即便我们假设现在可以采集到所有的现实数据，那接下来发生的事情就可以预测了吗？仔细思考，你会发现这里存在一个悖论，即未来被预测这件事情会不会影响对未来的预测。按理说，预测未来这件事同样也是当下的现实，应该也会对未来事件的发生产生影响。所以准确预测未来还可行吗？不得而知，我无法给出任何可信的答案或思考。回到现实，既然准确的未来还无法预测，那预测出事件的大致走向&#x2F;趋势&#x2F;潮流是不是可行呢？</p>
-<p>各个行业中都有一些传奇励志的成功故事，互联网创投圈中更是如此，都说互联网是个年轻人的行业，有众多年轻的互联网新贵因为把握住了行业发展的潮流和趋势年纪轻轻就已经实现了很多人追求的所谓财务自由。那么，他们真的是因为提前看到了趋势和机会才成功的吗？当然，不排除真的有人有意识且主动地看到了趋势和机会，但肯定也有不少人主要是凭借运气做成了某件事情（在其他条件相同的情况下，这包括主观能动性的程度）。更进一步的问题是，能看到趋势和机会是因为什么？这其中又有多少偶然和运气呢？</p>
-<p>当然，同样地，我们也不能陷入到一种虚无主义和怀疑论的情绪当中去。人类世界是一个混沌的复杂系统，事情之间环环交织，它们一起构成了一个已经发生的当下的「偶然」，一部分相互交织的「偶然」子集又相互作用和相互影响，为下一个「偶然」的发生提供作用和条件，而我们的主观能动性，同样也是其中的一部分「偶然」，同样对事件的发生产生影响。由于股票市场是不可预测的（这基本也反映了现实世界的不可预测性），很多价值投资者都崇尚用「概率」和「非线性」的思维方式来思考问题，从而通过更合理地布置仓位和设计操作策略来实现最终的盈利。我们在实际生活在也可以学习这种思维模型来应对不可预知的未来世界，首先要充分认识到世界的不可预测性并基于真实世界没有简单的因果关系的前提，不要用简单机械线性的思维和视角来分析问题，这样可以减少一些偶然被你感知到的噪音对你的影响，从而总是能依据自己的理性判断对不同概率下的可能的未来做出符合可能性的准备，进而做出一个当下最优的决策。</p>
-<p>2020 年是一个太不平凡的一年，突如其来席卷全球的新冠疫情、本身已经变得脆弱的世界政治经济局势等等，人类似乎又站在了一个暴风雨的前夜，你能预测世界接下来的走势吗？</p>
-<p>我想我是得看一些关于复杂系统理论的书了。</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>人生</tag>
-        <tag>必然</tag>
-        <tag>哲学</tag>
-        <tag>复杂系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2020 年书单</title>
     <url>/2020/12/31/2020-booklist/</url>
     <content><![CDATA[<p>2020 年，是一个太魔幻的一年（什么？你不知道为什么会这么说？好吧，如果你来自未来，本文末尾有一期推荐的播客可以听一下），甚至很有可能还是「魔幻元年」。那句话怎么说的来着：今年是过去十年最差的一年，却可能是未来十年最好的一年。当然，认真地讲，我并不完全赞同。不过要是说世界的节奏和变化速度越来越快，我是要默然颔首的。</p>
@@ -2105,6 +1976,60 @@ _Farewell and thanks to each for the company_
       </categories>
       <tags>
         <tag>书单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>把 Airflow 搬进 Kubernetes</title>
+    <url>/2019/12/03/develop-etl-via-airflow-on-k8s/</url>
+    <content><![CDATA[<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>稳定高效的进行数据处理几乎是如今每一家互联网公司都要面临的课题，尤其是对于<a href="https://www.seniverse.com/">专注于气象数据研究的我司</a>而言，做数据分析和 <a href="https://zh.wikipedia.org/wiki/ETL">ETL</a> 的工作是整个公司业务很重要的一部分。在脱离了原始的「刀耕火种」的时代之后，我们内部一直在使用 <a href="https://airflow.apache.org/">Airflow</a> 作为数据处理流程的框架来管理日常的数据流任务。其实我们也调研了很多其他的方案，最后还是选定了看起来相对比较可靠也比较符合我们业务需求的开源项目 Airflow 来做这个事情，虽然在使用的过程中确实也遇到了不少坑。当时这个项目还在 <a href="https://zh.wikipedia.org/wiki/Apache_Incubator">Apache Incubator</a>，目前已经顺利毕业了。</p>
+<p>简单介绍一下 Airflow，一般由 WebServer（一套完整的 UI 界面用于随时查看任务的执行状态并可以手动执行一些操作）、Scheduler（用来做任务的调度和管理）、Worker（真正执行任务的部分，可能有很多个）组成。这是一个常见的分布式架构，你只需要把任务流的 <a href="https://airflow.apache.org/concepts.html#dags">DAG</a> 用 Python 代码写好，然后配置好触发条件就可以让它长期运行下去。在实际生产环境中，我们大量使用了 <a href="https://airflow.apache.org/howto/executor/use-celery.html">Celery Executor</a> 来把任务动态分布到多个 Worker 上执行。</p>
+<span id="more"></span>
+
+<p>如果数据处理任务长期不变，这样的系统已经可以满足我们的需求了。但实际上随着越来越多的数据任务被添加到整个系统，任务负载变得越来越重，很多时候固定数量的 Worker 已经不能及时的处理完被 scheduled 的任务，造成任务队列堆积，一段时间后如果一直不能改善负载情况甚至会拖垮整个系统。这种情况下，只能手动增加更多的 Worker 来分担任务处理工作。然后不同类型的数据处理越多，Worker 所需要安装的依赖也越多，每手工增加一个 Worker 的成本也越来越高。甚至对于气象数据的处理而言，有很多非常古老的数据处理工具（很多还是 Fortran 写的），经常出现依赖相互冲突的情况（版本冲突，编译通不过等等）。如何隔离各个任务之间的运行环境，以及如何根据负载需求动态的伸缩 Worker 的数量日益成为了这个系统的一个痛点。</p>
+<p>动态伸缩，环境隔离，自然让人联想到 <a href="https://www.docker.com/">Docker</a> 和 <a href="https://kubernetes.io/zh/">Kubernetes</a> 这样的技术。好在 Airflow 1.10 版本引入了 <a href="https://airflow.apache.org/kubernetes.html">Kubernetes Executor 和 Kubernetes Operator</a> 允许为每一个任务创建新的 Pod 来处理，而执行完之后新创建的 Pod 会被清理掉，并且每一个任务都可以指定不同的 Docker image 来处理，这样看起来就可以完全解决我们前面的问题。</p>
+<p>目前这部分功能似乎还很不稳定，官方文档和讨论都还不多，这篇博客也是为了记录下我们的踩坑过程。</p>
+<h2 id="在-Kubernetes-上搭建-Airflow"><a href="#在-Kubernetes-上搭建-Airflow" class="headerlink" title="在 Kubernetes 上搭建 Airflow"></a>在 Kubernetes 上搭建 Airflow</h2><p>我们使用 <a href="https://helm.sh/">Helm</a> 来管理在 Kubernetes 上个各个应用以及它们的依赖，目前官方也已经给出了 <a href="https://github.com/helm/charts/tree/master/stable/airflow">stable&#x2F;airflow 的 Chart</a>，我们可以直接使用或部分参考。下面我们介绍一下从零开始的搭建过程。</p>
+<ol>
+<li><p>安装 Kubernetes</p>
+<p>本地安装的可以选择 <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a>，主要它解决了跨平台的问题。我在 macOS 上使用的是 <a href="https://hub.docker.com/editions/community/docker-ce-desktop-mac">Docker Desktop for Mac</a> 里<a href="https://www.docker.com/blog/docker-mac-kubernetes/">自带的 Kubernetes 集群</a>，如果你安装遇到了问题可以看看<a href="https://github.com/gotok8s/k8s-docker-desktop-for-mac">这里</a>是不是解决了你的问题，或者自行 Google 也可。</p>
+</li>
+<li><p>安装 Helm</p>
+<p>Helm 3 已经是正式的稳定版本，可惜我们线上还在使用 Helm 2，而 Helm 2 的版本不兼容是没法使用的。为了跟线上保持一致，我本地也是安装的 Helm 2，所以后面都是以 Helm 2 的操作来执行的，第一次进行的朋友可以直接用 Helm 3。当然安装过程也<a href="https://github.com/helm/helm/issues/4730">很可能出现问题</a>，可以自行 Google 解决。</p>
+</li>
+<li><p>在 Kubernetes 上用 Helm 安装 Airflow Chart</p>
+<p>直接根据<a href="https://github.com/helm/charts/tree/master/stable/airflow">官方的 Airflow Chart</a>步骤执行 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow</code> 即可在 Kubernetes 上安装一个标准的 Airflow 集群，之后可以查看各个 Pod 的状态是不是已经 ready（一切正常的情况下会在 <code>airflow</code> 的 Namespace 下安装 airflow-web、airflow-scheduler、airflow-postgresql、airflow-flower、airflow-redis）。还可以根据 NOTES 的提示在浏览器中查看 Airflow 的 UI 界面是不是也启动良好：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">NOTES:</span><br><span class="line">Congratulations. You have just deployed Apache Airflow</span><br><span class="line">   export POD_NAME=$(kubectl get pods --namespace airflow -l &quot;component=web,app=airflow&quot; -o jsonpath=&quot;&#123;.items[0].metadata.name&#125;&quot;)</span><br><span class="line">   echo http://127.0.0.1:8080</span><br><span class="line">   kubectl port-forward --namespace airflow $POD_NAME 8080:8080</span><br><span class="line"></span><br><span class="line"> Open Airflow in your web browser</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据自身业务情况自定义一些配置</p>
+<p>之后可以根据 Helm 的 官方 Airflow Chart 提供的配置方式进行一些自定义配置，比如把默认的 Airflow 镜像 <code>puckel/docker-airflow</code> 替换成自己根据自身业务需求构建的（比如已经安装了实现业务需求所有必要底层依赖的 Airflow 镜像，或者对于 Kubernetes Executor and operator 必需的 <code>apache-airflow[kubernetes]</code>，这样就不用每次部署更新都安装这些依赖了）、更改 <code>executor</code> 的类型（我们改为 <code>Kubernetes</code>）等等。官方的 Chart 目录下也提供了<a href="https://github.com/helm/charts/blob/master/stable/airflow/examples/minikube-values.yaml">一个例子</a>可供参考。</p>
+<p>值得额外注意的是我们如何做数据的持久化。这既包括 DAGs、日志 logs，也包括 Airflow 的运行态数据 —— 存储在 Postgres 或 MySQL 中的数据 —— 如何持久化。官方的 README 对此<a href="https://github.com/helm/charts/tree/master/stable/airflow#dags-deployment">已经有介绍</a>，同样如果有额外的自定义配置直接写到我们自己的 <code>values</code> YAML 文件中即可。<a href="https://github.com/apache/airflow/blob/1.10.6/airflow/config_templates/default_airflow.cfg"><code>airflow.cfg</code></a> 中 <code>[kubernetes]</code> 对应的每一项配置也应该过一遍并做相应的修改，尤其是关于 <code>namespace</code> 和 <code>dags_in_image</code> 的部分。对我司而言，我们自己的 Kubernetes 集群运行在阿里云上，直接使用一个外挂的 NAS 作为 DAGs 和 logs 的共享存储即可（通过 <code>extraVolumeMounts</code> 和 <code>extraVolumes</code> 挂载和声明，也要注意跟 <code>dags.path</code> 路径保持一致），以后我们自己开发的 DAGs 可以直接通过 CI&#x2F;CD 更新到 NAS 上相应的目录。数据库采用一个已经存在的外部 Postgres。</p>
+<p>假设我们将自定义的 <code>values</code> 配置写成 <code>minikube-values.yaml</code> 的本地 YAML 文件，就可以用 <code>helm install --namespace &quot;airflow&quot; --name &quot;airflow&quot; stable/airflow -f minikube-values.yaml</code> 启动一个经过自定义修改后的 Airflow 集群（可以先把之前启动的集群通过 <code>helm delete --purge &quot;airflow&quot;</code> 清除）。</p>
+</li>
+</ol>
+<p>因为业务需求和基础设施现状的不同，中间可能有不同的架构选择，但总体上经过这几步之后，一个采用 <code>KubernetesExecutor</code> 并运行在 Kubernetes 上的 Airflow 集群就基本搭建好了。</p>
+<h2 id="开发-DAGs"><a href="#开发-DAGs" class="headerlink" title="开发 DAGs"></a>开发 DAGs</h2><p>参考 Airflow 官方文档中 Kubernetes Operator 的例子可以开发适用于自身业务需求的 DAG。之后就可以访问 Airflow WebServer 来开启相应的 DAG 任务，并观察集群中 Task 的运行行为是否与预期的一致，并逐步迭代。</p>
+<h2 id="悄悄告诉你，真相其实是这样……"><a href="#悄悄告诉你，真相其实是这样……" class="headerlink" title="悄悄告诉你，真相其实是这样……"></a>悄悄告诉你，真相其实是这样……</h2><p>实际上，在经过我的一番折腾之后，最终我们线上使用的版本并没有使用官方的 Helm Chart，而是完全基于我们自己 build 的 Airflow 镜像，从头搭建了我们自己的 Helm Release Chart，这样整个系统拥有最高的可定制度（有些问题不在代码层面定制根本没法绕过去，下文有详述），同时也剔除了很多 Helm 官方 Chart 里有但我们不需要的东西。跟官方的 Chart 相比，我们主要做了这些更改：</p>
+<ul>
+<li><p>没有使用 Airflow 官方的 Kubernetes Executor，而是自己继承 <code>LocalExecutor</code> 类定制我们自己的 <code>KubeExecutor</code>，实际做的事情也很简单，就是实际在执行任务的时候不直接像 <code>LocalExecutor</code> 那样在本地执行命令，而用 <code>kubectl</code> 把任务指定在某一个 Worker Pod 或使用了 <code>KubernetesPodOperator</code> 启动的临时 Pod 里运行。这样做主要考虑的是官方的 <code>KubernetesPodOperator</code> 为了一些通用性功能从而进行了较为复杂的流程设计，我们团队自身完全可以结合在阿里云里 Kubernetes 集群的具体特点改造 <code>LocalExecutor</code>，这样不仅在运行时可以节省更多的机器资源，而且对于我们最核心的需求 —— 稳定的生产数据 —— 来说是更有利的，毕竟在运行时动态操作 Kubernetes 集群资源的流程变得简单了很多。</p>
+</li>
+<li><p>阿里云还有一个很大的坑是在它上面构建的官方 Kubernetes 集群产品不提供阿里云的 CA 根证书校验，而 <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/#directly-accessing-the-rest-api-1">Kubernetes 官方明确指明了需要校验 CA bundle</a>，导致我们无法通过 API 与 Kubernetes Server 进行交互，进而在使用 <code>KubernetesPodOperator</code> 时会因为证书校验失败而无法创建 Pod。而 <code>KubernetesPodOperator</code> 也并没有提供参数让我们将 <code>verify_ssl</code> 设置为 False。所以最终我们也没有直接用官方的 <code>KubernetesPodOperator</code>，而是自己改了一个类似的把 <code>verify_ssl</code> 设置为 False 的 Operator 的版本来使用。同时这里也呼吁一下阿里云能按照技术社区标准来提供自己的技术服务与产品（我们提了工单 argue 这个事情，最终客服给我提供了根证书并叮嘱不要扩散，并不清楚阿里云不能对外公开根证书是基于什么样的考量；在其他项目中我们使用了客服提供的根证书来进行校验是没有问题的）。</p>
+</li>
+<li><p>去掉了不必要的通用型适配的各种选择，完全按自身需求合理定制。</p>
+</li>
+</ul>
+<p>虽然我们做了定制，需要考虑的一些核心问题是没有变的，它们是：如何共享 DAG 的 Python 代码、如何做日志和数据库数据的持久化、是否使用 <a href="https://airflow.apache.org/docs/stable/concepts.html?highlight=xcom#xcoms">XComs</a> 来做 Task 之间的消息通信（同时在集群环境下如何实现这一点）、如何注入依赖（官方 Helm Chart 的 <code>requirements.txt</code> 方式）等等。由于这个尝试和定制的过程着实复杂和不那么让人愉快，甚至需要阅读一些 Airflow 的源码和各个云服务组件的接口参数设计，所以一篇博客无法一一详尽，我自己也不想写那些我们是如何绕过由于各方面的设计缺陷或开源产品不稳定导致的问题的技术细节，它们可能时刻会变，也没有技术深度，更多的是枯燥的云服务运维细节，所以不会在这里赘述太多而分散更大层面的宏观框架上的注意力。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>在我们实际使用的过程中其实还遇到了很多 Airflow 的坑，作为一个 Apache 基金会的开源项目，它确实弥补了 ETL 场景下工具和框架的缺失，也提供了非常丰富的功能，不过尽管目前版本号已经到了 1.10.6，但还是有很多明显可感知的 BUG 存在，实际的使用感受是能用但总存在一些小问题，偶尔对任务的调度和管理还可能会失灵，不那么可靠，不算是一个高质量的开源项目，所以在使用时加上适当的重试机制是很有必要的。不过目前社区里在这部分并没有更好的替代品，Airflow 已经是我们考查过的最契合管理 ETL 流程的框架了。如果有新的开源项目能弥补这方面的空缺我们会很乐意去尝试，我们自己团队也在考虑是否在更长期的计划中开发一套自己的 ETL 流程框架。</p>
+<p>几周不断折腾尝试的搭建、使用和实际开发的过程下来，其实涉及了很多开发<a href="https://pivotal.io/cloud-native">云原生服务</a>常用的 DevOps 工具和组件，比如 Helm、Kubernetes 和 Docker，能得心应手的使用这些工具需要一段时间的学习实践来积累知识和经验。要想在 Kubernetes 环境下玩转 Airflow，了解这些周边支撑的工具也是不可或缺极其重要的一部分。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Airflow</tag>
+        <tag>Kubernetes</tag>
+        <tag>Helm</tag>
+        <tag>DevOps</tag>
+        <tag>Cloud-Native</tag>
       </tags>
   </entry>
   <entry>
@@ -2238,6 +2163,81 @@ _Farewell and thanks to each for the company_
         <tag>人生</tag>
         <tag>投资</tag>
         <tag>摄影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Elixir 代码性能优化指北</title>
+    <url>/2019/12/05/elixir-code-performance-optimization/</url>
+    <content><![CDATA[<p>Elixir 作为基于 Erlang&#x2F;OTP 的年轻语言，拥有良好的并发模型设计，在 Web 场景下对于实现能承载高并发的服务毫无问题。有好事者<a href="https://github.com/mroth/phoenix-showdown">对比过包括 Phoenix 在内不同的 Web Framework 的性能</a>，可见如果采用 Phoenix&#x2F;Plug 来实现 Web Server 在性能上不会有太大的问题（代码实现良好的情况下）。所以，本文不会讨论真正的工业生产环境下整个系统的性能状态，因为系统性能受到很多因素的影响，具体编程语言的运行时的执行效率往往不是真正的问题所在，与其考虑编程语言本身的运行时效率，不如探讨系统在具体架构和实现上如何能优化来承载更高的负载来得实际。在生产环境中，我们可以借助 <a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD%E7%AE%A1%E7%90%86">APM</a> 服务来监控系统状态和性能指标。</p>
+<p>由于 Elixir 本身是基于 Erlang 的更高层次的抽象，所以直觉上我们会觉得 Elixir 在运行性能上应该比 Erlang 本身要差一些。实际情况是不是这样呢？Elixir 相比于 Erlang 而言，为我们提供了一些可以快速调用的高阶函数库，典型的有 <a href="https://hexdocs.pm/elixir/Enum.html"><code>Enum</code></a>、<a href="https://hexdocs.pm/elixir/Stream.html"><code>Stream</code></a>，提高了日常实现需求的开发效率，可以让代码实现得更清晰且更易维护。而更高的抽象又几乎必然意味着底层的实现逻辑需要更通用健壮，从而也会更复杂。更高的抽象程度似乎天然与更高的运行效率有着内在的矛盾。本文的焦点在 Elixir 代码的运行性能，即对于实现同样的功能，用哪样的 Elixir 实现方式会让代码在运行时跑得更快。</p>
+<span id="more"></span>
+
+<p>接下来会拿我在刚接触 Elixir 时实际开发过程中真实写出来的代码来举例如何进行优化，相信不少 Elixir 新手会跟当时的我一样或多或少犯类似的错误。源代码可以在这里找到：<a href="https://github.com/seniverse/ex_fieldmask">ex_fieldmask - GitHub</a>，通过项目的提交历史也可以看到我的修改过程，整个代码才一百多行，改动也都很简短，非常适合举例。这个库实现的需求是用简单的字符串解析的方式来实现类似 <a href="https://developers.google.com/youtube/v3/getting-started#partial">Google+&#x2F;YouTube API 中的 Partial Responses</a> 的语法和功能。我会以这个代码仓库中的例子来举例能明显改善 Elixir 运行性能的实现改进，其他不会明显改善性能但是也会让代码更优的改动也会稍微提一下。我们从提交历史中从前往后挑选一些值得一提的 commits 来一一解说。</p>
+<ul>
+<li><p>判断值时，用 <code>case</code> 替换 <code>cond</code>：<a href="https://github.com/seniverse/ex_fieldmask/commit/913be4225298d9ef90f34727108d737ea5d7701c">commit <code>913be42</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cond</span> <span class="keyword">do</span></span><br><span class="line">  keys === [] -&gt; data</span><br><span class="line">  keys === [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  <span class="literal">true</span> -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">  [] -&gt; data</span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">  _ -&gt; ......</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：能用 <code>case</code>（或函数子句）的就不要用 <code>cond</code>。<code>cond</code> 适用于多个独立的表达式求值判断真假的情况，它需要从上至下对每个表达式求值直到遇到第一个值为「真」的分支。在这里，我们全部是关于 <code>keys</code> 的简单比较，显然用 <code>case</code> 直接模式匹配会是更优的实现。<code>cond</code> 里的 <code>true</code> 的 fallback 分支在 <code>case</code> 里可以用 <code>_left</code> 来对应变更用于匹配任意项。</p>
+</li>
+<li><p>函数用一个完整的 Pipeline 串联来提升可读性：<a href="https://github.com/seniverse/ex_fieldmask/commit/3e610d80b69be0015e376273806df9711427e701">commit <code>3e610d8</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/fa039386be8b953e8ec927408a880301fc5283cb">commit fa03938</a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  keys = <span class="title class_">Map</span>.keys(tree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> keys <span class="keyword">do</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reveal</span></span>(tree, data) <span class="keyword">when</span> is_map(tree) <span class="keyword">do</span></span><br><span class="line">  tree</span><br><span class="line">  |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">  |&gt;(<span class="keyword">fn</span></span><br><span class="line">    [] -&gt; data</span><br><span class="line">    [<span class="string">&quot;*&quot;</span>] -&gt; ......</span><br><span class="line">    _ -&gt; ......</span><br><span class="line">  <span class="keyword">end</span>).()</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：最后的匿名函数中的参数匹配跟 <code>case</code> 一样也是模式匹配，同样优于 <code>cond</code>，原代码中把 <code>case</code> 改成匿名函数的形式是为了让整个 <code>reveal</code> 函数是一个完整的用 <code>|&gt;</code> 串联起来的 Pieline 而又不失简洁，但性能上并不会明显更优。这样的改动更多是把命令式的代码风格改成函数式的代码风格，Pipeline 的每个部分都是独立无状态的，可读性和可维护性都会有所提升。</p>
+</li>
+<li><p>List&#x2F;Tuple 直接用模式匹配取值：<a href="https://github.com/seniverse/ex_fieldmask/commit/801ff47c93f4b682bbd2f2997ee23ea7e98b6b6c">commit <code>801ff47</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">chars = elem(item, <span class="number">0</span>)</span><br><span class="line">delimiter = elem(item, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">&#123;chars, delimiter&#125; = item</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：同样也是用模式匹配替代使用函数来取值，不仅让代码可以一行解决，而且还会提升性能。如果 List&#x2F;Tuple 很长，而我们只需要提取前面一部分的片段，则又可以使用 <code>_tail</code> 来匹配我们不关心的尾部区域。</p>
+</li>
+<li><p>匿名函数用 <code>&amp;</code> 改写：<a href="https://github.com/seniverse/ex_fieldmask/commit/c19d49fed10e026b0ccd3cd27a77af8e4b7fa87d">commit <code>c19d49f</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(<span class="keyword">fn</span> str -&gt; str !== <span class="literal">nil</span> <span class="keyword">and</span> str !== <span class="string">&quot;&quot;</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.filter(&amp;(&amp;<span class="number">1</span> !== <span class="literal">nil</span> <span class="keyword">and</span> &amp;<span class="number">1</span> !== <span class="string">&quot;&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：无他，就是代码更简洁了，而且我们不再需要想如何给函数参数命名。<a href="https://martinfowler.com/bliki/TwoHardThings.html">众所周知，命名在编程里是一件很难的事情……</a>（当然，只有在这种函数很简单的情况下值得这样做）</p>
+</li>
+<li><p>在函数参数中直接匹配复杂数据结构内部的值：<a href="https://github.com/seniverse/ex_fieldmask/commit/9af5145731aacfeac0e6e3826ee4c854c8550d6a">commit <code>9af5145</code></a> 和 <a href="https://github.com/seniverse/ex_fieldmask/commit/456d3d4c4f26919055c18a7d2ff233437530f553">commit <code>456d3d4</code></a>，其他相同原因的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/21b1fee30f439628139f307157341812b52a237d">commit <code>21b1fee</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span> token, acc -&gt;</span><br><span class="line">  &#123;tree, path, stack, last_token&#125; = acc</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> token <span class="keyword">do</span></span><br><span class="line">    <span class="string">&quot;,&quot;</span> -&gt;</span><br><span class="line">      <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">        &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        acc</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;/&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;(&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;)&quot;</span> -&gt;</span><br><span class="line">      &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">    _ -&gt;</span><br><span class="line">      &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Enum</span>.reduce(&#123;%&#123;&#125;, [], [], <span class="literal">nil</span>&#125;, <span class="keyword">fn</span></span><br><span class="line">  <span class="string">&quot;,&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    <span class="keyword">if</span> <span class="title class_">List</span>.first(stack) === <span class="string">&quot;/&quot;</span> <span class="keyword">do</span></span><br><span class="line">      &#123;tree, tl(path), tl(stack), token&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      &#123;tree, path, stack, last_token&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;/&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;(&quot;</span> = token, &#123;tree, path, stack, last_token&#125; -&gt;</span><br><span class="line">    &#123;tree, [last_token | path], [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;)&quot;</span> = token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;tree, tl(path), [token | stack], token&#125;</span><br><span class="line"></span><br><span class="line">  token, &#123;tree, path, stack, _&#125; -&gt;</span><br><span class="line">    &#123;put_in(tree, <span class="title class_">Enum</span>.reverse([token | path]), %&#123;&#125;), path, stack, token&#125;</span><br><span class="line"><span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：改动前的写法更多的还是在用其他无模式匹配特性的编程语言的思维在写代码，在 Elixir 里，我们可以直接在函数参数中使用模式匹配，不仅简化了步骤让代码变得更简洁，而且也简化了变量个数、少了命名需求。在分支的匹配过程中我们还可以给匹配到的字符串同样用模式匹配 <code>&quot;/&quot; = token</code> 的方式来命名。为什么已经确定的匹配还要用一个新的变量来匹配呢？原因是在分支内部需要多次重复引用 <code>&quot;/&quot;</code>，我们直接用 <code>token</code> 来统一引用即可，小小改动却充分体现了 <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">Don’t repeat yourself</a> 的原则。</p>
+</li>
+<li><p>用 <a href="https://elixir-lang.org/getting-started/comprehensions.html">List Comprehensions</a> 替换高阶函数的使用：<a href="https://github.com/seniverse/ex_fieldmask/commit/8de1abf59a18829e8e19a33a625f58424e577e3b">commit <code>8de1abf</code></a>，其他类似的改动还有 <a href="https://github.com/seniverse/ex_fieldmask/commit/48afae9357515afbd2111bd412ac4d4cd09f2229">commit <code>48afae9</code></a>。</p>
+<p>改动前：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[<span class="string">&quot;*&quot;</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="title class_">Enum</span>.map(data, &amp;reveal(tree, &amp;<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; <span class="title class_">Enum</span>.map(&amp;[&amp;<span class="number">1</span>, reveal(tree[&amp;<span class="number">1</span>], data[&amp;<span class="number">1</span>])])</span><br><span class="line">        |&gt; <span class="title class_">Map</span>.new(<span class="keyword">fn</span> pair -&gt; <span class="title class_">List</span>.to_tuple(pair) <span class="keyword">end</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>改动后：</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span></span><br><span class="line">  [] -&gt;</span><br><span class="line">    data</span><br><span class="line"></span><br><span class="line">  [<span class="string">&quot;*&quot;</span>] -&gt;</span><br><span class="line">    data</span><br><span class="line">    |&gt; <span class="title class_">Map</span>.keys()</span><br><span class="line">    |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">      <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">        &#123;key, reveal(tree[<span class="string">&quot;*&quot;</span>], data[key])&#125;</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span>).()</span><br><span class="line"></span><br><span class="line">  keys -&gt;</span><br><span class="line">    <span class="keyword">case</span> data <span class="keyword">do</span></span><br><span class="line">      data <span class="keyword">when</span> is_list(data) -&gt;</span><br><span class="line">        <span class="keyword">for</span> item &lt;- data <span class="keyword">do</span></span><br><span class="line">          reveal(tree, item)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">      data <span class="keyword">when</span> is_map(data) -&gt;</span><br><span class="line">        keys</span><br><span class="line">        |&gt; (<span class="keyword">fn</span> keys -&gt;</span><br><span class="line">          <span class="keyword">for</span> key &lt;- keys, <span class="symbol">into:</span> %&#123;&#125; <span class="keyword">do</span></span><br><span class="line">            &#123;key, reveal(tree[key], data[key])&#125;</span><br><span class="line">          <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>).()</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解读</strong>：这里性能上是不是真的有优化可能不那么明显。在 Elixir 1.9.1 中我使用 <a href="https://github.com/bencheeorg/benchee">Benchee</a> 做 benchmark 发现 List Comprehensions 确实要比使用 Elixir 提供的高阶函数要快。没有看 Elixir 的具体的实现，但大致揣测 List Comprehensions 在底层是用简单的递归函数实现的，而高阶函数应该做了更多复杂的事情，从逻辑上可以想到的是 <code>Enum/Stream</code> 库需要先处理传入数据结构的 <code>Enumerable</code> 协议的相关要求再用不同数据类型对应的不同逻辑来处理，自然会复杂一些。</p>
+</li>
+</ul>
+<p>总结上来，简单的明显可以改善代码性能的写法其实只有两类：尽可能用模式匹配、用 List Comprehensions 替换高阶函数，其他的只是从其他角度考虑的代码层面的优化。最终我们线上没有使用这个库，因为 <a href="https://github.com/seniverse/fieldmask_benchmark">benchmark</a> 发现直接定义 Partial Responses 的语法，然后用 Erlang 的 <a href="http://erlang.org/doc/man/leex.html"><code>leex</code></a> 做词法分析，再用 <a href="http://erlang.org/doc/man/leex.html"><code>yecc</code></a> 做语法分析生成 <a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AA%9E%E6%B3%95%E6%A8%B9">AST</a>，最后遍历 AST 就可以得到做了 mask 的结果，即我们要的 Partial Response。代码同样开源在 GitHub：<a href="https://github.com/seniverse/fieldmask">fieldmask - GitHub</a>，也是一个绝妙的学习 Erlang <code>leex</code> 和 <code>yecc</code> 的例子。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>Erlang</tag>
+        <tag>性能调优</tag>
+        <tag>Elixir</tag>
       </tags>
   </entry>
   <entry>
@@ -2440,6 +2440,50 @@ _Farewell and thanks to each for the company_
       </tags>
   </entry>
   <entry>
+    <title>热情、工作与理想主义｜为什么我要离开微软</title>
+    <url>/2023/07/25/why-i-leave-microsoft/</url>
+    <content><![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
+<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
+<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>
+<span id="more"></span>
+
+<h2 id="热情"><a href="#热情" class="headerlink" title="热情"></a>热情</h2><p>什么是对一件事情有热情？</p>
+<p>能让你有热情去做的事情，常常是能让你茶不思饭不想、睡不着觉脑子里都要想着去做的事情，而且从结果看，你往往能把这种能充分发挥主观能动性去做的事情做得超越一般水平。比如：写这篇博客，我就充满了热情，以至于我深夜睡不着觉到三四点也在构思我应该怎样清晰、准确、简练地表达出我真实的所思所想，并且都不会感到困倦。这也类似于我一直所追求的<a href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%B5%81%E7%90%86%E8%AB%96">「心流」状态</a>。</p>
+<p>目前可以让我产生原始热情的兴趣包括但不限于：写高质量的代码、做纯粹的 C 端产品、投资、摄影。</p>
+<ul>
+<li>「写高质量的代码」自不必多说，从高中开始编程以来我就觉得这个事情充满了魔力。</li>
+<li>「做纯粹的 C 端产品」是我工作以来才意识到的能让我充满热情的事情，可能是大学时期曾经有过一段纯粹且不用考虑盈利地做互联网产品的经历，使得工作后的我格外怀念那个时期自由、纯粹、充满激情实现自己各种天马行空的想法的感觉。当然，这样的人生阶段可遇不可求，也与所处的环境有关，所以我也不会强求。</li>
+<li>「投资」是这几年才开始的事情，投资固然是一个能够赚钱<del>（或者亏钱）</del>的事情，但我从这件事情上得到的纯粹的乐趣远比资产增值得到的乐趣更多，这有点类似于玩模拟经营类游戏的乐趣，而且是用自己的真金白银去玩。</li>
+<li>「摄影」作为纯粹的业余爱好，是取悦自己的一种方式。取景器、快门声、构图、光线，来捕捉自己喜欢的画面，是一个能让自我愉悦的修行方式。目前我还只能把这件事作为纯粹的爱好去做，我猜想如果摄影变成了职业也许就没那么有趣了。</li>
+</ul>
+<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>每次我听到别人有「工作嘛，赚钱就行了，其他不重要」、「职业化的去工作」、「不要指望能在工作中去做自我提升」这类论断时，我其实都想在心里回一句：Bullshit! 当然这些论断都有其各自的合理性，这个时代百花齐放也各有各的活法，但却不是我认为的我应该找到的那份理想工作。</p>
+<p>从上文就可知，以赚钱为首要目的的工作已经违背了我「理想主义」的本心，可是<strong>为什么「职业化」的工作也不行</strong>？这里的「不要职业化」当然不是说不要遵守各种职业原则和公司规范，而是当你过分的强调「职业化」的去做这件事情的时候，你的「工作」可能就沦为了一种看似非常专业的处理各种事情但其实并不真正用心的「上班」的事情。我承认，其实很多人（尤其是有多年工作经验的职场「老油条」们）追求的就是这种「职业化」的状态，但这是我想在我自己身上极力避免的。而关于要不要在工作中进行纯粹的无关商业的自我提升的部分，我认为这是理想工作所应该提供给职业者的一个最基本的条件，而不是一个可有可无的条件。理想的工作应该是个人和公司相互匹配、互相成就的，每个工作者都应该有从工作中提升自我、获得认同的权利，如果你的工作不能保证这样的机会和时间，那么这就不是一个理想的能与你双向匹配的工作。</p>
+<p>让每一个人都能有热情的做有意义、有价值的事情，依然是我想不断追寻或创造的职业理想。有些公司的某些阶段是可以达到这种状态的，但想长期保持并让每一个员工都能时刻认同这一点非常困难，甚至有可能是达不到的。</p>
+<h2 id="为什么从微软离职"><a href="#为什么从微软离职" class="headerlink" title="为什么从微软离职"></a>为什么从微软离职</h2><p>说了这么多形而上的「虚头巴脑」的东西，回到大家可能更关心的本文的主题，为什么我要从微软离职？如果用一句话来回答，那可以归结为我不愿意再浪费时间和生命在一个二十年的代码屎山上绣花。</p>
+<p>首先还要做一个免责声明，微软是一个庞大的跨国公司，不同国家、不同部门、不同团队、不同产品、不同项目、不同人都可能产生截然不同甚至相反的体验和感受，所以我这里说的只能代表我个人，并不代表微软的普遍情况。但以我所了解的信息来看，我这样类似的感受也并不是个例，甚至很有代表性。</p>
+<p>微软有其适合的员工类型，我前面所说的「职业化」的工作者在这样的大公司里应该会很适应并如鱼得水，但依我看微软不适合任何有创业心态的创造者。微软的大部分成熟项目和绝大多数岗位都非常适合职业化的工作者，最好还是不挑活儿的那种。如果你致力于用职业化的工作心态在微软干到退休，这将会是一个非常友好的平台。而于我而言，恰恰不能忍受的就是这个所谓的「职业化」。能够无差别的处理各种各样的任务和难题，这当然是一项非常厉害且被各种企业所追捧的职业打工人的能力，然而却是很难让像我这样的人学会的，我觉得这是因为我已经养成了时常需要质疑每个任务和工作的意义和价值的习惯。如果这个工作在我看来对产品很有价值（这个价值可能也并不是短期内商业上的价值），我会非常有热情的把它做得尽量完美，反之对于意义不大我打心底不认同的工作则会难以说服自己投入时间和精力去做到足够好。</p>
+<p>另外，作为微软的一线开发，话语权是相当有限的，尤其是微软中国相对于美国总部的话语权。这也无可厚非，毕竟微软从根源上还是一家美国公司。在微软中国这边，一线项目开发的很多想法其实是没有机会去实践的，尽管我们有各种 hackathon week、FHL (fix, hack, learn) week，但大多数项目都是为了 hackathon 而 hackathon，有时候你明知道自己的主项目里有更本质更重要的问题亟待解决，但因为各种非本质的困难（往往是因为所涉团队甚广而无人可以协调），这些问题成为了房间里的大象，大家都选择性的视而不见或无人跟进处理。因为各种各样团队利益、个人利益的原因，人们都会愿意首先解决那些看似容易却很可能不本质的问题，而不去解决那些看似难却很可能更本质的问题。这并不是微软独有的问题，而很可能是大公司的通病。在这样的大公司，很多创意是无法面世的，一线员工可能是最了解某项业务的人，但他们所产生的想法需要层层往上 review，而任何一个 no 都有可能让这样的想法没法被支持，久而久之，大家都已经默契的知道哪些存在已久的问题是不用再提出来的了，因为他们都知道这样的问题提出来也暂时无人能去解决，除非有一个级别足够高、话语权足够重的人重新提出这样的问题，而这样的人往往也脱离一线开发太久，难以体会真实项目中遇到的痛点和难点。这种一线开发对自身项目和产品的失控感和无力感是让人感到很沮丧的。这也是我觉得微软这样的大公司不适合任何有创业者心态的人的原因。作为一个 Geek，通常需要烦恼的是经常性的创意不足，而在微软这样一个大公司里，最好不要有太离经叛道的创意，用最稳妥的方式拧好你的那一颗螺丝，这可能是公司或者更准确说是中间层领导对每个员工最真实的期待。这当然已经违背了我前面所说的「理想主义」原则。</p>
+<p>最近正好在看<a href="https://book.douban.com/subject/26929955/">《腾讯传》</a>，我标记了这样一段话，我感觉放到微软这样的大公司身上同样合适：</p>
+<blockquote>
+<p>在马化腾看来，比自己对公司的控制力的丧失更可怕的，是公司自我生长、自我创新能力的丧失。用成熟的流程来管控公司，似乎避免了内部的冲突和纷争，但企业运行机制的官僚化日益明显，产品、研发按部就班，员工与部门有可能只对流程负责，而不对结果负责。这样的话，企业的创新能力必定下滑，自发的、原生态的创新能力将日渐萎缩。</p>
+</blockquote>
+<p>这也是为什么这个世界上总是不断在发生创业公司在某个领域打败垄断大公司的原因之一。</p>
+<p>但不可否认，微软近些年在商业上堪称成功，从我粗浅的观察来看，我愿意将其归因于 CEO Satya 所领导的管理团队对科技发展趋势的准确把握，很多关键选择上押对了赛道、投资了关键的公司，使其在一波又一波的科技浪潮中始终保持着领先的地位。但依然，这并不代表微软就是一个理想的工作平台，尤其是对于那些有创业者心态的人来说。</p>
+<h2 id="未来的打算"><a href="#未来的打算" class="headerlink" title="未来的打算"></a>未来的打算</h2><p>未来一段时间，我打算先去尝试做一些我一直想做但没有时间和机会去做的东西，学一些一直想学但没有时间系统学习的技术的和非技术的知识，跟技术社区建立更紧密的联系并做一些输入与输出。**不破不立，跟随本心。**所以我暂时也不会着急去找一份全职工作，但也不排除突然发现有很合适的工作机会并参与的可能。</p>
+<p>我自认为我有比大多数同龄人更强的能去广泛接纳各种信息、认清形势和趋势并果断下注的能力，这也是我这些年从投资上认识和体会到的。在这个时代背景下，要做成一件事情，我一直认为<strong>选择的重要性已经越来越大于努力的重要性</strong>，好在我还比较擅长于接纳新鲜事物并做出限制条件下相对更优的选择。这并不是说要投机取巧，而是要清晰客观的认知自我、认知环境，做出最佳选择。当然，必要的努力同样重要，但正如我前面所试图论证的，找到真正有热情从事的工作，努力是自然而然的事情。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>理想主义</tag>
+        <tag>工作</tag>
+        <tag>热情</tag>
+        <tag>微软</tag>
+        <tag>离职</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2023 年书单</title>
     <url>/2023/12/31/2023-booklist/</url>
     <content><![CDATA[<p>一转眼又是一年过去了，2023 年算是个人生活变化比较大的一年。长达三年的疫情生活终于过去，个人生活逐渐回归正常，也开始继续遵循本心勇敢做自己、追寻自己真正热爱的事情。从书单就可以看出这种变化。</p>
@@ -2490,185 +2534,6 @@ _Farewell and thanks to each for the company_
         <tag>科技</tag>
         <tag>趋势</tag>
         <tag>职业发展</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>热情、工作与理想主义｜为什么我要离开微软</title>
-    <url>/2023/07/25/why-i-leave-microsoft/</url>
-    <content><![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
-<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
-<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>
-<span id="more"></span>
-
-<h2 id="热情"><a href="#热情" class="headerlink" title="热情"></a>热情</h2><p>什么是对一件事情有热情？</p>
-<p>能让你有热情去做的事情，常常是能让你茶不思饭不想、睡不着觉脑子里都要想着去做的事情，而且从结果看，你往往能把这种能充分发挥主观能动性去做的事情做得超越一般水平。比如：写这篇博客，我就充满了热情，以至于我深夜睡不着觉到三四点也在构思我应该怎样清晰、准确、简练地表达出我真实的所思所想，并且都不会感到困倦。这也类似于我一直所追求的<a href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%B5%81%E7%90%86%E8%AB%96">「心流」状态</a>。</p>
-<p>目前可以让我产生原始热情的兴趣包括但不限于：写高质量的代码、做纯粹的 C 端产品、投资、摄影。</p>
-<ul>
-<li>「写高质量的代码」自不必多说，从高中开始编程以来我就觉得这个事情充满了魔力。</li>
-<li>「做纯粹的 C 端产品」是我工作以来才意识到的能让我充满热情的事情，可能是大学时期曾经有过一段纯粹且不用考虑盈利地做互联网产品的经历，使得工作后的我格外怀念那个时期自由、纯粹、充满激情实现自己各种天马行空的想法的感觉。当然，这样的人生阶段可遇不可求，也与所处的环境有关，所以我也不会强求。</li>
-<li>「投资」是这几年才开始的事情，投资固然是一个能够赚钱<del>（或者亏钱）</del>的事情，但我从这件事情上得到的纯粹的乐趣远比资产增值得到的乐趣更多，这有点类似于玩模拟经营类游戏的乐趣，而且是用自己的真金白银去玩。</li>
-<li>「摄影」作为纯粹的业余爱好，是取悦自己的一种方式。取景器、快门声、构图、光线，来捕捉自己喜欢的画面，是一个能让自我愉悦的修行方式。目前我还只能把这件事作为纯粹的爱好去做，我猜想如果摄影变成了职业也许就没那么有趣了。</li>
-</ul>
-<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>每次我听到别人有「工作嘛，赚钱就行了，其他不重要」、「职业化的去工作」、「不要指望能在工作中去做自我提升」这类论断时，我其实都想在心里回一句：Bullshit! 当然这些论断都有其各自的合理性，这个时代百花齐放也各有各的活法，但却不是我认为的我应该找到的那份理想工作。</p>
-<p>从上文就可知，以赚钱为首要目的的工作已经违背了我「理想主义」的本心，可是<strong>为什么「职业化」的工作也不行</strong>？这里的「不要职业化」当然不是说不要遵守各种职业原则和公司规范，而是当你过分的强调「职业化」的去做这件事情的时候，你的「工作」可能就沦为了一种看似非常专业的处理各种事情但其实并不真正用心的「上班」的事情。我承认，其实很多人（尤其是有多年工作经验的职场「老油条」们）追求的就是这种「职业化」的状态，但这是我想在我自己身上极力避免的。而关于要不要在工作中进行纯粹的无关商业的自我提升的部分，我认为这是理想工作所应该提供给职业者的一个最基本的条件，而不是一个可有可无的条件。理想的工作应该是个人和公司相互匹配、互相成就的，每个工作者都应该有从工作中提升自我、获得认同的权利，如果你的工作不能保证这样的机会和时间，那么这就不是一个理想的能与你双向匹配的工作。</p>
-<p>让每一个人都能有热情的做有意义、有价值的事情，依然是我想不断追寻或创造的职业理想。有些公司的某些阶段是可以达到这种状态的，但想长期保持并让每一个员工都能时刻认同这一点非常困难，甚至有可能是达不到的。</p>
-<h2 id="为什么从微软离职"><a href="#为什么从微软离职" class="headerlink" title="为什么从微软离职"></a>为什么从微软离职</h2><p>说了这么多形而上的「虚头巴脑」的东西，回到大家可能更关心的本文的主题，为什么我要从微软离职？如果用一句话来回答，那可以归结为我不愿意再浪费时间和生命在一个二十年的代码屎山上绣花。</p>
-<p>首先还要做一个免责声明，微软是一个庞大的跨国公司，不同国家、不同部门、不同团队、不同产品、不同项目、不同人都可能产生截然不同甚至相反的体验和感受，所以我这里说的只能代表我个人，并不代表微软的普遍情况。但以我所了解的信息来看，我这样类似的感受也并不是个例，甚至很有代表性。</p>
-<p>微软有其适合的员工类型，我前面所说的「职业化」的工作者在这样的大公司里应该会很适应并如鱼得水，但依我看微软不适合任何有创业心态的创造者。微软的大部分成熟项目和绝大多数岗位都非常适合职业化的工作者，最好还是不挑活儿的那种。如果你致力于用职业化的工作心态在微软干到退休，这将会是一个非常友好的平台。而于我而言，恰恰不能忍受的就是这个所谓的「职业化」。能够无差别的处理各种各样的任务和难题，这当然是一项非常厉害且被各种企业所追捧的职业打工人的能力，然而却是很难让像我这样的人学会的，我觉得这是因为我已经养成了时常需要质疑每个任务和工作的意义和价值的习惯。如果这个工作在我看来对产品很有价值（这个价值可能也并不是短期内商业上的价值），我会非常有热情的把它做得尽量完美，反之对于意义不大我打心底不认同的工作则会难以说服自己投入时间和精力去做到足够好。</p>
-<p>另外，作为微软的一线开发，话语权是相当有限的，尤其是微软中国相对于美国总部的话语权。这也无可厚非，毕竟微软从根源上还是一家美国公司。在微软中国这边，一线项目开发的很多想法其实是没有机会去实践的，尽管我们有各种 hackathon week、FHL (fix, hack, learn) week，但大多数项目都是为了 hackathon 而 hackathon，有时候你明知道自己的主项目里有更本质更重要的问题亟待解决，但因为各种非本质的困难（往往是因为所涉团队甚广而无人可以协调），这些问题成为了房间里的大象，大家都选择性的视而不见或无人跟进处理。因为各种各样团队利益、个人利益的原因，人们都会愿意首先解决那些看似容易却很可能不本质的问题，而不去解决那些看似难却很可能更本质的问题。这并不是微软独有的问题，而很可能是大公司的通病。在这样的大公司，很多创意是无法面世的，一线员工可能是最了解某项业务的人，但他们所产生的想法需要层层往上 review，而任何一个 no 都有可能让这样的想法没法被支持，久而久之，大家都已经默契的知道哪些存在已久的问题是不用再提出来的了，因为他们都知道这样的问题提出来也暂时无人能去解决，除非有一个级别足够高、话语权足够重的人重新提出这样的问题，而这样的人往往也脱离一线开发太久，难以体会真实项目中遇到的痛点和难点。这种一线开发对自身项目和产品的失控感和无力感是让人感到很沮丧的。这也是我觉得微软这样的大公司不适合任何有创业者心态的人的原因。作为一个 Geek，通常需要烦恼的是经常性的创意不足，而在微软这样一个大公司里，最好不要有太离经叛道的创意，用最稳妥的方式拧好你的那一颗螺丝，这可能是公司或者更准确说是中间层领导对每个员工最真实的期待。这当然已经违背了我前面所说的「理想主义」原则。</p>
-<p>最近正好在看<a href="https://book.douban.com/subject/26929955/">《腾讯传》</a>，我标记了这样一段话，我感觉放到微软这样的大公司身上同样合适：</p>
-<blockquote>
-<p>在马化腾看来，比自己对公司的控制力的丧失更可怕的，是公司自我生长、自我创新能力的丧失。用成熟的流程来管控公司，似乎避免了内部的冲突和纷争，但企业运行机制的官僚化日益明显，产品、研发按部就班，员工与部门有可能只对流程负责，而不对结果负责。这样的话，企业的创新能力必定下滑，自发的、原生态的创新能力将日渐萎缩。</p>
-</blockquote>
-<p>这也是为什么这个世界上总是不断在发生创业公司在某个领域打败垄断大公司的原因之一。</p>
-<p>但不可否认，微软近些年在商业上堪称成功，从我粗浅的观察来看，我愿意将其归因于 CEO Satya 所领导的管理团队对科技发展趋势的准确把握，很多关键选择上押对了赛道、投资了关键的公司，使其在一波又一波的科技浪潮中始终保持着领先的地位。但依然，这并不代表微软就是一个理想的工作平台，尤其是对于那些有创业者心态的人来说。</p>
-<h2 id="未来的打算"><a href="#未来的打算" class="headerlink" title="未来的打算"></a>未来的打算</h2><p>未来一段时间，我打算先去尝试做一些我一直想做但没有时间和机会去做的东西，学一些一直想学但没有时间系统学习的技术的和非技术的知识，跟技术社区建立更紧密的联系并做一些输入与输出。**不破不立，跟随本心。**所以我暂时也不会着急去找一份全职工作，但也不排除突然发现有很合适的工作机会并参与的可能。</p>
-<p>我自认为我有比大多数同龄人更强的能去广泛接纳各种信息、认清形势和趋势并果断下注的能力，这也是我这些年从投资上认识和体会到的。在这个时代背景下，要做成一件事情，我一直认为<strong>选择的重要性已经越来越大于努力的重要性</strong>，好在我还比较擅长于接纳新鲜事物并做出限制条件下相对更优的选择。这并不是说要投机取巧，而是要清晰客观的认知自我、认知环境，做出最佳选择。当然，必要的努力同样重要，但正如我前面所试图论证的，找到真正有热情从事的工作，努力是自然而然的事情。</p>
-]]></content>
-      <categories>
-        <category>一只代码狗的自我修养</category>
-      </categories>
-      <tags>
-        <tag>理想主义</tag>
-        <tag>工作</tag>
-        <tag>热情</tag>
-        <tag>微软</tag>
-        <tag>离职</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Maples7 个人开源计划（1）</title>
-    <url>/2024/11/08/open-source-maples7-1/</url>
-    <content><![CDATA[<h2 id="📑-前序"><a href="#📑-前序" class="headerlink" title="📑 前序"></a>📑 前序</h2><p>从微软离职以来已经有一年多了（原因和感受详见：<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">热情、工作与理想主义｜为什么我要离开微软</a>），离职后的前半年基本在休养生息，顺便学习了一些 Apple 开发相关的东西，后半年开始写我几年来一直想写的一个财务类的工具 App，算是正式开始了我的全职独立开发之路。</p>
-<p>不用上班之后我感受到了前所未有的自由，一种大学期间时常沸腾全身的创造力似乎正在回归。不上班不意味着不工作，上班经常是消磨热情和创造力的，而工作却可以是由热情和创造力来自我驱动的。可预见的未来一段时间，我感觉我都会非常享受现在的这种状态。</p>
-<p>正是因为我开始有大把的时间能真正投入到自己的兴趣和热情所在，独立开发的过程基本也开始变得常态化，我决定开启一个全新的个人企划 —— 《Maples7 个人开源计划》。在这个计划里，我会尽可能定期地（周 or 月，取决于可分享的内容的多少）分享最近一段时间在工作（独立开发为主）、生活和投资领域的个人进展、所见所闻和个人感悟，并持续记录自己的资产动态变化。既为备忘自己未来独立开发一路的历程，也作为一个跟外界交流沟通的窗口（未来如果有谁好奇我最近一段时间又在鼓捣些什么玩意儿，我可以直接甩个链接了哈哈 &gt;_&lt;）。随着个人的变化和发展，也会动态变化记录的内容。总之，在这个纷乱的时代里，主打一个机动灵活。另外，人是复杂的有机系统，任何一个侧面都不足以概括一个个体的丰富性，但我力求能在这里涉及到所有我所关注的个人领域。</p>
-<span id="more"></span>
-
-<p>以下是第一期的《Maples7 个人开源计划》的内容。</p>
-<h2 id="🧑‍💻-工作"><a href="#🧑‍💻-工作" class="headerlink" title="🧑‍💻 工作"></a>🧑‍💻 工作</h2><ul>
-<li><p>正在写的<strong>财务类工具 App</strong> 第一版功能基本接近尾声，正在添加一些跟会员体系有关的功能，已经注册订阅了 Apple Developer Program，也准备研究一下是否需要注册一个一人公司来作为 App 的上架实体，相关的也会看看苹果 App Store 具体的上架流程。接下来准备继续完善功能，然后开始注册商标、软件著作权注册、备案等工作，之后就会开始进行内测、准备上架。</p>
-</li>
-<li><p>我目前的工作设备是 MacBook Pro 投屏到 Vision Pro 里面用大屏，已经这样使用了很长一段时间，这也是我有欲望购买 Vision Pro 的主要原因之一。解决了 Vision Pro 的佩戴舒适性问题之后，它的显示效果和无限制的屏幕空间是很能提升体验和效率的。最近正好 beta 系统版本带来了之前发布会演示的 Mac 投屏到 Vision Pro 里面的超宽屏，体验非常棒！Coding 体验进一步提升！相当于拥有了一个超大超宽的 4k 带鱼屏，我觉得这个就已经值回 Vision Pro 的票价了。</p>
-</li>
-<li><p>参与了 Swift 6.0 文档的中文翻译（SwiftGG 翻译小组）工作，相对贡献了比较多的工作量，找到了一些类似于以前 JS 社区的参与感。这个翻译成果不久后应该就会上线了。</p>
-</li>
-</ul>
-<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新资产配置比例的桑吉图：</p>
-<p><img data-src="https://s2.loli.net/2024/11/08/CQgmSMzv24aHBVo.jpg" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"><center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center></p>
-<p>基于隐私的原因，我只会分享我的具体资产配置的各部分比例，以及在两次分享期间的资产增减值，而不会给出具体的总额绝对值（但根据两次的 delta 量其实已经可以大致推算出来了）。</p>
-<p>神奇的是，虽然已经离职了一年多没有收入，我的总资产却还是增长的，这应该要归功于最近二级市场的不错表现了。</p>
-<p>关于我的投资和资产配置体系，推荐阅读我曾写过的关于投资的<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」分类</a>下的两篇博客：</p>
-<ul>
-<li><a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a></li>
-<li><a href="https://maples7.com/2022/08/20/a-specific-investment-strategy/">《一套大概率可行的具体投资策略》</a></li>
-</ul>
-<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
-<li>跟女朋友都分别一起过了难忘的生日（生日日期太接近），求婚大作战成功！❤️</li>
-<li>最近在家做饭多了起来（homemade 小炒黄牛肉大成功！），虽然我还是不觉得在家做饭是一项「收益大于支出」的活动，但确实能提供不少家庭生活的情绪价值。</li>
-<li>最近开始每天早上在太湖边慢跑快走半小时，可以保持一天的身心舒畅。</li>
-<li>最近分别去了北京环球影城（第二次）、乌镇戏剧节（乌镇第三次，戏剧节头一回）玩，体验都很不错，尤其是跟家人朋友们一起出游，很棒！</li>
-<li>推荐正在追的芒果 TV 综艺《再见爱人4》，目前看来每一期都大呼精彩！对婚姻关系和人性的解剖，算是少有的国内情感类综艺的精品之作。一起来做爱人文学家！😶‍🌫️</li>
-<li>打算有空随意再看看《哈利·波特》的原著和电影，虽然作为多年哈迷已经对情节熟悉得不行了，但直到现在依然会对罗琳原著里的精彩描述吸引。</li>
-<li>花最多时间在看的书是《货币战争》全集，虽然这本书一直争议很大，但是书中的论点却对当今世界政治经济的格局分析和走向预测很有参考价值。另外还在看一本网文《我在废土世界捡垃圾》，剧情也很精彩，确实是网文中以女性视角展开的精品。</li>
-<li>虽然气温逐渐变冷对身体健康不是很好，但是很喜欢秋冬季节这种逐渐弥漫的节日氛围，总是能带来一种想要回顾传统和经典、与家人朋友一起慢慢度过的温暖的感觉。词穷了，很难准确形容这种感觉。</li>
-</ul>
-<p>2024-11-07<br>苏州</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>资产配置</tag>
-        <tag>Maples7 个人开源计划</tag>
-        <tag>独立开发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Maples7 个人开源计划（2）</title>
-    <url>/2024/11/16/open-source-maples7-2/</url>
-    <content><![CDATA[<p>因为公众号发的上一篇<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>引发了一些讨论，所以这一期想聊的话题有点多。为了不让某一期的内容太长，所以尽管距离<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">上一篇《开源计划》</a>才一周时间，工作量并不多，但也还是更新一期吧。</p>
-<p>与前几篇文章相关的更多话题讨论在本文最后两部分，最后部分有回答网友的一些提问。</p>
-<h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
-<li>完成了 Apple Developer Program 的订阅注册，个人经验是：<ol>
-<li>要耐心按照提示和邮件内容完成每一步的操作，该认证的认证，该实名的实名，遇到不明确的问题及时联系客服解决。</li>
-<li>付费后账户不是立马就能用订阅后才能使用的开发者相关的功能，我是等了几个小时后收到邮件才开通成功。</li>
-<li>可以使用 App Store 的余额进行开发者账号的订阅，而每年夏天腾讯基本都有 App Store 充值 900 送 100 的福利活动，相当于变相让订阅年费优惠一些。</li>
-<li>订阅后可以<strong>马上申请注册 App Store Small Business Program</strong>，注册成功后以后靠 App 盈利可以少被 Apple 分走一部分「过路费」。🤧</li>
-</ol>
-</li>
-</ul>
-<span id="more"></span>
-
-<ul>
-<li>财务类工具 App 的新进展：<ul>
-<li>得益于 Apple Developer Program 的成功订阅，加入了 iCloud 数据同步功能。是的，要实现这个功能必须通过订阅账户添加 iCloud capability 来实现。</li>
-<li>相应的调整了一些 SwiftData 相关的代码以兼容 iCloud data syncing。不得不说，SwiftData 框架目前还相当不成熟，鲁棒性不强，有很多莫名其妙的问题，支持的功能也比较少，更缺乏一套官方推荐的标准工程化实践和开发模式，简直继承了 Xcode 的垃圾。只能希望 Apple 官方团队尽量多投入资源大力优化一下开发体验，工具链太差积重难返还不如推倒重来。</li>
-</ul>
-</li>
-</ul>
-<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新的资产配置比例的桑吉图：</p>
-<p><img data-src="https://s2.loli.net/2024/11/16/T1RbgtHE2GvyZ5r.png" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"><center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center></p>
-<p>从上一次分享到这一次的过程期间（2024-11-07 ~ 2024-11-16），资产净值<strong>减少 ¥42300</strong>（<del>居然正好是个整百数，很神奇</del>），原因主要来自于二级市场的自然涨跌。执行的投资操作有跟随长赢计划卖出金融地产、证券保险、信息技术相关 ETF 部分份额。</p>
-<p>因为这次内容比较长，下次有机会我再介绍一下我的投资类目下的各个资产大类分别是什么。</p>
-<p>关于我的具体投资策略，可以查看<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」合集</a>下的文章。</p>
-<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
-<li>前一篇忘了说，国庆去北京还看了郑钦文中网现场的比赛，很幸运还近距离看了她的训练现场，她个人网球在今年的大突破，也是中国网球的一次飞跃。而且神奇的是，她似乎能吸收每一个跟她交手过的对手的能力，这一点从奥运会看尤其明显。我私底下都说她练的是吸星大法，进步神速。虽然看得出还有需要再练习的方面，但感觉按这个势头拿下大满贯只是早晚的问题。而且她强大稳定、不骄不躁的比赛气质和内核，以及采访中得体流畅、思路清晰的谈吐，很让人钦佩。👍</li>
-<li>换了新的眼镜🤓，从戴了好多年的 <a href="https://www.tapole.cn/">Tapole</a> 经典的 3&#x2F;4 款（李诞同款，或者说哈利·波特同款？）换成了 Matrix 款，本来是想换 3&#x2F;4 最新款的 3&#x2F;4s 的，但去线下试戴了之后发现似乎 Matrix 更适合我。</li>
-<li>去上海配镜验光顺便跟朋友去了一次久违的 KTV，找到了一些美好大学时光的感觉。😊</li>
-<li>断断续续看完了<a href="https://movie.douban.com/subject/28427782/">《我的天才女友》电视剧的第一季</a>，可能是因为性别视角的原因，没感受到太多细腻的情感共鸣，或许直接看原著会更好一点，这个碎片化的情节和细腻入微的情愫我感觉是不太适合影视化表达。👀</li>
-</ul>
-<h2 id="💡-一些近期的感悟"><a href="#💡-一些近期的感悟" class="headerlink" title="💡 一些近期的感悟"></a>💡 一些近期的感悟</h2><h3 id="为什么我越来越把「知行合一」挂在嘴边？"><a href="#为什么我越来越把「知行合一」挂在嘴边？" class="headerlink" title="为什么我越来越把「知行合一」挂在嘴边？"></a>为什么我越来越把「知行合一」挂在嘴边？</h3><p>估计跟很多人一样，除了历史书里的王阳明，更深入生动地了解王阳明的事迹是通过<a href="https://book.douban.com/subject/3674537/">《明朝那些事儿》</a>这本书，在这本书里也可以看出作者对王阳明的崇拜，绘声绘色地讲述了王阳明的事迹，仿佛天神下凡。</p>
-<p>看过这本书的都知道，「知行合一」绝不仅仅是字面意义上容易理解的道德标准，<strong>更是一种处理事情的方法论的核心理念</strong>。</p>
-<p>用我自己的理解来高度概括的话，就是在自己认知和行动的达成一致的情况下，通过这种一致性来面对和处理遇到的问题。但它不是迂腐教条的照本宣科（比如王阳明之前的一些唯心哲学）或没有底线的胡作非为，而是在对世界和现实情况的准确认知下，用创造性的方法解决问题，并且这种方法要在不逾矩的过程下最终达到目的和胜利。<strong>既讲究解决问题过程中的合规合理和理想主义，也强调脚踏实地对是否达成期望结果的在意。<strong>而不是像更多他之前的清高唯心学派所推崇的：只在乎过程，不在意结果。唯有真正的「知行合一」才能做到这一点，这是真正的</strong>既抬头看星空，也要脚踏实地</strong>。</p>
-<p>我觉得这跟我常说的「<strong>理想主义</strong>」、马斯克的「<strong>第一性原理</strong>」的内核思想都是相通的。或者说这是一种「实事求是」的「理想主义」：「理想主义」的点在于主观上对真理的执着，「实事求是」的点在于在解决具体问题的路径和方法上着眼实际情况地因地制宜。</p>
-<p>再高度凝练一下，或许可以概括成<strong>既「求真」又「务实」</strong>。</p>
-<h3 id="人为什么需要了解历史？"><a href="#人为什么需要了解历史？" class="headerlink" title="人为什么需要了解历史？"></a>人为什么需要了解历史？</h3><p>以前对历史不感兴趣，大概是枯燥的历史课本带来的不好体验（可见好的学习方式对人的成长和开化有多重要），现在越来越体会到「读史使人明智」的真义，引用正在看<a href="https://book.douban.com/subject/27111654/">《货币战争》</a>中的这段话可以很好的回答「为什么要读史」的这个问题：</p>
-<blockquote>
-<p>研究历史的重要性，体现在为今天的困境梳理出清晰的脉络。尽管历史不会是简单的重复，但在历史中不断反复的人性本质，却有着惊人的相似之处。毕竟，经济史和货币史就是人类在有限资源的制约下，不断求取财富极大值并试图控制财富分配权力的历史。</p>
-</blockquote>
-<p>其实真实的历史远比历史教材中高度凝练概括毫无人性的冷漠句子更有趣，至少我觉得从马伯庸的一些基于史实的历史小说入手，大部分人应该都能发现真实历史的乐趣。另外，畅销多年的<a href="https://book.douban.com/subject/3674537/">《明朝那些事儿》</a>也很推荐，搭配<a href="https://movie.douban.com/subject/2210001/">电视剧《大明王朝1566》</a>服用效果更佳。</p>
-<h3 id="热情、工作、价值创造"><a href="#热情、工作、价值创造" class="headerlink" title="热情、工作、价值创造"></a>热情、工作、价值创造</h3><p>最近也在<a href="https://book.douban.com/subject/27111654/">《货币战争》</a>里看到作者在序言里写的这样的话：</p>
-<blockquote>
-<p>当一个人在从事自己最有天赋的事情时，不吃不喝不睡也不会觉得痛苦，因为他正在努力为社会创造性地贡献价值。事实上，世界上的每一个人都与生俱来地拥有某种天赋，一个人最大的幸福就是能够尽早地发现自己的天赋。而大多数人的悲哀就在于不知道，或者放弃了自己的天赋。在我看来，教育、读书、工作和生活的全部目的，就在于找到自己的天赋，它是与生俱来的，它是不可改变的，探索并发现它将是一生的重任。</p>
-</blockquote>
-<blockquote>
-<p>我一直有一种信念：一个人的价值，不体现在与别人相同的东西上，而体现在与别人不同的东西上。</p>
-</blockquote>
-<p>跟我开启这个<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">个人开源计划的前序里（上一篇）</a>写的内容不谋而合，也是我一直信奉的工作理念 —— 因为热爱而工作才能发挥个人最大的创造潜能并创造社会价值。也是我在<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>中所表达的意思。</p>
-<h2 id="🎙️-回答网友的提问"><a href="#🎙️-回答网友的提问" class="headerlink" title="🎙️ 回答网友的提问"></a>🎙️ 回答网友的提问</h2><h3 id="是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）"><a href="#是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）" class="headerlink" title="是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）"></a>是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）</h3><p>在<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">上一篇《开源计划》</a>的公众号评论区，有网友好奇是不是因为我自身的家庭条件不错才有勇气离职一年多不工作。刚看到这个问题我是觉得好笑的，但转念换位思考一下有这样的好奇和联想在现在这样一个财富和阶级分化愈发严重的时代背景下也可以理解。「他&#x2F;她就是因为有钱才能怎样怎样」、「他&#x2F;她就是因为有关系才能怎样怎样」，这样的说法在近年互联网上也屡见不鲜，普通人在这个社会达尔文体系下可以以此在个体比较上获得一些道德上的安慰感，也确实有很多人是主要依赖外部资源才能做到某些普通人难以做到的事情。</p>
-<p>回到问题本身，<strong>我个人肯定不会认同这个判断</strong>。直接回答这个问题就是我自认为我家庭条件很普通，父母都不需要交个人所得税，这样的家庭条件在物质上至少应该谈不上有多好吧。（不过，我依然很感恩父母尽他们所能从小到大给我提供的一切物质和非物质的条件和资源，尤其是那些非物质性的、潜移默化的有关做人的宝贵品格和精神财富的影响，塑造着我的三观，影响着我现在做出的每一项人生选择。）</p>
-<p>首先：</p>
-<ol>
-<li>离职一年多不工作没收入不是一件多么了不起、代价多高的成就，不需要有多殷实的家底作为支撑。工作这么多年所积累的物质资源就足以让我不止一年地继续自由探索下去。</li>
-<li>利用合理的投资和资产配置策略，正如上一篇所说，相比于刚离职时，我的个人总资产非但没减少，而且还有增加。**什么是「财务自由」？**不同的人答案不同，但一个最朴素的定义就是「<strong>长期稳定的被动收入大于支出</strong>」。**表面的自由（比如表面上的不上班）不是自由，财务自由才是真正的自由，因为财务自由意味着一个人有物质能力做到时间分配上的自由。**为了达到真正的自由，我依然在努力的过程中，我可能依然会需要出卖我的时间换取一般等价物，上班或者不上班都只是为了实现这个目标的不同途径和选择。请尽量不要因为一个表面上的状态或标签就轻易做出价值判断。</li>
-<li>我同样也是一个需要面对诸多生活压力、困难和挑战的平凡普通人，普遍性的问题我同样也会有，但面对这些问题，个体不同的应对处理方式和做出的选择会让最后的结果大相径庭。我自信我认真思考权衡后做出的人生选择和行为是适合我的、会让我舒服的。</li>
-</ol>
-<p>其次，这个问题的潜台词是「家庭条件好的人拥有更多自由选择的机会」。从统计学的意义上，我肯定不否认这样的论断，人生选择的机会成本对于不同家境的人来说肯定不一样。但我同样不否认个体的主观能动性所能带来的巨大影响。我不把这种主观能动性与所谓的「努力」划等号，因为这种主观能动性除了必要的努力，还包括智慧、认知、机遇、<strong>甚至是个人的运气</strong>等等。**「世界上只有一种真正的英雄主义，那就是在认清生活真相之后依然热爱生活」，在琐碎的日常生活中「入世」、在丰富的精神世界里「出世」，学习先贤苏轼和王阳明，做一个乐观的悲观主义者，这是我的人生态度。**如果你觉得是家庭条件限制了你勇敢迈出那一步的勇气，不妨想想你自己又为着那个目标做出了哪些主观能动性呢？</p>
-<p>最后，<strong>人生是旷野不是轨道，少一点优绩主义和功利主义所带来的束缚，专注于自我内在价值的提升和成长，人生会更加开阔和从容一些</strong>。你我都不是需要在福布斯富豪榜上争雄的人物，何不豁达一些，多赚一点少赚一点又有什么本质上的差别呢？</p>
-<h3 id="如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？"><a href="#如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？" class="headerlink" title="如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？"></a>如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？</h3><p>有网友加微信咨询这方面的建议。这里应用前文所述的王阳明「知行合一」的方法论来说明这个问题。我是不太赞同忽视现实的物质条件情况一厢情愿地去盲目逐梦的。我一直觉得做事情首先要让自己觉得舒服，无论是物质上还是精神上，自己舒服的情况下才能做好事情、才能做出有创造力有灵气的产品。</p>
-<p>所以如果你暂时还上着一份无聊又不自由的班，可是又没有明确自己自由职业的方向，我建议先慢慢积累物质上的条件，先看看有没有什么不依赖上班的工资也能覆盖自己日常支出的办法，同时也不断尝试自己感兴趣的事业和方向，学习相关的技能，等到物质条件上基本成熟，自己又比较明确方向之后再做下一步的人生选择。</p>
-<p>而积累物质条件和探索自己的事业方向也可以是相辅相成的，做自己热情和感兴趣的事业，如果能为更多人提供有价值的产品和服务，可能比那些「只是上班打工的人」更容易也给自己带来物质上的回报。这是我目前觉得比较理想的职业情况，但每个人情况不同，这个还是得靠自己去慢慢探索。</p>
-<p>这也是我要在<a href="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/">这个《开源计划》</a>持续更新我的资产变化的原因之一。时刻了解自己资产配置和变化情况可能对一个有稳定收入的上班族还不是很重要（我认为其实也很重要），而对一个自由职业者来说就尤为重要了。<strong>脱离了物质基础的空想理想主义只是空中楼阁</strong>，每一个有机系统都是各个模块互相作用、互相影响的有机整体，只有尽量完整的描摹这个系统的每一个侧面才足以反映这个有机系统的真实情况。<a href="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/">我的《开源计划》</a>所试图描摹的就是这样一个独立开发者的有机系统。<a href="https://buildinpublic.xyz/what-is-build-in-public">「Build in Public」</a>，一起精益独立开发！</p>
-<p>而所谓「知行合一」的哲学在这一点上的应用，就是要既「求」有价值、有意义、有热情地工作中的「真」，又「务」工作必须得带来物质回报的「实」<del>（一般等价物&#x3D;产品和服务，提供有价值的产品和服务获取一般等价物天经地义。对不起最近看《货币战争》有点多😆。）</del>这就是前文所说的我理解的「知行合一」中体现的「求真」、「务实」的理念。</p>
-<h3 id="「知行合一」的人不是应该不再「理想主义」了吗？"><a href="#「知行合一」的人不是应该不再「理想主义」了吗？" class="headerlink" title="「知行合一」的人不是应该不再「理想主义」了吗？"></a>「知行合一」的人不是应该不再「理想主义」了吗？</h3><p>这个疑问来自于<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>的公众号评论区的网友，有这个疑问可能是因为在这两个概念上与我有着不同的理解。</p>
-<p>在我看来，正是因为「理想主义」给我带来的追求工作本源的意义和价值所带来的求真的「知」，才指引我走向主动离职微软探索更有创造力的工作的「行」，这正是我认同的「知行合一」的行为哲学指导下的行动。</p>
-<p>**「理想主义」不等于「盲目空想」的凭一腔热血无脑行动、「知行合一」不等于「妥协求全」的改变自己的认知不再求真地向现实情况低头。**这个因果关系不是反向的，不是因为认识到了现实情况已经是如此糟糕了，所以要调整自己的「认知」并强迫自己「行动」上去适应这样糟糕的现实情况，<strong>因为那些真理、那些本源的东西、那些事情背后真正的价值不会因为大多数人所被迫接受妥协后的现实就消失</strong>，这种最基本的「真」不会因为世事变迁而轻易转移。比如，工作天然就应该提供意义和价值，劳动者本应有热情地从事自己的工作。而不是因为在现代这个社会背景下已经很难找到一份达到这样标准的工作了，就强迫自己来适应这样糟糕的社会现实。再比如，道路上的每一个司机开车本应都遵守交通规则，而不是因为违反规则的人多了，就调整自己的认「知」去从众的也在「行」为上违反规则（更具体一点，假设你知道大部分司机变道都不打转向灯的社会现实，这不是说你也要顺应大众也变道不打转向灯，而是自己要遵守变道打转向灯的规则的同时，但也不妨碍你要采取防御性驾驶的行动防范别人不打灯突然变道到你前面而追尾的风险）。</p>
-<p><strong>「务实」之前务必先「求真」</strong>，否则可能会轻易丢失原则，甚至误入歧途。**「知」指导「行」，而不是反过来。**这不是说「行」的时候不用考虑现实情况，而是即便在这样的现实情况下，你的「行」也应该是朝着那个最终的「知」的初心而去的，而不是因为现实情况太不理想你的「知」的终点就轻易挪动了位置。当然，前提是你的「知」确实是「真知」，而不是幼稚的一厢情愿。在真实的实践中个人的认知会逐渐调整并趋于完善，但这样的调整绝不是没有原则的随意调整，<strong>认知到这样的社会现实不代表这样的社会现实就是合情合理的「真知」</strong>。还是那句话，有些真理和根源上的东西不以社会现实而转移，正确的认知不应违背这些本质的规律和道理。</p>
-<p>还是如前文所述，「理想主义」更像是指引着我「真理」所在方向的北极星，而「知行合一」更像是在「理想主义」的这种真「知」下，提供给了我一套要脚踏实地用创造性的方法实现目标的「行」动方法论。这可能是一条更困难的路，但却是一条很值得我去尝试的路。</p>
-<p>希望我有表达清楚自己的理解。</p>
-<p>2024-11-16<br>苏州</p>
-]]></content>
-      <categories>
-        <category>浮生散记</category>
-      </categories>
-      <tags>
-        <tag>理想主义</tag>
-        <tag>Maples7 个人开源计划</tag>
-        <tag>知行合一</tag>
-        <tag>财务自由</tag>
-        <tag>Apple Developer Program</tag>
-        <tag>SwiftData</tag>
-        <tag>郑钦文</tag>
       </tags>
   </entry>
   <entry>
@@ -2796,6 +2661,53 @@ _Farewell and thanks to each for the company_
       <tags>
         <tag>女性主义</tag>
         <tag>《好东西》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Maples7 个人开源计划（1）</title>
+    <url>/2024/11/08/open-source-maples7-1/</url>
+    <content><![CDATA[<h2 id="📑-前序"><a href="#📑-前序" class="headerlink" title="📑 前序"></a>📑 前序</h2><p>从微软离职以来已经有一年多了（原因和感受详见：<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">热情、工作与理想主义｜为什么我要离开微软</a>），离职后的前半年基本在休养生息，顺便学习了一些 Apple 开发相关的东西，后半年开始写我几年来一直想写的一个财务类的工具 App，算是正式开始了我的全职独立开发之路。</p>
+<p>不用上班之后我感受到了前所未有的自由，一种大学期间时常沸腾全身的创造力似乎正在回归。不上班不意味着不工作，上班经常是消磨热情和创造力的，而工作却可以是由热情和创造力来自我驱动的。可预见的未来一段时间，我感觉我都会非常享受现在的这种状态。</p>
+<p>正是因为我开始有大把的时间能真正投入到自己的兴趣和热情所在，独立开发的过程基本也开始变得常态化，我决定开启一个全新的个人企划 —— 《Maples7 个人开源计划》。在这个计划里，我会尽可能定期地（周 or 月，取决于可分享的内容的多少）分享最近一段时间在工作（独立开发为主）、生活和投资领域的个人进展、所见所闻和个人感悟，并持续记录自己的资产动态变化。既为备忘自己未来独立开发一路的历程，也作为一个跟外界交流沟通的窗口（未来如果有谁好奇我最近一段时间又在鼓捣些什么玩意儿，我可以直接甩个链接了哈哈 &gt;_&lt;）。随着个人的变化和发展，也会动态变化记录的内容。总之，在这个纷乱的时代里，主打一个机动灵活。另外，人是复杂的有机系统，任何一个侧面都不足以概括一个个体的丰富性，但我力求能在这里涉及到所有我所关注的个人领域。</p>
+<span id="more"></span>
+
+<p>以下是第一期的《Maples7 个人开源计划》的内容。</p>
+<h2 id="🧑‍💻-工作"><a href="#🧑‍💻-工作" class="headerlink" title="🧑‍💻 工作"></a>🧑‍💻 工作</h2><ul>
+<li><p>正在写的<strong>财务类工具 App</strong> 第一版功能基本接近尾声，正在添加一些跟会员体系有关的功能，已经注册订阅了 Apple Developer Program，也准备研究一下是否需要注册一个一人公司来作为 App 的上架实体，相关的也会看看苹果 App Store 具体的上架流程。接下来准备继续完善功能，然后开始注册商标、软件著作权注册、备案等工作，之后就会开始进行内测、准备上架。</p>
+</li>
+<li><p>我目前的工作设备是 MacBook Pro 投屏到 Vision Pro 里面用大屏，已经这样使用了很长一段时间，这也是我有欲望购买 Vision Pro 的主要原因之一。解决了 Vision Pro 的佩戴舒适性问题之后，它的显示效果和无限制的屏幕空间是很能提升体验和效率的。最近正好 beta 系统版本带来了之前发布会演示的 Mac 投屏到 Vision Pro 里面的超宽屏，体验非常棒！Coding 体验进一步提升！相当于拥有了一个超大超宽的 4k 带鱼屏，我觉得这个就已经值回 Vision Pro 的票价了。</p>
+</li>
+<li><p>参与了 Swift 6.0 文档的中文翻译（SwiftGG 翻译小组）工作，相对贡献了比较多的工作量，找到了一些类似于以前 JS 社区的参与感。这个翻译成果不久后应该就会上线了。</p>
+</li>
+</ul>
+<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新资产配置比例的桑吉图：</p>
+<p><img data-src="https://s2.loli.net/2024/11/08/CQgmSMzv24aHBVo.jpg" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"><center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center></p>
+<p>基于隐私的原因，我只会分享我的具体资产配置的各部分比例，以及在两次分享期间的资产增减值，而不会给出具体的总额绝对值（但根据两次的 delta 量其实已经可以大致推算出来了）。</p>
+<p>神奇的是，虽然已经离职了一年多没有收入，我的总资产却还是增长的，这应该要归功于最近二级市场的不错表现了。</p>
+<p>关于我的投资和资产配置体系，推荐阅读我曾写过的关于投资的<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」分类</a>下的两篇博客：</p>
+<ul>
+<li><a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a></li>
+<li><a href="https://maples7.com/2022/08/20/a-specific-investment-strategy/">《一套大概率可行的具体投资策略》</a></li>
+</ul>
+<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
+<li>跟女朋友都分别一起过了难忘的生日（生日日期太接近），求婚大作战成功！❤️</li>
+<li>最近在家做饭多了起来（homemade 小炒黄牛肉大成功！），虽然我还是不觉得在家做饭是一项「收益大于支出」的活动，但确实能提供不少家庭生活的情绪价值。</li>
+<li>最近开始每天早上在太湖边慢跑快走半小时，可以保持一天的身心舒畅。</li>
+<li>最近分别去了北京环球影城（第二次）、乌镇戏剧节（乌镇第三次，戏剧节头一回）玩，体验都很不错，尤其是跟家人朋友们一起出游，很棒！</li>
+<li>推荐正在追的芒果 TV 综艺《再见爱人4》，目前看来每一期都大呼精彩！对婚姻关系和人性的解剖，算是少有的国内情感类综艺的精品之作。一起来做爱人文学家！😶‍🌫️</li>
+<li>打算有空随意再看看《哈利·波特》的原著和电影，虽然作为多年哈迷已经对情节熟悉得不行了，但直到现在依然会对罗琳原著里的精彩描述吸引。</li>
+<li>花最多时间在看的书是《货币战争》全集，虽然这本书一直争议很大，但是书中的论点却对当今世界政治经济的格局分析和走向预测很有参考价值。另外还在看一本网文《我在废土世界捡垃圾》，剧情也很精彩，确实是网文中以女性视角展开的精品。</li>
+<li>虽然气温逐渐变冷对身体健康不是很好，但是很喜欢秋冬季节这种逐渐弥漫的节日氛围，总是能带来一种想要回顾传统和经典、与家人朋友一起慢慢度过的温暖的感觉。词穷了，很难准确形容这种感觉。</li>
+</ul>
+<p>2024-11-07<br>苏州</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>资产配置</tag>
+        <tag>Maples7 个人开源计划</tag>
+        <tag>独立开发</tag>
       </tags>
   </entry>
   <entry>
@@ -2934,6 +2846,58 @@ _Farewell and thanks to each for the company_
         <tag>Maples7 个人开源计划</tag>
         <tag>Vision Pro</tag>
         <tag>自由意志</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2024 年书单</title>
+    <url>/2024/12/31/2024-booklist/</url>
+    <content><![CDATA[<p>对我来说，2024 年在我印象中其实比我预想中的感觉更漫长，年初发生过的很多事情现在回看仿佛都已经过去很久了，这间接说明了在我的时间线里，2024 年是一个发生了很多不一样事情、变化也很大的一年，不论是在生活上还是在工作上。</p>
+<p>生活上，因为工作变动去年跟女朋友一起去杭州待了一年今年年中又再一次回到苏州生活；工作上，<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">去年从微软离职之后</a>今年全年都在进行独立开发，时间分配上基本都很自由。这些变化带给我了一些全新的人生体验和体悟。我一直认为是「对尚未知世界的好奇心」才能长期提供源源不断的动力驱使人作为个体活在这个世界上，这种好奇心包括对自我内在的探索和求知。从这个角度说，是这些变化让我在今年又进一步提升了我的人生体验，因为我没有固守自己所已经拥有的一切过着一天天重复无聊的生活，并且还摆脱了更多的束缚获得了更大的自由和灵活度。</p>
+<p>这种变化同样体现在了我今年的书单上：</p>
+<span id="more"></span>
+
+<ol>
+<li><p><a href="https://book.douban.com/subject/30414743/">显微镜下的大明</a>：★★★★</p>
+<p> 马亲王写历史，非常擅长从卷帙浩繁的史料里抽丝剥茧，整理出以小见大又有趣的真实历史故事。这跟《明朝那些事儿》的写法类似，但是又没有《明朝那些事儿》那么口水话。而且马亲王文笔扎实、比喻到位，读起来赏心悦目，但又能让人对历史上微观的小事唏嘘不已，是我偏爱的文风类型。</p>
+<p> 另外，「后之视今，亦犹今之视昔」，读懂明朝的兴衰起伏，就能读懂现在。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/36415996/">金钱心理学: 财富、人性和幸福的永恒真相</a>：★★★★</p>
+<p> 「时间自由是财富能带给你的最大红利」，这就是追求财富的根本目的。尤其去年从微软离职后感受更深，是因为还有一些积蓄，才让我有勇气裸辞来自由探索自己感兴趣的工作和生活方式。</p>
+<p> 很多章节都写得很有道理，对个人财务管理有实际的指导作用。而最后一章最后几段更是格局大开，揭露了历史规律和经济社会发展的本质，也是现在尤其要考虑第三次世界大战风险的原因。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/36104107/">长安的荔枝</a>：★★★★☆</p>
+<p> 看马亲王的书就像是在看一部电视剧，画面感太强了。最可贵的是，他总能在这些写史的书中进行现代化的表达，古往今来，人性那点事儿、官场那点事儿、百姓那点事儿，莫不如是。本质上，《长安的荔枝》跟《大明王朝1566》，甚至是《庆余年》，讲的都是同样的故事。</p>
+<p> 有点期待这部作品在 2025 年的影视化呈现。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/36328704/">太白金星有点烦</a>：★★★★★</p>
+<p> 马亲王的又一部神作，没想到竟是短短一个月写成的。好一出官场现形记，明线是西游取经记，暗线还埋了五百年前大闹天宫的真相悬疑，最厉害的是把体制内的那些所谓人情世故的官场丑态以最细腻、最微妙、最局内人的视角埋入故事中，一层一层剖析开来，一气呵成、惟妙惟肖。好久没能读到这种构思精巧、浑然天成的小说了。</p>
+</li>
+<li><p><a href="https://book.douban.com/subject/27111654/">货币战争(百万册升级版共5册)</a>：★★★★☆</p>
+<p> 全五册，125 万多字，从年头陆陆续续看到年尾，这套丛书绝对值得当下时期的中国人一读！我尤其推荐第三部和第四部。</p>
+<p> 从货币角度看世界发展史，还蛮有道理的。而且书中有些当年的预言和推断正在变成现实，即便预言并不完全准确，书中的对货币金融的预警也对当前混乱的国际局势有深远清晰的指导意义。<strong>甚至书中对当下中国经济的困局都提供了切实可行的解决方案</strong>。不过，书中也有一些因果逻辑和历史解读有作者纯主观推断之嫌，有阴谋论和地摊文学的味道，而从阴谋论的立场再重新阐释一遍一些诸如广义货币等经济学的基本概念和原理，确实是很容易撩拨不明就里的非专业大众的情绪的，这可能是这本书在多年来持续畅销的原因。但瑕不掩瑜，书中想要警示的问题和用到的政治经济原理是有经久不衰的价值的。</p>
+<p> 从我国民族主义的角度，确实可以说美西方主导下构建的资本主义现代金融有多么邪恶，如何无情的剥削全世界普罗大众的剩余价值，这点确实没错，也是事实。从另一个角度来说，这套体系也是现代商业文明的基石，是社会经济发展的血液供应，<strong>虽然它显然并不公平也不够科学</strong>。作为个人，只有懂得现代商业体系游戏规则和善于顺势而为的人才能在这套体系中获利；作为政治家，从民族国家的角度，确实应该主动把握货币金融领域的主导权，制定符合国家利益的公平的国际社会游戏规则，才对得起本国国民。</p>
+<p> 虽然本书的部分论证逻辑值得商榷，但是想表达的论点和结论却在当前日益混乱的世界局势下变得越来越具有现实参考意义和价值，正如书中所说，<strong>所有历史都是现代史，了解历史是为了找到当下困境的解决办法</strong>，但愿个体、民族和国家在百年未有之大变局面前都能做出对的选择！</p>
+</li>
+<li><p><a href="https://www.jjwxc.net/onebook.php?novelid=7114433">我在废土世界扫垃圾</a>：★★★★</p>
+<p> 也是一部超长篇，大概是我完整看完的第一部网文作品，真是太佩服作者的想象力了，我都不敢想如果这部作品影视化之后能有多精彩。而且这是一部绝对的女性主义作品，作者很擅长描摹女性角色之间的人物关系，尤其是母女关系，故事中有几组母女关系的对照。同时把故事融入到一个庞大统一的末日世界观规则中去，很吸引人。</p>
+</li>
+</ol>
+<p>今年的出版物阅读量并不算低，主要是《货币战争》五册 125 万多字基本是从年头看到年尾，以金融视角看古今世界局势演变，其实挺有现实意义；另外，是去年看的《明朝那些事儿》和马伯庸的书让我从厌恶到喜欢上看不枯燥的历史，以及那些历史映照出的现实议题的表达；《我在废土世界扫垃圾》基本算是我认真看的第一篇网文，让我对网文的质量印象很有改观，虽然文字上还是有很多网络用语不规范的表达，但是故事构建上的想象力和对故事节奏的把握并不比大部分出版物差。</p>
+<p>今年久违的让我不觉得时间过得那么快，不像之前每一年年末都感觉这一年又废了，很多事情都还没做的感觉。今年的这种充实感我个人认为来源于对生活的掌控感，从大学毕业以来第一次全年都能如此的自由，你清楚地知道你的大块时间几乎都花在了你想投入的地方，就像我在之前的<a href="https://maples7.com/2024/11/16/open-source-maples7-2/">一篇《开源计划》</a>中所说，<strong>选择的自由，或者说对自己时间分配上的自由，才是真正的自由</strong>。<strong>财富不是人生的目的，而是达到时间分配自由的手段</strong>。而不论周遭的人或事对你输出什么样的观点，只有自己的感受和体验才是最真实的。</p>
+<p>少了很多工作和生活上的束缚之后，我感觉自己都少了很多拖延的习惯。当你真正想到什么的时候，在少了很多客观限制的情况下，你只需要真正遵循你的本心，如果这件事情你真正想去做，你大可以立马就行动起来。这种充实感还不同于大学刚毕业时充满对未来充满憧憬、干劲十足的感觉，刚毕业的大学生几乎都缺少对真实世界和社会的洞察，他们的这种对未来的期待是基于自己一厢情愿对真实世界的无知美好想象，这种期待往往是不可持续的，当了解到更多的世界真相之后往往会产生更大的失望，或者更弱者会主动产生各种自欺欺人的想法和情绪。但现在的我却是在充分认识到现实环境的基础上，主动趋利避害，让自己主动身处在一个自己期望的环境中，再去充分发挥自己的潜能、主观能动性和创造力。这种进化，借用<a href="https://www.xiaoyuzhoufm.com/episode/67650ed31e823e72d35acd40">最近听到的一期播客的标题就是：《做理想主义最务实的践行者：不殉道，不吃苦，还能赚钱》</a>。</p>
+<p>今年的另一个感受就是，我再一次发现我自己在很多认知上与大部分普罗大众存在不同，这种感觉在我大学期间和大学刚毕业的一两年时间里时常会有，而事后回顾往往能证明我的认知的准确性，这些认知让我一次次做出对自己更有利的选择。我一直认为自己有平均水平以上的认知，有些认知会早于真实世界的趋势和潮流两三年，或者说是我有时候能看到某些趋势正在开始发生，而普罗大众需要两三年才反应过来。比如在 20、21 年回老家我都会力荐父母处理掉多余的房产，虽然基于很多原因他们并没有真正把认知化为行动。不过，前几年我会感觉这种与大众认知不同似乎变得更越来越少了，这可能表明我在前几年一直处于一个过于保守稳定的环境中，正在逐渐失去持续对自己认知进行升级的环境或习惯。其实，更深刻的认知永远来源于信息差、来源于广泛的阅读和涉猎、来源于对各种各样社会现象的观察和思考。而在这样一个「百年未有之大变局」的时代背景下，一个越来越正确的<strong>现实情况</strong>是「<strong>勤劳不能致富，信息差才能致富</strong>」（原话同样来源于上一段所说的播客）（请注意，「<strong>现实情况</strong>」<em>不</em>代表<strong>这是一条正确公平的方向，而仅仅只是现实世界逐步发展到了这种情况</strong>。这<strong>更不代表我主观上认同和满意这种现实情况</strong>，作为影响力不大的个体认不认同并不重要，只有顺势而为才能先更好地生存下来，再谈其他）。如果你也看过《货币战争》你一定会更同意这种看法，这一切可能都基于一个从一开始就建立的错误的（或者说不公平的）的信用本位的现代货币制度，在这种制度下不可避免的趋势是「产业会空心化」、「做实业不如做科技和互联网行业、做互联网行业不如做金融投机」、「欠钱的才是大爷」、「财富会偏爱杠杆率更高的人」、「现金会持续贬值」、「金融世家会掌握世界绝大部分财富和权力」。因为人类的贪婪本性，无根之木、无源之水的信用本位的货币肯定是不断引诱人到一个「不讲信用」的地步，直至哪一天脆弱的金融信用链条从某处断裂，危机随之而来。</p>
+<p>话说回来，今年我的的变化让我再一次意识到自己的认知又一次处在跟大众认知有很多背离的时刻，就像没有永远只涨不跌或只跌不涨的资产，在很多年轻人都在追求稳定、有保障和不变化的工作和生活时，我却有恰恰相反的想法。逻辑很简单，不稳定的环境是客观存在的，作为个体只有顺应客观趋势摆出更机动灵活的姿势，才能在危险到来前先锻炼自己野外生存的本领和能力，而在真正的危险到来之时，趋利避害。而不是倒因为果，强行事倍功半逆势努力，自欺欺人往往最大的受害者是自己。当然啦，<strong>认知可能也不重要，真正决定一个人能否获得所谓世俗意义的成就的可能只是运气而已</strong>。</p>
+<p>最后，今年另外一个小的感受就是，代表进步、开放、人文、实事求是、客观理性势力的力量要敢于斗争、敢于积极发声、敢于炸粪坑，这早已不是一个靠踏踏实实、低调勤勉、谨言慎行就能得到话语权的时代，要想让世界朝着更进步的一面发展，就要让进步的思想得到传播，让进步的势力产生影响力。</p>
+<p>人生在 2024 年迈入最具创造力又很独立自由的新的十年，即便世界的大环境再恶劣，我依然非常期待！</p>
+]]></content>
+      <categories>
+        <category>浮生散记</category>
+      </categories>
+      <tags>
+        <tag>书单</tag>
+        <tag>人生</tag>
+        <tag>好奇心</tag>
+        <tag>财务自由</tag>
       </tags>
   </entry>
   <entry>
@@ -3095,61 +3059,99 @@ _Farewell and thanks to each for the company_
         <category>浮生散记</category>
       </categories>
       <tags>
+        <tag>创业</tag>
         <tag>资产配置</tag>
         <tag>BeanLedger</tag>
         <tag>复式记账</tag>
+        <tag>通缩</tag>
       </tags>
   </entry>
   <entry>
-    <title>2024 年书单</title>
-    <url>/2024/12/31/2024-booklist/</url>
-    <content><![CDATA[<p>对我来说，2024 年在我印象中其实比我预想中的感觉更漫长，年初发生过的很多事情现在回看仿佛都已经过去很久了，这间接说明了在我的时间线里，2024 年是一个发生了很多不一样事情、变化也很大的一年，不论是在生活上还是在工作上。</p>
-<p>生活上，因为工作变动去年跟女朋友一起去杭州待了一年今年年中又再一次回到苏州生活；工作上，<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">去年从微软离职之后</a>今年全年都在进行独立开发，时间分配上基本都很自由。这些变化带给我了一些全新的人生体验和体悟。我一直认为是「对尚未知世界的好奇心」才能长期提供源源不断的动力驱使人作为个体活在这个世界上，这种好奇心包括对自我内在的探索和求知。从这个角度说，是这些变化让我在今年又进一步提升了我的人生体验，因为我没有固守自己所已经拥有的一切过着一天天重复无聊的生活，并且还摆脱了更多的束缚获得了更大的自由和灵活度。</p>
-<p>这种变化同样体现在了我今年的书单上：</p>
+    <title>Maples7 个人开源计划（2）</title>
+    <url>/2024/11/16/open-source-maples7-2/</url>
+    <content><![CDATA[<p>因为公众号发的上一篇<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>引发了一些讨论，所以这一期想聊的话题有点多。为了不让某一期的内容太长，所以尽管距离<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">上一篇《开源计划》</a>才一周时间，工作量并不多，但也还是更新一期吧。</p>
+<p>与前几篇文章相关的更多话题讨论在本文最后两部分，最后部分有回答网友的一些提问。</p>
+<h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
+<li>完成了 Apple Developer Program 的订阅注册，个人经验是：<ol>
+<li>要耐心按照提示和邮件内容完成每一步的操作，该认证的认证，该实名的实名，遇到不明确的问题及时联系客服解决。</li>
+<li>付费后账户不是立马就能用订阅后才能使用的开发者相关的功能，我是等了几个小时后收到邮件才开通成功。</li>
+<li>可以使用 App Store 的余额进行开发者账号的订阅，而每年夏天腾讯基本都有 App Store 充值 900 送 100 的福利活动，相当于变相让订阅年费优惠一些。</li>
+<li>订阅后可以<strong>马上申请注册 App Store Small Business Program</strong>，注册成功后以后靠 App 盈利可以少被 Apple 分走一部分「过路费」。🤧</li>
+</ol>
+</li>
+</ul>
 <span id="more"></span>
 
+<ul>
+<li>财务类工具 App 的新进展：<ul>
+<li>得益于 Apple Developer Program 的成功订阅，加入了 iCloud 数据同步功能。是的，要实现这个功能必须通过订阅账户添加 iCloud capability 来实现。</li>
+<li>相应的调整了一些 SwiftData 相关的代码以兼容 iCloud data syncing。不得不说，SwiftData 框架目前还相当不成熟，鲁棒性不强，有很多莫名其妙的问题，支持的功能也比较少，更缺乏一套官方推荐的标准工程化实践和开发模式，简直继承了 Xcode 的垃圾。只能希望 Apple 官方团队尽量多投入资源大力优化一下开发体验，工具链太差积重难返还不如推倒重来。</li>
+</ul>
+</li>
+</ul>
+<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新的资产配置比例的桑吉图：</p>
+<p><img data-src="https://s2.loli.net/2024/11/16/T1RbgtHE2GvyZ5r.png" alt="此资产配置图使用我正在紧密开发的财务工具 App 生成"><center><small>(此资产配置图使用我正在紧密开发的财务工具 App 生成)</small></center></p>
+<p>从上一次分享到这一次的过程期间（2024-11-07 ~ 2024-11-16），资产净值<strong>减少 ¥42300</strong>（<del>居然正好是个整百数，很神奇</del>），原因主要来自于二级市场的自然涨跌。执行的投资操作有跟随长赢计划卖出金融地产、证券保险、信息技术相关 ETF 部分份额。</p>
+<p>因为这次内容比较长，下次有机会我再介绍一下我的投资类目下的各个资产大类分别是什么。</p>
+<p>关于我的具体投资策略，可以查看<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」合集</a>下的文章。</p>
+<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
+<li>前一篇忘了说，国庆去北京还看了郑钦文中网现场的比赛，很幸运还近距离看了她的训练现场，她个人网球在今年的大突破，也是中国网球的一次飞跃。而且神奇的是，她似乎能吸收每一个跟她交手过的对手的能力，这一点从奥运会看尤其明显。我私底下都说她练的是吸星大法，进步神速。虽然看得出还有需要再练习的方面，但感觉按这个势头拿下大满贯只是早晚的问题。而且她强大稳定、不骄不躁的比赛气质和内核，以及采访中得体流畅、思路清晰的谈吐，很让人钦佩。👍</li>
+<li>换了新的眼镜🤓，从戴了好多年的 <a href="https://www.tapole.cn/">Tapole</a> 经典的 3&#x2F;4 款（李诞同款，或者说哈利·波特同款？）换成了 Matrix 款，本来是想换 3&#x2F;4 最新款的 3&#x2F;4s 的，但去线下试戴了之后发现似乎 Matrix 更适合我。</li>
+<li>去上海配镜验光顺便跟朋友去了一次久违的 KTV，找到了一些美好大学时光的感觉。😊</li>
+<li>断断续续看完了<a href="https://movie.douban.com/subject/28427782/">《我的天才女友》电视剧的第一季</a>，可能是因为性别视角的原因，没感受到太多细腻的情感共鸣，或许直接看原著会更好一点，这个碎片化的情节和细腻入微的情愫我感觉是不太适合影视化表达。👀</li>
+</ul>
+<h2 id="💡-一些近期的感悟"><a href="#💡-一些近期的感悟" class="headerlink" title="💡 一些近期的感悟"></a>💡 一些近期的感悟</h2><h3 id="为什么我越来越把「知行合一」挂在嘴边？"><a href="#为什么我越来越把「知行合一」挂在嘴边？" class="headerlink" title="为什么我越来越把「知行合一」挂在嘴边？"></a>为什么我越来越把「知行合一」挂在嘴边？</h3><p>估计跟很多人一样，除了历史书里的王阳明，更深入生动地了解王阳明的事迹是通过<a href="https://book.douban.com/subject/3674537/">《明朝那些事儿》</a>这本书，在这本书里也可以看出作者对王阳明的崇拜，绘声绘色地讲述了王阳明的事迹，仿佛天神下凡。</p>
+<p>看过这本书的都知道，「知行合一」绝不仅仅是字面意义上容易理解的道德标准，<strong>更是一种处理事情的方法论的核心理念</strong>。</p>
+<p>用我自己的理解来高度概括的话，就是在自己认知和行动的达成一致的情况下，通过这种一致性来面对和处理遇到的问题。但它不是迂腐教条的照本宣科（比如王阳明之前的一些唯心哲学）或没有底线的胡作非为，而是在对世界和现实情况的准确认知下，用创造性的方法解决问题，并且这种方法要在不逾矩的过程下最终达到目的和胜利。<strong>既讲究解决问题过程中的合规合理和理想主义，也强调脚踏实地对是否达成期望结果的在意。<strong>而不是像更多他之前的清高唯心学派所推崇的：只在乎过程，不在意结果。唯有真正的「知行合一」才能做到这一点，这是真正的</strong>既抬头看星空，也要脚踏实地</strong>。</p>
+<p>我觉得这跟我常说的「<strong>理想主义</strong>」、马斯克的「<strong>第一性原理</strong>」的内核思想都是相通的。或者说这是一种「实事求是」的「理想主义」：「理想主义」的点在于主观上对真理的执着，「实事求是」的点在于在解决具体问题的路径和方法上着眼实际情况地因地制宜。</p>
+<p>再高度凝练一下，或许可以概括成<strong>既「求真」又「务实」</strong>。</p>
+<h3 id="人为什么需要了解历史？"><a href="#人为什么需要了解历史？" class="headerlink" title="人为什么需要了解历史？"></a>人为什么需要了解历史？</h3><p>以前对历史不感兴趣，大概是枯燥的历史课本带来的不好体验（可见好的学习方式对人的成长和开化有多重要），现在越来越体会到「读史使人明智」的真义，引用正在看<a href="https://book.douban.com/subject/27111654/">《货币战争》</a>中的这段话可以很好的回答「为什么要读史」的这个问题：</p>
+<blockquote>
+<p>研究历史的重要性，体现在为今天的困境梳理出清晰的脉络。尽管历史不会是简单的重复，但在历史中不断反复的人性本质，却有着惊人的相似之处。毕竟，经济史和货币史就是人类在有限资源的制约下，不断求取财富极大值并试图控制财富分配权力的历史。</p>
+</blockquote>
+<p>其实真实的历史远比历史教材中高度凝练概括毫无人性的冷漠句子更有趣，至少我觉得从马伯庸的一些基于史实的历史小说入手，大部分人应该都能发现真实历史的乐趣。另外，畅销多年的<a href="https://book.douban.com/subject/3674537/">《明朝那些事儿》</a>也很推荐，搭配<a href="https://movie.douban.com/subject/2210001/">电视剧《大明王朝1566》</a>服用效果更佳。</p>
+<h3 id="热情、工作、价值创造"><a href="#热情、工作、价值创造" class="headerlink" title="热情、工作、价值创造"></a>热情、工作、价值创造</h3><p>最近也在<a href="https://book.douban.com/subject/27111654/">《货币战争》</a>里看到作者在序言里写的这样的话：</p>
+<blockquote>
+<p>当一个人在从事自己最有天赋的事情时，不吃不喝不睡也不会觉得痛苦，因为他正在努力为社会创造性地贡献价值。事实上，世界上的每一个人都与生俱来地拥有某种天赋，一个人最大的幸福就是能够尽早地发现自己的天赋。而大多数人的悲哀就在于不知道，或者放弃了自己的天赋。在我看来，教育、读书、工作和生活的全部目的，就在于找到自己的天赋，它是与生俱来的，它是不可改变的，探索并发现它将是一生的重任。</p>
+</blockquote>
+<blockquote>
+<p>我一直有一种信念：一个人的价值，不体现在与别人相同的东西上，而体现在与别人不同的东西上。</p>
+</blockquote>
+<p>跟我开启这个<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">个人开源计划的前序里（上一篇）</a>写的内容不谋而合，也是我一直信奉的工作理念 —— 因为热爱而工作才能发挥个人最大的创造潜能并创造社会价值。也是我在<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>中所表达的意思。</p>
+<h2 id="🎙️-回答网友的提问"><a href="#🎙️-回答网友的提问" class="headerlink" title="🎙️ 回答网友的提问"></a>🎙️ 回答网友的提问</h2><h3 id="是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）"><a href="#是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）" class="headerlink" title="是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）"></a>是不是自身家庭条件不错（才能支撑你离职一年多的自由探索和鼓捣）？（注：括号中的内容是本人根据上下文补充）</h3><p>在<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">上一篇《开源计划》</a>的公众号评论区，有网友好奇是不是因为我自身的家庭条件不错才有勇气离职一年多不工作。刚看到这个问题我是觉得好笑的，但转念换位思考一下有这样的好奇和联想在现在这样一个财富和阶级分化愈发严重的时代背景下也可以理解。「他&#x2F;她就是因为有钱才能怎样怎样」、「他&#x2F;她就是因为有关系才能怎样怎样」，这样的说法在近年互联网上也屡见不鲜，普通人在这个社会达尔文体系下可以以此在个体比较上获得一些道德上的安慰感，也确实有很多人是主要依赖外部资源才能做到某些普通人难以做到的事情。</p>
+<p>回到问题本身，<strong>我个人肯定不会认同这个判断</strong>。直接回答这个问题就是我自认为我家庭条件很普通，父母都不需要交个人所得税，这样的家庭条件在物质上至少应该谈不上有多好吧。（不过，我依然很感恩父母尽他们所能从小到大给我提供的一切物质和非物质的条件和资源，尤其是那些非物质性的、潜移默化的有关做人的宝贵品格和精神财富的影响，塑造着我的三观，影响着我现在做出的每一项人生选择。）</p>
+<p>首先：</p>
 <ol>
-<li><p><a href="https://book.douban.com/subject/30414743/">显微镜下的大明</a>：★★★★</p>
-<p> 马亲王写历史，非常擅长从卷帙浩繁的史料里抽丝剥茧，整理出以小见大又有趣的真实历史故事。这跟《明朝那些事儿》的写法类似，但是又没有《明朝那些事儿》那么口水话。而且马亲王文笔扎实、比喻到位，读起来赏心悦目，但又能让人对历史上微观的小事唏嘘不已，是我偏爱的文风类型。</p>
-<p> 另外，「后之视今，亦犹今之视昔」，读懂明朝的兴衰起伏，就能读懂现在。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/36415996/">金钱心理学: 财富、人性和幸福的永恒真相</a>：★★★★</p>
-<p> 「时间自由是财富能带给你的最大红利」，这就是追求财富的根本目的。尤其去年从微软离职后感受更深，是因为还有一些积蓄，才让我有勇气裸辞来自由探索自己感兴趣的工作和生活方式。</p>
-<p> 很多章节都写得很有道理，对个人财务管理有实际的指导作用。而最后一章最后几段更是格局大开，揭露了历史规律和经济社会发展的本质，也是现在尤其要考虑第三次世界大战风险的原因。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/36104107/">长安的荔枝</a>：★★★★☆</p>
-<p> 看马亲王的书就像是在看一部电视剧，画面感太强了。最可贵的是，他总能在这些写史的书中进行现代化的表达，古往今来，人性那点事儿、官场那点事儿、百姓那点事儿，莫不如是。本质上，《长安的荔枝》跟《大明王朝1566》，甚至是《庆余年》，讲的都是同样的故事。</p>
-<p> 有点期待这部作品在 2025 年的影视化呈现。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/36328704/">太白金星有点烦</a>：★★★★★</p>
-<p> 马亲王的又一部神作，没想到竟是短短一个月写成的。好一出官场现形记，明线是西游取经记，暗线还埋了五百年前大闹天宫的真相悬疑，最厉害的是把体制内的那些所谓人情世故的官场丑态以最细腻、最微妙、最局内人的视角埋入故事中，一层一层剖析开来，一气呵成、惟妙惟肖。好久没能读到这种构思精巧、浑然天成的小说了。</p>
-</li>
-<li><p><a href="https://book.douban.com/subject/27111654/">货币战争(百万册升级版共5册)</a>：★★★★☆</p>
-<p> 全五册，125 万多字，从年头陆陆续续看到年尾，这套丛书绝对值得当下时期的中国人一读！我尤其推荐第三部和第四部。</p>
-<p> 从货币角度看世界发展史，还蛮有道理的。而且书中有些当年的预言和推断正在变成现实，即便预言并不完全准确，书中的对货币金融的预警也对当前混乱的国际局势有深远清晰的指导意义。<strong>甚至书中对当下中国经济的困局都提供了切实可行的解决方案</strong>。不过，书中也有一些因果逻辑和历史解读有作者纯主观推断之嫌，有阴谋论和地摊文学的味道，而从阴谋论的立场再重新阐释一遍一些诸如广义货币等经济学的基本概念和原理，确实是很容易撩拨不明就里的非专业大众的情绪的，这可能是这本书在多年来持续畅销的原因。但瑕不掩瑜，书中想要警示的问题和用到的政治经济原理是有经久不衰的价值的。</p>
-<p> 从我国民族主义的角度，确实可以说美西方主导下构建的资本主义现代金融有多么邪恶，如何无情的剥削全世界普罗大众的剩余价值，这点确实没错，也是事实。从另一个角度来说，这套体系也是现代商业文明的基石，是社会经济发展的血液供应，<strong>虽然它显然并不公平也不够科学</strong>。作为个人，只有懂得现代商业体系游戏规则和善于顺势而为的人才能在这套体系中获利；作为政治家，从民族国家的角度，确实应该主动把握货币金融领域的主导权，制定符合国家利益的公平的国际社会游戏规则，才对得起本国国民。</p>
-<p> 虽然本书的部分论证逻辑值得商榷，但是想表达的论点和结论却在当前日益混乱的世界局势下变得越来越具有现实参考意义和价值，正如书中所说，<strong>所有历史都是现代史，了解历史是为了找到当下困境的解决办法</strong>，但愿个体、民族和国家在百年未有之大变局面前都能做出对的选择！</p>
-</li>
-<li><p><a href="https://www.jjwxc.net/onebook.php?novelid=7114433">我在废土世界扫垃圾</a>：★★★★</p>
-<p> 也是一部超长篇，大概是我完整看完的第一部网文作品，真是太佩服作者的想象力了，我都不敢想如果这部作品影视化之后能有多精彩。而且这是一部绝对的女性主义作品，作者很擅长描摹女性角色之间的人物关系，尤其是母女关系，故事中有几组母女关系的对照。同时把故事融入到一个庞大统一的末日世界观规则中去，很吸引人。</p>
-</li>
+<li>离职一年多不工作没收入不是一件多么了不起、代价多高的成就，不需要有多殷实的家底作为支撑。工作这么多年所积累的物质资源就足以让我不止一年地继续自由探索下去。</li>
+<li>利用合理的投资和资产配置策略，正如上一篇所说，相比于刚离职时，我的个人总资产非但没减少，而且还有增加。**什么是「财务自由」？**不同的人答案不同，但一个最朴素的定义就是「<strong>长期稳定的被动收入大于支出</strong>」。**表面的自由（比如表面上的不上班）不是自由，财务自由才是真正的自由，因为财务自由意味着一个人有物质能力做到时间分配上的自由。**为了达到真正的自由，我依然在努力的过程中，我可能依然会需要出卖我的时间换取一般等价物，上班或者不上班都只是为了实现这个目标的不同途径和选择。请尽量不要因为一个表面上的状态或标签就轻易做出价值判断。</li>
+<li>我同样也是一个需要面对诸多生活压力、困难和挑战的平凡普通人，普遍性的问题我同样也会有，但面对这些问题，个体不同的应对处理方式和做出的选择会让最后的结果大相径庭。我自信我认真思考权衡后做出的人生选择和行为是适合我的、会让我舒服的。</li>
 </ol>
-<p>今年的出版物阅读量并不算低，主要是《货币战争》五册 125 万多字基本是从年头看到年尾，以金融视角看古今世界局势演变，其实挺有现实意义；另外，是去年看的《明朝那些事儿》和马伯庸的书让我从厌恶到喜欢上看不枯燥的历史，以及那些历史映照出的现实议题的表达；《我在废土世界扫垃圾》基本算是我认真看的第一篇网文，让我对网文的质量印象很有改观，虽然文字上还是有很多网络用语不规范的表达，但是故事构建上的想象力和对故事节奏的把握并不比大部分出版物差。</p>
-<p>今年久违的让我不觉得时间过得那么快，不像之前每一年年末都感觉这一年又废了，很多事情都还没做的感觉。今年的这种充实感我个人认为来源于对生活的掌控感，从大学毕业以来第一次全年都能如此的自由，你清楚地知道你的大块时间几乎都花在了你想投入的地方，就像我在之前的<a href="https://maples7.com/2024/11/16/open-source-maples7-2/">一篇《开源计划》</a>中所说，<strong>选择的自由，或者说对自己时间分配上的自由，才是真正的自由</strong>。<strong>财富不是人生的目的，而是达到时间分配自由的手段</strong>。而不论周遭的人或事对你输出什么样的观点，只有自己的感受和体验才是最真实的。</p>
-<p>少了很多工作和生活上的束缚之后，我感觉自己都少了很多拖延的习惯。当你真正想到什么的时候，在少了很多客观限制的情况下，你只需要真正遵循你的本心，如果这件事情你真正想去做，你大可以立马就行动起来。这种充实感还不同于大学刚毕业时充满对未来充满憧憬、干劲十足的感觉，刚毕业的大学生几乎都缺少对真实世界和社会的洞察，他们的这种对未来的期待是基于自己一厢情愿对真实世界的无知美好想象，这种期待往往是不可持续的，当了解到更多的世界真相之后往往会产生更大的失望，或者更弱者会主动产生各种自欺欺人的想法和情绪。但现在的我却是在充分认识到现实环境的基础上，主动趋利避害，让自己主动身处在一个自己期望的环境中，再去充分发挥自己的潜能、主观能动性和创造力。这种进化，借用<a href="https://www.xiaoyuzhoufm.com/episode/67650ed31e823e72d35acd40">最近听到的一期播客的标题就是：《做理想主义最务实的践行者：不殉道，不吃苦，还能赚钱》</a>。</p>
-<p>今年的另一个感受就是，我再一次发现我自己在很多认知上与大部分普罗大众存在不同，这种感觉在我大学期间和大学刚毕业的一两年时间里时常会有，而事后回顾往往能证明我的认知的准确性，这些认知让我一次次做出对自己更有利的选择。我一直认为自己有平均水平以上的认知，有些认知会早于真实世界的趋势和潮流两三年，或者说是我有时候能看到某些趋势正在开始发生，而普罗大众需要两三年才反应过来。比如在 20、21 年回老家我都会力荐父母处理掉多余的房产，虽然基于很多原因他们并没有真正把认知化为行动。不过，前几年我会感觉这种与大众认知不同似乎变得更越来越少了，这可能表明我在前几年一直处于一个过于保守稳定的环境中，正在逐渐失去持续对自己认知进行升级的环境或习惯。其实，更深刻的认知永远来源于信息差、来源于广泛的阅读和涉猎、来源于对各种各样社会现象的观察和思考。而在这样一个「百年未有之大变局」的时代背景下，一个越来越正确的<strong>现实情况</strong>是「<strong>勤劳不能致富，信息差才能致富</strong>」（原话同样来源于上一段所说的播客）（请注意，「<strong>现实情况</strong>」<em>不</em>代表<strong>这是一条正确公平的方向，而仅仅只是现实世界逐步发展到了这种情况</strong>。这<strong>更不代表我主观上认同和满意这种现实情况</strong>，作为影响力不大的个体认不认同并不重要，只有顺势而为才能先更好地生存下来，再谈其他）。如果你也看过《货币战争》你一定会更同意这种看法，这一切可能都基于一个从一开始就建立的错误的（或者说不公平的）的信用本位的现代货币制度，在这种制度下不可避免的趋势是「产业会空心化」、「做实业不如做科技和互联网行业、做互联网行业不如做金融投机」、「欠钱的才是大爷」、「财富会偏爱杠杆率更高的人」、「现金会持续贬值」、「金融世家会掌握世界绝大部分财富和权力」。因为人类的贪婪本性，无根之木、无源之水的信用本位的货币肯定是不断引诱人到一个「不讲信用」的地步，直至哪一天脆弱的金融信用链条从某处断裂，危机随之而来。</p>
-<p>话说回来，今年我的的变化让我再一次意识到自己的认知又一次处在跟大众认知有很多背离的时刻，就像没有永远只涨不跌或只跌不涨的资产，在很多年轻人都在追求稳定、有保障和不变化的工作和生活时，我却有恰恰相反的想法。逻辑很简单，不稳定的环境是客观存在的，作为个体只有顺应客观趋势摆出更机动灵活的姿势，才能在危险到来前先锻炼自己野外生存的本领和能力，而在真正的危险到来之时，趋利避害。而不是倒因为果，强行事倍功半逆势努力，自欺欺人往往最大的受害者是自己。当然啦，<strong>认知可能也不重要，真正决定一个人能否获得所谓世俗意义的成就的可能只是运气而已</strong>。</p>
-<p>最后，今年另外一个小的感受就是，代表进步、开放、人文、实事求是、客观理性势力的力量要敢于斗争、敢于积极发声、敢于炸粪坑，这早已不是一个靠踏踏实实、低调勤勉、谨言慎行就能得到话语权的时代，要想让世界朝着更进步的一面发展，就要让进步的思想得到传播，让进步的势力产生影响力。</p>
-<p>人生在 2024 年迈入最具创造力又很独立自由的新的十年，即便世界的大环境再恶劣，我依然非常期待！</p>
+<p>其次，这个问题的潜台词是「家庭条件好的人拥有更多自由选择的机会」。从统计学的意义上，我肯定不否认这样的论断，人生选择的机会成本对于不同家境的人来说肯定不一样。但我同样不否认个体的主观能动性所能带来的巨大影响。我不把这种主观能动性与所谓的「努力」划等号，因为这种主观能动性除了必要的努力，还包括智慧、认知、机遇、<strong>甚至是个人的运气</strong>等等。**「世界上只有一种真正的英雄主义，那就是在认清生活真相之后依然热爱生活」，在琐碎的日常生活中「入世」、在丰富的精神世界里「出世」，学习先贤苏轼和王阳明，做一个乐观的悲观主义者，这是我的人生态度。**如果你觉得是家庭条件限制了你勇敢迈出那一步的勇气，不妨想想你自己又为着那个目标做出了哪些主观能动性呢？</p>
+<p>最后，<strong>人生是旷野不是轨道，少一点优绩主义和功利主义所带来的束缚，专注于自我内在价值的提升和成长，人生会更加开阔和从容一些</strong>。你我都不是需要在福布斯富豪榜上争雄的人物，何不豁达一些，多赚一点少赚一点又有什么本质上的差别呢？</p>
+<h3 id="如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？"><a href="#如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？" class="headerlink" title="如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？"></a>如何平衡物质条件与无稳定收入的自由职业？如何找寻自己热情和感兴趣的方向？</h3><p>有网友加微信咨询这方面的建议。这里应用前文所述的王阳明「知行合一」的方法论来说明这个问题。我是不太赞同忽视现实的物质条件情况一厢情愿地去盲目逐梦的。我一直觉得做事情首先要让自己觉得舒服，无论是物质上还是精神上，自己舒服的情况下才能做好事情、才能做出有创造力有灵气的产品。</p>
+<p>所以如果你暂时还上着一份无聊又不自由的班，可是又没有明确自己自由职业的方向，我建议先慢慢积累物质上的条件，先看看有没有什么不依赖上班的工资也能覆盖自己日常支出的办法，同时也不断尝试自己感兴趣的事业和方向，学习相关的技能，等到物质条件上基本成熟，自己又比较明确方向之后再做下一步的人生选择。</p>
+<p>而积累物质条件和探索自己的事业方向也可以是相辅相成的，做自己热情和感兴趣的事业，如果能为更多人提供有价值的产品和服务，可能比那些「只是上班打工的人」更容易也给自己带来物质上的回报。这是我目前觉得比较理想的职业情况，但每个人情况不同，这个还是得靠自己去慢慢探索。</p>
+<p>这也是我要在<a href="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/">这个《开源计划》</a>持续更新我的资产变化的原因之一。时刻了解自己资产配置和变化情况可能对一个有稳定收入的上班族还不是很重要（我认为其实也很重要），而对一个自由职业者来说就尤为重要了。<strong>脱离了物质基础的空想理想主义只是空中楼阁</strong>，每一个有机系统都是各个模块互相作用、互相影响的有机整体，只有尽量完整的描摹这个系统的每一个侧面才足以反映这个有机系统的真实情况。<a href="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/">我的《开源计划》</a>所试图描摹的就是这样一个独立开发者的有机系统。<a href="https://buildinpublic.xyz/what-is-build-in-public">「Build in Public」</a>，一起精益独立开发！</p>
+<p>而所谓「知行合一」的哲学在这一点上的应用，就是要既「求」有价值、有意义、有热情地工作中的「真」，又「务」工作必须得带来物质回报的「实」<del>（一般等价物&#x3D;产品和服务，提供有价值的产品和服务获取一般等价物天经地义。对不起最近看《货币战争》有点多😆。）</del>这就是前文所说的我理解的「知行合一」中体现的「求真」、「务实」的理念。</p>
+<h3 id="「知行合一」的人不是应该不再「理想主义」了吗？"><a href="#「知行合一」的人不是应该不再「理想主义」了吗？" class="headerlink" title="「知行合一」的人不是应该不再「理想主义」了吗？"></a>「知行合一」的人不是应该不再「理想主义」了吗？</h3><p>这个疑问来自于<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>的公众号评论区的网友，有这个疑问可能是因为在这两个概念上与我有着不同的理解。</p>
+<p>在我看来，正是因为「理想主义」给我带来的追求工作本源的意义和价值所带来的求真的「知」，才指引我走向主动离职微软探索更有创造力的工作的「行」，这正是我认同的「知行合一」的行为哲学指导下的行动。</p>
+<p>**「理想主义」不等于「盲目空想」的凭一腔热血无脑行动、「知行合一」不等于「妥协求全」的改变自己的认知不再求真地向现实情况低头。**这个因果关系不是反向的，不是因为认识到了现实情况已经是如此糟糕了，所以要调整自己的「认知」并强迫自己「行动」上去适应这样糟糕的现实情况，<strong>因为那些真理、那些本源的东西、那些事情背后真正的价值不会因为大多数人所被迫接受妥协后的现实就消失</strong>，这种最基本的「真」不会因为世事变迁而轻易转移。比如，工作天然就应该提供意义和价值，劳动者本应有热情地从事自己的工作。而不是因为在现代这个社会背景下已经很难找到一份达到这样标准的工作了，就强迫自己来适应这样糟糕的社会现实。再比如，道路上的每一个司机开车本应都遵守交通规则，而不是因为违反规则的人多了，就调整自己的认「知」去从众的也在「行」为上违反规则（更具体一点，假设你知道大部分司机变道都不打转向灯的社会现实，这不是说你也要顺应大众也变道不打转向灯，而是自己要遵守变道打转向灯的规则的同时，但也不妨碍你要采取防御性驾驶的行动防范别人不打灯突然变道到你前面而追尾的风险）。</p>
+<p><strong>「务实」之前务必先「求真」</strong>，否则可能会轻易丢失原则，甚至误入歧途。**「知」指导「行」，而不是反过来。**这不是说「行」的时候不用考虑现实情况，而是即便在这样的现实情况下，你的「行」也应该是朝着那个最终的「知」的初心而去的，而不是因为现实情况太不理想你的「知」的终点就轻易挪动了位置。当然，前提是你的「知」确实是「真知」，而不是幼稚的一厢情愿。在真实的实践中个人的认知会逐渐调整并趋于完善，但这样的调整绝不是没有原则的随意调整，<strong>认知到这样的社会现实不代表这样的社会现实就是合情合理的「真知」</strong>。还是那句话，有些真理和根源上的东西不以社会现实而转移，正确的认知不应违背这些本质的规律和道理。</p>
+<p>还是如前文所述，「理想主义」更像是指引着我「真理」所在方向的北极星，而「知行合一」更像是在「理想主义」的这种真「知」下，提供给了我一套要脚踏实地用创造性的方法实现目标的「行」动方法论。这可能是一条更困难的路，但却是一条很值得我去尝试的路。</p>
+<p>希望我有表达清楚自己的理解。</p>
+<p>2024-11-16<br>苏州</p>
 ]]></content>
       <categories>
         <category>浮生散记</category>
       </categories>
       <tags>
-        <tag>书单</tag>
-        <tag>人生</tag>
+        <tag>理想主义</tag>
+        <tag>Maples7 个人开源计划</tag>
         <tag>财务自由</tag>
-        <tag>好奇心</tag>
+        <tag>知行合一</tag>
+        <tag>Apple Developer Program</tag>
+        <tag>SwiftData</tag>
+        <tag>郑钦文</tag>
       </tags>
   </entry>
 </search>
