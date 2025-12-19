@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-07-31T11:17:20.196Z</updated>
+  <updated>2025-12-19T06:56:15.937Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -17,21 +17,49 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>普通人如何正确记账</title>
+    <link href="https://maples7.com/2025/12/18/how-to-do-accounting-properly/"/>
+    <id>https://maples7.com/2025/12/18/how-to-do-accounting-properly/</id>
+    <published>2025-12-18T15:41:05.000Z</published>
+    <updated>2025-12-19T06:56:15.937Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;为什么要记账？&quot;&gt;&lt;a href=&quot;#为什么要记账？&quot; class=&quot;headerlink&quot; title=&quot;为什么要记账？&quot;&gt;&lt;/a&gt;为什么要记账？&lt;/h2&gt;&lt;p&gt;记账是投资入门的首要前提，如果不能在投资过程中随时了解自己的资金情况和分配于各个投资策略之间的&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%80%89%E4%BD%8D&quot;&gt;仓位&lt;/a&gt;比例，那么你就像一个在战场上高度近视还丢了眼镜的战士，所有行为和操作基本都是睁眼瞎。&lt;/p&gt;
+&lt;p&gt;记账是一个人开始认真对待自己资产的开始。&lt;/p&gt;
+&lt;p&gt;所以，记账的目的是什么？是为了在搞明白自己的收入、支出、负债、&lt;a href=&quot;https://zh.wikipedia.org/zh-hans/%E7%8E%B0%E9%87%91%E6%B5%81%E9%87%8F&quot;&gt;现金流&lt;/a&gt;等财务数据之后，来更好地指导我们的投资行为。因为你真实的记账数据能反应你真实的财务状况，那从这些数据中产生的丰富洞察和分析，可以指导我们进行正确的资产配置和财务管理。我们记账系统的所有设计都应该围绕这个目的而展开。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="滚雪球" scheme="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/"/>
+    
+    
+    <category term="BeanLedger" scheme="https://maples7.com/tags/BeanLedger/"/>
+    
+    <category term="复式记账" scheme="https://maples7.com/tags/%E5%A4%8D%E5%BC%8F%E8%AE%B0%E8%B4%A6/"/>
+    
+    <category term="Beancount" scheme="https://maples7.com/tags/Beancount/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Maples7 个人开源计划（9）</title>
     <link href="https://maples7.com/2025/07/31/open-source-maples7-9/"/>
     <id>https://maples7.com/2025/07/31/open-source-maples7-9/</id>
     <published>2025-07-31T08:33:20.000Z</published>
-    <updated>2025-07-31T11:17:20.196Z</updated>
+    <updated>2025-12-19T03:43:16.669Z</updated>
     
     
-      
-      
-    <summary type="html"></summary>
-      
+    <summary type="html">&lt;p&gt;又是月末，照例进行更新和复盘。&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;财务类 App &lt;a href=&quot;https://apps.apple.com/app/beanledger/id6739036460&quot;&gt;BeanLedger&lt;/a&gt; 发布 2.0，使用全新 UI 风格！&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://maples7.com/2025/06/30/open-source-maples7-8/&quot;&gt;上一篇《开源计划》&lt;/a&gt;已经提到刚在大陆地区上架时&lt;a href=&quot;http://xhslink.com/m/6zTbw00dlVy&quot;&gt;在小红书随手发了一篇帖子&lt;/a&gt;，吸引了不少关注，同时也收到了很多愿意尝试的用户的反馈，虽然也有少数用户很喜欢第一版的 UI，但大多数用户吐槽最多还是第一版的 UI 风格过于硬核，正好我也打算适配 iOS 26 的新的 UI 风格，于是干脆重新写了新的 UI 风格并更新了 2.0 新版。虽然也没有经过专业的设计，但是有了第一版的经验，并从诸多真实的用户交互的反馈中学习，我自认为新版的 UI&amp;#x2F;UX 还是改进了很多的。&lt;/li&gt;
+&lt;li&gt;2.0 之后会着重在新功能的实现和代码、性能的改进，已经实现了部分了。&lt;/li&gt;
+&lt;li&gt;功能和界面都比较稳定之后会开始补充设计思路和使用说明的文档。&lt;/li&gt;
+&lt;li&gt;整个这个月都做了很多改进和修复，代码变动还挺频繁的，大陆地区上线第一周甚至发了 5 个新版本。目前依然有不少值得关注的问题，尤其是跟 SwiftData 相关的，这几乎是造成目前代码中绝大部分问题的源泉，需要找个时间彻底把跟数据交互的代码重构一遍。</summary>
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="产品" scheme="https://maples7.com/tags/%E4%BA%A7%E5%93%81/"/>
@@ -49,7 +77,7 @@
     <link href="https://maples7.com/2025/06/30/open-source-maples7-8/"/>
     <id>https://maples7.com/2025/06/30/open-source-maples7-8/</id>
     <published>2025-06-30T08:00:46.000Z</published>
-    <updated>2025-06-30T10:19:05.683Z</updated>
+    <updated>2025-12-19T03:43:11.418Z</updated>
     
     
     <summary type="html">&lt;p&gt;六月的最后一天，也是 2025 年上半年的结束，正好又赶上我的新财务类工具 App —— BeanLedger —— 在大陆地区 App Store 上架第一周，是很适合写一篇新的《开源计划》做一些回顾和总结的。&lt;/p&gt;
@@ -62,7 +90,7 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="创业" scheme="https://maples7.com/tags/%E5%88%9B%E4%B8%9A/"/>
@@ -82,7 +110,7 @@
     <link href="https://maples7.com/2025/05/27/open-source-maples7-7/"/>
     <id>https://maples7.com/2025/05/27/open-source-maples7-7/</id>
     <published>2025-05-27T08:16:04.000Z</published>
-    <updated>2025-05-28T11:54:50.860Z</updated>
+    <updated>2025-12-19T03:43:06.019Z</updated>
     
     
     <summary type="html">&lt;p&gt;一个多月没有更新了，这期间主要精力都在备婚并且在老家办了婚礼，也是完结了一件大事，现在终于有时间来更新一篇《开源计划》。&lt;/p&gt;
@@ -106,7 +134,7 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="社会生活" scheme="https://maples7.com/tags/%E7%A4%BE%E4%BC%9A%E7%94%9F%E6%B4%BB/"/>
@@ -126,7 +154,7 @@
     <link href="https://maples7.com/2025/04/07/open-source-maples7-6/"/>
     <id>https://maples7.com/2025/04/07/open-source-maples7-6/</id>
     <published>2025-04-07T04:45:40.000Z</published>
-    <updated>2025-05-27T08:21:29.830Z</updated>
+    <updated>2025-12-19T03:42:37.423Z</updated>
     
     
     <summary type="html">&lt;p&gt;中美贸易战大升级，全球金融市场已经巨幅震动，在今天收盘资产更新之前先更新一篇新的《开源计划》，同时更新个人资产比例，作为上一个阶段的结束，想必是很合适的。&lt;/p&gt;
@@ -150,7 +178,7 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
@@ -172,7 +200,7 @@
     <link href="https://maples7.com/2025/02/19/open-source-maples7-5/"/>
     <id>https://maples7.com/2025/02/19/open-source-maples7-5/</id>
     <published>2025-02-19T07:52:35.000Z</published>
-    <updated>2025-02-19T08:38:34.173Z</updated>
+    <updated>2025-12-19T03:42:57.241Z</updated>
     
     
     <summary type="html">&lt;p&gt;2025 年的第一篇《开源计划》，新的一年，新的开始！&lt;/p&gt;
@@ -196,14 +224,12 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="人工智能" scheme="https://maples7.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
     <category term="工作" scheme="https://maples7.com/tags/%E5%B7%A5%E4%BD%9C/"/>
-    
-    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     <category term="Vision Pro" scheme="https://maples7.com/tags/Vision-Pro/"/>
     
@@ -243,7 +269,7 @@
     <link href="https://maples7.com/2024/12/21/open-source-maples7-4/"/>
     <id>https://maples7.com/2024/12/21/open-source-maples7-4/</id>
     <published>2024-12-21T06:58:47.000Z</published>
-    <updated>2024-12-21T07:18:50.644Z</updated>
+    <updated>2025-12-19T03:42:53.685Z</updated>
     
     
     <summary type="html">&lt;p&gt;年底还会发今年的书单以及按照惯例融入其中的简单的总结、展望，所以先更新一篇《开源计划》。&lt;/p&gt;
@@ -253,10 +279,8 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
-    
-    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     <category term="房地产" scheme="https://maples7.com/tags/%E6%88%BF%E5%9C%B0%E4%BA%A7/"/>
     
@@ -292,7 +316,7 @@
     <link href="https://maples7.com/2024/12/01/open-source-maples7-3/"/>
     <id>https://maples7.com/2024/12/01/open-source-maples7-3/</id>
     <published>2024-12-01T08:33:53.000Z</published>
-    <updated>2024-12-01T15:49:07.592Z</updated>
+    <updated>2025-12-19T03:42:50.336Z</updated>
     
     
     <summary type="html">&lt;p&gt;在 12 月的第一天，更新一下进展。&lt;/p&gt;
@@ -313,10 +337,8 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
-    
-    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     <category term="女性主义" scheme="https://maples7.com/tags/%E5%A5%B3%E6%80%A7%E4%B8%BB%E4%B9%89/"/>
     
@@ -329,7 +351,7 @@
     <link href="https://maples7.com/2024/11/16/open-source-maples7-2/"/>
     <id>https://maples7.com/2024/11/16/open-source-maples7-2/</id>
     <published>2024-11-15T19:14:00.000Z</published>
-    <updated>2024-11-16T05:39:37.770Z</updated>
+    <updated>2025-12-19T03:42:46.547Z</updated>
     
     
     <summary type="html">&lt;p&gt;因为公众号发的上一篇&lt;a href=&quot;https://maples7.com/2023/07/25/why-i-leave-microsoft/&quot;&gt;《热情、工作与理想主义｜为什么我要离开微软》&lt;/a&gt;引发了一些讨论，所以这一期想聊的话题有点多。为了不让某一期的内容太长，所以尽管距离&lt;a href=&quot;https://maples7.com/2024/11/08/open-source-maples7-1/&quot;&gt;上一篇《开源计划》&lt;/a&gt;才一周时间，工作量并不多，但也还是更新一期吧。&lt;/p&gt;
@@ -346,12 +368,10 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    
-    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     
@@ -370,7 +390,7 @@
     <link href="https://maples7.com/2024/11/08/open-source-maples7-1/"/>
     <id>https://maples7.com/2024/11/08/open-source-maples7-1/</id>
     <published>2024-11-07T16:05:32.000Z</published>
-    <updated>2024-11-15T19:12:49.874Z</updated>
+    <updated>2025-12-19T03:42:43.151Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;📑-前序&quot;&gt;&lt;a href=&quot;#📑-前序&quot; class=&quot;headerlink&quot; title=&quot;📑 前序&quot;&gt;&lt;/a&gt;📑 前序&lt;/h2&gt;&lt;p&gt;从微软离职以来已经有一年多了（原因和感受详见：&lt;a href=&quot;https://maples7.com/2023/07/25/why-i-leave-microsoft/&quot;&gt;热情、工作与理想主义｜为什么我要离开微软&lt;/a&gt;），离职后的前半年基本在休养生息，顺便学习了一些 Apple 开发相关的东西，后半年开始写我几年来一直想写的一个财务类的工具 App，算是正式开始了我的全职独立开发之路。&lt;/p&gt;
@@ -379,12 +399,10 @@
     
     
     
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
-    
-    <category term="Maples7 个人开源计划" scheme="https://maples7.com/tags/Maples7-%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     <category term="独立开发" scheme="https://maples7.com/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/"/>
     
@@ -620,32 +638,6 @@
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     
     <category term="摄影" scheme="https://maples7.com/tags/%E6%91%84%E5%BD%B1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在望京，没有方向</title>
-    <link href="https://maples7.com/2021/12/08/no-direction-in-wangjing/"/>
-    <id>https://maples7.com/2021/12/08/no-direction-in-wangjing/</id>
-    <published>2021-12-08T03:20:37.000Z</published>
-    <updated>2021-12-08T03:28:33.045Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;北京的初雪天很冷，却总能给人一种充满希望的感觉。雪一下，北京成了北平，茫茫的白色也成了一系列盛大节日的暗示。会来事儿的商家会早早在店面上添上一抹红，本来素朴的街道氛围一下就上来了。不管你白天因为工作上的什么事情而烦恼，在天刚黑的下班路上，都是一段最佳的放空自己的时间。宽阔的街道上一如继往的车水马龙，迎面的车道闪过一道道晃眼的白光，正向车道的红尾灯连成一片红色光带。是很堵，但人们都失去了一些平凡日子里的暴躁。当然，这很可能是前面路口交警的功劳。&lt;/p&gt;
-&lt;p&gt;北京远不是一座浪漫的城市，现实的引力会牢牢的吸住每一个人，不让大家离地面太远。不仅不浪漫，甚至还很土气（「土」并不天然意味着「不能高档」和「不能高级」），然而这种「不浪漫」也正是这座城市吸引人的特点之一。生活会奖励真实，这里的每一个人都受其馈赠。望京当然也逃不过这引力。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-    <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
-    
-    <category term="创业" scheme="https://maples7.com/tags/%E5%88%9B%E4%B8%9A/"/>
-    
-    <category term="北京" scheme="https://maples7.com/tags/%E5%8C%97%E4%BA%AC/"/>
-    
-    <category term="望京" scheme="https://maples7.com/tags/%E6%9C%9B%E4%BA%AC/"/>
     
   </entry>
   
