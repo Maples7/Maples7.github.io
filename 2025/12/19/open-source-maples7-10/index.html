@@ -23,31 +23,30 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":true,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="这一篇是接着上一篇《如何开始稳健投资》的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对ETF 拯救世界所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系">
+    <meta name="description" content="时间飞逝，上一次写《个人开源计划》还是上次（不是），这期间也发生了不少事情，趁着年底把这小半年的事情来回顾记录一下。 🧑🏻‍💻 工作 BeanLedger App： 从今年夏天发布以来，一共发布了 24 个版本，基本实现了当初做这个 App 的功能设计目标。 唯一一个想做但还未实现的大功能是对不同大类&#x2F;小类投资品种的比例的呈现，但这个功能如果不能自动更新资产数据，会大大加重用户的数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一套大概率可行的具体投资策略">
-<meta property="og:url" content="https://maples7.com/2022/08/20/a-specific-investment-strategy/">
+<meta property="og:title" content="Maples7 个人开源计划（10）">
+<meta property="og:url" content="https://maples7.com/2025/12/19/open-source-maples7-10/">
 <meta property="og:site_name" content="Maples7&#39;s Blog">
-<meta property="og:description" content="这一篇是接着上一篇《如何开始稳健投资》的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对ETF 拯救世界所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系">
+<meta property="og:description" content="时间飞逝，上一次写《个人开源计划》还是上次（不是），这期间也发生了不少事情，趁着年底把这小半年的事情来回顾记录一下。 🧑🏻‍💻 工作 BeanLedger App： 从今年夏天发布以来，一共发布了 24 个版本，基本实现了当初做这个 App 的功能设计目标。 唯一一个想做但还未实现的大功能是对不同大类&#x2F;小类投资品种的比例的呈现，但这个功能如果不能自动更新资产数据，会大大加重用户的数">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://maples7.com/uploads/investment-strategy.png">
-<meta property="article:published_time" content="2022-08-20T14:16:08.000Z">
-<meta property="article:modified_time" content="2022-11-10T17:05:28.964Z">
+<meta property="og:image" content="https://s2.loli.net/2025/12/29/SNkmzJ3XGU8insW.png">
+<meta property="article:published_time" content="2025-12-19T08:48:16.000Z">
+<meta property="article:modified_time" content="2025-12-29T15:24:14.731Z">
 <meta property="article:author" content="Maples7">
+<meta property="article:tag" content="BeanLedger">
 <meta property="article:tag" content="投资">
-<meta property="article:tag" content="指数基金">
-<meta property="article:tag" content="资产配置">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://maples7.com/uploads/investment-strategy.png">
+<meta name="twitter:image" content="https://s2.loli.net/2025/12/29/SNkmzJ3XGU8insW.png">
 
 
-<link rel="canonical" href="https://maples7.com/2022/08/20/a-specific-investment-strategy/">
+<link rel="canonical" href="https://maples7.com/2025/12/19/open-source-maples7-10/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://maples7.com/2022/08/20/a-specific-investment-strategy/","path":"2022/08/20/a-specific-investment-strategy/","title":"一套大概率可行的具体投资策略"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://maples7.com/2025/12/19/open-source-maples7-10/","path":"2025/12/19/open-source-maples7-10/","title":"Maples7 个人开源计划（10）"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>一套大概率可行的具体投资策略 | Maples7's Blog</title>
+<title>Maples7 个人开源计划（10） | Maples7's Blog</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
@@ -86,7 +85,7 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha256-44BednzIpUeQJcY8qtLyarFu0UCCTbgmWOvaoehiFQQ=" crossorigin="anonymous" defer></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2022/08/20/a-specific-investment-strategy/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2025/12/19/open-source-maples7-10/"}</script>
   <script src="/js/third-party/quicklink.js" defer></script>
 
   <noscript>
@@ -166,7 +165,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -179,6 +178,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%A7%91%F0%9F%8F%BB%E2%80%8D%F0%9F%92%BB-%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">🧑🏻‍💻 工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%8E%B2-%E6%BB%9A%E9%9B%AA%E7%90%83"><span class="nav-number">2.</span> <span class="nav-text">🎲 滚雪球</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%99%A8%EF%B8%8F-%E7%94%9F%E6%B4%BB"><span class="nav-number">3.</span> <span class="nav-text">♨️ 生活</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -268,7 +268,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://maples7.com/2022/08/20/a-specific-investment-strategy/">
+    <link itemprop="mainEntityOfPage" href="https://maples7.com/2025/12/19/open-source-maples7-10/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
@@ -281,12 +281,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="一套大概率可行的具体投资策略 | Maples7's Blog">
+      <meta itemprop="name" content="Maples7 个人开源计划（10） | Maples7's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          一套大概率可行的具体投资策略
+          Maples7 个人开源计划（10）
         </h1>
 
         <div class="post-meta-container">
@@ -297,14 +297,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-08-20 22:16:08" itemprop="dateCreated datePublished" datetime="2022-08-20T22:16:08+08:00">2022-08-20</time>
+      <time title="创建时间：2025-12-19 16:48:16" itemprop="dateCreated datePublished" datetime="2025-12-19T16:48:16+08:00">2025-12-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-11-11 01:05:28" itemprop="dateModified" datetime="2022-11-11T01:05:28+08:00">2022-11-11</time>
+      <time title="修改时间：2025-12-29 23:24:14" itemprop="dateModified" datetime="2025-12-29T23:24:14+08:00">2025-12-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,7 +312,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/" itemprop="url" rel="index"><span itemprop="name">滚雪球</span></a>
+          <a href="/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">个人开源计划</span></a>
         </span>
     </span>
 
@@ -332,8 +332,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2022/08/20/a-specific-investment-strategy/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/08/20/a-specific-investment-strategy/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2025/12/19/open-source-maples7-10/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2025/12/19/open-source-maples7-10/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -344,14 +344,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.4k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>12 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -361,41 +361,37 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>这一篇是接着上一篇<a href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/">《如何开始稳健投资》</a>的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对<a target="_blank" rel="noopener" href="https://weibo.com/u/5687069307">ETF 拯救世界</a>所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些<del>，毕竟谁没有幻想过自己突然哪一天突然失忆了呢</del>。</p>
-<p>既然是「具体投资策略」，一定要有必要的细节。但事先声明，这些细节只是我正在实践的细节，并不代表任何人拿去就可以直接套用，比如其中的资金配比、仓位配比等等，都不一定得是我接下来要说的那个比例，因为有一些比例只是根据市场历史得出的实践经验，并没有很 solid 的理论支撑。如果你也要跟着这一套策略实践，请根据自身的实际情况进行相应的调整，只要大致的方向和思路没问题就行。投资，很多时候<a target="_blank" rel="noopener" href="http://www.globalhha.com/doclib/index.php?m=Home&c=article&a=viewarticle&id=16">要追求一种「模糊的正确」，而不要「精确的错误」</a>。</p>
-<span id="more"></span>
-
-<p>另外，再次设置一个合理的预期，这套策略预计只能做到比 GDP 增长速度高两个点的平均年化水平，或者说跑赢通胀的水平，如果运气好赚到了更多，那纯属运气好。快速暴富的投资策略，也有很多，出门右转即可。</p>
-<p>先做一个假设：假设你有一千万的可投资金。这里先需要一点注解：</p>
-<ol>
-<li>在上一篇讲过「本金从哪里来」，如果你的本金太少，进行二级市场投资对个人的资产增值整体来说意义不大，当然我并不是说你得攒够一千万才能开始，这里只是举个例子，方便后面进行对应比例的计算。实际操作中，按照你的具体可投资金按比例折算即可。</li>
-<li>什么是「可投资金」？指的是你可以<strong>随时</strong>（姑且按一周内算）拿出来进行投资的资金，不包括你买的银行定期等任何其他不能马上变现的资产。而且这些钱在可预见的三到五年内都没有需要用到其他地方的计划和打算，比如买房、买车等。所以，也不要把你应急用的备用资金（没有收入的情况下至少一两年的开销）、买保险的资金、可能的用于医疗保健的资金等算在内。</li>
-</ol>
-<p>回到这一千万的可投资金，我会把它们先分成两部分：</p>
-<ul>
-<li>第一部分，两百万（20%）购买货币基金、稳健的国债或者合适的信托基金（取决于实际资金量），重点是同样需要保证这两百万的流动性，也就是能随时拿出来用。但是，你对这两百万的心理预期应该是 <strong>99.99%</strong> 的情况下不会真的拿来用。这部分相当于你的可投资金的压舱石，所以你几乎永远都不会处在满仓的状态下。剩下可能会用到这两百万的 0.01% 的情况是：往差了想是你对未来的资金规划考虑不足，在投资以外出现了必须要用钱的场景，那没办法，只能先挪用这部分钱；往好了想是市场真的出现了五年、十年甚至二十年一次的机会，我不会允许自己错过这样的机会，在之后要说的更具体的体系之外，我很可能会用这两百万的一部分进行额外的仓位补充，比如今年（2022 年）上半年出现的中概股从历史最高下跌到几乎 20% 的位置这样的情况，我预计这可能是五年难得一遇的机会，会拿出少部分这两百万进行额外的补仓。同时，这里 callback 到了为什么我们需要买指数基金，因为它们几乎不会死，但是个股在这方面的风险就会高很多，即便是公司的市场竞争力减弱，都很可能造成股价的一蹶不振，从此一路下跌，直至退市，甚至公司倒闭。</li>
-<li>第二部分，八百万（80%）用来进行真正的日常指数基金投资。接下来的部分重点针对这八百万如何操作。</li>
+    <div class="post-body" itemprop="articleBody"><p>时间飞逝，上一次写《个人开源计划》还是上次<del>（不是）</del>，这期间也发生了不少事情，趁着年底把这小半年的事情来回顾记录一下。</p>
+<h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger App</a>：<ul>
+<li>从今年夏天发布以来，一共发布了 24 个版本，基本实现了<a href="https://maples7.com/2025/12/18/how-to-do-accounting-properly/">当初做这个 App 的功能设计目标</a>。</li>
+<li>唯一一个想做但还未实现的大功能是对不同大类&#x2F;小类投资品种的比例的呈现，但这个功能如果不能自动更新资产数据，会大大加重用户的数据维护负担，目前看比较难跟现有功能整合得比较好。准备明年做一个新的 App 来满足我自己这方面的需求。</li>
+<li>现在总结下来，使用 SwiftData 作为本地数据框架是做这个 App 最大的选型失败，极大地阻碍了需要改动数据模型的新功能的实现。粗略估计，我开发过程中遇到的 80% 以上的问题（甚至是上线后的崩溃）都是这个官方框架带来的。SwiftData 在发布时其实有不错的顶层设计和概念，如果只是粗浅的使用也不大会感受到问题。但一旦数据模型变得复杂，并且需要开启 iCloud 数据自动同步功能后，所有的潜在问题都冒出来了，这对于功能都在本地运行的 App 几乎是处处踩坑。我不想过多地揣测我不知道的事情，但从 SwiftData 在不同版本之间不稳定的表现和很多明显缺失的基础功能来看，我只能理解为具体实现这个框架的团队技术能力有限，根本没有用心，大概率也是苹果内部团队在屎山代码上雕花的产出。明年会认真看看是不是能迁移到几个月前 <a target="_blank" rel="noopener" href="https://www.pointfree.co/">Point-Free 团队</a>刚发布的 <a target="_blank" rel="noopener" href="https://github.com/pointfreeco/sqlite-data">SQLiteData 框架</a>上，但已经上线的产品的数据迁移也不是一件轻松的事情，一不小心就可能会造成用户数据丢失，需要加倍谨慎。所以在迁移之前，会先实现数据导出&#x2F;备份的功能。<span id="more"></span></li>
+<li>还在考虑尽量使用系统组件再重新迭代一版新的 UI&#x2F;UX，并更新 icon。如果有，会作为 3.0 的新版本发布。</li>
+<li>其他在这个 App 上还可以改进的地方在之前的<a href="https://maples7.com/2025/12/18/how-to-do-accounting-properly/#%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8F%AF%E4%BB%A5%E6%94%B9%E8%BF%9B%E7%9A%84%E5%9C%B0%E6%96%B9">《普通人如何正确记账》</a>已经写过，不再赘述。</li>
 </ul>
-<p>首先先介绍策略的理念，然后介绍具体买哪些品种，同样资金需要按比例分配到各个不同的子策略和品种上。</p>
-<p>我会按 2:3:5 的比例来分配这剩下的八百万资金，也就是 160 万、240 万和 400 万，分别用于短期、中期和长期的投资策略。为什么要这样分？因为这应该是一个全天候的策略。市场的走势是没法预测的，不同的走势需要不同的策略要应对，具体来说短期策略用于市场在中底部不断横盘震荡的时期、中期策略用于有较大周期性波动特点的市场或品种、长期策略则是用真正价值投资的核心理念来收割大周期或宏观经济上涨的红利。其次，一个针对人性弱点的考量：为了让你在经历各种市场风浪手痒时不至于经常操作长期策略，可以用短期和中期策略来获得对市场的参与感。这三种子策略的理念分别是这样的：</p>
-<p>短期策略 —— 完全按<strong>场内基金</strong>的<strong>网格</strong>策略来交易操作，这里我必须得直接贴上 E 大写过的系列文章，已经非常详细的把这个子策略如何操作的写得清清楚楚了，而且根据具体的实践这个子策略还在不断完善和进化中，我不必再赘述了（另外，文中提到的「留利润」的操作并不适合我，所以我并没有这样做，我自己会严格区分短期、中期、长期各个策略的界限，不期望用分配给短期的资金来赚取长期的利润，否则会让我自己的心态受到影响从而容易做出不理智的操作）：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uxktt5ZpNo03FpQQX-aG7g">波段策略.网格之一：写在前面、体系以及策略</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/-czfqGvxkDcay_tSI1jv5g">波段策略.网格之二：网格策略基础&#x2F;1.0版</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/8pRKsjiQSZzrmH-uWCkRLQ">波段策略.网格之三：网格策略进阶&#x2F;2.0版</a></li>
-</ol>
-<p>中期策略和长期策略 —— 这两个子策略都用<strong>场外基金</strong>操作即可，因为它们都不会需要频繁的进行交易。中期策略和长期策略不同的是，中期策略会根据当时当下的市场状态和各个品种的估值分位进行买入卖出，对于各个品种的相互占比没有那么严格，目的是为了赚取雷达内的品种半年以上波动的利润；而长期策略则会严格考虑各个品种的配比，是按至少三年以上为一个完整的买入卖出周期的预期来衡量的，目的是赚取市场真正价值上涨的利润。</p>
-<p>接下来讨论买哪些品种，注意，上述的三个子策略对于品种的选择方式都是一致的，只是长期策略需要更多的考虑品种的相对配比。可以这样来理解，长期策略占用了我们最多的用来投资的资金，作为压舱石，我们期望它是足够稳健和健康的，不会因为偏重于单一品种而使得这个策略有很大的波动和回撤。但是不同的品种在某一时期可能会处在各自不同的走势阶段，作为一个全天候策略，中期策略和短期策略此时就可以因地制宜灵活的对这一部分的需求进行补足。</p>
-<p>要买的品种大致包含两大部分 —— 宽基指数和行业指数。先说一个有用的结论：买相关性低的品种能降低整个策略的风险，平滑整体收益曲线的波动。所以后面说的品种都是指的相关性低的大类，不会到具体的某个基金。另外，任何一个不可再分的大类品种仓位比例都不要超过 20%，同样是为了降低整个策略的风险 —— 即便投错也不至于错得太离谱。话不多说，结合前面所有的内容，直接上一个按比例配置的思维导图：</p>
-<img data-src="/uploads/investment-strategy.png" class="" title="投资品种比例思维导图" alt="图片显示错误">
-
-<p>必须再一次说明的是，图片中的比例和上文中的所有比例都不是一层不变的，需要根据个体情况和当前市场情况进行调整，但大的相对比例关系和基本的原则是不会轻易改变的。其次，图片中的某个品种的仓位比例是指<strong>仓位上限</strong>，不是每时每刻都要买满的，而且很多大类品种在不同的时期可能有更多的选择，比如 A 股的行业部分、海外成熟市场、商品等，都不局限于图上列出的那几种。另外如前所述，投资部分 80% 的资金会按 2:3:5 的大致比例分配到短期、中期和长期的子策略上。</p>
-<p>最后还需要解决一个大问题：什么时候买、什么时候卖。这是最难的部分，我也还在不断的摸索之中，但你最好也能在真金白银买入之前就想好自己的具体买入卖出策略。</p>
-<p>总体上还是按估值的原则来决定什么时候开始买，当某个品种开始进入低估区域的时候短期、中期和长期策略都可以开始买。<strong>假设</strong>一个品种从历史最高点跌了 50% 进入低估区域，跌到 20% 分位是可能的大底，那你的买入区域就应该分布在从最高点往下跌 50% ~ 80% 的区域。你可以提前把所有需要买入这个品种的资金分成很多份，从跌 50% 开始买第一份，到跌 80% 的时候可以把所有提前分配的资金份数买满，包括短期、中期和长期策略中的资金。至于如何判断一个品种是否开始低估，可以<strong>参考</strong>各种投资机构和市场大 V 出的市场温度表，或者自己计算。另外必须强调的一点是，<strong>一定要控制买入的节奏</strong>，如果一个品种到了低估区域，<strong>一般</strong>也要控制自己的中期和长期策略一个月最多买一到两份资金（网格买入取决于波动情况）。</p>
-<p>如何卖出？短期（网格）策略一份资金的买入已经决定了这份资金的卖出条件，无需赘述。中期策略的卖出介于短期策略和长期策略之间，算是一个比较大的波段策略，当某份资金买入过了半年以上，收益率在 15% 以上且结合一些趋势分析判断可以考虑进行卖出。长期策略则卖出操作要少很多，你可以选择牛市不来坚决不卖，或者某份资金买入经过了三年且在趋势或基本面真正发生变化之际选择卖出这一份资金。如何卖出比如何买入更难，你需要根据每个子策略的基本原则和特点提前约定好你自己的具体卖出策略。这可以是综合价值投资、趋势投资和技术投资思想的综合分析。</p>
-<p>最后，这套策略应当是在具体实践中根据经验不断完善改进的。注意的是，需要改进的是策略，而不是把某一次操作十分主观的归入某种例外。不断修正体系用来应对任何的市场情况，才会是一套可以复制和长期运行的全天候市场策略。</p>
-<p>下一篇<a href="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/">「滚雪球」</a>我大概率会讲讲个人如何记账，因为记账是投资入门的首要前提，这样才能在投资过程中随时了解自己的资金情况和分配于各个投资策略之间的资金比例关系。</p>
-<p>P.S. 我本人不看好近两年世界宏观经济形势，股市有风险，入市需谨慎。</p>
+</li>
+</ul>
+<h2 id="🎲-滚雪球"><a href="#🎲-滚雪球" class="headerlink" title="🎲 滚雪球"></a>🎲 滚雪球</h2><p>最新的资产配置比例的桑基图：</p>
+<p><img data-src="https://s2.loli.net/2025/12/29/SNkmzJ3XGU8insW.png" alt="此资产配置图使用我自己开发的财务工具 App BeanLedger 生成"><center><small>(此资产配置图使用我自己开发的财务工具 App BeanLedger 生成)</small></center></p>
+<p>从上一次分享到这一次的过程期间（2025-07-31 ~ 2025-12-29），资产净值<strong>减少 ¥53993.16</strong>。这期间主要的支出是秋天半个多月的蜜月旅行、年度保险缴费、苏州婚礼的一些尾款结算，以及旅行过程中买的一些比大陆买更划算的东西。投资收益上，小有涨幅。</p>
+<p>从上面的桑基图可以看出，投资上最大的变化是大幅削减了「有知有行长钱账户」的仓位，新增了「个股组合」（目前占比不到总资产的 1%）。没错，以前权益类我基本只投资 ETF，最近开始正式投资个股。做出这样的改变基于以下几个原因的考虑：</p>
+<ul>
+<li>在投资上我的认知进一步加深 —— 随者我参考、阅读、学习更多经典却风格不同的投资大师的投资策略和投资案例，我对资产配置、投资体系、策略的认识进一步加深，我觉得我能够在个人的投资组合中尝试加入更多的自主性，而不是简单跟车。</li>
+<li>最近认识到一个投资上的道理：<strong>波动不等同于风险，真正的风险是收益率过低或本金确认损失的概率</strong>。不论是在投资上还是在生活上，近些年我一直算是个对风险承受相对保守的人，如果一件事没有考虑清楚或者不够稳妥，我一般轻易不会开始采取行动。但这同时阻碍了我尝试更多机会的可能性，我的资产配置的稳妥程度值得更多的可能性，也值得获得更多的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%A2%A8%E9%9A%AA%E6%BA%A2%E5%83%B9">风险溢价收益</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://qieman.com/">且慢</a>在上个月开始收取投顾费，并且是以卖出用户权益类品种的投资份额的方式。我不是想节约那点投顾费，本身 <a target="_blank" rel="noopener" href="https://xueqiu.com/u/etfs">E 大</a>和<a target="_blank" rel="noopener" href="https://xueqiu.com/u/1388190326">孟岩</a>对市场的贡献确实都值得更多的回报，但且慢这种卖出投资品份额收取投顾费的方式让我对平台产生了极大的不信任。失去了孟岩的且慢确实失去了灵魂，逐渐丢失了「把用户利益和体验放在第一位」的初心。同时也让我意识到，靠别人的投资组合和投顾平台终究不是长久之计，不如更多地靠自己，所以在投顾平台的资金我都做了大幅削减和转移。</li>
+<li>目前我有足够多的时间来更多地学习和研究投资。</li>
+</ul>
+<p>所以，未来在投资上会加入更多的自主性，这主要会体现在「个股组合」和「场外自主补充交易」这两个投资策略上。</p>
+<p>2025 全年（虽然还剩两个交易日），我的投资收益在三十万左右，在这样的市场涨幅下只能说是中规中矩（主打一个「稳健」），但也基本能覆盖全年支出。考虑到今年比较特殊，举办了两场婚礼、进行了蜜月旅行，支出会高于一般水平，所以这样的总资产变化还算满意。明年期望能进一步削减开支，并在保持风险水平基本不变的情况下实现更多的投资收益，但这当然取决于具体的市场表现，不是靠个人努力就能实现的。<strong>其实你的资产配置和投资策略，已经决定了你未来的大部分投资收益</strong>。</p>
+<p>一旦你对投资产生兴趣，你就恨不能把每一分不在其位的钱都配置到它应该在的资产配置组合的位置上去，并且会热衷于在市场上捡垃圾。这不仅仅是赚钱的乐趣，更是<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/#%E7%83%AD%E6%83%85">玩《模拟人生》游戏的乐趣</a>。</p>
+<h2 id="♨️-生活"><a href="#♨️-生活" class="headerlink" title="♨️ 生活"></a>♨️ 生活</h2><ul>
+<li>🏖️ 九月底十月初进行了为期 17 天的蜜月旅行，先后去了马尔代夫、吉隆坡、清迈、香港，是一次非常难忘的经历。看到了不同国家和地区的文化、习俗方面的差别，也看到了差异之下人性本真的类似，更宝贵的是收获了跟老婆一起在旅途中两个人的美好回忆。</li>
+<li>🐭 去了一次迪士尼，玩了蛮多以前没玩过的项目。新建的《疯狂动物城》区域满满都是电影里的细节，但面积太小导致这个区域一直是人满为患。还弥补了上一次去没有看到烟花的遗憾。</li>
+<li>🎬 看了《疯狂动物城 2》，质量依然不错，在一贯的水准上；也看了《阿凡达 3》，对观众太友好了：看个 IMAX 片头，睡两个小时再接着看，依然能值回票价。</li>
+<li>🍻 周末好天气时跟好朋友们一起在苏州露营聚会，很开心！</li>
+<li>📺 最近还看了一两部短剧，惊讶地发现头部短剧的制作水准已经丝毫不逊色于大部分长剧了。影视内容行业不缺资本，缺的是用心做事的人。</li>
+</ul>
 
     </div>
 
@@ -431,7 +427,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://maples7.com/2022/08/20/a-specific-investment-strategy/" title="一套大概率可行的具体投资策略">https://maples7.com/2022/08/20/a-specific-investment-strategy/</a>
+      <a href="https://maples7.com/2025/12/19/open-source-maples7-10/" title="Maples7 个人开源计划（10）">https://maples7.com/2025/12/19/open-source-maples7-10/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -498,22 +494,18 @@
 
           <div class="post-tags">
               <a href="/tags/%E6%8A%95%E8%B5%84/" rel="tag"><i class="fa fa-tag"></i> 投资</a>
-              <a href="/tags/%E6%8C%87%E6%95%B0%E5%9F%BA%E9%87%91/" rel="tag"><i class="fa fa-tag"></i> 指数基金</a>
-              <a href="/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/" rel="tag"><i class="fa fa-tag"></i> 资产配置</a>
+              <a href="/tags/BeanLedger/" rel="tag"><i class="fa fa-tag"></i> BeanLedger</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/03/13/how-to-start-investing-soundly/" rel="prev" title="如何开始稳健投资">
-                  <i class="fa fa-angle-left"></i> 如何开始稳健投资
+                <a href="/2025/12/18/how-to-do-accounting-properly/" rel="prev" title="普通人如何正确记账">
+                  <i class="fa fa-angle-left"></i> 普通人如何正确记账
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/09/04/why-i-support-erjiu/" rel="next" title="尘埃落定，为什么我依然要力挺《二舅》">
-                  尘埃落定，为什么我依然要力挺《二舅》 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>

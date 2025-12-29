@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-12-19T08:41:25.449Z</updated>
+  <updated>2025-12-29T15:24:14.731Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Maples7 个人开源计划（10）</title>
+    <link href="https://maples7.com/2025/12/19/open-source-maples7-10/"/>
+    <id>https://maples7.com/2025/12/19/open-source-maples7-10/</id>
+    <published>2025-12-19T08:48:16.000Z</published>
+    <updated>2025-12-29T15:24:14.731Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;时间飞逝，上一次写《个人开源计划》还是上次&lt;del&gt;（不是）&lt;/del&gt;，这期间也发生了不少事情，趁着年底把这小半年的事情来回顾记录一下。&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://apps.apple.com/app/beanledger/id6739036460&quot;&gt;BeanLedger App&lt;/a&gt;：&lt;ul&gt;
+&lt;li&gt;从今年夏天发布以来，一共发布了 24 个版本，基本实现了&lt;a href=&quot;https://maples7.com/2025/12/18/how-to-do-accounting-properly/&quot;&gt;当初做这个 App 的功能设计目标&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;唯一一个想做但还未实现的大功能是对不同大类&amp;#x2F;小类投资品种的比例的呈现，但这个功能如果不能自动更新资产数据，会大大加重用户的数据维护负担，目前看比较难跟现有功能整合得比较好。准备明年做一个新的 App 来满足我自己这方面的需求。&lt;/li&gt;
+&lt;li&gt;现在总结下来，使用 SwiftData 作为本地数据框架是做这个 App 最大的选型失败，极大地阻碍了需要改动数据模型的新功能的实现。粗略估计，我开发过程中遇到的 80% 以上的问题（甚至是上线后的崩溃）都是这个官方框架带来的。SwiftData 在发布时其实有不错的顶层设计和概念，如果只是粗浅的使用也不大会感受到问题。但一旦数据模型变得复杂，并且需要开启 iCloud 数据自动同步功能后，所有的潜在问题都冒出来了，这对于功能都在本地运行的 App 几乎是处处踩坑。我不想过多地揣测我不知道的事情，但从 SwiftData 在不同版本之间不稳定的表现和很多明显缺失的基础功能来看，我只能理解为具体实现这个框架的团队技术能力有限，根本没有用心，大概率也是苹果内部团队在屎山代码上雕花的产出。明年会认真看看是不是能迁移到几个月前 &lt;a href=&quot;https://www.pointfree.co/&quot;&gt;Point-Free 团队&lt;/a&gt;刚发布的 &lt;a href=&quot;https://github.com/pointfreeco/sqlite-data&quot;&gt;SQLiteData 框架&lt;/a&gt;上，但已经上线的产品的数据迁移也不是一件轻松的事情，一不小心就可能会造成用户数据丢失，需要加倍谨慎。所以在迁移之前，会先实现数据导出&amp;#x2F;备份的功能。</summary>
+    
+    
+    
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
+    
+    
+    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="BeanLedger" scheme="https://maples7.com/tags/BeanLedger/"/>
+    
+  </entry>
+  
+  <entry>
     <title>普通人如何正确记账</title>
     <link href="https://maples7.com/2025/12/18/how-to-do-accounting-properly/"/>
     <id>https://maples7.com/2025/12/18/how-to-do-accounting-properly/</id>
     <published>2025-12-18T15:41:05.000Z</published>
-    <updated>2025-12-19T08:41:25.449Z</updated>
+    <updated>2025-12-19T09:00:10.957Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;为什么要记账？&quot;&gt;&lt;a href=&quot;#为什么要记账？&quot; class=&quot;headerlink&quot; title=&quot;为什么要记账？&quot;&gt;&lt;/a&gt;为什么要记账？&lt;/h2&gt;&lt;p&gt;记账是投资入门的首要前提，如果不能在投资过程中随时了解自己的资金情况和分配于各个投资策略之间的&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%80%89%E4%BD%8D&quot;&gt;仓位&lt;/a&gt;比例，那么你就像一个在战场上高度近视还丢了眼镜的战士，所有行为和操作基本都是睁眼瞎。&lt;/p&gt;
@@ -137,11 +163,11 @@
     <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
-    <category term="社会生活" scheme="https://maples7.com/tags/%E7%A4%BE%E4%BC%9A%E7%94%9F%E6%B4%BB/"/>
-    
     <category term="阶层固化" scheme="https://maples7.com/tags/%E9%98%B6%E5%B1%82%E5%9B%BA%E5%8C%96/"/>
     
     <category term="社会学" scheme="https://maples7.com/tags/%E7%A4%BE%E4%BC%9A%E5%AD%A6/"/>
+    
+    <category term="社会生活" scheme="https://maples7.com/tags/%E7%A4%BE%E4%BC%9A%E7%94%9F%E6%B4%BB/"/>
     
     <category term="婚礼" scheme="https://maples7.com/tags/%E5%A9%9A%E7%A4%BC/"/>
     
@@ -607,37 +633,6 @@
     <category term="基金" scheme="https://maples7.com/tags/%E5%9F%BA%E9%87%91/"/>
     
     <category term="ETF" scheme="https://maples7.com/tags/ETF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2021 年书单</title>
-    <link href="https://maples7.com/2021/12/31/2021-booklist/"/>
-    <id>https://maples7.com/2021/12/31/2021-booklist/</id>
-    <published>2021-12-31T13:19:31.000Z</published>
-    <updated>2022-01-05T15:31:07.177Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;关于书单&quot;&gt;&lt;a href=&quot;#关于书单&quot; class=&quot;headerlink&quot; title=&quot;关于书单&quot;&gt;&lt;/a&gt;关于书单&lt;/h3&gt;&lt;p&gt;直奔主题：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://book.douban.com/subject/35275524/&quot;&gt;晚婚&lt;/a&gt;：★★★★&lt;/p&gt;
-&lt;p&gt; 人物描写十分细节，情绪表达非常细腻，如果没有一定的人生阅历和生活体悟，很难相信作者能把书中的某些人情世故和人物动机描写得如此让人感同身受，这是某种源于生活的真切（而且很现代），但故事的戏剧性又提醒着读者小说创作高于生活的存在。&lt;/p&gt;
-&lt;p&gt; 相比于《新婚之夜》少了很多推理和悬疑的要素，但依然还是有很多伏笔在前后呼应。整个故事的基调是压抑的，给人无力感，的确是一部「漠然记」。还是很喜欢辽京的写故事风格。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;</summary>
-    
-    
-    
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    
-    
-    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    
-    <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
-    
-    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
-    
-    <category term="摄影" scheme="https://maples7.com/tags/%E6%91%84%E5%BD%B1/"/>
     
   </entry>
   
