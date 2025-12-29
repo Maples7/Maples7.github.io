@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-12-29T15:31:06.715Z</updated>
+  <updated>2025-12-29T15:39:25.860Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://maples7.com/2025/12/19/open-source-maples7-10/"/>
     <id>https://maples7.com/2025/12/19/open-source-maples7-10/</id>
     <published>2025-12-19T08:48:16.000Z</published>
-    <updated>2025-12-29T15:31:06.715Z</updated>
+    <updated>2025-12-29T15:39:25.860Z</updated>
     
     
     <summary type="html">&lt;p&gt;时间飞逝，上一次写《个人开源计划》还是上次&lt;del&gt;（不是）&lt;/del&gt;，这期间也发生了不少事情，趁着年底把这小半年的事情来回顾记录一下。&lt;/p&gt;
@@ -37,6 +37,8 @@
     
     
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     
     <category term="SwiftData" scheme="https://maples7.com/tags/SwiftData/"/>
     
