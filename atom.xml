@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-12-29T15:39:25.860Z</updated>
+  <updated>2025-12-30T18:16:57.135Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2025 年书单</title>
+    <link href="https://maples7.com/2025/12/31/2025-booklist/"/>
+    <id>https://maples7.com/2025/12/31/2025-booklist/</id>
+    <published>2025-12-31T02:59:54.000Z</published>
+    <updated>2025-12-30T18:16:57.135Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;人的记忆有时候就是很不可靠，不用上班的 2025 年似乎显得格外漫长。一方面今年发生了很多 routine 之外的事情，另一方面世界趋势的趋同性似乎又让它变得更无聊了一些。上半年发生的事情回忆起来仿佛已经过去很久，一不小心却又来到了年底。&lt;/p&gt;
+&lt;p&gt;人对一生时间的非线性感知很容易让人变得麻木，从而丢失好奇心 —— 这是致命的。人过三十，也许还有激素水平下降的原因，这几年对时间的感知并不强烈，是值得我警觉的一件事情。&lt;/p&gt;
+&lt;p&gt;说到好奇心，有时候会羡慕更年轻的朋友们「初生牛犊不怕虎」的闯劲，也由衷佩服他们的创新精神和敢于尝试的勇气，这说明他们依然有对新事物有好奇心，好奇心是推动人类社会进步的动力。但这两年，我也越来越体会到认知、经历和经验也是不可多得的宝贵财富。曾经更年轻的我也对很多「老登」言论嗤之以鼻，会下很多坚定又幼稚的判断，会照本宣科地视很多理论为唯一真理，会认为很多事情是绝对的、必须的、不容置疑的，但&lt;strong&gt;成熟的标志之一就是逐渐变得包容、怀疑、多元&lt;/strong&gt;，能更多看到事情背后的复杂。在不确定性的时代，需要更多应对复杂系统的思维方式，这很依赖概率思维和非线性的认知能力，经验和经历在此处能发挥作用。&lt;/p&gt;
+&lt;h2 id=&quot;书单&quot;&gt;&lt;a href=&quot;#书单&quot; class=&quot;headerlink&quot; title=&quot;书单&quot;&gt;&lt;/a&gt;书单&lt;/h2&gt;&lt;p&gt;依然从书单开始。今年也只看了五本书，评价如下：&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
+    
+    
+    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
+    
+    <category term="复杂系统" scheme="https://maples7.com/tags/%E5%A4%8D%E6%9D%82%E7%B3%BB%E7%BB%9F/"/>
+    
+    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
+    
+    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
+    
+    <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
+    
+    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
+    
+  </entry>
   
   <entry>
     <title>Maples7 个人开源计划（10）</title>
@@ -290,9 +324,9 @@
     
     <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
     
-    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
-    
     <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
+    
+    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     
   </entry>
   
@@ -405,9 +439,9 @@
     
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
     
-    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
-    
     <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
+    
+    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     
     <category term="Apple Developer Program" scheme="https://maples7.com/tags/Apple-Developer-Program/"/>
     
@@ -609,36 +643,9 @@
     
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     
-    <category term="指数基金" scheme="https://maples7.com/tags/%E6%8C%87%E6%95%B0%E5%9F%BA%E9%87%91/"/>
-    
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     
-  </entry>
-  
-  <entry>
-    <title>如何开始稳健投资</title>
-    <link href="https://maples7.com/2022/03/13/how-to-start-investing-soundly/"/>
-    <id>https://maples7.com/2022/03/13/how-to-start-investing-soundly/</id>
-    <published>2022-03-13T11:51:07.000Z</published>
-    <updated>2022-03-13T15:39:45.473Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;如何开始稳健投资？作为一个不单单以赚钱为目的十分业余投资者，想凭借自己四年左右的&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E4%BA%8C%E7%BA%A7%E5%B8%82%E5%9C%BA&quot;&gt;二级市场&lt;/a&gt;摸爬滚打的粗浅经验，用不断拆解标题的方式来浅显易懂的回答一下这个问题。&lt;/p&gt;
-&lt;h2 id=&quot;「投资」&quot;&gt;&lt;a href=&quot;#「投资」&quot; class=&quot;headerlink&quot; title=&quot;「投资」&quot;&gt;&lt;/a&gt;「投资」&lt;/h2&gt;&lt;h3 id=&quot;正确的金钱观&quot;&gt;&lt;a href=&quot;#正确的金钱观&quot; class=&quot;headerlink&quot; title=&quot;正确的金钱观&quot;&gt;&lt;/a&gt;正确的金钱观&lt;/h3&gt;&lt;p&gt;首先，我们的行为是「投资」，不管你的目的如何 —— 虽然我相信绝大部分人的首要目的就是实现财富增值，这很好，相当好 —— 但如果你天生或者后天养成了对金钱和财富的潜意识仇视或厌恶（这并不少见，古语有「贫贱不能移」，中华文化传统就有清贫审美观，普遍认为钱是俗物，商贾之人自古以来社会地位就不高），建议你尽早改变这个观念，先对金钱有一个正确的认识，再继续读下去。我不想在这篇博客里本末倒置做过多赘述，有这方面问题的朋友推荐看&lt;a href=&quot;https://book.douban.com/subject/35295592/&quot;&gt;《小狗钱钱》&lt;/a&gt;和&lt;a href=&quot;https://book.douban.com/subject/25816940/&quot;&gt;《富爸爸·穷爸爸》&lt;/a&gt;来解决这方面的认知问题。&lt;/p&gt;
-&lt;p&gt;另外，如果你想快速暴富，直接点「返回」或者关闭页面，谢谢。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="滚雪球" scheme="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/"/>
-    
-    
-    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
-    
-    <category term="理财" scheme="https://maples7.com/tags/%E7%90%86%E8%B4%A2/"/>
-    
-    <category term="基金" scheme="https://maples7.com/tags/%E5%9F%BA%E9%87%91/"/>
-    
-    <category term="ETF" scheme="https://maples7.com/tags/ETF/"/>
+    <category term="指数基金" scheme="https://maples7.com/tags/%E6%8C%87%E6%95%B0%E5%9F%BA%E9%87%91/"/>
     
   </entry>
   
