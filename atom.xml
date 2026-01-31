@@ -6,7 +6,7 @@
   <link href="https://maples7.com/atom.xml" rel="self"/>
   
   <link href="https://maples7.com/"/>
-  <updated>2025-12-30T18:48:14.915Z</updated>
+  <updated>2026-01-31T14:26:22.918Z</updated>
   <id>https://maples7.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Maples7 个人开源计划（11）</title>
+    <link href="https://maples7.com/2026/01/31/open-source-maples7-11/"/>
+    <id>https://maples7.com/2026/01/31/open-source-maples7-11/</id>
+    <published>2026-01-31T10:15:01.000Z</published>
+    <updated>2026-01-31T14:26:22.918Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;2026 年开年第一个月资本市场就已经是上蹿下跳了，从各种角度分析 —— 地缘政治、宏观经济、科技发展 —— 肉眼可见今年又将会是波动巨大的一年。&lt;/p&gt;
+&lt;p&gt;二级市场跌不可怕，就怕没有波动，波动可以是收益的来源之一。&lt;del&gt;尤其对 A 股而言。&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;趁着月底再写一篇作为 2026 年一月份的阶段总结。&lt;/p&gt;
+&lt;h2 id=&quot;🧑🏻‍💻-工作&quot;&gt;&lt;a href=&quot;#🧑🏻‍💻-工作&quot; class=&quot;headerlink&quot; title=&quot;🧑🏻‍💻 工作&quot;&gt;&lt;/a&gt;🧑🏻‍💻 工作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://apps.apple.com/app/beanledger/id6739036460&quot;&gt;BeanLedger App&lt;/a&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发布了一个新版本，主要实现了用户数据的导出和导入功能，也是很多用户期待已久的功能。&lt;/li&gt;
+&lt;li&gt;我几乎完全是用 AI 来实现的这个功能，只在它生成的代码的基础上做了一点微调，基本只花了几个小时就完成了从 0 到可以上线的水平。&lt;/li&gt;
+&lt;li&gt;AI 肉眼可见的能力越来越强，至少在编程领域我非常有实感，实现收敛性比较好的任务准确率已经非常高了。&lt;/li&gt;
+&lt;li&gt;但 AI 生成的代码质量只能说差强人意，可能跟我的项目并不是一开始就是 AI 来全面接管有关系，但我依然怀疑 AI 在代码工程化方面的水平，毕竟市面上的代码💩山浩如烟海，想必 AI 「吃」的也不是什么细糠。</summary>
+    
+    
+    
+    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
+    
+    
+    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
+    
+    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
+    
+    <category term="SwiftData" scheme="https://maples7.com/tags/SwiftData/"/>
+    
+    <category term="BeanLedger" scheme="https://maples7.com/tags/BeanLedger/"/>
+    
+    <category term="复式记账" scheme="https://maples7.com/tags/%E5%A4%8D%E5%BC%8F%E8%AE%B0%E8%B4%A6/"/>
+    
+    <category term="收支结构" scheme="https://maples7.com/tags/%E6%94%B6%E6%94%AF%E7%BB%93%E6%9E%84/"/>
+    
+    <category term="海螺水泥" scheme="https://maples7.com/tags/%E6%B5%B7%E8%9E%BA%E6%B0%B4%E6%B3%A5/"/>
+    
+    <category term="贵州茅台" scheme="https://maples7.com/tags/%E8%B4%B5%E5%B7%9E%E8%8C%85%E5%8F%B0/"/>
+    
+    <category term="阅读" scheme="https://maples7.com/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>2025 年书单</title>
@@ -40,11 +84,11 @@
     
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     
+    <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
+    
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     
     <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
-    
-    <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
     
     <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
     
@@ -437,9 +481,9 @@
     <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     
     
-    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
-    
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
+    
+    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     
     <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     
@@ -622,30 +666,6 @@
     <category term="电影" scheme="https://maples7.com/tags/%E7%94%B5%E5%BD%B1/"/>
     
     <category term="文化产业" scheme="https://maples7.com/tags/%E6%96%87%E5%8C%96%E4%BA%A7%E4%B8%9A/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一套大概率可行的具体投资策略</title>
-    <link href="https://maples7.com/2022/08/20/a-specific-investment-strategy/"/>
-    <id>https://maples7.com/2022/08/20/a-specific-investment-strategy/</id>
-    <published>2022-08-20T14:16:08.000Z</published>
-    <updated>2022-11-10T17:05:28.964Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;这一篇是接着上一篇&lt;a href=&quot;https://maples7.com/2022/03/13/how-to-start-investing-soundly/&quot;&gt;《如何开始稳健投资》&lt;/a&gt;的思路，把具体的投资策略细化。在上一篇里，我们解决了一些原则性的思路问题，同时对如何进行稳健投资做了粗略的概括，话题包括为什么要用几乎不会死的指数基金作为投资标的、本金从哪来、大体上如何买入卖出等。再次申明，我所有的这些投资策略的理论、方法和实践经验几乎都来自对&lt;a href=&quot;https://weibo.com/u/5687069307&quot;&gt;ETF 拯救世界&lt;/a&gt;所公开的投资策略的跟投、模仿和实践，绝非本人原创。在这一篇里我想实现的是对这一套体系的整体粗略概括，同时又具体到一些必要的关于资本配置的细节，写下来也许对于我个人的意义更大一些&lt;del&gt;，毕竟谁没有幻想过自己突然哪一天突然失忆了呢&lt;/del&gt;。&lt;/p&gt;
-&lt;p&gt;既然是「具体投资策略」，一定要有必要的细节。但事先声明，这些细节只是我正在实践的细节，并不代表任何人拿去就可以直接套用，比如其中的资金配比、仓位配比等等，都不一定得是我接下来要说的那个比例，因为有一些比例只是根据市场历史得出的实践经验，并没有很 solid 的理论支撑。如果你也要跟着这一套策略实践，请根据自身的实际情况进行相应的调整，只要大致的方向和思路没问题就行。投资，很多时候&lt;a href=&quot;http://www.globalhha.com/doclib/index.php?m=Home&amp;c=article&amp;a=viewarticle&amp;id=16&quot;&gt;要追求一种「模糊的正确」，而不要「精确的错误」&lt;/a&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="滚雪球" scheme="https://maples7.com/categories/%E6%BB%9A%E9%9B%AA%E7%90%83/"/>
-    
-    
-    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
-    
-    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
-    
-    <category term="指数基金" scheme="https://maples7.com/tags/%E6%8C%87%E6%95%B0%E5%9F%BA%E9%87%91/"/>
     
   </entry>
   
