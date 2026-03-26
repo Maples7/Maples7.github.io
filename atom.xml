@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-03-26T05:26:50.627Z</updated>
+  <updated>2026-03-26T05:28:21.016Z</updated>
   <entry>
     <author>
       <name>Maples7</name>
@@ -21,6 +21,7 @@
     <category term="工作" scheme="https://maples7.com/tags/%E5%B7%A5%E4%BD%9C/"/>
     <category term="自由意志" scheme="https://maples7.com/tags/%E8%87%AA%E7%94%B1%E6%84%8F%E5%BF%97/"/>
     <category term="成长" scheme="https://maples7.com/tags/%E6%88%90%E9%95%BF/"/>
+    <category term="段永平" scheme="https://maples7.com/tags/%E6%AE%B5%E6%B0%B8%E5%B9%B3/"/>
     <id>https://maples7.com/2026/03/26/talking-to-ai-is-really-addictive/</id>
     <link href="https://maples7.com/2026/03/26/talking-to-ai-is-really-addictive/"/>
     <published>2026-03-26T04:30:14.000Z</published>
@@ -32,7 +33,7 @@
 <p>继续拿开发代码举例。过去，相对于「Ctrl-C + Ctrl-V 工程师」，我们推崇「古法编程」的「手艺人」和「代码洁癖」，但在 AI 时代，你只需要了解代码里哪些地方、哪些功能存在改进空间，并能正确地发问，你能比「古法编程」的「手艺人」做得更好。这就是现在被神话化的「提示词工程（Prompt Engineering）」，但我认为它本质上还是程序员底层能力的体现 —— 如果你连好代码长什么样都没见过，你根本写不出像样的 Prompt。</p>]]>
     </summary>
     <title>跟 AI 对话，真的很上瘾</title>
-    <updated>2026-03-26T05:26:50.627Z</updated>
+    <updated>2026-03-26T05:28:21.016Z</updated>
   </entry>
   <entry>
     <author>
