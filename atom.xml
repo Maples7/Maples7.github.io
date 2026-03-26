@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-03-26T05:19:45.170Z</updated>
+  <updated>2026-03-26T05:22:34.318Z</updated>
   <entry>
     <author>
       <name>Maples7</name>
@@ -23,10 +23,13 @@
     <published>2026-03-26T04:30:14.000Z</published>
     <summary>
       <![CDATA[<p>最近写代码的过程中我发现，跟 AI 对话是一件极其容易让人「上瘾」的事。</p>
-<p>这种上瘾并非来自廉价的多巴胺，而是一种高强度的脑力共振。尤其在你比较熟悉的专业领域 —— 比如某个复杂的代码任务 —— 你很清楚哪些地方可以做得更多、更好，于是你开始不断对 AI 提问，]]>
+<p>这种上瘾并非来自廉价的多巴胺，而是一种高强度的脑力共振。尤其在你比较熟悉的专业领域 —— 比如某个复杂的代码任务 —— 你很清楚哪些地方可以做得更多、更好，于是你开始不断对 AI 提问，不断 push AI 的边界。</p>
+<p>现在的 AI 能力，往往能给出令你眼前一亮的、甚至比你预想中更全面完整的解决方案。在软件开发领域，AI 的任务执行和落地能力，绝对已经在平均水平以上了。只要你有问题，尽管问，它基本都能接住。</p>
+<p><strong>在这种背景下，职业的分水岭变了：Know-How 正在变得不重要，而 Know-What 和 Know-Why 的价值正被无限放大。</strong></p>
+<p>继续拿开发代码举例。过去，相对于「Ctrl-C + Ctrl-V 工程师」，我们推崇「古法编程」的「手艺人」和「代码洁癖」，但在 AI 时代，你只需要了解代码里哪些地方、哪些功能存在改进空间，并能正确地发问，你能比「古法编程」的「手艺人」做得更好。这就是现在被神话化的「提示词工程（Prompt Engineering）」，但我认为它本质上还是程序员底层能力的体现 —— 如果你连好代码长什么样都没见过，你根本写不出像样的 Prompt。</p>]]>
     </summary>
     <title>跟 AI 对话，真的很上瘾</title>
-    <updated>2026-03-26T05:19:45.170Z</updated>
+    <updated>2026-03-26T05:22:34.318Z</updated>
   </entry>
   <entry>
     <author>
@@ -86,10 +89,10 @@
     </author>
     <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
     <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     <category term="复杂系统" scheme="https://maples7.com/tags/%E5%A4%8D%E6%9D%82%E7%B3%BB%E7%BB%9F/"/>
-    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
+    <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
+    <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
     <id>https://maples7.com/2025/12/31/2025-booklist/</id>
