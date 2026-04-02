@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-04-02T09:25:26.998Z</updated>
+  <updated>2026-04-02T09:31:03.917Z</updated>
   <entry>
     <author>
       <name>Maples7</name>
@@ -29,10 +29,13 @@
     <summary>
       <![CDATA[<p>最近两周，我一直在跟 AI 高强度「结对编程」，从早到晚，几乎把市面上所有顶尖的编程大模型都用了个遍。</p>
 <p>先说结论：<strong>我大概率以后不会再手写任何一行代码了</strong>。</p>
-<p>我知道这个结论听起来有点夸张，但请容我慢慢展开。</p>]]>
+<p>我知道这个结论听起来有点夸张，但请容我慢慢展开。</p>
+<h2 id="去年的体验并不好"><a href="#去年的体验并不好" class="headerlink" title="去年的体验并不好"></a>去年的体验并不好</h2><p>去年我就尝试过一些 AI 编程工具。坦率地说，感觉噱头大于实质。功能确实能跑起来，但代码质量和风格让我不敢苟同——倒不是说实现不了需求，而是那种「能用但你不敢长期维护」的代码。变量命名缺乏语义，架构设计随心所欲，一旦想到未来还需要自己亲手维护和迭代这些代码，效率其实不升反降。去年我的判断是：再等等，还不够成熟。</p>
+<h2 id="但-2026-年的情况，完全不一样了"><a href="#但-2026-年的情况，完全不一样了" class="headerlink" title="但 2026 年的情况，完全不一样了"></a>但 2026 年的情况，完全不一样了</h2><p>这两周高强度使用下来，我不得不承认一个让程序员自尊心有点受伤的事实：<strong>现在顶尖 AI 的编程能力和水平，已经在我之上了</strong>。不是「差不多」，不是「某些场景下还不错」，而是在代码质量、架构设计、技术选型等几乎每一个环节上的全面超越。偶尔 review 她写出来的代码，甚至会让我自惭形秽——「这个解法我怎么没想到？」</p>
+<p>从效率上看就更夸张了。在代码质量差不多的前提下，AI 一天的产出效率基本等于我纯手写两周到一个月的效率。注意，这还是在我反复 review 她的产出、反复要求迭代优化、不断尝试不同分支方案的情况下。如果完全放手不管，速度还能翻几倍——当然代价是代码可能偏离我的预期。</p>]]>
     </summary>
     <title>2026，令人兴奋的 AI 生产力元年</title>
-    <updated>2026-04-02T09:25:26.998Z</updated>
+    <updated>2026-04-02T09:31:03.917Z</updated>
   </entry>
   <entry>
     <author>
@@ -120,8 +123,8 @@
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
+    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     <id>https://maples7.com/2025/12/31/2025-booklist/</id>
     <link href="https://maples7.com/2025/12/31/2025-booklist/"/>
     <published>2025-12-31T02:59:54.000Z</published>
@@ -341,8 +344,8 @@
     <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
     <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
     <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
-    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
+    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     <id>https://maples7.com/2024/12/31/2024-booklist/</id>
     <link href="https://maples7.com/2024/12/31/2024-booklist/"/>
     <published>2024-12-31T09:18:33.000Z</published>
@@ -427,8 +430,8 @@
     </author>
     <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
+    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
     <category term="Apple Developer Program" scheme="https://maples7.com/tags/Apple-Developer-Program/"/>
     <category term="SwiftData" scheme="https://maples7.com/tags/SwiftData/"/>
     <category term="郑钦文" scheme="https://maples7.com/tags/%E9%83%91%E9%92%A6%E6%96%87/"/>
