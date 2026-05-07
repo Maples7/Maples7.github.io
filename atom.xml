@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-05-07T06:28:07.495Z</updated>
+  <updated>2026-05-07T06:44:47.527Z</updated>
   <entry>
     <author>
       <name>Maples7</name>
@@ -29,10 +29,10 @@
       <![CDATA[<p>用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：<strong>AI 的瓶颈不是写代码，而是 Xcode 的构建环境。</strong></p>
 <p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，SwiftPM 的 Package.resolved 被对方覆盖，模拟器被另一个任务抢走……结果就是一堆「在我这能跑啊」的灵异 bug，折腾半天发现根本不是代码的问题，是构建环境被污染了。</p>
 <p>为了解决这个问题，我写了一个工具：<a href="https://github.com/Maples7/VibeChard">VibeChard</a>（简称 <code>vch</code>）。</p>
-<p><img src="/uploads/vch-architecture.png" alt="VibeChard 架构：每个 Agent 独占一份编译产物 + 模拟器"></p>]]>
+<p><img src="/uploads/vch-hero.png" alt="VibeChard：不用 vch 报错满屏 vs 用上 vch 三个 Agent 零冲突"></p>]]>
     </summary>
     <title>当 AI 和 Xcode 打架时：我写了个工具来拉架</title>
-    <updated>2026-05-07T06:28:07.495Z</updated>
+    <updated>2026-05-07T06:44:47.527Z</updated>
   </entry>
   <entry>
     <author>

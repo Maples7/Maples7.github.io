@@ -30,9 +30,10 @@
 <meta property="og:site_name" content="Maples7&#39;s Blog">
 <meta property="og:description" content="用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：AI 的瓶颈不是写代码，而是 Xcode 的构建环境。 BeanLedger 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，Sw">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://maples7.com/uploads/vch-architecture.png">
+<meta property="og:image" content="https://maples7.com/uploads/vch-hero.png">
+<meta property="og:image" content="https://maples7.com/uploads/vch-demo.gif">
 <meta property="article:published_time" content="2026-05-08T02:30:00.000Z">
-<meta property="article:modified_time" content="2026-05-07T06:28:07.495Z">
+<meta property="article:modified_time" content="2026-05-07T06:44:47.527Z">
 <meta property="article:author" content="Maples7">
 <meta property="article:tag" content="BeanLedger">
 <meta property="article:tag" content="Xcode">
@@ -41,7 +42,7 @@
 <meta property="article:tag" content="独立开发">
 <meta property="article:tag" content="编程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://maples7.com/uploads/vch-architecture.png">
+<meta name="twitter:image" content="https://maples7.com/uploads/vch-hero.png">
 
 
 <link rel="canonical" href="https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/">
@@ -308,7 +309,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-05-07 14:28:07" itemprop="dateModified" datetime="2026-05-07T14:28:07+08:00">2026-05-07</time>
+      <time title="修改时间：2026-05-07 14:44:47" itemprop="dateModified" datetime="2026-05-07T14:44:47+08:00">2026-05-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -368,7 +369,7 @@
     <div class="post-body" itemprop="articleBody"><p>用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：<strong>AI 的瓶颈不是写代码，而是 Xcode 的构建环境。</strong></p>
 <p><a target="_blank" rel="noopener" href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，SwiftPM 的 Package.resolved 被对方覆盖，模拟器被另一个任务抢走……结果就是一堆「在我这能跑啊」的灵异 bug，折腾半天发现根本不是代码的问题，是构建环境被污染了。</p>
 <p>为了解决这个问题，我写了一个工具：<a target="_blank" rel="noopener" href="https://github.com/Maples7/VibeChard">VibeChard</a>（简称 <code>vch</code>）。</p>
-<p><img data-src="/uploads/vch-architecture.png" alt="VibeChard 架构：每个 Agent 独占一份编译产物 + 模拟器"></p>
+<p><img data-src="/uploads/vch-hero.png" alt="VibeChard：不用 vch 报错满屏 vs 用上 vch 三个 Agent 零冲突"></p>
 <span id="more"></span>
 
 <h2 id="问题到底出在哪"><a href="#问题到底出在哪" class="headerlink" title="问题到底出在哪"></a>问题到底出在哪</h2><p>先说清楚到底痛在哪里，不然光看解决方案没有体感。</p>
@@ -390,6 +391,7 @@
 <p><strong>对 AI Agent 完全透明</strong>——它不需要知道 vch 的存在，照常调用 <code>xcodebuild</code> 就行，隔离是在底层自动完成的。这一点很重要，因为你不希望每个 AI 指令文件里都要教 Agent「记得加 <code>-derivedDataPath</code> flag」。</p>
 <h3 id="第三层：模拟器隔离"><a href="#第三层：模拟器隔离" class="headerlink" title="第三层：模拟器隔离"></a>第三层：模拟器隔离</h3><p>每个任务在第一次需要模拟器时，vch 会从系统模板惰性克隆一个专属的模拟器实例。两个任务各自有各自的 iPhone 16，装 App、跑测试互不影响。任务结束时模拟器自动清理。</p>
 <h2 id="实际开发流程"><a href="#实际开发流程" class="headerlink" title="实际开发流程"></a>实际开发流程</h2><p>说了这么多原理，来看 BeanLedger 的实际日常。</p>
+<p><img data-src="/uploads/vch-demo.gif" alt="vch 实际操作演示"></p>
 <p>安装就一行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install maples7/tap/vch</span><br></pre></td></tr></table></figure>
 
