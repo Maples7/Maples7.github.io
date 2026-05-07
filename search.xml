@@ -3761,6 +3761,7 @@ _Farewell and thanks to each for the company_
 <p>更要命的是，这不是个「偶尔发生」的问题。在 Vibe Coding 的工作模式下——同时让多个 AI Agent 并行处理不同任务——这几乎是<strong>每天都会遇到的事</strong>。你要么花大量时间手动清缓存、重启模拟器、串行跑构建，要么就接受构建结果不可信的现实。</p>
 <p>两个选项都不可接受。</p>
 <h2 id="VibeChard：三层隔离"><a href="#VibeChard：三层隔离" class="headerlink" title="VibeChard：三层隔离"></a>VibeChard：三层隔离</h2><p><a href="https://github.com/Maples7/VibeChard">VibeChard</a> 的思路很直接：<strong>给每个 AI Agent 任务一个完全隔离的构建环境</strong>。做法是三层隔离：</p>
+<p><img data-src="/uploads/vch-architecture.png" alt="VibeChard 三层隔离架构"></p>
 <h3 id="第一层：Git-Worktree-隔离代码"><a href="#第一层：Git-Worktree-隔离代码" class="headerlink" title="第一层：Git Worktree 隔离代码"></a>第一层：Git Worktree 隔离代码</h3><p>每个任务用 <code>vch new &lt;name&gt;</code> 创建一个独立的 <a href="https://git-scm.com/docs/git-worktree">Git Worktree</a>，放在 <code>../BeanLedger-&lt;name&gt;</code> 目录下，对应一个 <code>agent/&lt;name&gt;</code> 分支。</p>
 <p>Worktree 的好处是它跟主仓库共享 Git 对象数据库——不会像 <code>git clone</code> 那样复制一整份代码，磁盘开销很小，创建也是瞬间完成。但每个 Worktree 有自己独立的工作区和索引，互不干扰。</p>
 <h3 id="第二层：构建产物隔离"><a href="#第二层：构建产物隔离" class="headerlink" title="第二层：构建产物隔离"></a>第二层：构建产物隔离</h3><p>这是核心。每个 Worktree 下有一个 <code>.vch/</code> 目录，里面包含了这个任务专属的 DerivedData、ModuleCache、SwiftPM 缓存、xcresult 目录。</p>
