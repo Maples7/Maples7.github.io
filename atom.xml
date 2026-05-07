@@ -10,7 +10,31 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-04-02T09:31:03.917Z</updated>
+  <updated>2026-05-07T04:56:53.373Z</updated>
+  <entry>
+    <author>
+      <name>Maples7</name>
+    </author>
+    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
+    <category term="人工智能" scheme="https://maples7.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="编程" scheme="https://maples7.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    <category term="独立开发" scheme="https://maples7.com/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/"/>
+    <category term="BeanLedger" scheme="https://maples7.com/tags/BeanLedger/"/>
+    <category term="多语言" scheme="https://maples7.com/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/"/>
+    <category term="App Store" scheme="https://maples7.com/tags/App-Store/"/>
+    <id>https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/</id>
+    <link href="https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/"/>
+    <published>2026-05-07T02:30:00.000Z</published>
+    <summary>
+      <![CDATA[<p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 目前支持 17 种语言。半年前如果有人跟我说，一个独立开发者能把一个 App 做到 17 种语言上架全球市场——每种语言都有本地化的营销截图、App Store 文案和应用内翻译——我大概率会觉得他在吹牛。</p>
+<p>但事实就是，我做到了。靠的是 AI。</p>
+<h2 id="为什么要做这么多语言"><a href="#为什么要做这么多语言" class="headerlink" title="为什么要做这么多语言"></a>为什么要做这么多语言</h2><p>道理很朴素：App Store 是一个全球市场，绝大多数用户只会用母语搜索和下载 App。一个只有英文和中文的记账应用，在日本、韩国、巴西、土耳其的用户眼里基本等于不存在。<strong>多语言不是锦上添花，而是触达用户的基本功。</strong></p>
+<p>但传统的多语言开发是什么体验？找翻译公司报价、逐条对照翻译、来回校对、等待交付——光想想这个流程就头大，成本和周期足以劝退大部分独立开发者。更别提每次发版更新文案和截图时，这套流程还得再走一遍。</p>
+<p><strong>过去的多语言开发，本质上是只有大公司才玩得起的游戏。</strong> AI 彻底改变了这个局面。</p>]]>
+    </summary>
+    <title>用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践</title>
+    <updated>2026-05-07T04:56:53.373Z</updated>
+  </entry>
   <entry>
     <author>
       <name>Maples7</name>
@@ -498,26 +522,5 @@
     </summary>
     <title>2023 年书单</title>
     <updated>2024-05-16T08:19:08.963Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>Maples7</name>
-    </author>
-    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
-    <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    <category term="工作" scheme="https://maples7.com/tags/%E5%B7%A5%E4%BD%9C/"/>
-    <category term="热情" scheme="https://maples7.com/tags/%E7%83%AD%E6%83%85/"/>
-    <category term="微软" scheme="https://maples7.com/tags/%E5%BE%AE%E8%BD%AF/"/>
-    <category term="离职" scheme="https://maples7.com/tags/%E7%A6%BB%E8%81%8C/"/>
-    <id>https://maples7.com/2023/07/25/why-i-leave-microsoft/</id>
-    <link href="https://maples7.com/2023/07/25/why-i-leave-microsoft/"/>
-    <published>2023-07-25T09:24:43.000Z</published>
-    <summary>
-      <![CDATA[<p>没错，经过长时间反复的考量，我终于还是从微软主动离职了。</p>
-<p>我知道，在现在这个经济下行的周期阶段，从一个相对稳定、福利待遇又还不错的全球顶尖公司离职是一件很需要勇气的事情，尤其主动离职也没有任何补偿，甚至都不能申请失业金，但目前我依然认为我做出了一个大胆但正确的选择。暂且先卖个关子，我把我为什么从微软离职的直接原因先放一边，我想先在这篇博客说说什么是我理解的「热情、工作与理想主义」。其实，即便不离职我也已经想写这个话题很久了，但离职正好给了我一个更好的契机来谈论这个话题。</p>
-<h2 id="理想主义"><a href="#理想主义" class="headerlink" title="理想主义"></a>理想主义</h2><p>我知道在这个年轻人解构一切的时代，「理想主义」在社交媒体的诸多语境下甚至都成了一个贬义词，但近几年我还是越来越自诩为<a href="https://twitter.com/Maples67">「坚定的理想主义者」</a>。一句话概括的话，我认为「理想主义」就是<strong>任何事情都要首先从其本质或普世价值上思考并行动</strong>。从本质和本源上开始思考，才能明辨是非、分清主次关系、把握逻辑重点。把这样的「理想主义」应用到工作上，就是要有热情的去做尽可能有意义的事情，而不是所谓的「工作就理所应当的仅仅只是一份工作」而已。</p>]]>
-    </summary>
-    <title>热情、工作与理想主义｜为什么我要离开微软</title>
-    <updated>2024-11-10T04:59:38.997Z</updated>
   </entry>
 </feed>

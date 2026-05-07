@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":true,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="BeanLedger 目前支持 17 种语言。半年前如果有人跟我说，一个独立开发者能把一个 App 做到 17 种语言上架全球市场——每种语言都有本地化的营销截图、App Store 文案和应用内翻译——我大概率会觉得他在吹牛。 但事实就是，我做到了。靠的是 AI。 为什么要做这么多语言道理很朴素：App Store 是一个全球市场，绝大多数用户只会用母语搜索和下载 App。一个只有英文和中文的记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践">
+<meta property="og:url" content="https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/">
+<meta property="og:site_name" content="Maples7&#39;s Blog">
+<meta property="og:description" content="BeanLedger 目前支持 17 种语言。半年前如果有人跟我说，一个独立开发者能把一个 App 做到 17 种语言上架全球市场——每种语言都有本地化的营销截图、App Store 文案和应用内翻译——我大概率会觉得他在吹牛。 但事实就是，我做到了。靠的是 AI。 为什么要做这么多语言道理很朴素：App Store 是一个全球市场，绝大多数用户只会用母语搜索和下载 App。一个只有英文和中文的记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-07T02:30:00.000Z">
+<meta property="article:modified_time" content="2026-05-07T04:56:53.373Z">
+<meta property="article:author" content="Maples7">
+<meta property="article:tag" content="App Store">
+<meta property="article:tag" content="BeanLedger">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="多语言">
+<meta property="article:tag" content="独立开发">
+<meta property="article:tag" content="编程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/","path":"2026/05/07/multilingual-development-with-ai-beanledger-in-practice/","title":"用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践 | Maples7's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@7.2.0/dist/browser/pangu.umd.js" integrity="sha256-JnmRRnJK7DC6RQJbAJb6AXOM9OmWzS6z8eYultk/48Y=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/bookmark.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha256-44BednzIpUeQJcY8qtLyarFu0UCCTbgmWOvaoehiFQQ=" crossorigin="anonymous" defer></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/"}</script>
+  <script src="/js/third-party/quicklink.js" defer></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Maples7's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Maples7's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">146</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a></li><li class="menu-item menu-item-作品"><a href="/apps/" rel="section"><i class="fa-brands fa-app-store-ios fa-fw"></i>作品</a></li><li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%81%9A%E8%BF%99%E4%B9%88%E5%A4%9A%E8%AF%AD%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">为什么要做这么多语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%86%85%E7%BF%BB%E8%AF%91%EF%BC%9Axcstrings-AI-%E6%89%B9%E9%87%8F%E7%BF%BB%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">应用内翻译：xcstrings + AI 批量翻译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E4%B8%80%E8%87%B4%E6%80%A7%E6%98%AF%E7%BF%BB%E8%AF%91%E8%B4%A8%E9%87%8F%E7%9A%84%E7%94%9F%E5%91%BD%E7%BA%BF"><span class="nav-number">2.1.</span> <span class="nav-text">术语一致性是翻译质量的生命线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%89%B9%E9%87%8F%E7%BF%BB%E8%AF%91%E5%BF%85%E9%A1%BB%E5%88%86%E6%89%B9"><span class="nav-number">2.2.</span> <span class="nav-text">大批量翻译必须分批</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E4%B8%80%E7%A7%8D%E8%AF%AD%E8%A8%80%E8%A6%81%E5%A4%9A%E4%B9%85%EF%BC%9F"><span class="nav-number">2.3.</span> <span class="nav-text">新增一种语言要多久？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#App-Store-%E6%96%87%E6%A1%88%EF%BC%9A%E4%B8%80%E4%BB%BD%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%AE%A1-17-%E7%A7%8D%E8%AF%AD%E8%A8%80"><span class="nav-number">3.</span> <span class="nav-text">App Store 文案：一份配置文件管 17 种语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%90%A5%E9%94%80%E6%88%AA%E5%9B%BE%EF%BC%9ANext-js-%E6%B8%B2%E6%9F%93-%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AF%BC%E5%87%BA"><span class="nav-number">4.</span> <span class="nav-text">营销截图：Next.js 渲染 + 自动化导出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A9-AI-%E8%AE%B0%E4%BD%8F%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%99"><span class="nav-number">5.</span> <span class="nav-text">让 AI 记住你的规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%BA%90%E5%87%BA%E6%9D%A5%E4%BA%86"><span class="nav-number">5.1.</span> <span class="nav-text">开源出来了</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E4%BA%BA-%E4%B8%80%E4%B8%AA%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%9B%A2%E9%98%9F"><span class="nav-number">6.</span> <span class="nav-text">一个人 &#x3D; 一个多语言团队</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E6%9D%A1%E5%AE%9E%E6%88%98%E7%BB%8F%E9%AA%8C"><span class="nav-number">7.</span> <span class="nav-text">几条实战经验</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Maples7"
+      src="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+  <p class="site-author-name" itemprop="name">Maples7</p>
+  <div class="site-description" itemprop="description">知行合一</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Maples7" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Maples7" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://mp.weixin.qq.com/s/HGeJgFwulVlKGVSgbseing" title="微信公众号 → https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;HGeJgFwulVlKGVSgbseing" rel="noopener me" target="_blank"><i class="fab fa-weixin fa-fw"></i>微信公众号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/5936284f6f02d67ef5665bdc" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;5936284f6f02d67ef5665bdc" rel="noopener me" target="_blank"><i class="fa fa-book fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/maples7" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;maples7" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/82391888/" title="豆瓣 → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;82391888&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-book-reader fa-fw"></i>豆瓣</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/3888197280" title="微博 → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;3888197280" rel="noopener me" target="_blank"><i class="fab fa-weibo fa-fw"></i>微博</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Maples67" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Maples67" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://maples7.tuchong.com/" title="图虫 → https:&#x2F;&#x2F;maples7.tuchong.com&#x2F;" rel="noopener me" target="_blank"><i class="fa-solid fa-camera fa-fw"></i>图虫</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maples7@163.com" title="邮箱 → mailto:maples7@163.com" rel="noopener me" target="_blank"><i class="fas fa-at fa-fw"></i>邮箱</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://cv.maples7.com/" title="简历 → https:&#x2F;&#x2F;cv.maples7.com" rel="noopener me" target="_blank"><i class="fas fa-file fa-fw"></i>简历</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+      <meta itemprop="name" content="Maples7">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="知行合一">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践 | Maples7's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-05-07 10:30:00 / 修改时间：12:56:53" itemprop="dateCreated datePublished" datetime="2026-05-07T10:30:00+08:00">2026-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" itemprop="url" rel="index"><span itemprop="name">一只代码狗的自我修养</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2026/05/07/multilingual-development-with-ai-beanledger-in-practice/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><a target="_blank" rel="noopener" href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 目前支持 17 种语言。半年前如果有人跟我说，一个独立开发者能把一个 App 做到 17 种语言上架全球市场——每种语言都有本地化的营销截图、App Store 文案和应用内翻译——我大概率会觉得他在吹牛。</p>
+<p>但事实就是，我做到了。靠的是 AI。</p>
+<h2 id="为什么要做这么多语言"><a href="#为什么要做这么多语言" class="headerlink" title="为什么要做这么多语言"></a>为什么要做这么多语言</h2><p>道理很朴素：App Store 是一个全球市场，绝大多数用户只会用母语搜索和下载 App。一个只有英文和中文的记账应用，在日本、韩国、巴西、土耳其的用户眼里基本等于不存在。<strong>多语言不是锦上添花，而是触达用户的基本功。</strong></p>
+<p>但传统的多语言开发是什么体验？找翻译公司报价、逐条对照翻译、来回校对、等待交付——光想想这个流程就头大，成本和周期足以劝退大部分独立开发者。更别提每次发版更新文案和截图时，这套流程还得再走一遍。</p>
+<p><strong>过去的多语言开发，本质上是只有大公司才玩得起的游戏。</strong> AI 彻底改变了这个局面。</p>
+<span id="more"></span>
+
+<h2 id="应用内翻译：xcstrings-AI-批量翻译"><a href="#应用内翻译：xcstrings-AI-批量翻译" class="headerlink" title="应用内翻译：xcstrings + AI 批量翻译"></a>应用内翻译：xcstrings + AI 批量翻译</h2><p>BeanLedger 使用 Xcode 原生的 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog"><code>.xcstrings</code>（String Catalog）</a>来管理所有本地化字符串。整个应用有三个 xcstrings 文件：<code>Localizable.xcstrings</code> 负责主界面文案，<code>InfoPlist.xcstrings</code> 负责系统权限描述等系统级文本，<code>AppShortcuts.xcstrings</code> 负责 Siri 和快捷指令的语音短语——三个文件加起来，覆盖了用户在 App 内、系统层和语音交互中能看到的所有文字。</p>
+<p>新增一个 feature 写完英文原文后，翻译流程其实很直接：告诉 AI「翻译这些新增的 key」，它自动识别所有待翻译条目，一口气输出 16 种目标语言的翻译。翻译前会先扫描已有翻译里的术语——比如「Transaction」在日语里一直译为「取引」，韩语里一直是「거래」——然后严格复用，不会突然换个说法。翻出来的结果里，占位符（<code>%@</code>、<code>%lld</code>）、Markdown 格式、品牌名「BeanLedger」都原封不动待在正确位置，CJK 语言也会自动用全角标点。</p>
+<p>听上去好像没什么难的？但真正让这套流程稳定跑起来的，是我踩了无数坑之后攒出来的一套规则。</p>
+<h3 id="术语一致性是翻译质量的生命线"><a href="#术语一致性是翻译质量的生命线" class="headerlink" title="术语一致性是翻译质量的生命线"></a>术语一致性是翻译质量的生命线</h3><p>这是我吃过最大的亏：<strong>术语一致性比单条翻译的优雅程度重要十倍。</strong></p>
+<p>早期没特别注意这一点，AI 每次翻译时可能对同一个概念用不同的词——「Account」这条译成「账户」，那条又变成了「帐户」。中文语境里你可能觉得差别不大，但放到德语、波兰语这种有复杂词形变化的语言里，术语不统一直接影响用户理解。</p>
+<p>后来我在项目的 AI 指令文件里加了一条硬规则：<strong>翻译任何新 key 之前，必须先扫描同语言已有翻译，提取术语表，严格复用。</strong> 发现已有翻译本身不一致？那就在同一次修改中统一修正，绝不允许引入第三种说法。</p>
+<p>这条规则落地之后，翻译质量有了质的飞跃。</p>
+<h3 id="大批量翻译必须分批"><a href="#大批量翻译必须分批" class="headerlink" title="大批量翻译必须分批"></a>大批量翻译必须分批</h3><p>另一个血泪教训：<strong>长翻译列表绝对不能一口气翻完。</strong></p>
+<p>这听起来像是一条「AI 使用技巧」，但它直接关系到翻译工作的成败。200 个 key 翻 16 种语言，让 AI 一次性全部输出，它几乎一定会中途截断或者后半段质量下滑。结果是你既不知道翻到哪了，也不确定已翻的部分质量是否稳定——全部推倒重来比挨个检查还快。</p>
+<p>我现在的做法是强制分批：默认每批 20-30 个 key，长文本或需要处理复数变体（比如波兰语有 <code>one</code>&#x2F;<code>few</code>&#x2F;<code>many</code>&#x2F;<code>other</code> 四种复数形式）时再减半。每批翻完报告进度，下一批从断点继续。术语表在第一批之前就锁定，贯穿全程。</p>
+<p>这个规则我直接写进了项目的 AI 指令文件，标注为「硬性规则，不是建议」。凡是没遵守的翻译任务，最后几乎都返工了。</p>
+<h3 id="新增一种语言要多久？"><a href="#新增一种语言要多久？" class="headerlink" title="新增一种语言要多久？"></a>新增一种语言要多久？</h3><p>当 BeanLedger 从只有中英文扩展到 17 种语言时，每新增一门语言的流程是：先让 AI 产出这门语言的术语表（Glossary），把「Transaction」「Account」「Category」「Budget」这些核心概念的译法钉死；术语表确认后，再按批次翻译所有 key——翻译时要求 AI 写地道的本地表达，而不是从英文逐字硬译，这对用户体验影响巨大。</p>
+<p>整个流程下来，新增一种语言大概不到半小时。搁过去，这至少是几周的工作量。</p>
+<h2 id="App-Store-文案：一份配置文件管-17-种语言"><a href="#App-Store-文案：一份配置文件管-17-种语言" class="headerlink" title="App Store 文案：一份配置文件管 17 种语言"></a>App Store 文案：一份配置文件管 17 种语言</h2><p>应用内翻译搞定了 App 内部的事，但上架 <a target="_blank" rel="noopener" href="https://apps.apple.com/app/beanledger/id6739036460">App Store</a> 还有另一大块：<strong>每种语言的商店页面文案和截图</strong>。</p>
+<p>BeanLedger 用一个 <code>store.config.json</code> 作为所有 App Store 元数据的 Single Source of Truth。这个方案基于 Expo 的 <a target="_blank" rel="noopener" href="https://docs.expo.dev/eas/">EAS CLI</a> 工具链——虽然 BeanLedger 是纯原生 Swift 项目，但 EAS 的 <code>eas metadata</code> 命令提供了一套还不错的 App Store Connect 元数据管理规范：标题、副标题、关键词、描述、促销文案、更新日志，以及每种设备尺寸的截图路径——17 种语言，全部集中在这一个 JSON 文件里，纳入 Git 版本控制。</p>
+<p>围绕这个配置文件有三条命令：</p>
+<ul>
+<li><code>npm run metadata:pull</code>：从 <a target="_blank" rel="noopener" href="https://appstoreconnect.apple.com/">App Store Connect</a> 拉取线上数据到本地</li>
+<li><code>npm run metadata:lint</code>：校验字数限制、必填字段等规则</li>
+<li><code>npm run metadata:push</code>：一键推送到 App Store Connect 草稿</li>
+</ul>
+<p>每次发版的流程就是：让 AI 根据本次改动写好 17 种语言的更新日志，填入配置文件，lint 一遍，push。过去需要一两天的多语言文案更新，现在半小时。</p>
+<p>有一点让我觉得很有意思：不同语言的 App Store 描述其实不该是简单互译。日语天然比英语更含蓄礼貌，巴西葡萄牙语更热情奔放，德语则偏严谨正式。AI 翻译时能自然地适配每种语言的表达调性——换成传统外包，你得给每种语言的翻译者单独写 brief 说明语气要求，光这个沟通成本就够喝一壶的。</p>
+<h2 id="营销截图：Next-js-渲染-自动化导出"><a href="#营销截图：Next-js-渲染-自动化导出" class="headerlink" title="营销截图：Next.js 渲染 + 自动化导出"></a>营销截图：Next.js 渲染 + 自动化导出</h2><p>App Store 截图是多语言开发里最让人头大的部分——<strong>17 种语言 × 2 种设备尺寸（iPhone + iPad）× 10 张截图 &#x3D; 340 张图</strong>。手动做的话，光截图加标注就够忙一个星期。</p>
+<p>BeanLedger 的做法是在项目里内嵌了一个 <a target="_blank" rel="noopener" href="https://nextjs.org/">Next.js</a> 应用作为截图生成器。整套流程——从模拟器上截取原始界面图，到渲染出带营销文案和设备边框的最终 App Store 截图——全部由 AI 编写的自动化脚本完成，我自己没手写过一行截图相关的代码。具体来说：先在模拟器上按预定义的截图清单（<code>capture-manifest.yaml</code>）自动截取各语言的原始界面截图；然后 Next.js 读取这些原始截图，渲染成带本地化营销文案和设备边框的完整 App Store 截图；最后通过 <a target="_blank" rel="noopener" href="https://playwright.dev/">Playwright</a> 自动导出 PNG 到指定目录，按语言和设备尺寸归类。</p>
+<p>从截图到导出，就这几条命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pnpm screenshot:batch      <span class="comment"># 批量截取原始截图</span></span><br><span class="line">pnpm screenshot:<span class="built_in">export</span>      <span class="comment"># 渲染并导出 App Store 截图</span></span><br><span class="line">pnpm screenshot:validate    <span class="comment"># 校验导出图片的尺寸和格式</span></span><br></pre></td></tr></table></figure>
+
+<p>这套流程最大的好处是<strong>可重复</strong>：每次发版重新截一遍图就行，营销文案改配置文件，不用重新设计任何东西。而且所有语言的布局风格完全一致——不会出现日语截图跟英语截图「画风不统一」的尴尬。</p>
+<h2 id="让-AI-记住你的规则"><a href="#让-AI-记住你的规则" class="headerlink" title="让 AI 记住你的规则"></a>让 AI 记住你的规则</h2><p>上面这些流程看起来环环相扣，但它们能跑通有一个前提：<strong>AI 得知道你的规则。</strong></p>
+<p>BeanLedger 项目里有一整套写给 AI 的指令文件（<code>.instructions.md</code>），翻译规范、品牌准则、术语表、CJK 标点规则、代码文件卫生规范……都写在里面。这些文件不是摆设——它们是 AI 每次翻译时保持一致性的关键。</p>
+<p>比如：<code>BeanLedger</code> 这个名字在任何语言中都不翻译不音译，中日韩文本里品牌名两侧必须加空格（<code>升级至 BeanLedger Pro</code>）；CJK 语言必须用全角标点；分批翻译的默认批次大小、接续方式、术语锁定时机全部白纸黑字写死。</p>
+<p>这些指令文件本质上就是给 AI 写的「员工手册」。新来的翻译也得先读完公司翻译规范才能干活，AI 也一样。区别是——<strong>AI 每次真的会完整读完这些规范，然后严格执行。它不会偷懒，不会「差不多得了」。</strong> 光这一点，比人靠谱多了。</p>
+<h3 id="开源出来了"><a href="#开源出来了" class="headerlink" title="开源出来了"></a>开源出来了</h3><p>在 BeanLedger 的开发过程中，我把上面这些多语言翻译、App Store 元数据管理、营销截图生成的 AI 工作流抽象成了一套可复用的 SKILL（可以理解为给 AI Agent 安装的领域技能包），开源在 GitHub 上：<strong><a target="_blank" rel="noopener" href="https://github.com/Maples7/Apple-Dev-AI-Skills">Maples7&#x2F;Apple-Dev-AI-Skills</a></strong>。</p>
+<p>里面目前有几个核心 Skill：</p>
+<ul>
+<li><strong><code>translate-xcstrings</code></strong>：批量翻译 xcstrings 文件，内置术语一致性检查、分批策略和 CJK 标点规范。</li>
+<li><strong><code>eas-app-store-metadata</code></strong>：管理 <code>store.config.json</code>，对接 App Store Connect 元数据的拉取、校验和推送。</li>
+<li><strong><code>app-store-preview-pipeline</code></strong>：端到端的 App Store 截图生成流水线。</li>
+</ul>
+<p>这些 Skill 不绑定 BeanLedger——任何用 xcstrings 做本地化、需要管理多语言 App Store 文案和截图的 Apple 平台项目都能直接用。如果你也在做多语言的 iOS&#x2F;macOS 应用，拿去，不谢。当然也欢迎 PR 和改进建议。</p>
+<h2 id="一个人-一个多语言团队"><a href="#一个人-一个多语言团队" class="headerlink" title="一个人 &#x3D; 一个多语言团队"></a>一个人 &#x3D; 一个多语言团队</h2><p>算一笔账：17 种语言的应用内翻译和 App Store 文案，340 多张营销截图，每次发版更新全部语言大概半天时间——以上所有，1 个人 + AI。</p>
+<p>搁过去，这个规模至少需要一个专职本地化团队——项目经理、若干翻译、设计师、QA。现在一个独立开发者加上对的工具链，就能做到同样甚至更好的效果。</p>
+<p>说到底，人负责定规则和做质量判断，AI 负责大规模执行。你得懂翻译质量好不好、术语用得对不对、文案风格适不适合目标市场——但你不需要自己会说 17 种语言。我之前<a href="https://maples7.com/2026/03/26/talking-to-ai-is-really-addictive/">那篇文章</a>里说的「Know-What 和 Know-Why 的价值正被无限放大」，在多语言开发这个场景下体现得尤其明显。</p>
+<h2 id="几条实战经验"><a href="#几条实战经验" class="headerlink" title="几条实战经验"></a>几条实战经验</h2><p>写到这里，总结几条踩坑之后留下来的经验：</p>
+<p><strong>术语表先行。</strong> 不管你用什么工具翻译，每种语言开始之前先把核心术语的译法钉死，然后贯穿到底。这是翻译质量的地基，地基歪了上面全白搭。</p>
+<p><strong>规则写成文件，不要记在脑子里。</strong> 写成 AI 能自动加载的指令文件，规则越明确，AI 的产出越稳定。你换一台电脑、换一个 AI 模型，规则依然在。</p>
+<p><strong>App Store 元数据必须纳入版本控制。</strong> 在 App Store Connect 网页上手动编辑 17 种语言，迟早会出错。用配置文件 + CLI，拉取、校验、推送，一切可追溯。</p>
+<p><strong>截图生成一定要程序化。</strong> 语言超过 3 种手动做就不现实了。前期投入时间搭自动化流程，后续每次发版你都会感谢当初的自己。</p>
+<p><strong>分批、分批、分批。</strong> 说三遍。大批量翻译宁可多跑几轮，也别试图一把梭然后返工。</p>
+<hr>
+<p>这套流程还在持续迭代，远谈不上完美，但已经足以让一个人撑起一个全球化的 App。如果你也是独立开发者，正在犹豫要不要做多语言——<strong>别犹豫了，现在就开始</strong>。AI 已经把这件事的门槛降到了前所未有的水平。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef0e7fe.gif" alt="Maples7 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef1f148.gif" alt="Maples7 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Maples7
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/" title="用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践">https://maples7.com/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/Maples7">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/WeChat-Official-Account.JPG">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/5936284f6f02d67ef5665bdc">
+            <span class="icon">
+              <i class="fa fa-book"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://maples7.tuchong.com/">
+            <span class="icon">
+              <i class="fas fa-camera-retro"></i>
+            </span>
+
+            <span class="label">图虫</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 编程</a>
+              <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 独立开发</a>
+              <a href="/tags/BeanLedger/" rel="tag"><i class="fa fa-tag"></i> BeanLedger</a>
+              <a href="/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/" rel="tag"><i class="fa fa-tag"></i> 多语言</a>
+              <a href="/tags/App-Store/" rel="tag"><i class="fa fa-tag"></i> App Store</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/04/02/2026-the-exciting-new-era-of-ai-productivity/" rel="prev" title="2026，令人兴奋的 AI 生产力元年">
+                  <i class="fa fa-angle-left"></i> 2026，令人兴奋的 AI 生产力元年
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2014 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maples7</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">174k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Maples7" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"maples7","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js" defer></script>
+
+</body>
+</html>
