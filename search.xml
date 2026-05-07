@@ -3740,4 +3740,72 @@ _Farewell and thanks to each for the company_
         <tag>App Store</tag>
       </tags>
   </entry>
+  <entry>
+    <title>当 AI 和 Xcode 打架时：我写了个工具来拉架</title>
+    <url>/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/</url>
+    <content><![CDATA[<p>用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：<strong>AI 的瓶颈不是写代码，而是 Xcode 的构建环境。</strong></p>
+<p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，SwiftPM 的 Package.resolved 被对方覆盖，模拟器被另一个任务抢走……结果就是一堆「在我这能跑啊」的灵异 bug，折腾半天发现根本不是代码的问题，是构建环境被污染了。</p>
+<p>为了解决这个问题，我写了一个工具：<a href="https://github.com/Maples7/VibeChard">VibeChard</a>（简称 <code>vch</code>）。</p>
+<p><img data-src="/uploads/vch-architecture.png" alt="VibeChard 架构：每个 Agent 独占一份编译产物 + 模拟器"></p>
+<span id="more"></span>
+
+<h2 id="问题到底出在哪"><a href="#问题到底出在哪" class="headerlink" title="问题到底出在哪"></a>问题到底出在哪</h2><p>先说清楚到底痛在哪里，不然光看解决方案没有体感。</p>
+<p>Xcode 的构建系统依赖一堆放在 <code>~/Library/Developer/</code> 下面的共享资源：DerivedData（编译中间产物）、ModuleCache（Clang 模块缓存）、SwiftPM 的全局包缓存、xcresult 测试结果……这些东西在单人单任务开发时完全没问题，但当你同时跑两个构建任务时，它们就变成了定时炸弹：</p>
+<ul>
+<li><strong>DerivedData 互踩</strong>：两个任务同时编译同一个 Scheme，谁先写完谁的中间产物就被另一个覆盖，触发全量重编或者更隐蔽的模块不一致。</li>
+<li><strong>模块缓存损坏</strong>：Clang 的 ModuleCache 被并发写入时有概率损坏，报一些让人摸不着头脑的编译错误。</li>
+<li><strong>SwiftPM 写冲突</strong>：两个任务同时 resolve 依赖，Package.resolved 文件被交替写入。</li>
+<li><strong>模拟器抢占</strong>：两个任务往同一个 iPhone 16 模拟器装 App，后装的把先装的覆盖，测试结果完全不可信。</li>
+</ul>
+<p>这些问题有个共同特点：<strong>不稳定复现</strong>。有时候跑着跑着就没事了，有时候换个顺序又炸了。这是最恶心的——你根本不确定是代码出了 bug 还是环境被污染了，排查成本极高。</p>
+<p>更要命的是，这不是个「偶尔发生」的问题。在 Vibe Coding 的工作模式下——同时让多个 AI Agent 并行处理不同任务——这几乎是<strong>每天都会遇到的事</strong>。你要么花大量时间手动清缓存、重启模拟器、串行跑构建，要么就接受构建结果不可信的现实。</p>
+<p>两个选项都不可接受。</p>
+<h2 id="VibeChard：三层隔离"><a href="#VibeChard：三层隔离" class="headerlink" title="VibeChard：三层隔离"></a>VibeChard：三层隔离</h2><p><a href="https://github.com/Maples7/VibeChard">VibeChard</a> 的思路很直接：<strong>给每个 AI Agent 任务一个完全隔离的构建环境</strong>。做法是三层隔离：</p>
+<h3 id="第一层：Git-Worktree-隔离代码"><a href="#第一层：Git-Worktree-隔离代码" class="headerlink" title="第一层：Git Worktree 隔离代码"></a>第一层：Git Worktree 隔离代码</h3><p>每个任务用 <code>vch new &lt;name&gt;</code> 创建一个独立的 <a href="https://git-scm.com/docs/git-worktree">Git Worktree</a>，放在 <code>../BeanLedger-&lt;name&gt;</code> 目录下，对应一个 <code>agent/&lt;name&gt;</code> 分支。</p>
+<p>Worktree 的好处是它跟主仓库共享 Git 对象数据库——不会像 <code>git clone</code> 那样复制一整份代码，磁盘开销很小，创建也是瞬间完成。但每个 Worktree 有自己独立的工作区和索引，互不干扰。</p>
+<h3 id="第二层：构建产物隔离"><a href="#第二层：构建产物隔离" class="headerlink" title="第二层：构建产物隔离"></a>第二层：构建产物隔离</h3><p>这是核心。每个 Worktree 下有一个 <code>.vch/</code> 目录，里面包含了这个任务专属的 DerivedData、ModuleCache、SwiftPM 缓存、xcresult 目录。</p>
+<p>关键设计：vch 不需要你手动传 <code>-derivedDataPath</code> 这些 flag。它在 <code>.vch/bin/</code> 下放了一个 PATH shim——一个伪装成 <code>xcodebuild</code> 的脚本，自动注入所有隔离参数。你在 Worktree 里执行 <code>xcodebuild build</code>，实际上走的是 shim，自动带上了 <code>-derivedDataPath .vch/DerivedData -clonedSourcePackagesDirPath .vch/SwiftPM ...</code>。</p>
+<p><strong>对 AI Agent 完全透明</strong>——它不需要知道 vch 的存在，照常调用 <code>xcodebuild</code> 就行，隔离是在底层自动完成的。这一点很重要，因为你不希望每个 AI 指令文件里都要教 Agent「记得加 <code>-derivedDataPath</code> flag」。</p>
+<h3 id="第三层：模拟器隔离"><a href="#第三层：模拟器隔离" class="headerlink" title="第三层：模拟器隔离"></a>第三层：模拟器隔离</h3><p>每个任务在第一次需要模拟器时，vch 会从系统模板惰性克隆一个专属的模拟器实例。两个任务各自有各自的 iPhone 16，装 App、跑测试互不影响。任务结束时模拟器自动清理。</p>
+<h2 id="实际开发流程"><a href="#实际开发流程" class="headerlink" title="实际开发流程"></a>实际开发流程</h2><p>说了这么多原理，来看 BeanLedger 的实际日常。</p>
+<p>安装就一行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install maples7/tap/vch</span><br></pre></td></tr></table></figure>
+
+<p>然后每次 AI Agent 开始干活，标准流程是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建隔离工作区</span></span><br><span class="line">vch new fix-toast</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在隔离环境中构建</span></span><br><span class="line">vch build fix-toast --scheme BeanLedger</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在隔离环境中跑测试（自动克隆模拟器）</span></span><br><span class="line">vch <span class="built_in">test</span> fix-toast --scheme BeanLedger --device <span class="string">&#x27;iPhone 16&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并完成后清理</span></span><br><span class="line">vch remove fix-toast</span><br></pre></td></tr></table></figure>
+
+<p>我在 BeanLedger 项目的 AI 指令文件里写了一条硬规则：<strong>任何涉及源码修改的任务，必须先 <code>vch new</code>，在隔离 Worktree 里操作。</strong> 只读任务（review 代码、回答问题、分析架构）不需要。</p>
+<p>这条规则执行之后，之前那些灵异的构建失败几乎完全消失了。</p>
+<h2 id="为什么不直接用-Git-Worktree？"><a href="#为什么不直接用-Git-Worktree？" class="headerlink" title="为什么不直接用 Git Worktree？"></a>为什么不直接用 Git Worktree？</h2><p>可能有人会问：Git Worktree 是现成的，直接 <code>git worktree add</code> 不就行了？</p>
+<p>确实，代码层面的隔离 Worktree 就够了。但 Xcode 的构建系统完全不在乎你是不是不同的 Worktree——它照样往同一个 <code>~/Library/Developer/DerivedData</code> 写东西，照样用同一个 ModuleCache，照样抢同一个模拟器。</p>
+<p><strong>代码隔离了，构建环境没隔离，等于白隔离。</strong></p>
+<p>这也是我最初踩的坑。一开始我就是手动用 Worktree，然后发现构建还是互相踩踏。后来试了手动传 <code>-derivedDataPath</code> 参数，但这意味着每个 Agent 的每条 build 命令都得记得加这个 flag——一旦忘了就前功尽弃。而且 SwiftPM 缓存、ModuleCache、xcresult、模拟器这些还是没管住。</p>
+<p>vch 就是把这些零散的隔离手段统一打包，通过 PATH shim 让它对上层完全透明。</p>
+<h2 id="一些设计取舍"><a href="#一些设计取舍" class="headerlink" title="一些设计取舍"></a>一些设计取舍</h2><p>说几个我在做 vch 时的设计决策：</p>
+<p><strong>显式创建和销毁。</strong> <code>vch new</code> 和 <code>vch remove</code> 是必须手动执行的仪式——没有后台自动创建或清理。这是刻意的。在 Vibe Coding 场景下，你需要明确知道有哪些任务在跑、它们各自的状态是什么。<code>vch list</code> 随时能看到所有活跃任务。偷偷在后台搞魔法只会让排查变得更难。</p>
+<p><strong>PATH shim 而非 wrapper。</strong> 我选择通过 PATH 注入而不是包一层 <code>vch-xcodebuild</code> 命令，是因为很多工具链（Tuist、Fastlane、xcbeautify）内部也会调 <code>xcodebuild</code>，如果只包最外层，内层调用还是跑到了全局环境上。PATH shim 能确保整个调用链上的所有 <code>xcodebuild</code> 都被隔离。</p>
+<p><strong>模拟器惰性克隆。</strong> 不是所有任务都需要模拟器——纯编译不需要。所以模拟器只在第一次 <code>--device</code> 时才克隆，减少不必要的开销。</p>
+<p><strong>macOS only。</strong> vch 依赖 Xcode、<code>simctl</code>、macOS 的 <code>~/Library/Developer/</code> 目录结构，这些在 Linux 上不存在，所以没打算做跨平台。它就是专门解决 Apple 平台开发的问题。</p>
+<h2 id="不止是给-AI-用"><a href="#不止是给-AI-用" class="headerlink" title="不止是给 AI 用"></a>不止是给 AI 用</h2><p>虽然 vch 的设计初衷是解决多 Agent 并行开发的问题，但实际上它对人类开发者也有用——尤其是你习惯同时处理多个分支的时候。比如你在开发一个大 feature，突然来了个紧急 bug 要修，以前你得 stash 或者 commit 半成品切分支，现在直接 <code>vch new hotfix</code> 开一个隔离工作区，修完 remove 掉，主分支上的工作完全不受影响。</p>
+<p>另一个场景是 Code Review：你想在本地跑一下别人 PR 的代码看看效果，但不想污染自己的构建缓存。<code>vch new review-pr123</code>，跑完 <code>vch remove review-pr123</code>，干干净净。</p>
+<h2 id="开源"><a href="#开源" class="headerlink" title="开源"></a>开源</h2><p>VibeChard 开源在 GitHub：<strong><a href="https://github.com/Maples7/VibeChard">Maples7&#x2F;VibeChard</a></strong>，Apache 2.0 协议，不联网、不收集数据。</p>
+<p>安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install maples7/tap/vch</span><br></pre></td></tr></table></figure>
+
+<p>如果你也在用 AI 做 iOS&#x2F;macOS 开发，尤其是多 Agent 并行的场景，可以试试。遇到问题欢迎开 Issue。</p>
+<hr>
+<p>Vibe Coding 时代，AI 写代码的速度已经远远超过了传统工具链的设计预期。当你的 AI 一天能产出过去一两周的代码量时，构建环境的隔离就不再是「有则更好」的优化——它是<strong>让一切跑得起来的基础设施</strong>。</p>
+]]></content>
+      <categories>
+        <category>一只代码狗的自我修养</category>
+      </categories>
+      <tags>
+        <tag>人工智能</tag>
+        <tag>编程</tag>
+        <tag>独立开发</tag>
+        <tag>BeanLedger</tag>
+        <tag>Xcode</tag>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
 </search>

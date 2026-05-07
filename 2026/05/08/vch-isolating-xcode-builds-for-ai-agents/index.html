@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":true,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：AI 的瓶颈不是写代码，而是 Xcode 的构建环境。 BeanLedger 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，Sw">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当 AI 和 Xcode 打架时：我写了个工具来拉架">
+<meta property="og:url" content="https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/">
+<meta property="og:site_name" content="Maples7&#39;s Blog">
+<meta property="og:description" content="用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：AI 的瓶颈不是写代码，而是 Xcode 的构建环境。 BeanLedger 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，Sw">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://maples7.com/uploads/vch-architecture.png">
+<meta property="article:published_time" content="2026-05-08T02:30:00.000Z">
+<meta property="article:modified_time" content="2026-05-07T06:28:07.495Z">
+<meta property="article:author" content="Maples7">
+<meta property="article:tag" content="BeanLedger">
+<meta property="article:tag" content="Xcode">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="独立开发">
+<meta property="article:tag" content="编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://maples7.com/uploads/vch-architecture.png">
+
+
+<link rel="canonical" href="https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/","path":"2026/05/08/vch-isolating-xcode-builds-for-ai-agents/","title":"当 AI 和 Xcode 打架时：我写了个工具来拉架"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>当 AI 和 Xcode 打架时：我写了个工具来拉架 | Maples7's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?66be32f3560396549d4e96d0454820b3"></script>
+
+
+
+
+
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@7.2.0/dist/browser/pangu.umd.js" integrity="sha256-JnmRRnJK7DC6RQJbAJb6AXOM9OmWzS6z8eYultk/48Y=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/bookmark.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha256-44BednzIpUeQJcY8qtLyarFu0UCCTbgmWOvaoehiFQQ=" crossorigin="anonymous" defer></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/"}</script>
+  <script src="/js/third-party/quicklink.js" defer></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Maples7's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Maples7's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">148</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">77</span></a></li><li class="menu-item menu-item-作品"><a href="/apps/" rel="section"><i class="fa-brands fa-app-store-ios fa-fw"></i>作品</a></li><li class="menu-item menu-item-讲演"><a href="/slides/" rel="section"><i class="fa fa-comment fa-fw"></i>讲演</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%88%B0%E5%BA%95%E5%87%BA%E5%9C%A8%E5%93%AA"><span class="nav-number">1.</span> <span class="nav-text">问题到底出在哪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VibeChard%EF%BC%9A%E4%B8%89%E5%B1%82%E9%9A%94%E7%A6%BB"><span class="nav-number">2.</span> <span class="nav-text">VibeChard：三层隔离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9AGit-Worktree-%E9%9A%94%E7%A6%BB%E4%BB%A3%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">第一层：Git Worktree 隔离代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9A%E6%9E%84%E5%BB%BA%E4%BA%A7%E7%89%A9%E9%9A%94%E7%A6%BB"><span class="nav-number">2.2.</span> <span class="nav-text">第二层：构建产物隔离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%9A%E6%A8%A1%E6%8B%9F%E5%99%A8%E9%9A%94%E7%A6%BB"><span class="nav-number">2.3.</span> <span class="nav-text">第三层：模拟器隔离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">实际开发流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E7%94%A8-Git-Worktree%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">为什么不直接用 Git Worktree？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E8%AE%BE%E8%AE%A1%E5%8F%96%E8%88%8D"><span class="nav-number">5.</span> <span class="nav-text">一些设计取舍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%AD%A2%E6%98%AF%E7%BB%99-AI-%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">不止是给 AI 用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">开源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Maples7"
+      src="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+  <p class="site-author-name" itemprop="name">Maples7</p>
+  <div class="site-description" itemprop="description">知行合一</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">148</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Maples7" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Maples7" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://mp.weixin.qq.com/s/HGeJgFwulVlKGVSgbseing" title="微信公众号 → https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;HGeJgFwulVlKGVSgbseing" rel="noopener me" target="_blank"><i class="fab fa-weixin fa-fw"></i>微信公众号</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.xiaohongshu.com/user/profile/5936284f6f02d67ef5665bdc" title="小红书 → https:&#x2F;&#x2F;www.xiaohongshu.com&#x2F;user&#x2F;profile&#x2F;5936284f6f02d67ef5665bdc" rel="noopener me" target="_blank"><i class="fa fa-book fa-fw"></i>小红书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/maples7" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;maples7" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/82391888/" title="豆瓣 → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;82391888&#x2F;" rel="noopener me" target="_blank"><i class="fas fa-book-reader fa-fw"></i>豆瓣</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/3888197280" title="微博 → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;3888197280" rel="noopener me" target="_blank"><i class="fab fa-weibo fa-fw"></i>微博</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Maples67" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Maples67" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://maples7.tuchong.com/" title="图虫 → https:&#x2F;&#x2F;maples7.tuchong.com&#x2F;" rel="noopener me" target="_blank"><i class="fa-solid fa-camera fa-fw"></i>图虫</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maples7@163.com" title="邮箱 → mailto:maples7@163.com" rel="noopener me" target="_blank"><i class="fas fa-at fa-fw"></i>邮箱</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://cv.maples7.com/" title="简历 → https:&#x2F;&#x2F;cv.maples7.com" rel="noopener me" target="_blank"><i class="fas fa-file fa-fw"></i>简历</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2018/08/06/5b67317dd4ba5.jpg">
+      <meta itemprop="name" content="Maples7">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Maples7's Blog">
+      <meta itemprop="description" content="知行合一">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="当 AI 和 Xcode 打架时：我写了个工具来拉架 | Maples7's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          当 AI 和 Xcode 打架时：我写了个工具来拉架
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-08 10:30:00" itemprop="dateCreated datePublished" datetime="2026-05-08T10:30:00+08:00">2026-05-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-05-07 14:28:07" itemprop="dateModified" datetime="2026-05-07T14:28:07+08:00">2026-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" itemprop="url" rel="index"><span itemprop="name">一只代码狗的自我修养</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2026/05/08/vch-isolating-xcode-builds-for-ai-agents/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：<strong>AI 的瓶颈不是写代码，而是 Xcode 的构建环境。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，SwiftPM 的 Package.resolved 被对方覆盖，模拟器被另一个任务抢走……结果就是一堆「在我这能跑啊」的灵异 bug，折腾半天发现根本不是代码的问题，是构建环境被污染了。</p>
+<p>为了解决这个问题，我写了一个工具：<a target="_blank" rel="noopener" href="https://github.com/Maples7/VibeChard">VibeChard</a>（简称 <code>vch</code>）。</p>
+<p><img data-src="/uploads/vch-architecture.png" alt="VibeChard 架构：每个 Agent 独占一份编译产物 + 模拟器"></p>
+<span id="more"></span>
+
+<h2 id="问题到底出在哪"><a href="#问题到底出在哪" class="headerlink" title="问题到底出在哪"></a>问题到底出在哪</h2><p>先说清楚到底痛在哪里，不然光看解决方案没有体感。</p>
+<p>Xcode 的构建系统依赖一堆放在 <code>~/Library/Developer/</code> 下面的共享资源：DerivedData（编译中间产物）、ModuleCache（Clang 模块缓存）、SwiftPM 的全局包缓存、xcresult 测试结果……这些东西在单人单任务开发时完全没问题，但当你同时跑两个构建任务时，它们就变成了定时炸弹：</p>
+<ul>
+<li><strong>DerivedData 互踩</strong>：两个任务同时编译同一个 Scheme，谁先写完谁的中间产物就被另一个覆盖，触发全量重编或者更隐蔽的模块不一致。</li>
+<li><strong>模块缓存损坏</strong>：Clang 的 ModuleCache 被并发写入时有概率损坏，报一些让人摸不着头脑的编译错误。</li>
+<li><strong>SwiftPM 写冲突</strong>：两个任务同时 resolve 依赖，Package.resolved 文件被交替写入。</li>
+<li><strong>模拟器抢占</strong>：两个任务往同一个 iPhone 16 模拟器装 App，后装的把先装的覆盖，测试结果完全不可信。</li>
+</ul>
+<p>这些问题有个共同特点：<strong>不稳定复现</strong>。有时候跑着跑着就没事了，有时候换个顺序又炸了。这是最恶心的——你根本不确定是代码出了 bug 还是环境被污染了，排查成本极高。</p>
+<p>更要命的是，这不是个「偶尔发生」的问题。在 Vibe Coding 的工作模式下——同时让多个 AI Agent 并行处理不同任务——这几乎是<strong>每天都会遇到的事</strong>。你要么花大量时间手动清缓存、重启模拟器、串行跑构建，要么就接受构建结果不可信的现实。</p>
+<p>两个选项都不可接受。</p>
+<h2 id="VibeChard：三层隔离"><a href="#VibeChard：三层隔离" class="headerlink" title="VibeChard：三层隔离"></a>VibeChard：三层隔离</h2><p><a target="_blank" rel="noopener" href="https://github.com/Maples7/VibeChard">VibeChard</a> 的思路很直接：<strong>给每个 AI Agent 任务一个完全隔离的构建环境</strong>。做法是三层隔离：</p>
+<h3 id="第一层：Git-Worktree-隔离代码"><a href="#第一层：Git-Worktree-隔离代码" class="headerlink" title="第一层：Git Worktree 隔离代码"></a>第一层：Git Worktree 隔离代码</h3><p>每个任务用 <code>vch new &lt;name&gt;</code> 创建一个独立的 <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-worktree">Git Worktree</a>，放在 <code>../BeanLedger-&lt;name&gt;</code> 目录下，对应一个 <code>agent/&lt;name&gt;</code> 分支。</p>
+<p>Worktree 的好处是它跟主仓库共享 Git 对象数据库——不会像 <code>git clone</code> 那样复制一整份代码，磁盘开销很小，创建也是瞬间完成。但每个 Worktree 有自己独立的工作区和索引，互不干扰。</p>
+<h3 id="第二层：构建产物隔离"><a href="#第二层：构建产物隔离" class="headerlink" title="第二层：构建产物隔离"></a>第二层：构建产物隔离</h3><p>这是核心。每个 Worktree 下有一个 <code>.vch/</code> 目录，里面包含了这个任务专属的 DerivedData、ModuleCache、SwiftPM 缓存、xcresult 目录。</p>
+<p>关键设计：vch 不需要你手动传 <code>-derivedDataPath</code> 这些 flag。它在 <code>.vch/bin/</code> 下放了一个 PATH shim——一个伪装成 <code>xcodebuild</code> 的脚本，自动注入所有隔离参数。你在 Worktree 里执行 <code>xcodebuild build</code>，实际上走的是 shim，自动带上了 <code>-derivedDataPath .vch/DerivedData -clonedSourcePackagesDirPath .vch/SwiftPM ...</code>。</p>
+<p><strong>对 AI Agent 完全透明</strong>——它不需要知道 vch 的存在，照常调用 <code>xcodebuild</code> 就行，隔离是在底层自动完成的。这一点很重要，因为你不希望每个 AI 指令文件里都要教 Agent「记得加 <code>-derivedDataPath</code> flag」。</p>
+<h3 id="第三层：模拟器隔离"><a href="#第三层：模拟器隔离" class="headerlink" title="第三层：模拟器隔离"></a>第三层：模拟器隔离</h3><p>每个任务在第一次需要模拟器时，vch 会从系统模板惰性克隆一个专属的模拟器实例。两个任务各自有各自的 iPhone 16，装 App、跑测试互不影响。任务结束时模拟器自动清理。</p>
+<h2 id="实际开发流程"><a href="#实际开发流程" class="headerlink" title="实际开发流程"></a>实际开发流程</h2><p>说了这么多原理，来看 BeanLedger 的实际日常。</p>
+<p>安装就一行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install maples7/tap/vch</span><br></pre></td></tr></table></figure>
+
+<p>然后每次 AI Agent 开始干活，标准流程是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建隔离工作区</span></span><br><span class="line">vch new fix-toast</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在隔离环境中构建</span></span><br><span class="line">vch build fix-toast --scheme BeanLedger</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在隔离环境中跑测试（自动克隆模拟器）</span></span><br><span class="line">vch <span class="built_in">test</span> fix-toast --scheme BeanLedger --device <span class="string">&#x27;iPhone 16&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并完成后清理</span></span><br><span class="line">vch remove fix-toast</span><br></pre></td></tr></table></figure>
+
+<p>我在 BeanLedger 项目的 AI 指令文件里写了一条硬规则：<strong>任何涉及源码修改的任务，必须先 <code>vch new</code>，在隔离 Worktree 里操作。</strong> 只读任务（review 代码、回答问题、分析架构）不需要。</p>
+<p>这条规则执行之后，之前那些灵异的构建失败几乎完全消失了。</p>
+<h2 id="为什么不直接用-Git-Worktree？"><a href="#为什么不直接用-Git-Worktree？" class="headerlink" title="为什么不直接用 Git Worktree？"></a>为什么不直接用 Git Worktree？</h2><p>可能有人会问：Git Worktree 是现成的，直接 <code>git worktree add</code> 不就行了？</p>
+<p>确实，代码层面的隔离 Worktree 就够了。但 Xcode 的构建系统完全不在乎你是不是不同的 Worktree——它照样往同一个 <code>~/Library/Developer/DerivedData</code> 写东西，照样用同一个 ModuleCache，照样抢同一个模拟器。</p>
+<p><strong>代码隔离了，构建环境没隔离，等于白隔离。</strong></p>
+<p>这也是我最初踩的坑。一开始我就是手动用 Worktree，然后发现构建还是互相踩踏。后来试了手动传 <code>-derivedDataPath</code> 参数，但这意味着每个 Agent 的每条 build 命令都得记得加这个 flag——一旦忘了就前功尽弃。而且 SwiftPM 缓存、ModuleCache、xcresult、模拟器这些还是没管住。</p>
+<p>vch 就是把这些零散的隔离手段统一打包，通过 PATH shim 让它对上层完全透明。</p>
+<h2 id="一些设计取舍"><a href="#一些设计取舍" class="headerlink" title="一些设计取舍"></a>一些设计取舍</h2><p>说几个我在做 vch 时的设计决策：</p>
+<p><strong>显式创建和销毁。</strong> <code>vch new</code> 和 <code>vch remove</code> 是必须手动执行的仪式——没有后台自动创建或清理。这是刻意的。在 Vibe Coding 场景下，你需要明确知道有哪些任务在跑、它们各自的状态是什么。<code>vch list</code> 随时能看到所有活跃任务。偷偷在后台搞魔法只会让排查变得更难。</p>
+<p><strong>PATH shim 而非 wrapper。</strong> 我选择通过 PATH 注入而不是包一层 <code>vch-xcodebuild</code> 命令，是因为很多工具链（Tuist、Fastlane、xcbeautify）内部也会调 <code>xcodebuild</code>，如果只包最外层，内层调用还是跑到了全局环境上。PATH shim 能确保整个调用链上的所有 <code>xcodebuild</code> 都被隔离。</p>
+<p><strong>模拟器惰性克隆。</strong> 不是所有任务都需要模拟器——纯编译不需要。所以模拟器只在第一次 <code>--device</code> 时才克隆，减少不必要的开销。</p>
+<p><strong>macOS only。</strong> vch 依赖 Xcode、<code>simctl</code>、macOS 的 <code>~/Library/Developer/</code> 目录结构，这些在 Linux 上不存在，所以没打算做跨平台。它就是专门解决 Apple 平台开发的问题。</p>
+<h2 id="不止是给-AI-用"><a href="#不止是给-AI-用" class="headerlink" title="不止是给 AI 用"></a>不止是给 AI 用</h2><p>虽然 vch 的设计初衷是解决多 Agent 并行开发的问题，但实际上它对人类开发者也有用——尤其是你习惯同时处理多个分支的时候。比如你在开发一个大 feature，突然来了个紧急 bug 要修，以前你得 stash 或者 commit 半成品切分支，现在直接 <code>vch new hotfix</code> 开一个隔离工作区，修完 remove 掉，主分支上的工作完全不受影响。</p>
+<p>另一个场景是 Code Review：你想在本地跑一下别人 PR 的代码看看效果，但不想污染自己的构建缓存。<code>vch new review-pr123</code>，跑完 <code>vch remove review-pr123</code>，干干净净。</p>
+<h2 id="开源"><a href="#开源" class="headerlink" title="开源"></a>开源</h2><p>VibeChard 开源在 GitHub：<strong><a target="_blank" rel="noopener" href="https://github.com/Maples7/VibeChard">Maples7&#x2F;VibeChard</a></strong>，Apache 2.0 协议，不联网、不收集数据。</p>
+<p>安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install maples7/tap/vch</span><br></pre></td></tr></table></figure>
+
+<p>如果你也在用 AI 做 iOS&#x2F;macOS 开发，尤其是多 Agent 并行的场景，可以试试。遇到问题欢迎开 Issue。</p>
+<hr>
+<p>Vibe Coding 时代，AI 写代码的速度已经远远超过了传统工具链的设计预期。当你的 AI 一天能产出过去一两周的代码量时，构建环境的隔离就不再是「有则更好」的优化——它是<strong>让一切跑得起来的基础设施</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef0e7fe.gif" alt="Maples7 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="https://i.loli.net/2018/08/06/5b6732ef1f148.gif" alt="Maples7 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Maples7
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/" title="当 AI 和 Xcode 打架时：我写了个工具来拉架">https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/Maples7">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GitHub</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/WeChat-Official-Account.JPG">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.xiaohongshu.com/user/profile/5936284f6f02d67ef5665bdc">
+            <span class="icon">
+              <i class="fa fa-book"></i>
+            </span>
+
+            <span class="label">小红书</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://maples7.tuchong.com/">
+            <span class="icon">
+              <i class="fas fa-camera-retro"></i>
+            </span>
+
+            <span class="label">图虫</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 编程</a>
+              <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 独立开发</a>
+              <a href="/tags/BeanLedger/" rel="tag"><i class="fa fa-tag"></i> BeanLedger</a>
+              <a href="/tags/Xcode/" rel="tag"><i class="fa fa-tag"></i> Xcode</a>
+              <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/07/multilingual-development-with-ai-beanledger-in-practice/" rel="prev" title="用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践">
+                  <i class="fa fa-angle-left"></i> 用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2014 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maples7</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">176k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:39</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Maples7" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"maples7","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js" defer></script>
+
+</body>
+</html>

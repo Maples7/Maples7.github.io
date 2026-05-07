@@ -10,7 +10,30 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-05-07T05:22:30.681Z</updated>
+  <updated>2026-05-07T06:28:07.495Z</updated>
+  <entry>
+    <author>
+      <name>Maples7</name>
+    </author>
+    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
+    <category term="人工智能" scheme="https://maples7.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="编程" scheme="https://maples7.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    <category term="独立开发" scheme="https://maples7.com/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/"/>
+    <category term="BeanLedger" scheme="https://maples7.com/tags/BeanLedger/"/>
+    <category term="Xcode" scheme="https://maples7.com/tags/Xcode/"/>
+    <category term="iOS" scheme="https://maples7.com/tags/iOS/"/>
+    <id>https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/</id>
+    <link href="https://maples7.com/2026/05/08/vch-isolating-xcode-builds-for-ai-agents/"/>
+    <published>2026-05-08T02:30:00.000Z</published>
+    <summary>
+      <![CDATA[<p>用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：<strong>AI 的瓶颈不是写代码，而是 Xcode 的构建环境。</strong></p>
+<p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，SwiftPM 的 Package.resolved 被对方覆盖，模拟器被另一个任务抢走……结果就是一堆「在我这能跑啊」的灵异 bug，折腾半天发现根本不是代码的问题，是构建环境被污染了。</p>
+<p>为了解决这个问题，我写了一个工具：<a href="https://github.com/Maples7/VibeChard">VibeChard</a>（简称 <code>vch</code>）。</p>
+<p><img src="/uploads/vch-architecture.png" alt="VibeChard 架构：每个 Agent 独占一份编译产物 + 模拟器"></p>]]>
+    </summary>
+    <title>当 AI 和 Xcode 打架时：我写了个工具来拉架</title>
+    <updated>2026-05-07T06:28:07.495Z</updated>
+  </entry>
   <entry>
     <author>
       <name>Maples7</name>
@@ -493,32 +516,5 @@
     </summary>
     <title>Maples7 个人开源计划（1）</title>
     <updated>2025-12-19T03:42:43.151Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>Maples7</name>
-    </author>
-    <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
-    <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    <category term="未来" scheme="https://maples7.com/tags/%E6%9C%AA%E6%9D%A5/"/>
-    <category term="科技" scheme="https://maples7.com/tags/%E7%A7%91%E6%8A%80/"/>
-    <category term="趋势" scheme="https://maples7.com/tags/%E8%B6%8B%E5%8A%BF/"/>
-    <category term="职业发展" scheme="https://maples7.com/tags/%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/"/>
-    <id>https://maples7.com/2023/12/31/2023-booklist/</id>
-    <link href="https://maples7.com/2023/12/31/2023-booklist/"/>
-    <published>2023-12-31T15:03:52.000Z</published>
-    <summary>
-      <![CDATA[<p>一转眼又是一年过去了，2023 年算是个人生活变化比较大的一年。长达三年的疫情生活终于过去，个人生活逐渐回归正常，也开始继续遵循本心勇敢做自己、追寻自己真正热爱的事情。从书单就可以看出这种变化。</p>
-<ol>
-<li><p><a href="https://book.douban.com/subject/35546622/">置身事内：中国政府与经济发展</a>：★★★★★</p>
-<p> 一本论述非常精彩的适合普通人阅读的通俗入门中国特色政治经济学著作。关于央地关系、土地财政、地方债务、官员腐败、城市化、高房价、阶层固化、发展不平衡等热点话题的讨论很有吸引力。普通人应该读这本书来了解国家政策背后的层层决策逻辑和当下面临的社会问题；体制内的做具体实务的人更应该读这本书来培养自己在固有约束下系统化全面解决社会问题的思维和能力。</p>
-<p> 很少有经济学书籍能让人看得津津有味欲罢不能，一是这本书探讨的都是当下政治经济学领域最紧迫热点的一些问题，二是作者的论述深入浅出而又一针见血丝毫不拖泥带水，这是长期积累深入调研后的结果。</p>
-<p> 另外这本书通篇都在潜移默化的告诉读者一个老生常谈的道理：任何理论都要结合具体的社会实践才能发挥作用并获得打磨，实事求是，实践出真知。</p>
-<p> 作者对未来中国的经济是偏乐观态度的，虽有争议但无伤大雅。</p>
-</li>
-</ol>]]>
-    </summary>
-    <title>2023 年书单</title>
-    <updated>2024-05-16T08:19:08.963Z</updated>
   </entry>
 </feed>
