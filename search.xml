@@ -3669,12 +3669,12 @@ _Farewell and thanks to each for the company_
     <content><![CDATA[<p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 目前支持 17 种语言。半年前如果有人跟我说，一个独立开发者能把一个 App 做到 17 种语言上架全球市场——每种语言都有本地化的营销截图、App Store 文案和应用内翻译——我大概率会觉得他在吹牛。</p>
 <p>但事实就是，我做到了。靠的是 AI。</p>
 <p><img data-src="/uploads/beanledger-multilingual-collage.png" alt="BeanLedger 六种语言的 App Store 截图"></p>
+<span id="more"></span>
+
 <h2 id="为什么要做这么多语言"><a href="#为什么要做这么多语言" class="headerlink" title="为什么要做这么多语言"></a>为什么要做这么多语言</h2><p>道理很朴素：App Store 是一个全球市场，绝大多数用户只会用母语搜索和下载 App。一个只有英文和中文的记账应用，在日本、韩国、巴西、土耳其的用户眼里基本等于不存在。<strong>多语言不是锦上添花，而是触达用户的基本功。</strong></p>
 <p>但传统的多语言开发是什么体验？找翻译公司报价、逐条对照翻译、来回校对、等待交付——光想想这个流程就头大，成本和周期足以劝退大部分独立开发者。更别提每次发版更新文案和截图时，这套流程还得再走一遍。</p>
 <p><strong>过去的多语言开发，本质上是只有大公司才玩得起的游戏。</strong> AI 彻底改变了这个局面。</p>
 <p>而且效果是立竿见影的。BeanLedger 上线多语言支持不到一周，我就收到了一封来自法国用户的邮件——用法语写的，详细询问了几个功能细节。能看出来他是先在法语版的 App Store 页面了解到这个 App，下载试用之后才写信过来。我法语一个字不会，但靠着 AI 翻译，跟他用法语来回沟通了好几轮，完全没有障碍。最终这位用户购买了 BeanLedger Pro 永久会员。一个人在法国，因为你的 App 有法语支持而成为了付费用户，而你靠 AI 用法语完成了整个售前沟通——这件事在过去对独立开发者来说几乎不可想象。</p>
-<span id="more"></span>
-
 <h2 id="应用内翻译：xcstrings-AI-批量翻译"><a href="#应用内翻译：xcstrings-AI-批量翻译" class="headerlink" title="应用内翻译：xcstrings + AI 批量翻译"></a>应用内翻译：xcstrings + AI 批量翻译</h2><p>BeanLedger 使用 Xcode 原生的 <a href="https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog"><code>.xcstrings</code>（String Catalog）</a>来管理所有本地化字符串。整个应用有三个 xcstrings 文件：<code>Localizable.xcstrings</code> 负责主界面文案，<code>InfoPlist.xcstrings</code> 负责系统权限描述等系统级文本，<code>AppShortcuts.xcstrings</code> 负责 Siri 和快捷指令的语音短语——三个文件加起来，覆盖了用户在 App 内、系统层和语音交互中能看到的所有文字。</p>
 <p>新增一个 feature 写完英文原文后，翻译流程其实很直接：告诉 AI「翻译这些新增的 key」，它自动识别所有待翻译条目，一口气输出 16 种目标语言的翻译。翻译前会先扫描已有翻译里的术语——比如「Transaction」在日语里一直译为「取引」，韩语里一直是「거래」——然后严格复用，不会突然换个说法。翻出来的结果里，占位符（<code>%@</code>、<code>%lld</code>）、Markdown 格式、品牌名「BeanLedger」都原封不动待在正确位置，CJK 语言也会自动用全角标点。</p>
 <p>听上去好像没什么难的？但真正让这套流程稳定跑起来的，是我踩了无数坑之后攒出来的一套规则。</p>
