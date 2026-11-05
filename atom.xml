@@ -10,7 +10,27 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-05-27T08:30:11.349Z</updated>
+  <updated>2026-11-05T07:24:22.188Z</updated>
+  <entry>
+    <author>
+      <name>Maples7</name>
+    </author>
+    <category term="一只代码狗的自我修养" scheme="https://maples7.com/categories/%E4%B8%80%E5%8F%AA%E4%BB%A3%E7%A0%81%E7%8B%97%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/"/>
+    <category term="人工智能" scheme="https://maples7.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="编程" scheme="https://maples7.com/tags/%E7%BC%96%E7%A8%8B/"/>
+    <category term="程序员" scheme="https://maples7.com/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/"/>
+    <category term="工作" scheme="https://maples7.com/tags/%E5%B7%A5%E4%BD%9C/"/>
+    <id>https://maples7.com/2026/11/05/ai-writes-code-faster-and-better-than-you/</id>
+    <link href="https://maples7.com/2026/11/05/ai-writes-code-faster-and-better-than-you/"/>
+    <published>2026-11-05T06:41:10.000Z</published>
+    <summary>
+      <![CDATA[<p>2026 年年初，互联网上的程序员们还在争论要不要在工作流中引入 AI。到了年末，我想已经很难找到完全没有用过 AI 的程序员了，甚至大部分程序员应该都已经在完全依靠 AI 写代码了。</p>
+<p>但我依然看到不少人觉得，AI 也就只能写写简单的代码，真正复杂的项目还得靠人。至于自己被 AI 替代？那更是天方夜谭。</p>
+<p>在我看来，这只是无知带来的、作为人的傲慢。掩耳盗铃也改变不了 AI 写的代码比你写得又快又好的事实。</p>]]>
+    </summary>
+    <title>掩耳盗铃也改变不了 AI 写代码比你又快又好的事实</title>
+    <updated>2026-11-05T07:24:22.188Z</updated>
+  </entry>
   <entry>
     <author>
       <name>Maples7</name>
@@ -489,35 +509,5 @@
     </summary>
     <title>Maples7 个人开源计划（3）</title>
     <updated>2025-12-19T03:42:50.336Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>Maples7</name>
-    </author>
-    <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
-    <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
-    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
-    <category term="Apple Developer Program" scheme="https://maples7.com/tags/Apple-Developer-Program/"/>
-    <category term="SwiftData" scheme="https://maples7.com/tags/SwiftData/"/>
-    <category term="郑钦文" scheme="https://maples7.com/tags/%E9%83%91%E9%92%A6%E6%96%87/"/>
-    <id>https://maples7.com/2024/11/16/open-source-maples7-2/</id>
-    <link href="https://maples7.com/2024/11/16/open-source-maples7-2/"/>
-    <published>2024-11-15T19:14:00.000Z</published>
-    <summary>
-      <![CDATA[<p>因为公众号发的上一篇<a href="https://maples7.com/2023/07/25/why-i-leave-microsoft/">《热情、工作与理想主义｜为什么我要离开微软》</a>引发了一些讨论，所以这一期想聊的话题有点多。为了不让某一期的内容太长，所以尽管距离<a href="https://maples7.com/2024/11/08/open-source-maples7-1/">上一篇《开源计划》</a>才一周时间，工作量并不多，但也还是更新一期吧。</p>
-<p>与前几篇文章相关的更多话题讨论在本文最后两部分，最后部分有回答网友的一些提问。</p>
-<h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
-<li>完成了 Apple Developer Program 的订阅注册，个人经验是：<ol>
-<li>要耐心按照提示和邮件内容完成每一步的操作，该认证的认证，该实名的实名，遇到不明确的问题及时联系客服解决。</li>
-<li>付费后账户不是立马就能用订阅后才能使用的开发者相关的功能，我是等了几个小时后收到邮件才开通成功。</li>
-<li>可以使用 App Store 的余额进行开发者账号的订阅，而每年夏天腾讯基本都有 App Store 充值 900 送 100 的福利活动，相当于变相让订阅年费优惠一些。</li>
-<li>订阅后可以<strong>马上申请注册 App Store Small Business Program</strong>，注册成功后以后靠 App 盈利可以少被 Apple 分走一部分「过路费」。🤧</li>
-</ol>
-</li>
-</ul>]]>
-    </summary>
-    <title>Maples7 个人开源计划（2）</title>
-    <updated>2025-12-19T03:42:46.547Z</updated>
   </entry>
 </feed>
