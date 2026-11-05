@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, Maples7</rights>
   <subtitle>知行合一</subtitle>
   <title>Maples7's Blog</title>
-  <updated>2026-05-27T08:27:25.728Z</updated>
+  <updated>2026-05-27T08:30:11.349Z</updated>
   <entry>
     <author>
       <name>Maples7</name>
@@ -19,7 +19,7 @@
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     <category term="价值投资" scheme="https://maples7.com/tags/%E4%BB%B7%E5%80%BC%E6%8A%95%E8%B5%84/"/>
-    <category term="A股" scheme="https://maples7.com/tags/A%E8%82%A1/"/>
+    <category term="A 股" scheme="https://maples7.com/tags/A-%E8%82%A1/"/>
     <id>https://maples7.com/2026/05/27/is-value-investing-outdated-in-polarized-market/</id>
     <link href="https://maples7.com/2026/05/27/is-value-investing-outdated-in-polarized-market/"/>
     <published>2026-05-27T06:50:00.000Z</published>
@@ -30,7 +30,7 @@
 <p>基于这样的市场行情，我不禁产生一个问题：<strong>价值投资真的过时了吗？</strong></p>]]>
     </summary>
     <title>极端分化行情下，价值投资过时了吗？</title>
-    <updated>2026-05-27T08:27:25.728Z</updated>
+    <updated>2026-05-27T08:30:11.349Z</updated>
   </entry>
   <entry>
     <author>
@@ -50,7 +50,7 @@
       <![CDATA[<p>用 AI 写 iOS 代码写得越多，越会发现一个尴尬的现实：<strong>AI 的瓶颈不是写代码，而是 Xcode 的构建环境。</strong></p>
 <p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 的日常开发中，我经常同时开好几个 AI Agent 干活——一个在加新 feature，一个在修 bug，一个在跑测试。但 Xcode 的构建系统压根没为这种场景设计过。两个 Agent 同时 build，DerivedData 互相踩踏，模块缓存莫名损坏，SwiftPM 的 Package.resolved 被对方覆盖，模拟器被另一个任务抢走……结果就是一堆「在我这能跑啊」的灵异 bug，折腾半天发现根本不是代码的问题，是构建环境被污染了。</p>
 <p>为了解决这个问题，我写了一个工具：<a href="https://github.com/Maples7/VibeChard">VibeChard</a>（简称 <code>vch</code>）。</p>
-<p><img src="/uploads/vch-hero.png" alt="VibeChard：不用 vch 报错满屏 vs 用上 vch 三个 Agent 零冲突"></p>]]>
+<p><img src="/uploads/vch-hero.png" alt="VibeChard：不用 vch 报错满屏 vs 用上 vch 三个 Agent 零冲突" loading="lazy"></p>]]>
     </summary>
     <title>当 AI 和 Xcode 打架时：我写了个工具来拉架</title>
     <updated>2026-05-07T06:48:47.750Z</updated>
@@ -72,7 +72,7 @@
     <summary>
       <![CDATA[<p><a href="https://apps.apple.com/app/beanledger/id6739036460">BeanLedger</a> 目前支持 17 种语言。半年前如果有人跟我说，一个独立开发者能把一个 App 做到 17 种语言上架全球市场——每种语言都有本地化的营销截图、App Store 文案和应用内翻译——我大概率会觉得他在吹牛。</p>
 <p>但事实就是，我做到了。靠的是 AI。</p>
-<p><img src="/uploads/beanledger-multilingual-collage.png" alt="BeanLedger 六种语言的 App Store 截图"></p>]]>
+<p><img src="/uploads/beanledger-multilingual-collage.png" alt="BeanLedger 六种语言的 App Store 截图" loading="lazy"></p>]]>
     </summary>
     <title>用 AI 搞定 17 种语言：BeanLedger 的多语言开发实践</title>
     <updated>2026-05-07T05:22:30.681Z</updated>
@@ -101,7 +101,7 @@
 <p>从效率上看就更夸张了。在代码质量差不多的前提下，AI 一天的产出效率基本等于我纯手写两周到一个月的效率。注意，这还是在我反复 review 她的产出、反复要求迭代优化、不断尝试不同分支方案的情况下。如果完全放手不管，速度还能翻几倍——当然代价是代码可能偏离我的预期。</p>]]>
     </summary>
     <title>2026，令人兴奋的 AI 生产力元年</title>
-    <updated>2026-04-02T09:31:03.917Z</updated>
+    <updated>2026-04-02T10:00:37.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -189,8 +189,8 @@
     <category term="投资" scheme="https://maples7.com/tags/%E6%8A%95%E8%B5%84/"/>
     <category term="资产配置" scheme="https://maples7.com/tags/%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE/"/>
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
     <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
+    <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
     <id>https://maples7.com/2025/12/31/2025-booklist/</id>
     <link href="https://maples7.com/2025/12/31/2025-booklist/"/>
     <published>2025-12-31T02:59:54.000Z</published>
@@ -410,8 +410,8 @@
     <category term="浮生散记" scheme="https://maples7.com/categories/%E6%B5%AE%E7%94%9F%E6%95%A3%E8%AE%B0/"/>
     <category term="书单" scheme="https://maples7.com/tags/%E4%B9%A6%E5%8D%95/"/>
     <category term="人生" scheme="https://maples7.com/tags/%E4%BA%BA%E7%94%9F/"/>
-    <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
     <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
+    <category term="好奇心" scheme="https://maples7.com/tags/%E5%A5%BD%E5%A5%87%E5%BF%83/"/>
     <id>https://maples7.com/2024/12/31/2024-booklist/</id>
     <link href="https://maples7.com/2024/12/31/2024-booklist/"/>
     <published>2024-12-31T09:18:33.000Z</published>
@@ -436,7 +436,7 @@
     <summary>
       <![CDATA[<p>年底还会发今年的书单以及按照惯例融入其中的简单的总结、展望，所以先更新一篇《开源计划》。</p>
 <h2 id="🧑🏻‍💻-工作"><a href="#🧑🏻‍💻-工作" class="headerlink" title="🧑🏻‍💻 工作"></a>🧑🏻‍💻 工作</h2><ul>
-<li>之前参与的 Swift 6.0 中文翻译的工作已经上线了：<a href="https://doc.swiftgg.team/documentation/the-swift-programming-language">The Swift Programming Language (6.0) 中文版</a>，也准备长期在 SwiftGG 翻译组给社区做一些贡献。<br><img src="https://s2.loli.net/2024/12/21/ZL8fUGnba4YAQiO.jpg" alt="翻译完之后的小礼物，程序员的T恤背包又多一件"></li>
+<li>之前参与的 Swift 6.0 中文翻译的工作已经上线了：<a href="https://doc.swiftgg.team/documentation/the-swift-programming-language">The Swift Programming Language (6.0) 中文版</a>，也准备长期在 SwiftGG 翻译组给社区做一些贡献。<br><img src="https://s2.loli.net/2024/12/21/ZL8fUGnba4YAQiO.jpg" alt="翻译完之后的小礼物，程序员的T恤背包又多一件" loading="lazy"></li>
 </ul>]]>
     </summary>
     <title>Maples7 个人开源计划（4）</title>
@@ -496,8 +496,8 @@
     </author>
     <category term="个人开源计划" scheme="https://maples7.com/categories/%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92/"/>
     <category term="理想主义" scheme="https://maples7.com/tags/%E7%90%86%E6%83%B3%E4%B8%BB%E4%B9%89/"/>
-    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     <category term="知行合一" scheme="https://maples7.com/tags/%E7%9F%A5%E8%A1%8C%E5%90%88%E4%B8%80/"/>
+    <category term="财务自由" scheme="https://maples7.com/tags/%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/"/>
     <category term="Apple Developer Program" scheme="https://maples7.com/tags/Apple-Developer-Program/"/>
     <category term="SwiftData" scheme="https://maples7.com/tags/SwiftData/"/>
     <category term="郑钦文" scheme="https://maples7.com/tags/%E9%83%91%E9%92%A6%E6%96%87/"/>

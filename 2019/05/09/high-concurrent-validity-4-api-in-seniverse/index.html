@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+  <link rel="preload" href="/css/main.css" as="style">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
@@ -16,12 +17,12 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css" integrity="sha256-4Lad8m4ZWW1Lgb9+sMVLYEfnIh7BjV1NQMEe79Pviks=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.css" integrity="sha256-mdaMxrItEW6hMIVJJNPKuX0B7KCSJQVEv3mVY4N2we4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":true,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"maples7.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.29.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":true}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="心知天气作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气官网首页一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海">
 <meta property="og:type" content="article">
@@ -62,11 +63,9 @@
 
   
   <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.31/dist/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/pangu@7.2.0/dist/browser/pangu.umd.js" integrity="sha256-JnmRRnJK7DC6RQJbAJb6AXOM9OmWzS6z8eYultk/48Y=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.js" integrity="sha256-QnJV4HT5r8i89ovZGRD86iynZqHerEbT2xt69vDM36I=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@7.2.1/dist/browser/pangu.umd.js" integrity="sha256-kRsxecBnwG6mULFPe2E6UKnNm8XfDOuDwCOprjLZuX8=" crossorigin="anonymous" defer></script>
 <script src="/js/utils.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/bookmark.js" defer></script><script src="/js/pjax.js" defer></script>
 
   <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
@@ -86,7 +85,7 @@
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha256-44BednzIpUeQJcY8qtLyarFu0UCCTbgmWOvaoehiFQQ=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@3.0.2/dist/quicklink.umd.js" integrity="sha256-Qo2BTvlsBVXIr5fEHp8xlBpUmkbDINr5cQZeSfMTES8=" crossorigin="anonymous" defer></script>
   <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://maples7.com/2019/05/09/high-concurrent-validity-4-api-in-seniverse/"}</script>
   <script src="/js/third-party/quicklink.js" defer></script>
 
@@ -102,12 +101,8 @@
   <main class="main">
     <div class="column">
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
+  <div class="site-nav-search popup-trigger" aria-label="搜索" role="button">
+      <i class="fa fa-search fa-fw fa-lg"></i>
   </div>
 
   <div class="site-meta">
@@ -119,10 +114,8 @@
     </a>
   </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
+  <div class="site-nav-toggle" aria-label="切换导航栏" role="button">
+      <i class="fa fa-ellipsis fa-fw fa-lg"></i>
   </div>
 </div>
 
@@ -139,7 +132,8 @@
 
 
 
-  <div class="search-pop-overlay">
+  
+  <template id="search-popup-template"><div class="search-pop-overlay">
     <div class="popup search-popup">
       <div class="search-header">
         <span class="search-icon">
@@ -160,7 +154,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div></template>
 
 </header>
         
@@ -252,8 +246,6 @@
     </div>
 
     
-        <div class="pjax">
-        </div>
   </aside>
 
 
@@ -343,7 +335,7 @@
     <span class="post-meta-break"></span>
     <span class="post-meta-item" title="本文字数">
       <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
+        <i class="far fa-file-lines"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
       <span>2.2k</span>
@@ -364,12 +356,12 @@
     
     
     <div class="post-body" itemprop="articleBody"><p><a target="_blank" rel="noopener" href="https://www.seniverse.com/">心知天气</a>作为国内领先的商业气象服务提供商，天气数据 API 产品从公司创立以来就一直扮演着很重要的角色。2009 年 API 产品初次上线，历经十年，我们不断用心迭代，已经为数百家企业客户提供了超过 540 亿次稳定可靠的数据服务。在心知天气<a target="_blank" rel="noopener" href="https://www.seniverse.com/">官网首页</a>一直跳动的调用量数字就实时展示了整个天气 API 产品的服务状态。目前，心知天气数据 API 的 QPS 在高峰时期已经达到数千的量级，如何承载这样海量的并发请求，使客户能稳定及时的获取到所需数据自然也是心知技术团队一路以来不断探索的主题。</p>
-<img data-src="/uploads/seniverse-index.gif" class="" title="心知天气 API 服务实时访问量" alt="图片显示错误">
+<img src="/uploads/seniverse-index.gif" class="" title="心知天气 API 服务实时访问量" alt="图片显示错误">
 
 <span id="more"></span>
 
 <h2 id="访问量特点"><a href="#访问量特点" class="headerlink" title="访问量特点"></a>访问量特点</h2><p>天气数据的基本属性和客户本身的业务需求决定了客户来如何调用我们的数据接口。对于部分使用我们数据进行数据展示的 2C 业务的客户而言，访问量潮汐跟人的行为规律有着明显的相关性，这大致表现为白天比晚上并发量更高；而对于部分使用天气数据做数据分析和研究或者其他需要批量请求天气数据的客户而言，他们大多会选择在整点时刻来批量请求不同的数据，所以整点时刻往往会有突发的高峰访问量。</p>
-<p><img data-src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点"></p>
+<p><img src="https://i.loli.net/2019/04/18/5cb885ced4a0b.png" alt="API 数据服务访问量特点" loading="lazy"></p>
 <p>在叠加了不同客户需求的总体 API 服务的访问量，可以看出以下几个特点：</p>
 <ul>
 <li>以「天」为单位周期性明显</li>
@@ -387,9 +379,9 @@
 <h2 id="黄金时代"><a href="#黄金时代" class="headerlink" title="黄金时代"></a>黄金时代</h2><p><a target="_blank" rel="noopener" href="https://pivotal.io/cloud-native">Cloud-Native</a> 的概念是 2015 年被首次提出的，随后就获得了技术社区的大量关注。顺着之前架构演进的思路，我们很快开始用 Cloud-Native 的理念来武装整个后端系统架构。在去年，我们正式开始用 <a target="_blank" rel="noopener" href="https://www.docker.com/">Docker</a> 和 <a target="_blank" rel="noopener" href="https://kubernetes.io/">Kubernetes</a> 来改造和管理我们所有对外的线上服务，这些架构设计同时也与阿里云提供的云服务深度结合。</p>
 <p>从网关到数据服务，目前我们都已经完成了容器化的改造，并且所有服务都使用 Kubernetes 来编排和管理，这意味着我们真正统一了各个服务的运行时环境，从而可以快速复制出新的服务节点。借助 Kubernetes，我们现在可以做到容器级别的自动伸缩，在并发量高的时候服务节点能够自动横向扩展以提高整个集群的并发处理能力，进而可以给用户提供更加优质稳定的天气数据 API 服务。</p>
 <p>不仅如此，基于 Cloud-Native 的理念，我们还统一了各个服务的 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%8C%81%E7%BA%8C%E6%95%B4%E5%90%88">CI（持续集成）</a> 流程，优化了 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/DevOps">DevOps</a> 的体验，做到所有服务的标准化和归一化 —— 从此以往，万物皆容器。这对于今后产品的持续高效迭代和改进，也是有重大意义的。</p>
-<p><img data-src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路"></p>
+<p><img src="https://i.loli.net/2019/05/09/5cd3d76bb42c6.png" alt="心知天气数据 API 产品的高可用之路" loading="lazy"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心知数据 API 产品历经十年，其后端架构也逐渐从传统的企业应用的开发模式转变为现代的 Cloud-Native 应用的开发模式，不仅极大的解放了团队的产品开发效率，而且能对外提供更加优质稳定的数据服务。心知天气从创立之初就带着鲜明的互联网风格，我们崇尚极客文化，技术团队也将继续带着勇于探索和敢于挑战的极客精神，用更好的技术与更优质的产品，为我们的客户提供更具价值的产品。</p>
-<p><strong>【本文由多人协作完成，版权归<a target="_blank" rel="noopener" href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#104;&#105;&#x40;&#115;&#101;&#110;&#105;&#x76;&#x65;&#114;&#x73;&#101;&#46;&#x63;&#111;&#x6d;&#63;&#115;&#x75;&#98;&#x6a;&#x65;&#x63;&#x74;&#x3d;&#25991;&#31456;&#36716;&#x8f7d;&#25480;&#x6743;&#30003;&#x8bf7;">心知天气</a>获取授权】</strong></p>
+<p><strong>【本文由多人协作完成，版权归<a target="_blank" rel="noopener" href="https://www.seniverse.com/">心知天气</a>所有，转载需联系<a href="mailto:&#x68;&#x69;&#x40;&#x73;&#x65;&#x6e;&#x69;&#x76;&#x65;&#x72;&#x73;&#101;&#x2e;&#99;&#111;&#x6d;&#x3f;&#x73;&#117;&#x62;&#106;&#101;&#99;&#116;&#x3d;&#25991;&#x7ae0;&#36716;&#36733;&#25480;&#x6743;&#x7533;&#x8bf7;">心知天气</a>获取授权】</strong></p>
 
     </div>
 
@@ -399,7 +391,7 @@
 
     <footer class="post-footer">
           <div class="reward-container">
-  <div>请我一杯咖啡吧！</div>
+  <div>知行合一</div>
   <button>
     赞赏
   </button>
@@ -583,7 +575,6 @@
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
   </div>
-  <div class="sidebar-dimmer"></div>
   <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
@@ -591,7 +582,7 @@
   <div class="reading-progress-bar"></div>
   <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
-  <a href="https://github.com/Maples7" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+  <a href="https://github.com/Maples7" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
